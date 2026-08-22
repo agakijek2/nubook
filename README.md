@@ -61,12 +61,43 @@ w pełni offline, pobierz oba kroje, umieść je w `assets/fonts/`, zastąp
 odnośnik `<link>` w `index.html` regułami `@font-face` i zaktualizuj
 tokeny `--nu-font-display` i `--nu-font-text`.
 
+## Historia zmian
+
+Repozytorium jest założone i pierwszy commit obejmuje cały projekt.
+Zasada na dalej: **jeden commit na jedną zatwierdzoną decyzję**, nie jeden
+na sesję. Dzięki temu da się cofnąć pojedynczą zmianę, nie tracąc reszty.
+
+Opis commita mówi, czego dotyczy i co się zmieniło — po polsku, w trybie
+oznajmującym, tak samo jak dokumentacja:
+
+```
+kolor: token --nu-border-hover zamiast wpisanego #bdbdbd
+dostępność: fokus wchodzi do koszyka przy obu sposobach otwarcia
+ikonografia: filtry, plus, krzyżyk i strzałka selecta jako SVG
+```
+
+Commity trzeba wykonywać z Terminala — środowisko, w którym Claude pracuje
+na tym folderze, potrafi pliki zapisywać, ale nie potrafi ich usuwać, a git
+kasuje własne pliki blokady po każdym zapisie. Claude może przygotować treść
+opisu; wykonanie należy do Ciebie:
+
+```bash
+git add -A
+git commit -m "opis decyzji"
+```
+
+Jeśli git odmawia z komunikatem `index.lock: File exists`, usuń zostawione
+blokady i powtórz:
+
+```bash
+rm -f .git/index.lock .git/HEAD.lock .git/objects/maintenance.lock
+find .git -name "tmp_obj_*" -delete
+```
+
 ## GitHub
 
 ```bash
-git init
-git add .
-git commit -m "nubook. — bookshop and design system"
+git branch -M main
 git branch -M main
 git remote add origin git@github.com:UZYTKOWNICZKA/nubook.git
 git push -u origin main
