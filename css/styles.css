@@ -124,6 +124,14 @@
        grid units, which equal pixels because the viewBox equals the container.
        Named rather than written into the classes, so the documentation can read
        the rule instead of restating it. */
+    /* Relative width of a cover inside its tile. One decision per breakpoint:
+       opening a book zooms one and the same box from the grid to the product
+       page, so the two have to agree at every width or the transition snaps. */
+    --nu-cover-w:62%;
+    /* A cover standing on its own, outside a tile. Two sizes of one thing:
+       the cart drawer is narrower than the cart page. */
+    --nu-thumb-sm:44px;  --nu-thumb-md:64px;
+
     --nu-icon-lg:24px;   --nu-icon-lg-inset:2px; --nu-icon-lg-stroke:1.5;
     --nu-icon-sm:16px;   --nu-icon-sm-inset:1px; --nu-icon-sm-stroke:1.25;
 
@@ -464,6 +472,10 @@
   @media (prefers-reduced-motion:reduce){
     .grid.mosaic .card{animation:none;opacity:1}
   }
+  /* Fading belongs to the listing, not to the book. In the grid the reader is
+     scanning and needs to sift out what cannot be bought at a glance. On the
+     product page she came to look at this one cover, so it stays untouched -
+     the badge and the disabled button carry the unavailability there. */
   .card.is-out .tile > .cover{opacity:.38;filter:grayscale(.4)}
   .tile{
     background:var(--nu-bg-secondary);
@@ -492,7 +504,7 @@
 
   /* ---------- covers (pure CSS book jackets) ---------- */
   .cover{
-    width:62%;max-width:none;aspect-ratio:7/10;
+    width:var(--nu-cover-w);max-width:none;aspect-ratio:7/10;
     position:relative;overflow:hidden;
     box-shadow:0 14px 22px -10px color-mix(in srgb, var(--nu-bg-inverse) 35%, transparent), 0 2px 4px color-mix(in srgb, var(--nu-bg-inverse) 12%, transparent);
     transition:transform .35s ease;
@@ -530,7 +542,6 @@
     display:flex;align-items:center;justify-content:center;
     position:relative;overflow:hidden;
   }
-  .p-tile .cover{width:62%;max-width:none}
   .p-tile .badge{top:var(--nu-space-small);left:var(--nu-space-small)}
   /* open transition: info + CTA dissolve in separately */
   .p-info.p-enter{opacity:0;transform:translateY(6px)}
@@ -737,7 +748,7 @@
     transition:opacity .25s ease, transform .25s ease;
   }
   .ci.removing{opacity:0;transform:translateX(14px)}
-  .ci-cover{width:44px;flex-shrink:0}
+  .ci-cover{width:var(--nu-thumb-sm);flex-shrink:0}
   .ci-cover .cover{width:100%;max-width:none;box-shadow:0 2px 8px color-mix(in srgb, var(--nu-bg-inverse) 18%, transparent)}
   .ci-main{flex:1;min-width:0}
   .ci-title{display:block;line-height:1.35;margin-bottom:var(--nu-space-nano)}
@@ -761,7 +772,7 @@
   .sum-row.muted{color:var(--nu-fg-secondary);font-size:var(--nu-text-body-m)}
   .sum-row.total{font-size:var(--nu-text-body-l);padding-top:var(--nu-space-milli);margin-top:var(--nu-space-micro);border-top:1px solid var(--nu-border-neutral)}
   .cart-cta{display:block;width:100%;text-align:center;margin-top:var(--nu-space-medium);padding:var(--nu-space-milli) 0}
-  .cart-page-list .ci-cover{width:64px}
+  .cart-page-list .ci-cover{width:var(--nu-thumb-md)}
   .cart-page-list .ci{padding:var(--nu-space-medium) 0}
   .disc-row{display:flex;gap:var(--nu-space-micro);margin-bottom:var(--nu-space-micro)}
   .disc-row input{
@@ -1030,9 +1041,13 @@
      packshot's 4/5 ratio for a crop. Height, not spacing — hence a plain value.
      In the preview frame it also needs a width: the badge inside is positioned
      against the tile, so the tile has no content of its own to be sized by. */
-  .ds .ds-specimens .tile,
-  .ds .ds-play-stage .tile{aspect-ratio:auto;height:88px}
-  .ds .ds-play-stage .tile{width:240px}
+  .ds .ds-specimens .tile{aspect-ratio:auto;height:88px}
+  /* The badge preview wants a crop, the tile preview wants the real 4:5 - so the
+     crop is asked for by name instead of being imposed on every tile in a stage. */
+  .ds .ds-play-stage .tile{width:140px}
+  .ds .ds-play-stage .tile.ds-crop{aspect-ratio:auto;width:240px;height:88px}
+  .ds .ds-tiles{justify-content:center;align-items:flex-end}
+  .ds .ds-tiles .tile{width:140px}
   .ds .ds-specimens figcaption{
     font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
     text-transform:uppercase;color:var(--nu-fg-secondary);margin-top:var(--nu-space-micro);
@@ -1102,11 +1117,14 @@
     .grid{grid-template-columns:repeat(2,1fr)}
   }
   @media (max-width:820px){
+    /* One value per breakpoint: the cover's relative width is a single decision,
+       and the open transition zooms one and the same box, so grid and product
+       page have to agree at every width. */
+    :root{--nu-cover-w:72%}
     .grid{grid-template-columns:repeat(2,1fr);gap:var(--nu-space-nano)}
     .product{padding:0 var(--nu-space-milli) var(--nu-space-max)}
     .p-grid{grid-template-columns:1fr;gap:var(--nu-space-medium)}
     .p-tile{max-width:none}
-    .p-tile .cover{width:72%;max-width:none}
     .p-info{max-width:none}
     .p-title{font-size:var(--nu-text-h2)}
     .p-cta{display:block;width:100%;text-align:center}
@@ -1140,7 +1158,6 @@
        has to happen in one frame so the scroll can be corrected against it —
        an animated collapse would move the list for 350ms afterwards. */
     .filters.no-anim{transition:none}
-    .cover{width:72%}
 
     /* ---------- mobile: sticky bottom bars ----------
        The shop bar leaves the top of the page and pins to the bottom, within
@@ -1233,7 +1250,7 @@
     .sheet-backdrop{transition:none}
   }
   @media (max-width:380px){
+    :root{--nu-cover-w:58%}
     .grid{grid-template-columns:1fr}
-    .cover{width:58%}
-    .p-tile .cover{width:58%}
+
   }

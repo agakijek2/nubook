@@ -29,11 +29,16 @@ def main() -> None:
     js = (ROOT / "js/app.js").read_text()
 
     # assets referenced from the script, e.g. const COVER_X = "assets/covers/x.jpg"
-    js = re.sub(
-        r'"(assets/[^"]+)"',
-        lambda m: '"' + data_uri(m.group(1)) + '"',
-        js,
-    )
+    # A reference with no file behind it is left alone and reported: crashing the
+    # whole build on one bad path hides which path it was.
+    def inline(m):
+        rel = m.group(1)
+        if not (ROOT / rel).exists():
+            print(f"  uwaga: pominięto brakujący plik {rel}")
+            return m.group(0)
+        return '"' + data_uri(rel) + '"'
+
+    js = re.sub(r'"(assets/[^"]+)"', inline, js)
 
     # plain replace, not re.sub: css/js contain backslashes that would be
     # read as escape sequences in a regex replacement string

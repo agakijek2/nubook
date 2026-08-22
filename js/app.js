@@ -567,7 +567,7 @@ if (document.fonts && document.fonts.ready){
 function tileHTML(b, ctx){
   const st = b.s ? STATUS[b.s] : null;
   const cls = ctx === "product" ? "tile p-tile" : "tile";
-  return `<div class="${cls} ${b.s==="out"?"is-out":""}" data-book="${b.id}">
+  return `<div class="${cls}" data-book="${b.id}">
       ${st ? `<span class="badge ${st.cls}">${T().status[b.s]}</span>` : ""}
       ${coverHTML(b)}
     </div>`;
@@ -2083,7 +2083,7 @@ const DS_SECTIONS = [
     <p>${L(
       "The options below are read from the variants table on this page, the rendering from the stylesheet the shop runs on, and the snippet from the element actually standing in the frame.",
       "Opcje poniżej pochodzą z tabeli wariantów na tej stronie, wygląd z arkusza, na którym działa sklep, a fragment kodu z elementu faktycznie stojącego w ramce.")}</p>
-    <div class="ds-play" data-src="#badgeVariants" data-demo=".ds-badges" data-tag="span" data-base="badge" data-wrap="tile">
+    <div class="ds-play" data-src="#badgeVariants" data-demo=".ds-badges" data-tag="span" data-base="badge" data-wrap="tile ds-crop">
       <div class="ds-play-row"><span class="ds-play-lbl">${L("Variant","Wariant")}</span><div class="chip-row ds-play-opts"></div></div>
       <div class="demo on-page ds-play-stage"></div>
       <div class="ds-play-code"></div>
@@ -2275,23 +2275,57 @@ const DS_SECTIONS = [
     </div>
 ` },
 
-  { group:{en:"Components",pl:"Komponenty"}, id:"tile", label:{en:"Packshot tile",pl:"Kafel packshotu"}, body: ()=>`
-    <h1>${L("Packshot tile","Kafel packshotu")}</h1>
+  { group:{en:"Components",pl:"Komponenty"}, id:"tile", label:{en:"Tile and cover",pl:"Kafel i okładka"}, body: ()=>`
+    <h1>${L("Tile and cover","Kafel i okładka")}</h1>
     <p class="ds-lede">${L(
-      "The signature object of the shop: a 4:5 <code>--nu-bg-secondary</code> box with the cover centred at 62% of its width.",
-      "Znak rozpoznawczy sklepu: kontener 4:5 w kolorze <code>--nu-bg-secondary</code> z okładką wyśrodkowaną na 62% jego szerokości.")}</p>
-    <table><tbody>
-      <tr><td style="width:190px">${L("Ratio","Proporcje")}</td><td>${L("4:5, identical in the grid and on the product page","4:5, identyczne w siatce i na karcie produktu")}</td></tr>
-      <tr><td>${L("Cover width","Szerokość okładki")}</td><td>${L("62% of the tile (72% below 820px, 58% below 380px)","62% kafla (72% poniżej 820px, 58% poniżej 380px)")}</td></tr>
-      <tr><td>${L("Surface","Powierzchnia")}</td><td><code>--nu-bg-secondary</code></td></tr>
-      <tr><td>${L("Contents","Zawartość")}</td><td>${L("Cover image, optional badge top-left","Okładka, opcjonalna odznaka w lewym górnym rogu")}</td></tr>
+      "The tile is a 4:5 grey field with a cover inside it &ndash; the shop's signature object. The same tile appears in the grid and on the product page, at two scales. The cover also appears without the tile, as a thumbnail in the cart lists.",
+      "Kafel to szare pole w proporcji 4:5 z okładką w środku &ndash; znak rozpoznawczy sklepu. Ten sam kafel występuje w siatce i na karcie produktu, w dwóch skalach. Okładka pojawia się również bez kafla, jako miniatura na listach w koszyku.")}</p>
+    <div class="demo on-page ds-tiles">
+      <div class="tile">${coverHTML(BOOKS[2])}</div>
+      <div class="ci-cover">${coverHTML(BOOKS[2])}</div>
+    </div>
+    <table id="tileVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+      <tr><td>${L("Tile","Kafel")}<br><code>.tile</code></td>
+        <td>${L("A field with a cover centred in it, and room for one badge. The grid and the product page carry the same tile at two scales, which is what lets opening a book be one uninterrupted zoom.","Pole z wyśrodkowaną okładką i miejscem na jedną odznakę. Siatka i karta produktu niosą ten sam kafel w dwóch skalach i to właśnie pozwala, by otwarcie książki było jednym nieprzerwanym powiększeniem.")}</td>
+        <td><code>--nu-bg-secondary</code>, ${dsTok("--nu-cover-w")}</td></tr>
+      <tr><td>${L("Thumbnail","Miniatura")}<br><code>.ci-cover</code></td>
+        <td>${L("The cover alone: no field, no badge, and a width of its own. Used in the cart drawer and on the cart page, where a title only has to be recognisable in a list.","Sama okładka: bez pola, bez odznaki, z własną szerokością. Używana w szufladzie koszyka i na stronie koszyka, gdzie tytuł ma być tylko rozpoznawalny na liście.")}</td>
+        <td>${dsTok("--nu-thumb-sm")}, ${dsTok("--nu-thumb-md")}</td></tr>
     </tbody></table>
-    <p><strong>${L("The grid tile and the product tile are one component at two scales.","Kafel w siatce i kafel na karcie produktu to jeden komponent w dwóch skalach.")}</strong>
-       ${L("That is what lets opening a book be a single uniform zoom rather than a cut. If you change the cover's relative width, change it at every breakpoint, or the transition will visibly snap at the end.",
-           "To właśnie pozwala, by otwarcie książki było jednolitym powiększeniem, a nie cięciem. Jeśli zmienisz względną szerokość okładki, zmień ją na każdym progu, bo inaczej animacja na końcu widocznie przeskoczy.")}</p>
-    <p class="note">${L(
-      "Unavailable books render the tile with a faded cover and a struck-through price in the meta line below.",
-      "Książki niedostępne mają przygaszoną okładkę i przekreśloną cenę w wierszu pod kaflem.")}</p>` },
+    <h3>${L("Specification","Specyfikacja")}</h3>
+    <table><tbody>
+      <tr><td style="width:190px">${L("Tile ratio","Proporcje kafla")}</td><td>${L(
+        "4:5, the same in the grid and on the product page.","4:5, takie same w siatce i na karcie produktu.")}</td></tr>
+      <tr><td>${L("Tile surface","Powierzchnia kafla")}</td><td><code>--nu-bg-secondary</code></td></tr>
+      <tr><td>${L("Cover ratio","Proporcje okładki")}</td><td>${L(
+        "7:10, held by the box rather than by the image, so a cover of any proportion is cropped to one shape across the whole shop.",
+        "7:10, trzymane przez pole, a nie przez obrazek, więc okładka o dowolnych proporcjach jest kadrowana do jednego kształtu w całym sklepie.")}</td></tr>
+      <tr><td>${L("Cover width","Szerokość okładki")}</td><td>${L(
+        `Inside a tile: ${dsTok("--nu-cover-w")} of it, one value per breakpoint. Standing alone, the cover fills its thumbnail instead, and the thumbnail carries the width: ${dsTok("--nu-thumb-sm")} in the cart drawer, ${dsTok("--nu-thumb-md")} on the cart page.`,
+        `W kaflu: ${dsTok("--nu-cover-w")} jego szerokości, jedna wartość na próg. Stojąc sama, okładka wypełnia miniaturę, a szerokość niesie miniatura: ${dsTok("--nu-thumb-sm")} w szufladzie koszyka, ${dsTok("--nu-thumb-md")} na stronie koszyka.`)}</td></tr>
+      <tr><td>${L("Shadow","Cień")}</td><td>${L(
+        "The cover casts a shadow, the tile does not &ndash; that is what separates the two. A thumbnail casts a shallower one, because it stands in a list rather than on a surface.",
+        "Cień rzuca okładka, nie kafel &ndash; dzięki temu odcina się od pola. Miniatura rzuca płytszy, bo stoi na liście, a nie na powierzchni.")}</td></tr>
+      <tr><td>${L("Hover","Najechanie")}</td><td>${L(
+        "In the grid the cover rises 4px under the pointer while the tile stays put, so the card responds without the layout moving. On the product page and in the cart nothing rises, because there is nothing left to choose between.",
+        "W siatce okładka unosi się o 4px pod kursorem, a kafel zostaje na miejscu, więc karta odpowiada bez przesuwania układu. Na karcie produktu i w koszyku nic się nie unosi, bo nie ma już między czym wybierać.")}</td></tr>
+      <tr><td>${L("Unavailable","Stan niedostępny")}</td><td>${L(
+        "In the grid the cover fades to 38% and loses saturation, and the price below is struck through. On the product page the cover is left untouched: the reader came to look at this one, and the badge and the disabled button carry the unavailability there. The fade belongs to the listing, not to the book.",
+        "W siatce okładka przygasza się do 38% krycia i traci nasycenie, a cena pod nią zostaje przekreślona. Na karcie produktu okładka zostaje nietknięta: czytelniczka przyszła obejrzeć właśnie tę, a o niedostępności mówią odznaka i wyłączony przycisk. Przygaszenie należy do listy, nie do książki.")}</td></tr>
+      <tr><td>${L("Badge","Odznaka")}</td><td>${L(
+        "The tile holds at most one, in its top-left corner. A thumbnail holds none &ndash; the title stands beside it in words.",
+        "Kafel mieści najwyżej jedną, w lewym górnym rogu. Miniatura nie mieści żadnej &ndash; tytuł stoi obok niej słowami.")}</td></tr>
+    </tbody></table>
+
+    <h3>${L("Live preview","Podgląd na żywo")}</h3>
+    <p>${L(
+      "The options below are read from the variants table on this page, the rendering from the stylesheet the shop runs on, and the snippet from the element actually standing in the frame.",
+      "Opcje poniżej pochodzą z tabeli wariantów na tej stronie, wygląd z arkusza, na którym działa sklep, a fragment kodu z elementu faktycznie stojącego w ramce.")}</p>
+    <div class="ds-play" data-src="#tileVariants" data-demo=".ds-tiles" data-tag="div" data-base="" data-wrap="">
+      <div class="ds-play-row"><span class="ds-play-lbl">${L("Variant","Wariant")}</span><div class="chip-row ds-play-opts"></div></div>
+      <div class="demo on-page ds-play-stage"></div>
+      <div class="ds-play-code"></div>
+    </div>` },
 
   { group:{en:"Components",pl:"Komponenty"}, id:"stepper", label:{en:"Quantity stepper",pl:"Stepper ilości"}, body: ()=>`
     <h1>${L("Quantity stepper","Stepper ilości")}</h1>
@@ -2426,10 +2460,15 @@ function dsPlay(root){
         stage.appendChild(frame);
       } else stage.appendChild(el);
 
+      /* The build inlines every image as base64, so a specimen carrying one would
+         put a few hundred kilobytes of data URI into a snippet meant to be copied.
+         The path is what a developer needs there. */
+      const clean = el.cloneNode(true);
+      clean.querySelectorAll("img[src^='data:']").forEach(i => i.setAttribute("src", "…"));
       // the serialiser writes disabled=""; the shorthand is what anyone would type
-      const openTag = el.outerHTML.slice(0, el.outerHTML.indexOf(">") + 1)
+      const openTag = clean.outerHTML.slice(0, clean.outerHTML.indexOf(">") + 1)
         .replace(/ disabled=""/, " disabled");
-      const inner = [...el.childNodes]
+      const inner = [...clean.childNodes]
         .map(n => n.nodeType === 3 ? n.textContent.trim() : n.outerHTML).filter(Boolean);
       const close = `</${cfg.tag}>`;
       const markup = inner.length > 1
