@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+"""
+Buduje pojedynczy, samowystarczalny plik z rozbitego projektu.
+
+    python3 build.py            -> preview.html
+    python3 build.py nubook.html
+
+Wkleja do środka style, skrypt i wszystkie obrazy (jako base64), więc
+wynik działa bez sieci lokalnej i da się go otworzyć albo wysłać jako
+jeden plik. Folder projektu pozostaje źródłem prawdy - ten plik jest
+zawsze wynikiem, nigdy nie edytuj go ręcznie.
+"""
+import base64, mimetypes, re, sys
+from pathlib import Path
+
+ROOT = Path(__file__).parent
+OUT = Path(sys.argv[1] if len(sys.argv) > 1 else "preview.html")
+
+
+def data_uri(rel_path: str) -> str:
+    f = ROOT / rel_path
+    mime = mimetypes.guess_type(f.name)[0] or "application/octet-stream"
+    return f"data:{mime};base64," + base64.b64encode(f.read_bytes()).decode()
+
+
+def main() -> None:
+    html = (ROOT / "index.html").read_text()
+    css = (ROOT / "css/styles.css").read_text()
+    js = (ROOT / "js/app.js").read_text()
+
+    # assets referenced from the script, e.g. const COVER_X = "assets/covers/x.jpg"
+    js = re.sub(
+        r'"(assets/[^"]+)"',
+        lambda m: '"' + data_uri(m.group(1)) + '"',
+        js,
+    )
+
+    # plain replace, not re.sub: css/js contain backslashes that would be
+    # read as escape sequences in a regex replacement string
+    html = html.replace(
+        '<link rel="stylesheet" href="css/styles.css">',
+        "<style>\n" + css + "\n</style>",
+    )
+    html = html.replace(
+        '<script src="js/app.js"></script>',
+        "<script>\n" + js + "\n</script>",
+    )
+
+    (ROOT / OUT).write_text(html)
+    size = (ROOT / OUT).stat().st_size / 1e6
+    print(f"{OUT} zbudowany - {size:.2f} MB")
+
+
+if __name__ == "__main__":
+    main()

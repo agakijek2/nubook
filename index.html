@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nubook. — novels on women &amp; gender</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- Only what the stylesheet actually asks for: Archivo 400 and 500 plus its
+     italic for book quotes, and DM Serif Display roman. -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- Shop-wide promotion. Sits above the header so it is the first thing read,
+     and it is the one place in the shop that runs on an inverse ground. -->
+<div class="promo" id="promo">
+  <p>
+    <span id="promoCopy">10% rabatu na wszystkie tytuły z kodem</span>
+    <button type="button" class="btn-ghost has-icon" id="promoCode">
+      <span class="lbl" id="promoCodeLabel">ROOM10</span>
+      <svg class="ico-copy ico-16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.05 5.55h8.4v8.4h-8.4z"/><path d="M5.55 5.55V2.05h8.4v8.4h-3.5"/></svg>
+      <svg class="ico-check ico-16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.75 8.35l3.5 3.5 7-8.05"/></svg>
+    </button>
+    <span class="promo-done" id="promoDone" role="status" aria-live="polite"></span>
+  </p>
+</div>
+
+<header>
+  <div class="logo">
+    <span class="mark">nubook</span>
+    <span class="strap" id="strap">powieści o kobietach i płci</span>
+  </div>
+  <div class="head-right">
+    <div class="switchers">
+      <div class="sw-group" role="group" aria-label="Language">
+        <button type="button" class="chip" id="swEN" aria-pressed="false"><span class="chip-t">EN</span></button><span>/</span><button type="button" class="chip" id="swPL" aria-pressed="true"><span class="chip-t">PL</span></button>
+      </div>
+      <div class="sw-group" role="group" aria-label="Currency">
+        <button type="button" class="chip" id="swEUR" aria-pressed="false"><span class="chip-t">EUR</span></button><span>/</span><button type="button" class="chip" id="swPLN" aria-pressed="true"><span class="chip-t">PLN</span></button>
+      </div>
+    </div>
+    <div class="head-icons">
+      <button type="button" class="btn-tertiary" id="btnSearch" aria-label="Szukaj"><svg class="ico-24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg></button>
+      <button type="button" class="btn-tertiary" id="btnFav" aria-label="Ulubione"><svg class="ico-24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.69L4.45 12.14C2.75 10.44 2.75 7.71 4.45 6.01c1.7-1.7 4.34-1.7 6.04 0L12 7.52 13.51 6.01c1.7-1.7 4.34-1.7 6.04 0 1.7 1.7 1.7 4.44 0 6.13z"/></svg></button>
+      <button type="button" class="btn-tertiary" id="btnAccount" aria-label="Konto"><svg class="ico-24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 20v-1.2C5 15.9 8.1 14 12 14s7 1.9 7 4.8V20"/></svg></button>
+      <button type="button" id="btnCart" class="cart-wrap btn-tertiary" aria-label="Koszyk"><svg class="ico-24" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.18 6.64h13.64l1.94 14.61H3.24z"/><path d="M8.59 8.59V6.16a3.41 3.41 0 0 1 6.82 0v2.43"/></svg><span class="cart-n" id="cartN" hidden>0</span></button>
+    </div>
+  </div>
+</header>
+
+<div class="shopbar" id="shopbar">
+  <button class="filter-toggle btn-tertiary" id="filterToggle" aria-expanded="true" aria-controls="filters">
+    <svg class="ico-16 ico-filter" viewBox="0 0 16 16" aria-hidden="true"><path class="bar-top" d="M2 5h12"/><path class="bar-bot" d="M2 11h12"/></svg><span id="lblFilter">Filtry</span>
+  </button>
+  <div class="sort" id="sort">
+    <button class="sort-btn btn-tertiary" id="sortBtn" aria-haspopup="listbox" aria-expanded="false">
+      <span id="lblSort">Sortuj:</span> <span id="sortLbl">Nasze rekomendacje</span> <svg class="ico-16 ico-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg>
+    </button>
+    <div class="sort-menu" role="listbox" id="sortMenu">
+      <button role="option" data-sort="featured" aria-checked="true">Our recommendations</button>
+      <button role="option" data-sort="newest" aria-checked="false">Newest first</button>
+      <button role="option" data-sort="price-asc" aria-checked="false">Price, low to high</button>
+      <button role="option" data-sort="pub-asc" aria-checked="false">First published: oldest</button>
+    </div>
+  </div>
+</div>
+
+<div class="shop" id="shop">
+  <aside class="filters" id="filters">
+    <!-- only rendered when this same panel is raised as a bottom sheet on mobile -->
+    <div class="fsheet-head">
+      <span id="lblFilterSheet">Filtry</span>
+      <button type="button" class="btn-tertiary" id="fsheetClose" aria-label="Zamknij"><svg class="ico-16 ico-close" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></button>
+    </div>
+    <div class="filter-row" role="group" aria-labelledby="lblGenre">
+      <span class="filter-label" id="lblGenre">Gatunek</span>
+      <div class="chip-row" id="genreRow"></div>
+    </div>
+    <div class="filter-row" role="group" aria-labelledby="lblTag">
+      <span class="filter-label" id="lblTag">Tag</span>
+      <div class="chip-row" id="statusRow"></div>
+    </div>
+    <div class="filter-row" role="group" aria-labelledby="lblLang">
+      <span class="filter-label" id="lblLang">Język</span>
+      <div class="chip-row" id="langRow"></div>
+    </div>
+  </aside>
+
+  <main class="grid" id="grid" aria-live="polite"></main>
+</div>
+
+<div class="sheet-backdrop" id="fsheetBg"></div>
+
+<div class="drawer-backdrop" id="drawerBg"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="drawer-close btn-tertiary" id="drawerClose" aria-label="Zamknij"><svg class="ico-16 ico-close" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></button>
+  <div id="drawerBody"></div>
+</aside>
+
+<div class="drawer-backdrop" id="cartBg"></div>
+<aside class="drawer cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="drawer-close btn-tertiary" id="cartClose" aria-label="Zamknij"><svg class="ico-16 ico-close" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></button>
+  <h2 id="cartTitle">Koszyk</h2>
+  <div id="cartBody"></div>
+</aside>
+
+<section class="checkout" id="cartPage" hidden></section>
+<section class="checkout" id="checkout" hidden></section>
+<section class="done-view" id="doneView" hidden></section>
+<section class="ds" id="dsPage" hidden></section>
+
+<section class="product" id="product" hidden>
+  <!-- filled by renderProduct: the arrow is drawn, not typed, so it cannot live in the translated string -->
+  <button type="button" class="back btn-tertiary" id="backBtn"></button>
+  <div class="p-grid" id="pGrid"></div>
+</section>
+
+<!-- Sticky checkout bar (mobile only). Kept OUTSIDE .checkout on purpose: that
+     section runs a transform animation on entry, which would make a fixed
+     descendant position against the section instead of the viewport. The button
+     reaches the form by id, so it can submit from out here. -->
+<div class="co-bar" id="coBar" hidden></div>
+
+<footer class="site-foot" id="siteFoot">
+  <div class="foot-left">
+    <span class="foot-mark">nubook<span class="foot-dot">.</span></span>
+    <span class="foot-copy" id="footCopy"></span>
+  </div>
+  <nav class="foot-links">
+    <a class="foot-link link" id="lnkDesign" href="#design">Design system</a>
+  </nav>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>

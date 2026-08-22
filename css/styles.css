@@ -1,0 +1,1231 @@
+:root{
+    /* Tokens are named after their ROLE, not their colour, so a re-skin
+       only touches these values. */
+
+    /* ---- colour ----
+       Layer 1 PRIMITIVES: the raw palette, named after the colour itself.
+                           Hex values live here and nowhere else.
+       Layer 2 SEMANTIC:   what the colour is FOR, built only from primitives.
+                           Read as --nu-<position>-<meaning>:
+                           position = bg | fg | border
+                           meaning  = primary | secondary | tertiary | inverse
+                                    | neutral | highlight | warning | alert
+                                    | action | scrim
+       Components only ever use layer 2. */
+
+    /* ---------- primitives ---------- */
+    --nu-white:#ffffff;
+    --nu-grey-100:#F1F1F1;
+    --nu-grey-400:#A6A6A6;
+    --nu-grey-600:#727272;
+    --nu-grey-900:#151515;
+    --nu-red-600:#b3261e;
+    --nu-burgundy-500:#8f2b45;
+    --nu-burgundy-700:#5c1228;
+    --nu-gold-100:#f7e9b8;
+    --nu-gold-600:#9a7b1c;
+    --nu-gold-800:#6e5710;
+
+    /* ---------- semantic ---------- */
+    /* background — surfaces an element sits on */
+    --nu-bg-primary:var(--nu-white);            /* the page, drawers, menus */
+    --nu-bg-secondary:var(--nu-grey-100);       /* raised panels: tiles, thumbnails */
+    --nu-bg-tertiary:var(--nu-grey-600);        /* third surface step: glass outline and shading */
+    --nu-bg-inverse:var(--nu-grey-900);         /* filled actions */
+    --nu-bg-highlight:var(--nu-gold-100);       /* award badge */
+    /* the dim laid over the page behind anything modal: author drawer, cart
+       drawer, filter sheet. One name, so the scrims cannot drift apart. */
+    --nu-bg-scrim:color-mix(in srgb, var(--nu-grey-900) 28%, transparent);
+    /* the tint that marks a measured distance in the spacing documentation.
+       Built from the red rather than the burgundy: burgundy is a muted brand
+       colour and thins out grey, which is the one thing this tint must not be. */
+    --nu-bg-measure:color-mix(in srgb, var(--nu-red-600) 22%, transparent);
+    --nu-bg-action:color-mix(in srgb, var(--nu-grey-900) 85%, transparent); /* glass CTA body */
+    /* derived, not duplicated: the secondary button borrows the panel surface,
+       so the two can never drift apart by accident */
+    --nu-bg-action-secondary:var(--nu-bg-secondary); /* secondary button body */
+    --nu-bg-action-glow:var(--nu-burgundy-500);      /* CTA inner glow, bottom edge */
+    --nu-bg-action-glow-deep:var(--nu-burgundy-700); /* CTA aura cast beneath */
+
+    /* foreground — text and icons */
+    --nu-fg-primary:var(--nu-grey-900);         /* titles, body copy, prices, icons */
+    --nu-fg-secondary:var(--nu-grey-600);       /* authors, labels, quotes, notes */
+    --nu-fg-tertiary:var(--nu-grey-400);        /* disabled or less prominent text */
+    --nu-fg-inverse:var(--nu-white);            /* copy on an inverse background */
+    --nu-fg-highlight:var(--nu-gold-800);       /* award label */
+    --nu-fg-warning:var(--nu-burgundy-500);     /* inventory running out */
+    --nu-fg-alert:var(--nu-red-600);            /* failed validation */
+
+    /* border — outlines and separators */
+    --nu-border-neutral:var(--nu-grey-100);     /* hairlines, field borders, dividers */
+    --nu-border-primary:var(--nu-grey-900);     /* focus rings, selected chip, badge */
+    --nu-border-muted:var(--nu-grey-400);       /* receded outline: unavailable badge */
+    --nu-border-hover:var(--nu-grey-400);       /* an outline answering the pointer */
+    --nu-border-highlight:var(--nu-gold-600);   /* award badge */
+    --nu-border-warning:var(--nu-burgundy-500); /* low-stock badge */
+    --nu-border-alert:var(--nu-red-600);        /* invalid field */
+
+    /* ---- type ---- */
+    --nu-font-display:"DM Serif Display",Georgia,serif;   /* identity & headings */
+    --nu-font-text:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+
+    --nu-text-h1:30px;      /* the subject of a view */
+    --nu-text-h2:24px;      /* a section within a view */
+    --nu-text-h3:18px;      /* smallest display step: footer mark, doc subheads */
+    --nu-text-body-l:18px;  /* emphasis in running copy: price, avatar initial */
+    --nu-text-body-m:13px;  /* running copy, controls, legal text */
+    --nu-text-label:11px;   /* uppercase labels and badges */
+    --nu-text-caption:10px; /* counts and annotations attached to another element */
+
+    /* letter-spacing — scales against size and length, not case */
+    --nu-tracking-display:-.017em; /* large display type: the wordmark */
+    --nu-tracking-body:0;          /* running copy: never spaced out */
+    --nu-tracking-compact:.04em;   /* short strings of any case: buttons, labels, badges */
+    --nu-tracking-caps:.1em;       /* the smallest uppercase: section heads, group heads */
+
+    /* ---- spacing ----
+       One rhythm, no exceptions: every gap, padding, margin and inset is a
+       multiple of 4px.
+
+       The names order the steps from smallest to largest without binding any of
+       them to an index. Dropping a step is then: point its users at a neighbour,
+       delete the line. Nothing else shifts, and no hole is left behind — a
+       numbered scale would read 1,2,3,4,6,8,10,12,16 afterwards, which looks
+       like a mistake and invites a renumber nobody needs to risk.
+
+       Two kinds of spacing sit outside the scale, both on purpose:
+
+       HAIRLINES. Every literal px left in this sheet is 1px — a label held off
+       its own 1px underline, a 1.5px bar placed inside a 10px icon, a glyph
+       pulled onto its baseline. Optical correction under the grid's resolution;
+       the smallest step is four times too coarse for it.
+
+       PROPORTIONAL SPACE. A few gaps have to grow with something else instead
+       of holding a fixed size: the dot beside the wordmark is offset in em, so
+       it follows the logo's type size, and the inside of a drawn cover is
+       padded in %, so the same jacket reads identically at grid size and at
+       packshot size. A fixed step would cut those ties.
+
+       Everything else — space between two separate things, at a size of its
+       own — comes off the scale. */
+    --nu-space-nano:4px;
+    --nu-space-micro:8px;
+    --nu-space-milli:12px;
+    --nu-space-small:16px;
+    --nu-space-medium:24px;
+    --nu-space-large:32px;
+    --nu-space-xlarge:40px;
+    --nu-space-huge:48px;
+    --nu-space-max:64px;
+
+    /* layout */
+    --nu-measure-form:1440px;      /* cart & checkout: grows, then stops and centres */
+    /* One gutter for every side-by-side layout: shop, product, checkout, docs.
+       Named rather than repeated, because "how far apart do two columns sit" is
+       a single decision — four copies of it could drift without anyone noticing. */
+    --nu-gutter-col:var(--nu-space-huge);
+
+    /* Height of the mobile sticky bars. Fallbacks only — the real values are
+       measured and written back by the script, so the page clearance is always
+       exactly the bar, whatever the label length or the device safe area. */
+    --nu-mobar-h:var(--nu-space-max);  /* shop bar: filters + sort */
+    --nu-cobar-h:var(--nu-space-max);  /* checkout bar: total + submit */
+    --nu-mobar-pad:var(--nu-space-milli); /* shop bar inner padding, top and sides */
+    --nu-mobar-gap:var(--nu-space-milli); /* air between the bar and the menu above it */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  [hidden]{display:none !important}
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    background:var(--nu-bg-primary);
+    color:var(--nu-fg-primary);
+    font-family:var(--nu-font-text);
+    font-size:var(--nu-text-body-m);
+    line-height:1.45;
+    /* stated rather than left to the default: running copy carries no tracking,
+       and a token nothing references is a decision nothing enforces */
+    letter-spacing:var(--nu-tracking-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  /* The browser default for emphasis is 700, which the text family does not
+     ship — it would be synthesised from 400 and smear. 500 is the one heavier
+     weight the shop loads, so emphasis uses it. */
+  strong,b{font-weight:500}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- header ---------- */
+  /* The one inverse surface in the shop. The code inside is a ghost button -
+     an action taken in place, woven into the sentence - so it keeps the ghost
+     construction and only swaps the two colours for their inverse counterparts. */
+  .promo{
+    background:var(--nu-bg-inverse);color:var(--nu-fg-inverse);
+    padding:var(--nu-space-micro) var(--nu-space-small);
+    text-align:center;font-size:var(--nu-text-body-m);
+  }
+  .promo p{margin:0}
+  .promo .btn-ghost{
+    color:var(--nu-fg-inverse);
+    border-bottom-color:color-mix(in srgb, var(--nu-fg-inverse) 45%, transparent);
+  }
+  .promo .btn-ghost:hover{color:var(--nu-fg-inverse);border-bottom-color:var(--nu-fg-inverse)}
+  .promo .btn-ghost.has-icon .lbl{border-bottom-color:color-mix(in srgb, var(--nu-fg-inverse) 45%, transparent)}
+  .promo .btn-ghost.has-icon:hover .lbl{border-bottom-color:var(--nu-fg-inverse)}
+  .promo .btn-ghost:focus-visible{outline-color:var(--nu-fg-inverse)}
+  .promo-done{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .promo-done.is-visible{
+    position:static;width:auto;height:auto;clip-path:none;
+    margin-left:var(--nu-space-micro);color:color-mix(in srgb, var(--nu-fg-inverse) 70%, transparent);
+  }
+
+  header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:var(--nu-space-medium) var(--nu-space-small);
+  }
+  .logo{display:flex;align-items:baseline;gap:var(--nu-space-milli)}
+  .logo .mark{
+    font-family:var(--nu-font-display);font-weight:400;
+    font-size:var(--nu-text-h1);line-height:1;letter-spacing:var(--nu-tracking-display);
+    display:inline-flex;align-items:baseline;
+    position:relative;
+  }
+  .logo .mark::after{
+    content:"";
+    display:inline-block;
+    width:.2em;height:.2em;border-radius:50%;
+    margin-left:.06em;
+    position:relative;left:1px;z-index:-1;
+    transform-origin:center;
+    background:var(--nu-fg-primary);
+    animation:dotBloom 26s ease-in-out infinite;
+  }
+  @keyframes dotBloom{
+    /* resting: plain black dot, no glow — most of the cycle */
+    0%, 74% {
+      background:var(--nu-fg-primary);transform:scale(1);
+      filter:
+        drop-shadow(0 0 4px rgba(226,59,59,0))
+        drop-shadow(0 0 8px rgba(232,210,45,0))
+        drop-shadow(0 0 12px rgba(63,180,90,0))
+        drop-shadow(0 0 16px rgba(45,143,232,0))
+        drop-shadow(0 0 20px rgba(123,79,224,0))
+        hue-rotate(0deg);
+    }
+    /* accent blooms in */
+    81% {
+      background:var(--nu-bg-primary);transform:scale(1);
+      filter:
+        drop-shadow(0 0 4px rgba(226,59,59,.85))
+        drop-shadow(0 0 8px rgba(232,210,45,.8))
+        drop-shadow(0 0 12px rgba(63,180,90,.8))
+        drop-shadow(0 0 16px rgba(45,143,232,.8))
+        drop-shadow(0 0 20px rgba(123,79,224,.8))
+        hue-rotate(120deg);
+    }
+    /* held a little while, hues drifting */
+    91% {
+      background:var(--nu-bg-primary);transform:scale(1);
+      filter:
+        drop-shadow(0 0 4px rgba(226,59,59,.85))
+        drop-shadow(0 0 8px rgba(232,210,45,.8))
+        drop-shadow(0 0 12px rgba(63,180,90,.8))
+        drop-shadow(0 0 16px rgba(45,143,232,.8))
+        drop-shadow(0 0 20px rgba(123,79,224,.8))
+        hue-rotate(300deg);
+    }
+    /* recede back to the black dot */
+    97%, 100% {
+      background:var(--nu-fg-primary);transform:scale(1);
+      filter:
+        drop-shadow(0 0 4px rgba(226,59,59,0))
+        drop-shadow(0 0 8px rgba(232,210,45,0))
+        drop-shadow(0 0 12px rgba(63,180,90,0))
+        drop-shadow(0 0 16px rgba(45,143,232,0))
+        drop-shadow(0 0 20px rgba(123,79,224,0))
+        hue-rotate(420deg);
+    }
+  }
+  @media (prefers-reduced-motion:reduce){
+    .logo .mark::after{animation:none;background:var(--nu-fg-primary);filter:none;transform:none}
+  }
+  .logo .strap{
+    font-size:var(--nu-text-label);color:var(--nu-fg-secondary);
+  }
+  .head-right{display:flex;align-items:center;gap:var(--nu-space-xlarge)}
+  .switchers{display:flex;align-items:center;gap:var(--nu-space-small);font-size:var(--nu-text-body-m)}
+  /* Layout only. The two options inside are chips: a pair of mutually exclusive
+     facets reporting through aria-pressed, which is the chip's definition. Only
+     the separator between them keeps the group's own colour. */
+  .sw-group{display:flex;align-items:center;gap:var(--nu-space-nano);color:var(--nu-fg-secondary)}
+  /* Two icon sizes, and only two. Everything an icon is - the box, the stroke,
+     the fill, where the colour comes from - is declared here and nowhere else,
+     so a component picks a size and inherits the rest. The small size is the
+     large drawing at 0.7, which maps the 20x20 safe area exactly onto 14x14. */
+  .ico-24,
+  .ico-16{display:block;flex:none;stroke:currentColor;fill:none}
+  .ico-24{width:24px;height:24px;stroke-width:1.5}
+  .ico-16{width:16px;height:16px;stroke-width:1.25}
+
+  .head-icons{display:flex;gap:var(--nu-space-medium);align-items:center}
+
+  /* ---------- tertiary button ----------
+     Reveals or hides a region and says so through aria-expanded. Starts at full
+     strength and lightens under the pointer — it has nowhere darker to go, and the
+     link shares that register. Carries a leading icon, a trailing one, both, or an
+     icon on its own; the gap is the only thing an icon adds. */
+  /* No cursor here, nor on the ghost or the link: the hand comes from the
+     element being a button, which every instance in the shop is. Declaring it on
+     the class would also hand it to a specimen in these pages, which does
+     nothing when clicked. */
+  .btn-tertiary{
+    display:inline-flex;align-items:center;gap:var(--nu-space-micro);
+    color:var(--nu-fg-primary);
+    /* see the note on .has-icon: an inline-flex box with a leading icon would
+       otherwise be placed by a baseline invented at the glyph's bottom edge */
+    vertical-align:middle;
+  }
+  .btn-tertiary:hover{color:var(--nu-fg-secondary)}
+  .btn-tertiary:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:3px}
+
+  /* ---------- ghost button and link ----------
+     What separates them is what happens, not how they look at first glance: a
+     ghost button does something on the spot — opens the drawer, removes a line —
+     while a link leaves for another view. So the button wears its underline all
+     the time, the way a control does, and the link only takes one under the
+     pointer. Both declare it at rest, so colouring one moves no text. They part
+     company on colour as well: the ghost starts quiet and darkens, the link starts
+     at full strength and lightens, the way the tertiary button does. */
+  .btn-ghost{
+    color:var(--nu-fg-secondary);
+    border-bottom:1px solid var(--nu-border-neutral);padding-bottom:1px;
+  }
+  .btn-ghost:hover{color:var(--nu-fg-primary);border-bottom-color:var(--nu-border-primary)}
+  .btn-ghost:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:2px}
+  /* A ghost that carries an icon moves its underline onto the label, for the same
+     reason the chip does: the mark belongs to the words, not to the glyph. */
+  .btn-ghost.has-icon .lbl{border-bottom:1px solid var(--nu-border-neutral);padding-bottom:1px}
+  .btn-ghost.has-icon:hover .lbl{border-bottom-color:var(--nu-border-primary)}
+  /* one glyph at a time: the check replaces the sheets once the copy succeeded */
+  .btn-ghost .ico-check{display:none}
+  .btn-ghost.is-copied .ico-copy{display:none}
+  .btn-ghost.is-copied .ico-check{display:block}
+  /* Full strength at rest and lightening under the pointer, the same register as
+     the tertiary button: both are ways out of where you are, so they read alike.
+     The underline follows the text through currentColor rather than naming a
+     border token, which would leave a dark rule under lightened type. */
+  .link{
+    color:var(--nu-fg-primary);
+    border-bottom:1px solid transparent;padding-bottom:1px;
+  }
+  .link:hover{color:var(--nu-fg-secondary);border-bottom-color:currentColor}
+  .link:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:3px}
+  /* A link with an icon is built exactly as a ghost with one: the underline moves
+     onto the label so it does not run under the glyph, and the icon is a drawn
+     SVG rather than a typed arrow, so it follows the colour and the size of the
+     control instead of the font. The two differ only where they already differ -
+     the ghost's underline is standing, the link's is transparent until hover. */
+  .btn-ghost.has-icon,
+  .link.has-icon{
+    display:inline-flex;align-items:center;gap:var(--nu-space-micro);
+    border-bottom:0;padding-bottom:0;
+    /* An inline-flex box takes its baseline from its first child, and an SVG has
+       none - so with a leading icon the browser invents one at the glyph's bottom
+       edge and reserves descender space beneath it, making the line taller than
+       the control. vertical-align stops it being placed by that invented baseline,
+       so the two arrangements - icon first, icon last - behave alike. */
+    vertical-align:middle;
+  }
+  .link.has-icon .lbl{border-bottom:1px solid transparent;padding-bottom:1px}
+  .link.has-icon:hover .lbl{border-bottom-color:currentColor}
+  /* The label hangs 2px below its own text: 1px of padding, then the 1px rule.
+     align-items:center lines up the two boxes, not the two marks, so without a
+     matching 2px under the glyph the icon lands one pixel low against the word.
+     Giving the icon the same overhang makes both boxes hang the same way. */
+  .btn-ghost.has-icon svg,
+  .link.has-icon svg{margin-bottom:2px}
+
+  /* ---------- shop bar (filter toggle + sort) ---------- */
+  .shopbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 var(--nu-space-small) var(--nu-space-small);gap:var(--nu-space-medium);
+  }
+  .filter-toggle{padding:var(--nu-space-nano) 0}
+  /* ---------- tertiary button icons ----------
+     One construction for all of them: two 1.5px bars in a shared box, drawn in
+     currentColor so they follow the button into hover. A plus is the pair at
+     right angles and a cross is the same pair turned 45 degrees, which is why
+     the sort button can rotate one into the other. Drawn rather than set as
+     glyphs, because a glyph's visual size is a fraction of its font-size that
+     depends on the typeface — that is how three icons ended up three sizes. */
+  /* The tertiary marks, drawn as SVG on the 16 grid like every other icon. The
+     filter's lower bar reports the panel's state: it runs full width while the
+     panel is closed and shortens once it opens. Scaling it horizontally leaves
+     the stroke alone, since a horizontal rule's weight is its vertical extent. */
+  .ico-filter .bar-bot{
+    transform-box:view-box;transform-origin:2px 11px;
+    transform:scaleX(.62);transition:transform .25s ease;
+  }
+  .btn-tertiary[aria-expanded="false"] .ico-filter .bar-bot{transform:scaleX(1)}
+  /* Plus and close are one drawing: the cross is the plus turned 45 degrees.
+     Sized so the rotated form still clears the safe area. */
+  .ico-plus{transition:transform .25s ease}
+  .ico-close{transform:rotate(45deg)}
+  .btn-tertiary[aria-expanded="true"] .ico-plus{transform:rotate(45deg)}
+  /* Both belong to the mobile bars only; declared here so the desktop default
+     is "absent" rather than something the media query has to undo. */
+  .fsheet-head{display:none}
+  .co-bar{display:none}
+  /* Sits below the drawers (90/100) but above the shop bar, so the bar keeps
+     holding the control that opened the sheet. */
+  .sheet-backdrop{
+    position:fixed;inset:0;z-index:70;
+    background:var(--nu-bg-scrim);
+    opacity:0;pointer-events:none;transition:opacity .28s ease;
+  }
+  .sheet-backdrop.open{opacity:1;pointer-events:auto}
+
+  /* ---------- shop body: filters column + grid ---------- */
+  .shop{
+    display:grid;
+    grid-template-columns:230px 1fr;
+    gap:var(--nu-gutter-col);
+    padding:0 var(--nu-space-small) var(--nu-space-max);
+    align-items:start;
+  }
+  .shop.filters-hidden{grid-template-columns:0 1fr;gap:0}
+  .filters{
+    display:flex;flex-direction:column;gap:var(--nu-space-medium);
+    position:sticky;top:var(--nu-space-medium);
+    overflow:hidden;
+    opacity:1;
+  }
+  .shop.filters-hidden .filters{opacity:0;pointer-events:none}
+  .filters-ghost{pointer-events:none;z-index:5}
+  .filter-row{display:flex;flex-direction:column;gap:var(--nu-space-micro)}
+  .filter-label{color:var(--nu-fg-secondary);font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase}
+  .chip-row{display:flex;flex-wrap:wrap;gap:var(--nu-space-nano) var(--nu-space-small);align-items:baseline}
+  .chip{position:relative;color:var(--nu-fg-primary)}
+  /* The underline belongs to the label, not to the whole button: the count is a
+     separate piece of information, and running under it would read as part of the
+     name. Hence the inner span - a border cannot stop halfway across an element. */
+  .chip .chip-t{border-bottom:1px solid transparent;padding-bottom:1px}
+  .chip sup{font-size:var(--nu-text-caption);color:var(--nu-fg-tertiary);margin-left:var(--nu-space-nano)}
+  .chip[aria-pressed="true"] .chip-t{border-bottom-color:var(--nu-border-primary)}
+  .chip:hover .chip-t{border-bottom-color:var(--nu-fg-secondary)}
+  .chip:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:2px}
+  .chip:disabled{color:var(--nu-fg-tertiary);pointer-events:none}
+
+
+  /* sort */
+  .sort{position:relative;text-align:right}
+  .sort-btn{padding:var(--nu-space-nano) 0}
+  /* Both tertiary buttons that open something read their own aria-expanded:
+     the state is declared once, on the element, and the stylesheet follows it.
+     No parallel class to keep in step. */
+  .sort-menu{
+    position:absolute;right:0;top:calc(100% + var(--nu-space-micro));z-index:30;
+    background:var(--nu-bg-primary);border:1px solid var(--nu-border-neutral);
+    /* max-content sizes the panel to its longest option, so no label ever wraps —
+       and it re-measures on its own when the labels swap between EN and PL */
+    width:max-content;min-width:200px;
+    padding:var(--nu-space-micro) 0;display:none;text-align:left;
+    box-shadow:0 8px 24px color-mix(in srgb, var(--nu-bg-inverse) 6%, transparent);
+  }
+  .sort-btn[aria-expanded="true"] + .sort-menu{display:block}
+  .sort-menu button{
+    display:block;width:100%;text-align:left;padding:var(--nu-space-micro) var(--nu-space-small);
+    white-space:nowrap;
+  }
+  .sort-menu button:hover{background:var(--nu-bg-secondary)}
+  /* Inset, because both controls sit inside a box of their own: a positive offset
+     would draw the ring outside the stepper's outline and outside the menu panel. */
+  .qty button:focus-visible,
+  .sort-menu button:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:-2px}
+  .sort-menu button[aria-checked="true"]{text-decoration:underline;text-underline-offset:3px}
+
+  /* ---------- grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:var(--nu-space-nano);
+  }
+  .card{position:relative}
+  /* first-visit mosaic: cards dissolve in, in random order */
+  .grid.mosaic .card{opacity:0;animation:cardIn .55s ease forwards;animation-delay:var(--d,0ms)}
+  @keyframes cardIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){
+    .grid.mosaic .card{animation:none;opacity:1}
+  }
+  .card.is-out .tile > .cover{opacity:.38;filter:grayscale(.4)}
+  .tile{
+    background:var(--nu-bg-secondary);
+    aspect-ratio:4/5;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+  }
+  .badge{
+    position:absolute;top:var(--nu-space-milli);left:var(--nu-space-milli);z-index:2;
+    font-size:var(--nu-text-label);line-height:1;letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    padding:var(--nu-space-nano) var(--nu-space-micro);background:var(--nu-bg-primary);border:1px solid var(--nu-border-primary);
+  }
+  .badge.soon{background:var(--nu-bg-inverse);color:var(--nu-fg-inverse)}
+  .badge.last{border-color:var(--nu-border-warning);color:var(--nu-fg-warning)}
+  .badge.out{border-color:var(--nu-border-muted);color:var(--nu-fg-secondary);background:transparent}
+  .badge.award{border-color:var(--nu-border-highlight);color:var(--nu-fg-highlight);background:var(--nu-bg-highlight)}
+  .meta{padding:var(--nu-space-micro) var(--nu-space-nano) var(--nu-space-medium)}
+  .meta .title{display:block}
+  .meta .author{color:var(--nu-fg-secondary)}
+  .meta .price{margin-top:var(--nu-space-nano);font-variant-numeric:tabular-nums}
+  .card.is-out .meta .price{color:var(--nu-fg-secondary);text-decoration:line-through}
+  .empty{
+    grid-column:1/-1;padding:var(--nu-space-max) 0;text-align:center;color:var(--nu-fg-secondary);
+  }
+  .empty button{text-decoration:underline;text-underline-offset:3px;margin-left:var(--nu-space-micro);color:var(--nu-fg-primary)}
+
+  /* ---------- covers (pure CSS book jackets) ---------- */
+  .cover{
+    width:62%;max-width:none;aspect-ratio:7/10;
+    position:relative;overflow:hidden;
+    box-shadow:0 14px 22px -10px color-mix(in srgb, var(--nu-bg-inverse) 35%, transparent), 0 2px 4px color-mix(in srgb, var(--nu-bg-inverse) 12%, transparent);
+    transition:transform .35s ease;
+    flex-shrink:0;
+  }
+  .card a, .card .cardlink{display:block}
+  .card .cardlink{cursor:pointer}
+  .card a:focus-visible, .card .cardlink:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:3px}
+  .card a:hover .cover, .card .cardlink:hover .cover,
+  .card a:focus-visible .cover, .card .cardlink:focus-visible .cover{transform:translateY(-4px)}
+  @media (prefers-reduced-motion:reduce){
+    .card a:hover .cover, .card .cardlink:hover .cover{transform:none}
+    .ico-filter .bar-bot,
+    .ico-plus{transition:none}
+  }
+  .cover .pad{position:absolute;inset:0;padding:9% 10%;display:flex;flex-direction:column}
+
+  /* photographic / image covers — box adopts the image's own proportions */
+  .cover.cv-img{aspect-ratio:auto;height:auto}
+  .cv-img img{
+    position:static;width:100%;height:auto;
+    display:block;
+  }
+
+  /* ---------- product page ---------- */
+  .product{padding:0 var(--nu-space-small) var(--nu-space-max)}
+  .back{margin:var(--nu-space-nano) 0 var(--nu-space-medium)}
+  .p-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:var(--nu-gutter-col);align-items:start}
+  /* the product packshot is the same kind of box as the grid tile, just bigger */
+  .p-tile{
+    background:var(--nu-bg-secondary);
+    /* always fills its column: capping the width here (e.g. by viewport height)
+       leaves the packshot stranded on the left of a wide screen */
+    aspect-ratio:4/5;width:100%;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+  }
+  .p-tile .cover{width:62%;max-width:none}
+  .p-tile .badge{top:var(--nu-space-small);left:var(--nu-space-small)}
+  /* open transition: info + CTA dissolve in separately */
+  .p-info.p-enter{opacity:0;transform:translateY(6px)}
+  .p-info.p-enter-in{opacity:1;transform:none;transition:opacity .45s ease .05s, transform .45s ease .05s}
+  .p-cta.p-enter-cta{opacity:0}
+  .p-cta.p-enter-cta-in{opacity:1;transition:opacity .4s ease .4s}
+  .fly-tile{overflow:hidden;background:var(--nu-bg-secondary)}
+  .fly-tile .badge{display:none}
+  .p-info{max-width:480px;padding-top:var(--nu-space-micro)}
+  .p-title{font-family:var(--nu-font-display);font-weight:400;font-size:var(--nu-text-h1);line-height:1.12;margin-bottom:var(--nu-space-nano)}
+  .p-author{color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-medium)}
+  .p-price{font-size:var(--nu-text-body-l);font-variant-numeric:tabular-nums;margin-bottom:var(--nu-space-medium)}
+  .p-price.is-out{color:var(--nu-fg-secondary);text-decoration:line-through}
+  .p-desc{margin-bottom:var(--nu-space-small);max-width:42ch}
+  .p-quote{
+    /* longhand on purpose: a shorthand carrying a var() cannot be read back by
+       anything inspecting the sheet, and the docs measure this component */
+    margin-bottom:var(--nu-space-medium);max-width:42ch;
+    font-style:italic;
+    font-size:var(--nu-text-body-m);line-height:1.55;color:var(--nu-fg-secondary);
+    padding-left:var(--nu-space-small);border-left:1px solid var(--nu-border-neutral);
+  }
+  .p-quote .q-by{
+    display:block;margin-top:var(--nu-space-micro);font-style:normal;
+    font-size:var(--nu-text-body-m);letter-spacing:var(--nu-tracking-compact);color:var(--nu-fg-secondary);
+  }
+  /* a solid em dash reads heavier than letterforms at the same colour,
+     so lighten it slightly to match the text optically */
+  .p-quote .q-dash{color:var(--nu-fg-secondary);opacity:.72}
+  .p-details{border-top:1px solid var(--nu-border-neutral);margin-bottom:var(--nu-space-large)}
+  .p-details div{display:flex;justify-content:space-between;gap:var(--nu-space-medium);padding:var(--nu-space-micro) 0;border-bottom:1px solid var(--nu-border-neutral)}
+  .p-details dt{color:var(--nu-fg-secondary)}
+  .p-details dd{text-align:right}
+
+  /* author drawer */
+  .drawer-backdrop{
+    position:fixed;inset:0;z-index:90;background:var(--nu-bg-scrim);
+    opacity:0;pointer-events:none;transition:opacity .3s ease;
+  }
+  .drawer-backdrop.open{opacity:1;pointer-events:auto}
+  .drawer{
+    position:fixed;top:0;right:0;bottom:0;z-index:100;
+    width:min(400px, 92vw);
+    background:var(--nu-bg-primary);border-left:1px solid var(--nu-border-neutral);
+    box-shadow:-18px 0 50px color-mix(in srgb, var(--nu-bg-inverse) 8%, transparent);
+    transform:translateX(102%);visibility:hidden;
+    transition:transform .38s cubic-bezier(.32,.72,.27,1), visibility .38s;
+    padding:var(--nu-space-medium) var(--nu-space-large) var(--nu-space-xlarge);overflow-y:auto;
+  }
+  .drawer.open{transform:none;visibility:visible}
+  @media (prefers-reduced-motion:reduce){
+    .drawer,.drawer-backdrop{transition:none}
+  }
+  .drawer-close{position:absolute;top:var(--nu-space-medium);right:var(--nu-space-medium)}
+  .d-ava{
+    width:96px;height:96px;border-radius:50%;
+    background:var(--nu-bg-secondary);border:1px solid var(--nu-border-neutral);
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:var(--nu-text-body-l);letter-spacing:var(--nu-tracking-compact);color:var(--nu-fg-primary);
+    object-fit:cover;overflow:hidden;margin:var(--nu-space-medium) 0 var(--nu-space-medium);
+  }
+  .d-label{
+    font-size:var(--nu-text-caption);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-micro);
+  }
+  .d-name{
+    font-family:var(--nu-font-display);font-weight:400;
+    font-size:var(--nu-text-h2);line-height:1.15;margin-bottom:var(--nu-space-small);
+  }
+  .d-bio{font-size:var(--nu-text-body-m);line-height:1.65;color:var(--nu-fg-primary);max-width:38ch}
+  /* The tier lives in one class. .p-cta, .cart-cta and .order-btn stay on the
+     markup beside it, but they carry only what depends on where the button sits -
+     width, margin, the add-to-cart sequence. Adding a fourth primary means
+     writing btn-primary, not extending four selector lists. */
+  .btn-primary{
+    position:relative;display:inline-block;padding:var(--nu-space-milli) var(--nu-space-xlarge);
+    color:var(--nu-fg-inverse);letter-spacing:var(--nu-tracking-compact);
+    /* dark translucent glass: page shows through, burgundy pools at the bottom edge */
+    background:
+      linear-gradient(180deg,
+        color-mix(in srgb, var(--nu-bg-action-glow) 34%, transparent) 0%,
+        transparent 42%) ,
+      linear-gradient(0deg,
+        color-mix(in srgb, var(--nu-bg-action-glow) 52%, transparent) 0%,
+        transparent 58%),
+      var(--nu-bg-action);
+    backdrop-filter:blur(9px) saturate(1.15);
+    -webkit-backdrop-filter:blur(9px) saturate(1.15);
+    border:1px solid color-mix(in srgb, var(--nu-bg-primary) 16%, transparent);
+    border-top-color:color-mix(in srgb, var(--nu-bg-primary) 34%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 22%, transparent),
+      inset 0 -14px 24px -12px color-mix(in srgb, var(--nu-bg-action-glow) 85%, transparent),
+      0 7px 16px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 60%, transparent),
+      0 1px 3px color-mix(in srgb, var(--nu-bg-inverse) 18%, transparent);
+    transform-origin:center;
+    transition:box-shadow .18s ease, transform .12s ease, background .25s ease;
+  }
+  .btn-primary:hover{
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 28%, transparent),
+      inset 0 -16px 26px -12px color-mix(in srgb, var(--nu-bg-action-glow) 95%, transparent),
+      0 9px 20px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 75%, transparent),
+      0 1px 3px color-mix(in srgb, var(--nu-bg-inverse) 20%, transparent);
+  }
+  /* press: the button shrinks slightly into the page and its aura tightens,
+     so a full-width bar reads the same as a content-width one */
+  .btn-primary:active{
+    transform:translateY(1px) scale(.985);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 18%, transparent),
+      inset 0 -12px 20px -12px color-mix(in srgb, var(--nu-bg-action-glow) 80%, transparent),
+      0 4px 10px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 55%, transparent),
+      0 1px 2px color-mix(in srgb, var(--nu-bg-inverse) 14%, transparent);
+  }
+  /* secondary button: the same glass, uncoloured — grey body, dark label */
+  .btn-secondary{
+    /* Its own box, so the component stands up anywhere. The vertical value
+       matches the field's, which is what makes the two line up side by side
+       without either one being told about the other. */
+    position:relative;padding:var(--nu-space-milli) var(--nu-space-small);
+    color:var(--nu-fg-primary);letter-spacing:var(--nu-tracking-compact);
+    background:
+      linear-gradient(180deg,
+        color-mix(in srgb, var(--nu-bg-primary) 50%, transparent) 0%,
+        transparent 46%),
+      var(--nu-bg-action-secondary);
+    backdrop-filter:blur(9px) saturate(1.05);
+    -webkit-backdrop-filter:blur(9px) saturate(1.05);
+    border:1px solid color-mix(in srgb, var(--nu-bg-tertiary) 30%, transparent);
+    border-top-color:color-mix(in srgb, var(--nu-bg-primary) 70%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 60%, transparent),
+      inset 0 -10px 18px -12px color-mix(in srgb, var(--nu-bg-tertiary) 40%, transparent),
+      0 2px 5px -2px color-mix(in srgb, var(--nu-bg-inverse) 14%, transparent);
+    transform-origin:center;
+    transition:box-shadow .18s ease, background .25s ease, transform .12s ease;
+  }
+  /* Same move as the primary: the body holds its colour and the light around it
+     grows — highlight up, inner shading deeper, drop shadow longer. Swapping the
+     ground for a darker mix, as this used to, reads as a different button rather
+     than the same one under the pointer. */
+  .btn-secondary:hover{
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 68%, transparent),
+      inset 0 -12px 20px -12px color-mix(in srgb, var(--nu-bg-tertiary) 50%, transparent),
+      0 3px 7px -2px color-mix(in srgb, var(--nu-bg-inverse) 18%, transparent);
+  }
+  .btn-secondary:active{
+    transform:translateY(1px) scale(.985);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 50%, transparent),
+      inset 0 -8px 14px -12px color-mix(in srgb, var(--nu-bg-tertiary) 45%, transparent),
+      0 1px 3px -2px color-mix(in srgb, var(--nu-bg-inverse) 12%, transparent);
+  }
+  .btn-secondary:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:3px}
+  .p-cta.is-adding{
+    pointer-events:none;
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 22%, transparent),
+      inset 0 -14px 24px -12px color-mix(in srgb, var(--nu-bg-action-glow) 85%, transparent);
+  }
+  .btn-primary:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:3px}
+  .btn-primary:disabled{
+    background:var(--nu-bg-secondary);color:var(--nu-fg-secondary);cursor:not-allowed;
+    backdrop-filter:none;-webkit-backdrop-filter:none;border:0;box-shadow:none;transform:none;
+  }
+  .cart-wrap{position:relative}
+  .cart-n{
+    position:absolute;
+    top:calc(var(--nu-space-micro) * -1);right:calc(var(--nu-space-micro) * -1);
+    min-width:15px;height:15px;border-radius:50%;
+    background:var(--nu-bg-inverse);color:var(--nu-fg-inverse);font-size:var(--nu-text-caption);line-height:15px;
+    text-align:center;padding:0 var(--nu-space-nano);
+  }
+
+  /* ---------- cart & checkout ---------- */
+  .cart-n.dot-in{animation:dotIn .28s ease-out}
+  @keyframes dotIn{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
+  .cart-n.bump{animation:softBump .3s ease}
+  @keyframes softBump{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+  /* A row, so the confirmation glyph can stand beside the word - and block-level,
+     not inline-flex. An inline-flex box takes its baseline from its first item,
+     and an SVG has none, so the browser synthesises one at the glyph's bottom
+     edge and then reserves the font's descender space below it. The button grew
+     taller the moment the icon appeared. Out of the inline flow there is no line
+     box to sit in, so the height is the row's height and nothing else. */
+  .p-cta .cta-label{
+    display:flex;align-items:center;justify-content:center;gap:var(--nu-space-micro);
+    transition:opacity .16s ease, transform .16s ease;
+  }
+  .p-cta.swap-out .cta-label{opacity:0;transform:translateY(-6px)}
+  .p-cta.swap-in .cta-label{opacity:0;transform:translateY(6px)}
+  @media (prefers-reduced-motion:reduce){
+    .p-cta .cta-label{transition:none}
+  }
+
+  .cart-drawer h2{
+    font-family:var(--nu-font-display);font-weight:400;font-size:var(--nu-text-h2);margin:var(--nu-space-nano) 0 var(--nu-space-medium);
+  }
+  .ci{
+    display:flex;gap:var(--nu-space-small);align-items:flex-start;
+    padding:var(--nu-space-small) 0;border-bottom:1px solid var(--nu-border-neutral);
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .ci.removing{opacity:0;transform:translateX(14px)}
+  .ci-cover{width:44px;flex-shrink:0}
+  .ci-cover .cover{width:100%;max-width:none;box-shadow:0 2px 8px color-mix(in srgb, var(--nu-bg-inverse) 18%, transparent)}
+  .ci-main{flex:1;min-width:0}
+  .ci-title{display:block;line-height:1.35;margin-bottom:var(--nu-space-nano)}
+  .ci-price{color:var(--nu-fg-secondary);font-size:var(--nu-text-body-m);margin-bottom:var(--nu-space-micro)}
+  .ci-row{display:flex;align-items:center;justify-content:space-between;gap:var(--nu-space-milli)}
+  .qty{display:inline-flex;align-items:center;border:1px solid var(--nu-border-neutral)}
+  .qty button{
+    width:26px;height:26px;line-height:1;font-size:14px;color:var(--nu-fg-primary);
+    transition:background .15s ease;
+  }
+  .qty button:hover{background:var(--nu-bg-secondary)}
+  .qty span{min-width:26px;text-align:center;font-variant-numeric:tabular-nums}
+  .ci-line{font-variant-numeric:tabular-nums}
+  .ci-remove{margin-top:var(--nu-space-micro);align-self:flex-start}
+  .cart-empty{color:var(--nu-fg-secondary);padding:var(--nu-space-large) 0}
+  .cart-foot{padding-top:var(--nu-space-medium)}
+  .fs-note{color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-micro)}
+  .fs-bar{height:2px;background:var(--nu-border-neutral);margin-bottom:var(--nu-space-medium);overflow:hidden}
+  .fs-fill{height:100%;background:var(--nu-fg-primary);transition:width .45s ease}
+  .sum-row{display:flex;justify-content:space-between;padding:var(--nu-space-nano) 0;font-variant-numeric:tabular-nums}
+  .sum-row.muted{color:var(--nu-fg-secondary);font-size:var(--nu-text-body-m)}
+  .sum-row.total{font-size:var(--nu-text-body-l);padding-top:var(--nu-space-milli);margin-top:var(--nu-space-micro);border-top:1px solid var(--nu-border-neutral)}
+  .cart-cta{display:block;width:100%;text-align:center;margin-top:var(--nu-space-medium);padding:var(--nu-space-milli) 0}
+  .cart-page-list .ci-cover{width:64px}
+  .cart-page-list .ci{padding:var(--nu-space-medium) 0}
+  .disc-row{display:flex;gap:var(--nu-space-micro);margin-bottom:var(--nu-space-micro)}
+  .disc-row input{
+    flex:1;border:1px solid var(--nu-border-neutral);padding:var(--nu-space-milli) var(--nu-space-milli);font:inherit;background:var(--nu-bg-primary);
+    transition:border-color .2s ease;
+    text-transform:uppercase;letter-spacing:var(--nu-tracking-caps);
+  }
+  /* the code itself is uppercased as you type, but the hint stays sentence case -
+     and drops the tracking with it, which belongs to capitals */
+  .disc-row input::placeholder{
+    text-transform:none;letter-spacing:var(--nu-tracking-body);color:var(--nu-fg-tertiary);
+  }
+  .disc-row input:focus{outline:none;border-color:var(--nu-border-primary)}
+  .disc-msg{font-size:var(--nu-text-label);color:var(--nu-fg-alert);min-height:15px;margin-bottom:var(--nu-space-milli)}
+  .disc-applied{font-size:var(--nu-text-body-m);margin-bottom:var(--nu-space-milli)}
+  .disc-applied .btn-ghost{margin-left:var(--nu-space-micro)}
+
+  /* Cart and checkout are reading-and-deciding views, not a gallery: the whole
+     view scales with the window up to a comfortable measure, then stops and
+     stays centred, so a shopping row never stretches across a huge screen.
+     Centring the view (not the grid) keeps the back link and title on the
+     same left edge as the columns below them. */
+  .checkout{
+    padding:0 var(--nu-space-small) var(--nu-space-max);animation:fadeUp .35s ease;
+    max-width:var(--nu-measure-form);margin-inline:auto;
+  }
+  .done-view{padding:var(--nu-space-max) var(--nu-space-small);text-align:center;animation:fadeUp .35s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){
+    .checkout,.done-view{animation:none}
+    .cart-n.bump,.cart-n.dot-in{animation:none}
+  }
+  /* Cart and checkout are reading-and-deciding views, not a gallery: they scale
+     with the window up to a comfortable measure, then stop and stay centred
+     instead of stretching a shopping row across a very wide screen. */
+  .co-grid{display:grid;grid-template-columns:1.9fr 1fr;gap:var(--nu-gutter-col);align-items:start}
+  .co-h{font-family:var(--nu-font-display);font-weight:400;font-size:var(--nu-text-h2);margin:var(--nu-space-micro) 0 var(--nu-space-medium)}
+  .co-sec{margin-bottom:var(--nu-space-large)}
+  .co-sec h3{
+    font-size:var(--nu-text-label);font-weight:500;letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-small);
+  }
+  .f-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--nu-space-milli)}
+  .f-grid .wide{grid-column:1/-1}
+  .field input,.field select{
+    width:100%;box-sizing:border-box;
+    border:1px solid var(--nu-border-neutral);padding:var(--nu-space-milli);font:inherit;line-height:1.45;
+    background:var(--nu-bg-primary);transition:border-color .2s ease;border-radius:0;
+  }
+  /* native selects render taller/shorter than inputs and park the arrow on the edge,
+     so draw our own caret and match the input box exactly */
+  .field select{
+    appearance:none;-webkit-appearance:none;-moz-appearance:none;
+    padding-right:var(--nu-space-xlarge);
+  }
+  .field select::-ms-expand{display:none}
+  /* The caret was a data URI with a hex baked into the URL - a colour no token
+     owned, invisible to any audit that reads declarations. As an element it takes
+     the field's own colour through currentColor. */
+  .select-wrap{position:relative;display:block}
+  .select-wrap .ico-caret{
+    position:absolute;right:var(--nu-space-small);top:50%;
+    transform:translateY(-50%);pointer-events:none;
+  }
+  .field input:focus,.field select:focus{outline:none;border-color:var(--nu-border-primary)}
+  .field label{display:block;font-size:var(--nu-text-label);color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-nano)}
+  .opt{
+    display:flex;align-items:center;gap:var(--nu-space-milli);
+    border:1px solid var(--nu-border-neutral);padding:var(--nu-space-milli) var(--nu-space-small);margin-bottom:var(--nu-space-micro);cursor:pointer;
+    transition:border-color .2s ease;
+  }
+  .opt:hover{border-color:var(--nu-border-hover)}
+  .opt:has(input:checked){border-color:var(--nu-border-primary)}
+  .opt input{accent-color:var(--nu-fg-primary);margin:0}
+  .opt .o-main{flex:1}
+  .opt .o-sub{font-size:var(--nu-text-label);color:var(--nu-fg-secondary)}
+  .opt .o-price{font-variant-numeric:tabular-nums}
+  .consent{display:flex;gap:var(--nu-space-milli);align-items:flex-start;font-size:var(--nu-text-body-m);margin-bottom:var(--nu-space-milli);cursor:pointer}
+  .consent input{accent-color:var(--nu-fg-primary);margin-top:var(--nu-space-nano);flex-shrink:0}
+  .legal{font-size:var(--nu-text-body-m);color:var(--nu-fg-secondary);line-height:1.6;margin-top:var(--nu-space-medium);max-width:60ch}
+  .co-side{position:sticky;top:var(--nu-space-medium);background:var(--nu-bg-secondary);padding:var(--nu-space-medium)}
+  .co-side h3{font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;color:var(--nu-fg-secondary);font-weight:500;margin-bottom:var(--nu-space-small)}
+  .co-item{display:flex;justify-content:space-between;gap:var(--nu-space-small);font-size:var(--nu-text-body-m);padding:var(--nu-space-nano) 0}
+  .co-item .q{color:var(--nu-fg-secondary)}
+  .order-btn{display:block;width:100%;margin-top:var(--nu-space-medium);padding:var(--nu-space-small) 0;text-align:center}
+  .done-no{font-family:var(--nu-font-display);font-weight:400;font-size:var(--nu-text-h1);margin:var(--nu-space-small) 0 var(--nu-space-medium)}
+  .done-view p{max-width:46ch;margin:0 auto var(--nu-space-milli);color:var(--nu-fg-secondary)}
+  .done-back{display:inline-block;margin-top:var(--nu-space-medium)}
+
+  /* ---------- site footer ---------- */
+  .site-foot{
+    display:flex;align-items:center;justify-content:space-between;gap:var(--nu-space-medium);
+    padding:var(--nu-space-medium) var(--nu-space-small) var(--nu-space-large);margin-top:var(--nu-space-milli);
+    border-top:1px solid var(--nu-border-neutral);
+    font-size:var(--nu-text-body-m);color:var(--nu-fg-secondary);
+  }
+  .foot-left{display:flex;align-items:baseline;gap:var(--nu-space-small);flex-wrap:wrap}
+  .foot-mark{font-family:var(--nu-font-display);font-weight:400;font-size:var(--nu-text-h3);color:var(--nu-fg-primary)}
+  .foot-copy{color:var(--nu-fg-secondary)}
+  .foot-links{display:flex;gap:var(--nu-space-medium)}
+  .foot-link{font:inherit}
+
+  /* ---------- design system docs ---------- */
+  .ds{padding:0 var(--nu-space-small) var(--nu-space-max)}
+  .ds-head{margin:var(--nu-space-micro) 0 var(--nu-space-medium)}
+  .ds-layout{display:grid;grid-template-columns:210px 1fr;gap:var(--nu-gutter-col);align-items:start}
+  .ds-nav{
+    position:sticky;top:var(--nu-space-medium);display:flex;flex-direction:column;gap:var(--nu-space-nano);
+    border-right:1px solid var(--nu-border-neutral);padding-right:var(--nu-space-medium);
+  }
+  .ds-nav-group{
+    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    color:var(--nu-fg-secondary);margin:var(--nu-space-medium) 0 var(--nu-space-micro);
+  }
+  .ds-nav-group:first-child{margin-top:0}
+  .ds-nav-item{
+    text-align:left;font:inherit;font-size:var(--nu-text-body-m);padding:var(--nu-space-nano) 0;
+    color:var(--nu-fg-secondary);border-left:2px solid transparent;padding-left:var(--nu-space-milli);
+    margin-left:calc(var(--nu-space-milli) * -1);
+  }
+  .ds-nav-item:hover{color:var(--nu-fg-primary)}
+  .ds-nav-item.is-active{color:var(--nu-fg-primary);border-left-color:var(--nu-border-primary)}
+  .ds-nav-item:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:2px}
+  .ds-body{max-width:720px;min-width:0}
+  @media (max-width:820px){
+    .ds-layout{grid-template-columns:1fr;gap:var(--nu-space-medium)}
+    .ds-nav{
+      position:static;flex-direction:row;flex-wrap:wrap;gap:var(--nu-space-nano) var(--nu-space-small);
+      border-right:0;border-bottom:1px solid var(--nu-border-neutral);
+      padding:0 0 var(--nu-space-small);
+    }
+    .ds-nav-group{display:none}
+    /* On a phone the fixed columns would leave the note a few characters wide.
+       The bar is the one cell the number beside it already tells you, so it
+       goes, and the rest is left to the browser to apportion. */
+    .ds .space-table{table-layout:auto}
+    .ds .space-table col.c-token,
+    .ds .space-table col.c-scale{width:auto}
+    .ds .space-table .sc .space-bar{display:none}
+    .ds .sp-figs{grid-template-columns:1fr}
+    .ds .ds-badges,
+    .ds .ds-links,
+    .ds .ds-buttons{grid-template-columns:repeat(2,1fr)}
+    .ds-nav-item{margin-left:0;padding-left:0;border-left:0;border-bottom:2px solid transparent}
+    .ds-nav-item.is-active{border-left-color:transparent;border-bottom-color:var(--nu-border-primary)}
+  }
+  .ds h1{font-family:var(--nu-font-display);font-weight:400;font-size:var(--nu-text-h1);line-height:1.12;margin-bottom:var(--nu-space-milli)}
+  /* The opening paragraph of every page runs a step above the body, so the eye
+     lands on the summary before it reaches the tables. */
+  .ds .ds-lede{
+    font-size:var(--nu-text-body-l);line-height:1.5;
+    color:var(--nu-fg-secondary);max-width:60ch;margin-bottom:var(--nu-space-medium);
+  }
+  .ds h2{
+    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    color:var(--nu-fg-secondary);
+    border-top:1px solid var(--nu-border-neutral);padding-top:var(--nu-space-small);margin:var(--nu-space-huge) 0 var(--nu-space-medium);
+  }
+  .ds h3{font-family:var(--nu-font-display);font-weight:400;font-size:var(--nu-text-h3);margin:var(--nu-space-medium) 0 var(--nu-space-milli)}
+  /* Documentation prose only. A specimen embedded in these pages carries the
+     shop's own class, and this rule outranks the component's — so a quote would
+     render here with different spacing than it has in the shop, which is the one
+     thing a worked example must never do. */
+  .ds p:not([class]){max-width:62ch;margin-bottom:var(--nu-space-milli)}
+  .ds table{width:100%;border-collapse:collapse;margin:var(--nu-space-milli) 0 var(--nu-space-medium);font-size:var(--nu-text-body-m)}
+  .ds th,.ds td{
+    /* Equal air above and below: the rule underneath a row reads as the end of
+       that row, not as an underline stuck to its last line of text. */
+    text-align:left;vertical-align:top;
+    padding:var(--nu-space-micro) var(--nu-space-milli);
+    line-height:1.5;
+    border-bottom:1px solid var(--nu-border-neutral);
+  }
+  /* A table nested inside a cell already ends where the parent row's rule falls,
+     so its own last rule lands a hair above it and the two read as a mistake.
+     Its bottom margin has to go for the same reason: inherited from .ds table it
+     would push the parent row's rule further down than every other row's. */
+  .ds td table{margin:var(--nu-space-micro) 0 0}
+  .ds td table tr:last-child > td{border-bottom:0}
+  .ds th{color:var(--nu-fg-secondary);font-weight:400;font-size:var(--nu-text-label);
+    letter-spacing:var(--nu-tracking-caps);text-transform:uppercase}
+  /* typography scale table: style + token columns never wrap */
+  .ds .type-table{table-layout:fixed}
+  .ds .type-table col.c-style{width:15%}
+  .ds .type-table col.c-token{width:29%}
+  .ds .type-table col.c-family{width:11%}
+  .ds .type-table td:nth-child(1),
+  .ds .type-table td:nth-child(3){white-space:nowrap}
+  /* the token cell may wrap between its parts, but never inside a token name */
+  .ds .type-table td:nth-child(2){white-space:normal;overflow-wrap:anywhere}
+  .ds .type-table td:nth-child(2) code{white-space:nowrap}
+  /* semantic token tables: token + source columns never wrap */
+  .ds .tok-table{table-layout:fixed}
+  .ds .tok-table col.c-token{width:32%}
+  .ds .tok-table col.c-source{width:24%}
+  .ds .tok-table td.spec code,
+  .ds .tok-table td:nth-child(2) code{white-space:nowrap}
+  /* Deliberately NOT a --nu- token: the monospace face is not part of the design
+     system, it belongs to these documentation pages alone. Token names read
+     badly in a proportional face — hyphens and underscores stop being legible —
+     so both inline code and code blocks borrow one, declared here and nowhere
+     else. The shop itself never loads or uses it. */
+  .ds{--ds-font-mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .ds code{
+    font-family:var(--ds-font-mono);font-size:11.5px;
+    background:var(--nu-bg-secondary);padding:var(--nu-space-nano) var(--nu-space-nano);
+  }
+  .ds .ds-code{
+    background:var(--nu-bg-secondary);
+    padding:var(--nu-space-milli) var(--nu-space-small);
+    margin:var(--nu-space-milli) 0 var(--nu-space-medium);
+    font-family:var(--ds-font-mono);font-size:11.5px;line-height:1.7;
+    white-space:pre;overflow-x:auto;
+  }
+  /* Live preview. The frame reuses .demo so the specimen stands on the same
+     ground as every other one in these pages, and the two rows of options are
+     chips - the shop's own component, not a second set of controls. */
+  .ds .ds-play-row{
+    display:flex;align-items:baseline;gap:var(--nu-space-small);
+    margin-bottom:var(--nu-space-milli);
+  }
+  .ds .ds-play-lbl{
+    flex:none;min-width:64px;
+    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+    text-transform:uppercase;color:var(--nu-fg-secondary);
+  }
+  .ds .ds-play-stage{margin-top:var(--nu-space-small);justify-content:center;min-height:88px}
+  /* specimen rows sit centred in their frame, like the preview stage above */
+  .ds .ds-chips,
+  .ds .ds-links{justify-content:center}
+  .ds .ds-code-head{
+    display:flex;align-items:baseline;justify-content:space-between;gap:var(--nu-space-small);
+    margin-top:var(--nu-space-medium);
+  }
+  .ds .ds-code-head .ds-play-lbl{min-width:0}
+  .ds .ds-code-head + .ds-code{margin-top:var(--nu-space-micro)}
+  .ds .swatch{
+    width:18px;height:18px;border:1px solid var(--nu-border-neutral);
+    display:inline-block;vertical-align:-4px;margin-right:var(--nu-space-micro);
+  }
+  .ds td.spec, .ds .spec{display:table-cell;white-space:nowrap}
+  .ds .demo{
+    background:var(--nu-bg-secondary);padding:var(--nu-space-medium);margin:var(--nu-space-milli) 0 var(--nu-space-micro);
+    display:flex;flex-wrap:wrap;gap:var(--nu-space-small);align-items:center;
+  }
+  .ds .demo.on-page{background:var(--nu-bg-primary);border:1px solid var(--nu-border-neutral)}
+  /* A badge is absolutely positioned against a packshot, so a row of them laid
+     out inline stacks in one corner. Each specimen gets its own tile, which is
+     also where the reader will actually meet it. */
+  /* Three across, so the five specimens fall into two rows. At five the tiles
+     are narrower than the longest badge and its text breaks over two lines,
+     which is not how the badge behaves anywhere in the shop. */
+  /* Shared specimen grid: one figure per variant, each captioned, so the reader
+     never has to match a row of examples against a table by position. */
+  .ds .ds-specimens{
+    display:grid;gap:var(--nu-space-small);
+    margin:var(--nu-space-milli) 0 var(--nu-space-medium);
+  }
+  .ds .ds-specimens figure{margin:0}
+  .ds .ds-badges{grid-template-columns:repeat(3,1fr)}
+  .ds .ds-buttons,
+  .ds .ds-links{grid-template-columns:repeat(2,1fr)}
+  .ds .ds-buttons .demo,
+  .ds .ds-links .demo{margin:0;justify-content:center;min-height:76px}
+  /* A specimen only has to show the badge and its inset, so the tile drops the
+     packshot's 4/5 ratio for a crop. Height, not spacing — hence a plain value.
+     In the preview frame it also needs a width: the badge inside is positioned
+     against the tile, so the tile has no content of its own to be sized by. */
+  .ds .ds-specimens .tile,
+  .ds .ds-play-stage .tile{aspect-ratio:auto;height:88px}
+  .ds .ds-play-stage .tile{width:240px}
+  .ds .ds-specimens figcaption{
+    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+    text-transform:uppercase;color:var(--nu-fg-secondary);margin-top:var(--nu-space-micro);
+  }
+  .ds .note{color:var(--nu-fg-secondary);font-size:var(--nu-text-body-m);margin-bottom:var(--nu-space-medium)}
+  .ds .scale-row{display:flex;align-items:baseline;gap:var(--nu-space-small);margin-bottom:var(--nu-space-milli)}
+  .ds .scale-row .lbl{
+    flex:none;width:130px;font-size:var(--nu-text-label);color:var(--nu-fg-secondary);
+    letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+  }
+  /* same tint as the figures: a bar in this table is a measured distance too,
+     and one reading for that across the whole tab */
+  .ds .space-bar{background:var(--nu-bg-measure);height:12px;display:inline-block}
+  /* Spacing scale table. Column widths, not spacing — so plain lengths, not
+     scale steps: the name column has to hold the longest token on one line and
+     the bar column the largest step on the scale. */
+  .ds .space-table{table-layout:fixed}
+  .ds .space-table col.c-token{width:172px}
+  .ds .space-table col.c-scale{width:132px}
+  .ds .space-table td:first-child code{white-space:nowrap}
+  .ds .space-table .sc{display:flex;align-items:center;gap:var(--nu-space-micro)}
+  .ds .space-table .sc b{font-weight:400;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .ds .space-table .none{color:var(--nu-fg-tertiary)}
+
+  /* Spacing figures. One reading throughout: grey is the empty space being
+     measured, an outlined block is a thing sitting next to it. Every distance
+     is set from a live token, so a figure cannot disagree with the scale. */
+  .ds .sp-figs{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:var(--nu-space-medium) var(--nu-gutter-col);
+    margin:var(--nu-space-milli) 0 var(--nu-space-medium);
+  }
+  .ds .sp-cap{
+    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+    text-transform:uppercase;color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-micro);
+  }
+  .ds .sp-note{font-size:var(--nu-text-body-m);color:var(--nu-fg-secondary);margin-top:var(--nu-space-micro)}
+  .ds .sp-flex{display:flex;align-items:stretch}
+  .ds .sp-thing{flex:1;height:48px;border:1px solid var(--nu-border-primary);background:var(--nu-bg-primary)}
+  .ds .sp-gap{background:var(--nu-bg-measure);flex:none}
+  .ds .sp-pad{background:var(--nu-bg-measure)}
+  /* the container carries the tint and the children cover it, so what shows
+     through is exactly the gap — no second element pretending to be the space */
+  .ds .sp-tiles{display:flex;background:var(--nu-bg-measure)}
+  .ds .sp-tiles > div{flex:1;aspect-ratio:7/10;background:var(--nu-bg-secondary)}
+  .ds .sp-groups{display:flex;flex-direction:column;background:var(--nu-bg-measure)}
+  .ds .sp-groups > div{background:var(--nu-bg-primary)}
+  .ds .sp-groups .lb{
+    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+    text-transform:uppercase;color:var(--nu-fg-tertiary);margin-bottom:var(--nu-space-nano);
+  }
+  .ds .sp-groups .ln{height:10px;background:var(--nu-bg-secondary)}
+  /* Marks laid over the worked example. Their boxes come from measuring the
+     rendered component, so they cannot show a distance the component does not
+     have — and they sit behind the text, so nothing is obscured. */
+  .ds .ds-eg{position:relative}
+  .ds .ds-eg > *{position:relative;z-index:1}
+  .ds .sp-mark{position:absolute;z-index:0;background:var(--nu-bg-measure);pointer-events:none}
+  .ds .ico-cell{width:32px}
+
+  /* ---------- responsive ---------- */
+  @media (min-width:1280px){
+    .shop{grid-template-columns:250px 1fr}
+    .grid{grid-template-columns:repeat(4,1fr)}
+  }
+  @media (max-width:1100px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:820px){
+    .grid{grid-template-columns:repeat(2,1fr);gap:var(--nu-space-nano)}
+    .product{padding:0 var(--nu-space-milli) var(--nu-space-max)}
+    .p-grid{grid-template-columns:1fr;gap:var(--nu-space-medium)}
+    .p-tile{max-width:none}
+    .p-tile .cover{width:72%;max-width:none}
+    .p-info{max-width:none}
+    .p-title{font-size:var(--nu-text-h2)}
+    .p-cta{display:block;width:100%;text-align:center}
+    .co-grid{grid-template-columns:1fr;gap:var(--nu-space-large)}
+    .co-side{position:static}
+    .f-grid{grid-template-columns:1fr}
+    header{
+      padding:var(--nu-space-small) var(--nu-space-milli) var(--nu-space-milli);
+      flex-wrap:wrap;align-items:center;row-gap:var(--nu-space-milli);
+    }
+    .logo{order:1}
+    .logo .mark{font-size:var(--nu-text-h2)}
+    .logo .strap{display:none}
+    .head-right{display:contents}
+    .head-icons{order:2;gap:var(--nu-space-medium);margin-left:auto}
+    .switchers{order:3;width:100%;justify-content:flex-start;gap:var(--nu-space-small);
+      border-top:1px solid var(--nu-border-neutral);padding-top:var(--nu-space-milli)}
+    /* on mobile the filters collapse into a stacked panel above the grid */
+    .shop{grid-template-columns:1fr;gap:0;padding:0 var(--nu-space-micro) var(--nu-space-huge)}
+    .shop.filters-hidden{grid-template-columns:1fr}
+    .filters{
+      position:static;
+      max-height:1000px;overflow:hidden;
+      border-top:1px solid var(--nu-border-neutral);margin-bottom:var(--nu-space-small);padding-top:var(--nu-space-small);
+      transition:max-height .35s linear, opacity .35s linear, margin .35s linear, padding .35s linear;
+    }
+    .shop.filters-hidden .filters{
+      max-height:0;opacity:0;margin:0;padding:0;border-top-color:transparent;
+    }
+    /* Raising or dropping the sheet takes the panel in and out of the flow. That
+       has to happen in one frame so the scroll can be corrected against it —
+       an animated collapse would move the list for 350ms afterwards. */
+    .filters.no-anim{transition:none}
+    .cover{width:72%}
+
+    /* ---------- mobile: sticky bottom bars ----------
+       The shop bar leaves the top of the page and pins to the bottom, within
+       thumb reach and clear of the first screen of covers. It is the SAME
+       element as on desktop: the filter toggle, the sort button and the sort
+       menu keep their existing handlers and state, so there is no second copy
+       of these controls to keep in sync. */
+    .shopbar{
+      /* above the sheet backdrop (70): the bar holds the controls that opened
+         the sheet, so dimming them would be dimming the way out. Still below
+         the drawers (90/100), which are meant to cover it. */
+      position:fixed;left:0;right:0;bottom:0;z-index:85;
+      padding:var(--nu-mobar-pad) var(--nu-space-small) calc(var(--nu-mobar-pad) + env(safe-area-inset-bottom));
+      gap:var(--nu-space-small);
+      background:var(--nu-bg-primary);
+      border-top:1px solid var(--nu-border-neutral);
+      box-shadow:0 -6px 18px color-mix(in srgb, var(--nu-bg-inverse) 5%, transparent);
+    }
+    /* clearance for whichever bar this view actually shows, so the footer and
+       the last form field are never trapped underneath it */
+    body.has-mobar{padding-bottom:var(--nu-mobar-h)}
+    body.has-cobar{padding-bottom:var(--nu-cobar-h)}
+    /* The menu has nowhere to go but up now. It is anchored to the sort button,
+       so clear the bar's own padding as well to land on the same gap above the
+       bar as the filter sheet. */
+    .sort-menu{top:auto;bottom:calc(100% + var(--nu-mobar-pad) + var(--nu-mobar-gap))}
+    /* a long sort label must not push the bar into two lines */
+    .sort-btn{max-width:62vw}
+    .sort-btn #sortLbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+    /* ---- filters raised as a bottom sheet ----
+       Still the inline panel, only positioned differently: position:fixed takes
+       it out of the flow, so the list closes up behind it and a chip tapped in
+       the sheet is already the selected chip in the inline panel. */
+    body.fsheet .shop .filters{
+      /* top:auto is load-bearing: the panel carries top:var(--nu-space-medium) for its sticky
+         desktop column, and leaving it set here would over-constrain the box
+         and stretch the sheet from the top of the screen instead. */
+      /* sits flush on the bar: the two read as one block of controls */
+      position:fixed;left:0;right:0;top:auto;bottom:var(--nu-mobar-h);z-index:80;
+      max-height:min(62vh,460px);overflow-y:auto;
+      /* filters-hidden is set while the sheet is up (it collapses the inline
+         copy), and that rule also parks pointer-events — hand them back, or the
+         chips inside the sheet are unclickable. */
+      margin:0;padding:var(--nu-space-medium) var(--nu-space-small);opacity:1;pointer-events:auto;
+      /* the inline panel animates its own max-height to collapse; here the
+         slide does the work, so that transition must not run as well */
+      transition:none;
+      background:var(--nu-bg-primary);
+      border-top:1px solid var(--nu-border-neutral);
+      box-shadow:0 -14px 40px color-mix(in srgb, var(--nu-bg-inverse) 10%, transparent);
+      animation:sheetUp .3s cubic-bezier(.32,.72,.27,1);
+    }
+    /* closing: drop it past the bar before it goes back into the flow */
+    body.fsheet.fsheet-out .shop .filters{
+      animation:none;
+      transform:translateY(calc(100% + var(--nu-mobar-h)));
+      transition:transform .26s ease;
+    }
+    body.fsheet .fsheet-head{
+      display:flex;align-items:center;justify-content:space-between;
+      font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+      text-transform:uppercase;color:var(--nu-fg-secondary);
+    }
+    /* colour, hover and focus come from .btn-tertiary, as on both drawers */
+    .fsheet-head button{padding:0 var(--nu-space-nano)}
+
+    /* ---- checkout: amount due and the one committing action ---- */
+    .co-bar{
+      display:flex;align-items:center;justify-content:space-between;gap:var(--nu-space-small);
+      position:fixed;left:0;right:0;bottom:0;z-index:60;
+      padding:var(--nu-space-milli) var(--nu-space-small) calc(var(--nu-space-milli) + env(safe-area-inset-bottom));
+      background:var(--nu-bg-primary);
+      border-top:1px solid var(--nu-border-neutral);
+      box-shadow:0 -6px 18px color-mix(in srgb, var(--nu-bg-inverse) 5%, transparent);
+    }
+    .co-bar .cb-lbl{
+      display:block;font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+      text-transform:uppercase;color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-nano);
+    }
+    .co-bar .cb-val{font-size:var(--nu-text-body-l);font-variant-numeric:tabular-nums}
+    .co-bar .order-btn{width:auto;margin-top:0;padding:var(--nu-space-small) var(--nu-space-medium);flex-shrink:0}
+    /* the summary's button would be a second, redundant submit */
+    .co-side .order-btn{display:none}
+  }
+  @keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+  @media (prefers-reduced-motion:reduce){
+    body.fsheet .shop .filters{animation:none}
+    body.fsheet.fsheet-out .shop .filters{transition:none}
+    .sheet-backdrop{transition:none}
+  }
+  @media (max-width:380px){
+    .grid{grid-template-columns:1fr}
+    .cover{width:58%}
+    .p-tile .cover{width:58%}
+  }
