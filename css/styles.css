@@ -269,10 +269,10 @@
      the fill, where the colour comes from - is declared here and nowhere else,
      so a component picks a size and inherits the rest. The small size is the
      large drawing at 0.7, which maps the 20x20 safe area exactly onto 14x14. */
-  .ico-24,
-  .ico-16{display:block;flex:none;stroke:currentColor;fill:none}
-  .ico-24{width:var(--nu-icon-lg);height:var(--nu-icon-lg);stroke-width:var(--nu-icon-lg-stroke)}
-  .ico-16{width:var(--nu-icon-sm);height:var(--nu-icon-sm);stroke-width:var(--nu-icon-sm-stroke)}
+  .ico-lg,
+  .ico-sm{display:block;flex:none;stroke:currentColor;fill:none}
+  .ico-lg{width:var(--nu-icon-lg);height:var(--nu-icon-lg);stroke-width:var(--nu-icon-lg-stroke)}
+  .ico-sm{width:var(--nu-icon-sm);height:var(--nu-icon-sm);stroke-width:var(--nu-icon-sm-stroke)}
 
   .head-icons{display:flex;gap:var(--nu-space-medium);align-items:center}
 
