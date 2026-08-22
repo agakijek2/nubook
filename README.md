@@ -37,6 +37,7 @@ nubook/
 ├── css/styles.css      style + wszystkie tokeny (w bloku :root)
 ├── js/app.js           dane katalogu, routing, koszyk, dokumentacja
 ├── assets/covers/      okładki książek i portret autorki
+├── docs/skills/        procedury pracy nad projektem (patrz niżej)
 ├── build.py            składa preview.html z powyższych
 └── preview.html        wynik budowania (nie edytować)
 ```
@@ -52,6 +53,13 @@ w stopce albo adres `index.html#design`. Opisuje kolor, typografię, odstępy,
 ikonografię, komponenty, ruch i zasady redakcyjne. Próbki i wartości są
 odczytywane z żywego arkusza stylów, więc dokumentacja nie może rozjechać
 się z kodem.
+
+## Jak powstaje ten projekt
+
+Sklep i design system powstają we współpracy z Claude. Katalog
+[`docs/skills/`](docs/skills/) opisuje sposób pracy, który się przy tym
+wypracował: jak buduje się nowy widok, jak pisze się zakładkę dokumentacji
+i jak sprawdza się, czy dokumentacja nadal opisuje rzeczywistość.
 
 ## Fonty
 
