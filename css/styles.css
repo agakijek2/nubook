@@ -119,6 +119,14 @@
     --nu-space-max:64px;
 
     /* layout */
+    /* Icon sizes. Container is what the icon occupies on the page; inset is the
+       margin the drawing keeps inside it, stroke included; stroke is measured in
+       grid units, which equal pixels because the viewBox equals the container.
+       Named rather than written into the classes, so the documentation can read
+       the rule instead of restating it. */
+    --nu-icon-lg:24px;   --nu-icon-lg-inset:2px; --nu-icon-lg-stroke:1.5;
+    --nu-icon-sm:16px;   --nu-icon-sm-inset:1px; --nu-icon-sm-stroke:1.25;
+
     --nu-measure-form:1440px;      /* cart & checkout: grows, then stops and centres */
     /* One gutter for every side-by-side layout: shop, product, checkout, docs.
        Named rather than repeated, because "how far apart do two columns sit" is
@@ -263,8 +271,8 @@
      large drawing at 0.7, which maps the 20x20 safe area exactly onto 14x14. */
   .ico-24,
   .ico-16{display:block;flex:none;stroke:currentColor;fill:none}
-  .ico-24{width:24px;height:24px;stroke-width:1.5}
-  .ico-16{width:16px;height:16px;stroke-width:1.25}
+  .ico-24{width:var(--nu-icon-lg);height:var(--nu-icon-lg);stroke-width:var(--nu-icon-lg-stroke)}
+  .ico-16{width:var(--nu-icon-sm);height:var(--nu-icon-sm);stroke-width:var(--nu-icon-sm-stroke)}
 
   .head-icons{display:flex;gap:var(--nu-space-medium);align-items:center}
 

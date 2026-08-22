@@ -1397,6 +1397,33 @@ function dsContrastCell(fg, bg){
 /* A specification names the token first and gives its value second. The name is
    what gets reused; the value is only there so the reader can picture it. One
    helper, so every page states it the same way. */
+/* The icon parameter table, computed from the tokens rather than typed beside
+   them. The safe area is not a token of its own: it is what the container leaves
+   after the inset on both sides, so stating it separately would be a second copy
+   of the same decision. */
+/* The ratio between the two safe areas. Stated in the prose as the factor a
+   drawing is scaled by, so it has to follow the tokens rather than sit beside
+   them as a number that was true once. */
+function dsIconRatio(){
+  const px = t => parseFloat(dsVal(t)) || 0;
+  const safe = k => px(`--nu-icon-${k}`) - 2 * px(`--nu-icon-${k}-inset`);
+  const r = safe("sm") / safe("lg");
+  return String(Math.round(r * 100) / 100).replace(".", L(".", ","));
+}
+function dsIconRows(){
+  const px = t => parseFloat(dsVal(t)) || 0;
+  return [["lg", "--nu-icon-lg"], ["sm", "--nu-icon-sm"]].map(([k, box]) => {
+    const size = px(box), inset = px(`--nu-icon-${k}-inset`);
+    const stroke = dsVal(`--nu-icon-${k}-stroke`);
+    const n = v => String(v).replace(".", L(".", ","));
+    return `<tr>
+      <td class="spec"><code>${box}</code> &middot; ${n(size)} &times; ${n(size)} px</td>
+      <td>${n(size - 2 * inset)} &times; ${n(size - 2 * inset)} px</td>
+      <td>${n(inset)} px</td>
+      <td>${n(stroke)} px</td>
+    </tr>`;
+  }).join("");
+}
 function dsTok(token){
   const v = dsVal(token);
   return `<code>${token}</code>${v ? ` &middot; ${v}` : ""}`;
@@ -1965,18 +1992,17 @@ const DS_SECTIONS = [
 
     <h3>${L("Parameters","Parametry")}</h3>
     <p>${L(
-      "An icon comes in two sizes: 24&times;24 and 16&times;16 px. The drawing sits inside the safe area, stroke width included, so icons of different shapes line up beside one another.",
-      "Ikona ma dwa rozmiary: 24&times;24 i 16&times;16 px. Rysunek mieści się w polu bezpiecznym, razem z grubością obrysu, dzięki czemu ikony o różnych kształtach stoją w jednym szeregu.")}</p>
-    <table><thead><tr><th>${L("Container","Kontener")}</th><th>${L("Safe area","Pole bezpieczne")}</th><th>${L("Margin","Margines")}</th><th>${L("Stroke","Obrys")}</th></tr></thead><tbody>
-      <tr><td>24 &times; 24 px</td><td>20 &times; 20 px</td><td>2 px</td><td>1,5 px</td></tr>
-      <tr><td>16 &times; 16 px</td><td>14 &times; 14 px</td><td>1 px</td><td>1,25 px</td></tr>
-    </tbody></table>
+      `An icon comes in two sizes, ${dsTok("--nu-icon-lg")} and ${dsTok("--nu-icon-sm")}. The drawing sits inside the safe area, stroke width included, so icons of different shapes line up beside one another.`,
+      `Ikona ma dwa rozmiary: ${dsTok("--nu-icon-lg")} i ${dsTok("--nu-icon-sm")}. Rysunek mieści się w polu bezpiecznym, razem z grubością obrysu, dzięki czemu ikony o różnych kształtach stoją w jednym szeregu.`)}</p>
+    <table class="tok-table"><colgroup><col class="c-token"><col><col><col></colgroup>
+    <thead><tr><th>${L("Container","Kontener")}</th><th>${L("Safe area","Pole bezpieczne")}</th><th>${L("Margin","Margines")}</th><th>${L("Stroke","Obrys")}</th></tr></thead>
+    <tbody>${dsIconRows()}</tbody></table>
     <p>${L(
       "Icons are linear: an outline, no fill. Colour is inherited through <code>currentColor</code>, so an icon takes the colour of the control it sits in, including that control's states. On its own it takes <code>--nu-fg-primary</code>.",
       "Ikony są liniowe: kontur bez wypełnienia. Kolor dziedziczą przez <code>currentColor</code>, więc ikona przyjmuje barwę kontrolki, w której stoi, razem z jej stanami. Samodzielnie stojąca ikona ma <code>--nu-fg-primary</code>.")}</p>
     <p>${L(
-      "An icon drawn at 24 moves to 16 by scaling the drawing by 0.7, which turns a 20&times;20 safe area into a 14&times;14 one. The stroke is set separately, to 1.25 px, so it keeps a visible weight.",
-      "Ikonę narysowaną w 24 przenosi się na 16 przez przeskalowanie rysunku o 0,7 &ndash; pole 20&times;20 przechodzi wtedy w 14&times;14. Obrys ustawiany jest osobno, na 1,25 px, żeby zachował widoczną grubość.")}</p>
+      `An icon drawn at the larger size moves to the smaller one by scaling the drawing by ${dsIconRatio()}, which turns one safe area into the other. The stroke is set separately, so it keeps a visible weight rather than thinning with the drawing.`,
+      `Ikonę narysowaną w większym rozmiarze przenosi się na mniejszy przez przeskalowanie rysunku o ${dsIconRatio()} &ndash; jedno pole bezpieczne przechodzi wtedy w drugie. Obrys ustawiany jest osobno, żeby zachował widoczną grubość, zamiast cienieć razem z rysunkiem.`)}</p>
 
     <h3>${L("The set","Zestaw")}</h3>
     <table><thead><tr><th>${L("Icon","Ikona")}</th><th>${L("Name","Nazwa")}</th><th>${L("Use","Zastosowanie")}</th></tr></thead><tbody>
