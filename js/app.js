@@ -2030,8 +2030,8 @@ const DS_SECTIONS = [
         <td>${L("Check","Ptaszek")}</td><td>${L("Something just succeeded. Leads the primary button through the &ldquo;Added&rdquo; sequence; in the promotion bar it replaces the sheets for 1.8s.","Coś się właśnie udało. Prowadzi przycisk główny w sekwencji „Dodano”; w belce promocyjnej zastępuje kartki na 1,8s.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
-      "A control that carries an icon takes an <code>aria-label</code>, and the icon itself is marked <code>aria-hidden</code>. Every icon in the shop is on this list and follows the rules above.",
-      "Kontrolka niosąca ikonę ma <code>aria-label</code>, a sama ikona jest oznaczona <code>aria-hidden</code>. Każda ikona w sklepie jest na tej liście i trzyma się powyższych reguł.")}</p>` },
+      "The icon is marked <code>aria-hidden</code> and the name is carried by the control: its visible text, or an <code>aria-label</code> where the control shows the icon alone. Every icon in the shop is on this list and follows the rules above.",
+      "Ikona jest oznaczona <code>aria-hidden</code>, a nazwę niesie kontrolka: jej widoczny tekst albo <code>aria-label</code>, gdy kontrolka pokazuje samą ikonę. Każda ikona w sklepie jest na tej liście i trzyma się powyższych reguł.")}</p>` },
 
   { group:{en:"Components",pl:"Komponenty"}, id:"badge", label:{en:"Badge",pl:"Odznaka"}, body: ()=>`
     <h1>${L("Badge","Odznaka")}</h1>
