@@ -38,6 +38,7 @@ Wzorce, które powtarzają się najczęściej — szukaj ich celowo:
 - **Wyliczenie miejsc, które się skurczyło albo urosło.** „Widok produktu, koszyk, kasa, potwierdzenie i dokumentacja" — a dwa pierwsze już nie należą.
 - **Odwołanie do nieistniejącego sąsiada.** Przypis mówiący „ta para", gdy pary już nie ma, bo komponent wyniesiono do osobnej zakładki.
 - **Martwy kod udający źródło prawdy.** Napisy, stałe albo klasy, które wyglądają na używane, a nie są. Ktoś je poprawi i nie zobaczy efektu.
+- **Milczenie zamiast nieprawdy.** Zakładka opisuje komponent w jednym kontekście, choć w kodzie występuje w trzech — i wszystko, co mówi, jest prawdą. Sprawdź nie tylko, czy twierdzenia są prawdziwe, ale czy obejmują wszystkie miejsca, w których rzecz żyje. Wyszukaj funkcję albo klasę komponentu w całym kodzie i policz konteksty.
 
 ### Nie ufaj własnemu skryptowi
 
@@ -56,6 +57,7 @@ Ta sama rzecz opisana dwa razy rozjeżdża się zawsze. Porównaj zakładkę z r
 - **różnej struktury dla tego samego rodzaju treści** — jedna zakładka komponentu ma siatkę okazów z podpisami, druga goły rząd; jedna podaje klasę w pierwszej kolumnie tabeli, druga chowa ją w nawiasie na końcu akapitu
 - **powtórzeń** — to samo zdanie techniczne w dwóch zakładkach; wybierz miejsce, gdzie należy, i w drugim zostaw samą zasadę
 - **obietnic ogólnych, których szczegóły nie dotrzymują** — wstęp obiecuje cztery miejsca zastosowania, a specyfikacja opisuje jedno
+- **zakładki, która wie więcej o cudzym komponencie niż on sam** — jeśli tabela kolorów wymienia zastosowanie, o którym milczy zakładka komponentu, to ta druga ma lukę
 
 Rozbieżność zgłaszaj **z obu stron**: która zakładka ma rację, zależy od kodu, nie od tego, którą właśnie czytasz.
 
@@ -68,7 +70,20 @@ Kryteria: rzeczowo, fachowo, oznajmująco, naturalnie.
 - **Bez kroniki.** „Teraz", „już nie", „zostaje przy" w znaczeniu historycznym opisują przebudowę, a nie stan. Czytelniczka nie zna poprzedniej wersji.
 - **Bez ozdobników.** „Obraca się o pół kąta prostego" to 45°. Ozdobnik kosztuje uwagę i nic nie wnosi.
 - **Jedno słowo, jedno znaczenie w obrębie strony.** Jeśli „etykieta" znaczy raz styl typograficzny, a raz napis kontrolki, jedno z nich musi ustąpić.
-- **Naturalna polszczyzna.** Kalki z angielskiego przechodzą niezauważone w tekście o kodzie: „stan mieszka w atrybucie", „pudełko" na `box`. Przeczytaj zdanie na głos — jeśli tak się nie mówi, przepisz.
+
+### Naturalna polszczyzna
+
+Najtrudniejsze do wyłapania, bo tekst wygląda poprawnie. Trzy odmiany tego samego problemu:
+
+**Kalki słownikowe.** „Stan mieszka w atrybucie", „pudełko" na `box`. Osobne słowo brzmi znajomo, całość nie jest polszczyzną.
+
+**Konstrukcje, których się nie używa.** Wszystkie słowa polskie, składnia z angielskiego: „dwa poziomy jednej rzeczy", „pole, w którym staje okładka", „okładka to to, co w nim stoi". Zdanie da się zrozumieć i nikt tak nie mówi.
+
+**Personifikacja rzeczy bez sprawczości.** „Okładka potrafi chodzić sama", „miniatura rzuca cień, bo stoi na liście". Metafora ruchu wciska się w opis układu i brzmi jak literatura, nie jak specyfikacja.
+
+Test, który to wyłapuje: **przeczytaj zdanie na głos i sprawdź, czy powiedziałabyś je tak w rozmowie o pracy.** Jeśli nie — przepisz najprostszym możliwym szykiem: co jest czym, co gdzie stoi, co się dzieje. „Kafel to szare pole 4:5 z okładką w środku" zamiast „pole, w którym staje okładka".
+
+Ta wada bierze się z pisania kilku zdań jednym oddechem, więc **gdy znajdziesz jedno takie zdanie, przejrzyj sąsiednie** — zwykle są z tej samej partii.
 
 ## Jak raportować
 
@@ -82,7 +97,11 @@ Dla każdego znaleziska podaj:
 
 Napisz też, **co sprawdziłaś i wyszło dobrze**. Audyt, który wymienia same usterki, nie mówi, jak szeroko sięgnął — a zakładka bez znalezisk to wynik, nie brak wyniku.
 
-Gdy niezgodność da się usunąć z dwóch stron, **przedstaw obie drogi**: poprawić kod czy poprawić opis. Napisz, którą polecasz i dlaczego, ale zostaw wybór. Niektóre niezgodności to okazja, żeby domknąć prawdziwą lukę — brak reguły fokusu, brak tokenu, brak przeniesienia fokusu do okna modalnego.
+Gdy niezgodność da się usunąć z dwóch stron, **przedstaw obie drogi**: poprawić kod czy poprawić opis. Napisz, którą polecasz i dlaczego, ale zostaw wybór.
+
+**Zanim uznasz coś za błąd w kodzie, sprawdź, czy nie jest zamierzone.** Zachowanie, które wygląda na niedopatrzenie, bywa decyzją projektową, której nikt nie zapisał — okładka nieprzygaszona na stronie produktu wygląda jak zapomniana reguła, a jest świadomym wyborem, bo czytelniczka przyszła obejrzeć właśnie tę okładkę. Opisz, co widzisz, i zapytaj o intencję. Gdy intencja się potwierdzi, praca polega na **zapisaniu jej** — komentarzem przy regule i wierszem w dokumentacji — oraz na usunięciu tego, co ją podważa: martwej klasy, nieużywanego selektora, przełącznika bez reguły.
+
+Niektóre niezgodności to za to okazja, żeby domknąć prawdziwą lukę: brak reguły fokusu, brak tokenu, wartość powtórzona w pięciu miejscach zamiast jednej.
 
 Grupuj raport trzema przebiegami, w ich kolejności. Na końcu zapytaj wprost, co wprowadzasz.
 
