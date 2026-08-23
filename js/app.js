@@ -2602,7 +2602,7 @@ const DS_SECTIONS = [
     <p class="ds-lede">${L(
       "A control whose answer is picked from a list, class <code>.select</code>. There are two in the shop: country and telephone dialling code.",
       "Kontrolka, w której odpowiedź wybiera się z listy, klasa <code>.select</code>. W sklepie są dwie: kraj i prefiks telefonu.")}</p>
-    <div class="demo on-page">
+    <div class="demo on-page ds-select">
       <div class="field" style="width:260px">
         <label for="ds-sel">${L("Country","Kraj")}</label>
         <span class="select-wrap">

@@ -1117,6 +1117,7 @@
   .ds .ds-play-stage .tile.ds-crop{aspect-ratio:auto;width:240px;height:88px}
   .ds .ds-tiles,
   .ds .ds-qty{justify-content:center;align-items:flex-end}
+  .ds .ds-select{justify-content:center}
   .ds .ds-tiles .tile{width:140px}
   .ds .ds-specimens figcaption{
     font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
