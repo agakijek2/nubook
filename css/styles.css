@@ -886,8 +886,7 @@
      Focus and error take the whole group, otherwise the outline would change
      colour halfway along its top edge. */
   .f-group{display:grid;grid-template-columns:var(--nu-field-code) 1fr}
-  .f-group .select{border-right:0;padding-right:var(--nu-space-large)}
-  .f-group .ico-chevron{right:var(--nu-space-milli)}
+  .f-group .select{border-right:0}
   .f-group:focus-within .select,
   .f-group:focus-within .input{border-color:var(--nu-border-primary)}
   .f-group:has(.is-error) .select{border-color:var(--nu-border-alert)}
