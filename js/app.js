@@ -2581,7 +2581,7 @@ const DS_SECTIONS = [
         "Pole tekstowe i select deklarują tę samą ramkę osobno. Dzięki temu każde z nich działa poza polem formularza, a grupa dwóch kontrolek nie ma cudzej reguły do cofania.")}</td></tr>
       <tr><td>${L("In the cart","W koszyku")}</td><td>${L(
         "The discount code is the same field with two additions: it grows into its row and reads in capitals, with the placeholder left in sentence case. A code that does not exist is marked the way every other wrong value is.",
-        "Kod rabatowy to to samo pole z dwoma dodatkami: rośnie w swoim rzędzie i czyta się wersalikami, a podpowiedź zostaje w zwykłym zapisie. Kod, którego nie ma, jest oznaczany tak samo jak każda inna zła wartość.")}</td></tr>
+        "Kod rabatowy to to samo pole z dwoma dodatkami: rośnie w swoim rzędzie i czyta się wersalikami, a podpowiedź zostaje w zwykłym zapisie. Kod, którego nie ma, jest oznaczany tak samo jak każda inna błędna wartość.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "This tab has no live preview. The only state a class can express is the error one, and it stands among the specimens above; focus belongs to the browser, not to the markup.",
