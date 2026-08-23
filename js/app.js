@@ -1910,7 +1910,7 @@ const DS_SECTIONS = [
     <tbody>${dsColorRows([
       ["--nu-fg-primary",L("Primary content","Treść główna"),L("Titles, body copy, prices, icons","Tytuły, tekst, ceny, ikony")],
       ["--nu-fg-secondary",L("Supporting content","Treść wspierająca"),L("Authors, labels, quotes, notes","Autorzy, etykiety, cytaty, notki")],
-      ["--nu-fg-tertiary",L("Disabled or less prominent text","Tekst wyłączony lub mniej istotny"),L("Filter counts, options returning zero results","Liczniki przy filtrach, opcje bez wyników")],
+      ["--nu-fg-tertiary",L("Disabled or less prominent text","Tekst wyłączony lub mniej istotny"),L("Filter counts, options returning zero results, placeholders in fields","Liczniki przy filtrach, opcje bez wyników, podpowiedzi w polach")],
       ["--nu-fg-inverse",L("Content on an inverse background","Treść na ciemnym tle"),L("Button labels, counter digits","Etykiety przycisków, cyfry licznika")],
       ["--nu-fg-highlight",L("Distinction","Wyróżnienie"),L("Award badge label","Napis odznaki nagrody")],
       ["--nu-fg-warning",L("Inventory running out","Kończący się nakład"),L("&ldquo;Last copies&rdquo; badge, scarcity ribbon","Odznaka „Ostatnie sztuki”, wstążka na okładce")],
@@ -2527,12 +2527,12 @@ const DS_SECTIONS = [
   { group:{en:"Components",pl:"Komponenty"}, id:"input", label:{en:"Text field",pl:"Pole tekstowe"}, body: ()=>`
     <h1>${L("Text field","Pole tekstowe")}</h1>
     <p class="ds-lede">${L(
-      "A box the reader types an answer into, class <code>.input</code>. It appears in checkout and at the discount code in the cart.",
-      "Kontener, w który czytelniczka wpisuje odpowiedź, klasa <code>.input</code>. Występuje w kasie i przy kodzie rabatowym w koszyku.")}</p>
+      "The field the reader types an answer into, class <code>.input</code>. It appears in checkout and at the discount code in the cart.",
+      "Pole, w które czytelniczka wpisuje odpowiedź, klasa <code>.input</code>. Występuje w kasie i przy kodzie rabatowym w koszyku.")}</p>
     <div class="ds-specimens ds-fields">
       <figure>
         <div class="demo on-page">
-          <div class="field" style="width:100%">
+          <div class="field">
             <label for="ds-in-a">${L("City","Miasto")}</label>
             <input class="input" id="ds-in-a" value="Wrocław" readonly>
           </div>
@@ -2541,7 +2541,7 @@ const DS_SECTIONS = [
       </figure>
       <figure>
         <div class="demo on-page">
-          <div class="field" style="width:100%">
+          <div class="field">
             <label for="ds-in-b">${L("E-mail","E-mail")}</label>
             <input class="input is-error" id="ds-in-b" value="aga.pl" aria-invalid="true" aria-describedby="ds-in-b-msg" readonly>
             <p class="field-msg" id="ds-in-b-msg">${L("Enter an address in the form name@domain.com.","Podaj adres w postaci nazwa@domena.pl.")}</p>
@@ -2552,10 +2552,10 @@ const DS_SECTIONS = [
     </div>
     <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Default","Domyślny")}</td>
-        <td>${L("Waiting for an answer.","Czeka na odpowiedź.")}</td>
+        <td>${L("Empty, or holding a value that passed the check.","Pole puste albo z wartością, która przeszła sprawdzenie.")}</td>
         <td><code>--nu-border-neutral</code>, <code>--nu-bg-primary</code></td></tr>
       <tr><td>${L("Focus","Fokus")}<br><code>:focus</code></td>
-        <td>${L("The border darkens. The system ring is dropped, because a ring drawn inside a box that already has a border reads as a second border.","Ramka ciemnieje. Systemowa obwódka jest zdjęta, bo obwódka rysowana wewnątrz kontenera, który ma już ramkę, czyta się jak druga ramka.")}</td>
+        <td>${L("The border darkens. The system ring is dropped, because a ring drawn inside a box that already has a border reads as a second border. The mark appears on a click too, not only on arriving by keyboard: entering a field is followed by typing.","Ramka ciemnieje. Systemowa obwódka jest zdjęta, bo obwódka rysowana wewnątrz kontenera, który ma już ramkę, czyta się jak druga ramka. Oznaczenie pojawia się także po kliknięciu, nie tylko przy przejściu klawiaturą: po wejściu w pole zaraz zaczyna się pisanie.")}</td>
         <td><code>--nu-border-primary</code></td></tr>
       <tr><td>${L("Error","Błąd")}<br><code>.is-error</code></td>
         <td>${L("The value does not match what the field accepts. The class is put on by the script that checks the value, and the message underneath says what is wrong.","Wartość nie zgadza się z tym, co pole przyjmuje. Klasę nakłada skrypt sprawdzający wartość, a komunikat pod spodem mówi, co jest nie tak.")}</td>
@@ -2564,8 +2564,8 @@ const DS_SECTIONS = [
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td style="width:190px">${L("Border","Ramka")}</td><td>${L(
-        "1px <code>--nu-border-neutral</code>, square corners. The corners are declared rather than left alone, because a text field arrives rounded on iOS.",
-        "1px <code>--nu-border-neutral</code>, narożniki ostre. Narożniki są zadeklarowane, a nie zostawione, bo na iOS pole tekstowe przychodzi zaokrąglone.")}</td></tr>
+        "1px <code>--nu-border-neutral</code>, square corners. The corners are declared rather than left alone, because iOS rounds a text field by default.",
+        "1px <code>--nu-border-neutral</code>, narożniki ostre. Narożniki są zadeklarowane, a nie zostawione, bo na iOS pole tekstowe jest domyślnie zaokrąglone.")}</td></tr>
       <tr><td>${L("Padding","Wypełnienie")}</td><td>${dsTok("--nu-space-milli")} ${L("on every side","z każdej strony")}</td></tr>
       <tr><td>${L("Type","Typografia")}</td><td>${L(
         "Inherited from its surroundings, line height 1.45. The field sets no face and no size of its own.",
@@ -2574,14 +2574,17 @@ const DS_SECTIONS = [
         "<code>--nu-fg-tertiary</code>, lighter than an answer so the two do not read alike. It shows the shape of the answer &ndash; <code>00-000</code> for a postal code &ndash; and never carries the name of the field: a label that disappears once typing starts leaves the reader with a filled field and nothing saying what is in it.",
         "<code>--nu-fg-tertiary</code>, jaśniejsza niż odpowiedź, żeby jedno nie czytało się jak drugie. Pokazuje kształt odpowiedzi &ndash; <code>00-000</code> przy kodzie pocztowym &ndash; i nigdy nie niesie nazwy pola: etykieta znikająca po pierwszym znaku zostawia czytelniczkę z wypełnionym polem i bez informacji, co w nim jest.")}</td></tr>
       <tr><td>${L("Width","Szerokość")}</td><td>${L(
-        "The full width of the place it stands in, borders counted in. Whatever holds it decides how wide that is.",
-        "Cała szerokość miejsca, w którym stoi, wraz z ramką. O tym, ile to jest, decyduje to, co pole trzyma.")}</td></tr>
+        "The full width of the place it stands in, borders counted in. That place decides how wide it is, not the field.",
+        "Cała szerokość miejsca, w którym stoi, wraz z ramką. Szerokość ustala to miejsce, a nie pole.")}</td></tr>
+      <tr><td>${L("Type and keyboard","Typ i klawiatura")}</td><td>${L(
+        "The field sets neither its type nor its keyboard mode &ndash; the place it is used does, and it always does. <code>type</code> and <code>inputmode</code> decide which keyboard a phone offers, and <code>autocomplete</code> lets the browser supply a value it already knows.",
+        "Pole nie ustawia ani typu, ani trybu klawiatury &ndash; robi to miejsce użycia i robi to zawsze. <code>type</code> i <code>inputmode</code> decydują o tym, jaką klawiaturę poda telefon, a <code>autocomplete</code> pozwala przeglądarce podać wartość, którą już zna.")}</td></tr>
       <tr><td>${L("Own declaration","Własna deklaracja")}</td><td>${L(
         "The text field and the select declare the same box separately. Each one then works outside a form field, and a group of two controls has no rule of somebody else's to undo.",
         "Pole tekstowe i select deklarują tę samą ramkę osobno. Dzięki temu każde z nich działa poza polem formularza, a grupa dwóch kontrolek nie ma cudzej reguły do cofania.")}</td></tr>
       <tr><td>${L("In the cart","W koszyku")}</td><td>${L(
-        "The discount code is the same field with two additions: it grows into its row and reads in capitals, with the placeholder left in sentence case. A code that does not exist is marked the way every other wrong value is.",
-        "Kod rabatowy to to samo pole z dwoma dodatkami: rośnie w swoim rzędzie i czyta się wersalikami, a podpowiedź zostaje w zwykłym zapisie. Kod, którego nie ma, jest oznaczany tak samo jak każda inna błędna wartość.")}</td></tr>
+        "The discount code field is the same field, with two differences: it grows into its row and reads in capitals, with the placeholder left in sentence case. A code that does not exist is marked the way every other wrong value is.",
+        "Pole kodu rabatowego jest tym samym polem, z dwiema różnicami: rośnie w swoim rzędzie i czyta się wersalikami, a podpowiedź zostaje w zwykłym zapisie. Kod, którego nie ma, jest oznaczany tak samo jak każda inna błędna wartość.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "This tab has no live preview. The only state a class can express is the error one, and it stands among the specimens above; focus belongs to the browser, not to the markup.",
