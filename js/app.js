@@ -2181,7 +2181,7 @@ const DS_SECTIONS = [
       <tr><td class="ico-cell"><svg class="ico-sm ico-close" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></td>
         <td>${L("Cross","Krzyżyk")}</td><td>${L("Closes a drawer or the filter sheet. The same drawing as the plus, turned.","Zamyka szufladę albo arkusz filtrów. Ten sam rysunek co plus, obrócony.")}</td></tr>
       <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6.25 8 10.75 12.5 6.25"/></svg></td>
-        <td>${L("Caret","Strzałka rozwijania")}</td><td>${L("Marks a select as a list to open. Sits inside the field, on its right.","Oznacza pole wyboru jako listę do rozwinięcia. Stoi wewnątrz pola, po jego prawej.")}</td></tr>
+        <td>${L("Chevron","Chevron")}</td><td>${L("Marks a select as a list to open. Sits inside the field, on its right.","Oznacza pole wyboru jako listę do rozwinięcia. Stoi wewnątrz pola, po jego prawej.")}</td></tr>
       <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.75 8.35l3.5 3.5 7-8.05"/></svg></td>
         <td>${L("Check","Ptaszek")}</td><td>${L("Something just succeeded. Leads the primary button through the &ldquo;Added&rdquo; sequence; in the promotion bar it replaces the sheets for 1.8s.","Coś się właśnie udało. Prowadzi przycisk główny w sekwencji „Dodano”; w belce promocyjnej zastępuje kartki na 1,8s.")}</td></tr>
     </tbody></table>
@@ -2617,28 +2617,29 @@ const DS_SECTIONS = [
         <td>${L("Shows the chosen option.","Pokazuje wybraną opcję.")}</td>
         <td><code>--nu-border-neutral</code>, <code>--nu-bg-primary</code></td></tr>
       <tr><td>${L("Focus","Fokus")}<br><code>:focus</code></td>
-        <td>${L("The border darkens, on the same terms as a text field.","Ramka ciemnieje, na tych samych zasadach co w polu tekstowym.")}</td>
+        <td>${L("The border darkens, on the same terms as a text field: the system ring is dropped, and the mark appears on a click as well as on arriving by keyboard.","Ramka ciemnieje, na tych samych zasadach co w polu tekstowym: systemowa obwódka jest zdjęta, a oznaczenie pojawia się zarówno po kliknięciu, jak i przy przejściu klawiaturą.")}</td>
         <td><code>--nu-border-primary</code></td></tr>
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Border","Ramka")}</td><td>${L(
-        "The same box as a text field &ndash; 1px <code>--nu-border-neutral</code>, square corners, padding ",
-        "Ta sama ramka co w polu tekstowym &ndash; 1px <code>--nu-border-neutral</code>, narożniki ostre, wypełnienie ")}${dsTok("--nu-space-milli")}${L(
-        " &ndash; declared here rather than borrowed.",
-        " &ndash; zadeklarowana tutaj, a nie pożyczona.")}</td></tr>
+        `The same box as a text field &ndash; 1px <code>--nu-border-neutral</code>, square corners &ndash; declared here rather than borrowed. Padding ${dsTok("--nu-space-milli")} on three sides and ${dsTok("--nu-space-xlarge")} on the right, which is the room the chevron stands in: the longest option stops before it instead of running underneath.`,
+        `Ta sama ramka co w polu tekstowym &ndash; 1px <code>--nu-border-neutral</code>, narożniki ostre &ndash; zadeklarowana tutaj, a nie pożyczona. Wypełnienie ${dsTok("--nu-space-milli")} z trzech stron i ${dsTok("--nu-space-xlarge")} z prawej, bo tam stoi chevron: najdłuższa opcja kończy się przed nim, zamiast wchodzić pod spód.`)}</td></tr>
       <tr><td>${L("Native look","Natywny wygląd")}</td><td>${L(
-        "Dropped with <code>appearance:none</code>. A native select renders taller or shorter than a text field and puts its own arrow on the edge, so two controls standing side by side would not line up.",
-        "Zdjęty przez <code>appearance:none</code>. Natywny select renderuje się wyższy albo niższy niż pole tekstowe i stawia własną strzałkę na krawędzi, więc dwie kontrolki obok siebie nie zgadzałyby się wysokością.")}</td></tr>
+        "Dropped with <code>appearance:none</code>, along with the system marker on the edge. The box and the chevron are drawn.",
+        "Zdjęty przez <code>appearance:none</code>, razem z systemowym znacznikiem na krawędzi. Ramka i chevron są rysowane.")}</td></tr>
       <tr><td>Chevron</td><td>${L(
         `An icon at the smaller of the two sizes, on the terms set out under Iconography. <code>.select-wrap</code> places it ${dsTok("--nu-space-small")} from the right edge and takes it out of pointer events, so a click on the chevron opens the list. It takes the field's colour through <code>currentColor</code>.`,
         `Ikona w mniejszym z dwóch rozmiarów, na zasadach opisanych w Ikonografii. <code>.select-wrap</code> ustawia ją ${dsTok("--nu-space-small")} od prawej krawędzi i wyłącza z obsługi wskaźnika, więc kliknięcie w chevron rozwija listę. Kolor bierze z pola przez <code>currentColor</code>.`)}</td></tr>
-      <tr><td>${L("Room for it","Miejsce na chevron")}</td><td>${L(
-        `Right padding ${dsTok("--nu-space-xlarge")}, so the longest option never runs under the icon.`,
-        `Prawe wypełnienie ${dsTok("--nu-space-xlarge")}, żeby najdłuższa opcja nie wchodziła pod ikonę.`)}</td></tr>
+      <tr><td>${L("Type","Typografia")}</td><td>${L(
+        "Inherited from its surroundings, line height 1.45. The select sets no face and no size of its own.",
+        "Dziedziczona z otoczenia, interlinia 1.45. Select nie ustawia własnego kroju ani stopnia.")}</td></tr>
+      <tr><td>${L("Width","Szerokość")}</td><td>${L(
+        "The full width of the place it stands in, borders counted in. That place decides how wide it is, not the select.",
+        "Cała szerokość miejsca, w którym stoi, wraz z ramką. Szerokość ustala to miejsce, a nie select.")}</td></tr>
       <tr><td>${L("Group names","Nazwy grup")}</td><td>${L(
-        "<code>optgroup label</code> shows on the open list and never in the closed field. That is how the dialling code carries the country name beside the digits while the field itself holds digits alone.",
-        "<code>optgroup label</code> pokazuje się na rozwiniętej liście i nigdy w zamkniętym polu. Tak prefiks niesie nazwę kraju obok cyfr, a w samym polu zostają same cyfry.")}</td></tr>
+        "<code>optgroup label</code> shows on the open list and never in the closed field. At the dialling code the country name therefore stands above its code on the list, while the field itself holds digits alone.",
+        "<code>optgroup label</code> pokazuje się na rozwiniętej liście i nigdy w zamkniętym polu. Dzięki temu przy prefiksie nazwa kraju stoi na liście nad swoim kodem, a w samym polu zostają same cyfry.")}</td></tr>
       <tr><td>${L("Value","Wartość")}</td><td>${L(
         "One of the listed options. A select has no error state, because there is nothing outside the list to choose.",
         "Jedna z wypisanych opcji. Select nie ma stanu błędu, bo poza listą nie ma czego wybrać.")}</td></tr>
