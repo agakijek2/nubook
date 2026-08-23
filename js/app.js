@@ -2680,7 +2680,7 @@ const DS_SECTIONS = [
     <p>${L(
       "A dialling code and a telephone number are one answer, so they stand side by side without a gap: <code>.f-group</code>. The left control gives up its right border, which leaves a single line between them instead of two. Focus and error take the whole group &ndash; otherwise the outline would change colour halfway along its top edge.",
       "Prefiks i numer telefonu to jedna odpowiedź, więc stoją obok siebie bez odstępu: <code>.f-group</code>. Lewa kontrolka oddaje swoją prawą ramkę, przez co między nimi zostaje jedna kreska zamiast dwóch. Fokus i błąd obejmują całą grupę &ndash; inaczej ramka zmieniałaby kolor w połowie górnej krawędzi.")}</p>
-    <div class="demo on-page">
+    <div class="demo on-page ds-group">
       <div class="field" style="width:300px">
         <label for="ds-tel">${L("Phone","Telefon")}</label>
         <div class="f-group">
