@@ -1574,6 +1574,13 @@ function dsIconRows(){
     </tr>`;
   }).join("");
 }
+/* Column widths shared by the documentation tables. The first column names
+   a state, a variant or a property; the last lists tokens, and holds the widest
+   of them on one line rather than breaking a name in half. Written here once,
+   so tables meant to look alike cannot drift apart. */
+const DS_COL_NAME = 'style="width:190px"';
+const DS_COL_TOK  = 'style="width:220px"';
+
 function dsTok(token){
   const v = dsVal(token);
   return `<code>${token}</code>${v ? ` &middot; ${v}` : ""}`;
@@ -1784,7 +1791,7 @@ const DS_SECTIONS = [
       "Token dobiera się według roli, nie wyglądu. Rola elementu &ndash; tekst pomocniczy, opcja wyłączona, ostrzeżenie o stanie magazynu &ndash; wyznacza token, a odcień wynika z niego. Kolor i odstęp komponent bierze wyłącznie z tokenów; jedynym wyjątkiem są barwy kropki w logotypie. Dosłowne wartości zostają przy wymiarach, których skala nie obejmuje: kreskach włosowych, kontenerach ikon, szerokości szuflady.")}</p>
     <h3>${L("Principles","Założenia")}</h3>
     <table><tbody>
-      <tr><td style="width:190px"><strong>${L("Quiet by default","Domyślnie cicho")}</strong></td>
+      <tr><td ${DS_COL_NAME}><strong>${L("Quiet by default","Domyślnie cicho")}</strong></td>
           <td>${L("The books carry the colour. The interface is white, hairlines and near-black type.",
                   "Kolor wnoszą książki. Interfejs to biel, cienkie linie i niemal czarna typografia.")}</td></tr>
       <tr><td><strong>${L("One committing action","Jedna akcja wiążąca")}</strong></td>
@@ -1931,7 +1938,7 @@ const DS_SECTIONS = [
     ])}</tbody></table>
     <h3>${L("Rules","Zasady")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Never hardcoded","Nigdy na sztywno")}</td>
+      <tr><td ${DS_COL_NAME}>${L("Never hardcoded","Nigdy na sztywno")}</td>
           <td>${L("A component never carries a hex value. Where no token fits, the system is missing one and it has to be added.",
                   "Komponent nigdy nie nosi wartości heks. Gdy żaden token nie pasuje, systemowi go brakuje i trzeba go dodać.")}</td></tr>
       <tr><td>${L("Same value, different role","Ta sama wartość, inna rola")}</td>
@@ -1952,7 +1959,7 @@ const DS_SECTIONS = [
       "Dwie rodziny i siedem stopni. Style nazwane są przez poziom &ndash; Heading 1, Body, Label &ndash; nie przez widok, w którym występują, więc jeden styl obsługuje każdy kontekst, który go wymaga.")}</p>
     <h3>${L("Families","Rodziny")}</h3>
     <table><tbody>
-      <tr><td style="width:190px"><code>--nu-font-display</code></td>
+      <tr><td ${DS_COL_NAME}><code>--nu-font-display</code></td>
           <td>${L("DM Serif Display, single weight 400. Identity and headings.",
                   "DM Serif Display, jedna grubość 400. Identyfikacja i nagłówki.")}</td></tr>
       <tr><td><code>--nu-font-text</code></td>
@@ -1985,7 +1992,7 @@ const DS_SECTIONS = [
     </tbody></table>
     <h3>${L("Rules","Zasady")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Weight","Grubość")}</td>
+      <tr><td ${DS_COL_NAME}>${L("Weight","Grubość")}</td>
           <td>${L("The display family ships one weight, 400; the text family ships 400 and 500. Nothing heavier is loaded, so a weight the shop does not hold gets synthesised from 400 and smears. Display headings declare 400 explicitly, because browsers embolden them by default; 500 appears only where the text family needs emphasis &ndash; <code>strong</code> and <code>b</code> are set to it globally for the same reason.",
                   "Rodzina tytułowa dostarczana jest w jednej grubości, 400; rodzina tekstowa w 400 i 500. Nic cięższego nie jest wczytywane, więc grubość, której sklep nie posiada, zostanie wygenerowana z 400 i rozmyta. Nagłówki kroju tytułowego deklarują 400 jawnie, bo przeglądarki domyślnie je pogrubiają; 500 pojawia się tylko tam, gdzie krój tekstowy wymaga wyróżnienia &ndash; <code>strong</code> i <code>b</code> są z tego samego powodu ustawione na nie globalnie.")}</td></tr>
       <tr><td>${L("Letter-spacing","Światło międzyliterowe")}</td>
@@ -2199,7 +2206,7 @@ const DS_SECTIONS = [
       <figure><div class="tile"><span class="badge award">${L("Pulitzer Prize","Nagroda Pulitzera")}</span></div>
         <figcaption><code>.award</code></figcaption></figure>
     </div>
-    <table id="badgeVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+    <table id="badgeVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Default","Domyślna")}</td><td>${L("Recently added to the catalogue","Niedawno dodana do katalogu")}</td>
         <td><code>--nu-bg-primary</code>, <code>--nu-border-primary</code>, <code>--nu-fg-primary</code></td></tr>
       <tr><td><code>.soon</code></td><td>${L("Announced, not yet shipping","Zapowiedziana, jeszcze nie wysyłana")}</td>
@@ -2213,7 +2220,7 @@ const DS_SECTIONS = [
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Type","Typografia")}</td><td>${L(
+      <tr><td ${DS_COL_NAME}>${L("Type","Typografia")}</td><td>${L(
         `Label, ${dsTok("--nu-text-label")}, uppercase, tracking ${dsTok("--nu-tracking-caps")}, line-height 1`,
         `Label, ${dsTok("--nu-text-label")}, wersaliki, światło ${dsTok("--nu-tracking-caps")}, interlinia 1`)}</td></tr>
       <tr><td>${L("Padding","Wypełnienie")}</td><td>${L(
@@ -2257,7 +2264,7 @@ const DS_SECTIONS = [
       <figure><div class="demo on-page"><span class="btn-ghost">Margaret Atwood</span></div>
         <figcaption>Ghost</figcaption></figure>
     </div>
-    <table id="btnTypes"><thead><tr><th>${L("Type","Typ")}</th><th>${L("Use","Zastosowanie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+    <table id="btnTypes"><thead><tr><th>${L("Type","Typ")}</th><th>${L("Use","Zastosowanie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Primary","Główny")}<br><code>.btn-primary</code></td><td>${L("The committing action &ndash; the most consequential thing a view offers, and the only one of its kind on that view. Add to cart, go to checkout, place order. Beside the tier class sit <code>.p-cta</code>, <code>.cart-cta</code> and <code>.order-btn</code>, holding only what the place requires &ndash; width, margin, the add-to-cart sequence","Akcja wiążąca &ndash; najważniejsza rzecz, jaką widok oferuje, i jedyna tego rodzaju w tym widoku. Dodaj do koszyka, przejdź do kasy, zamów. Obok klasy stopnia stoją <code>.p-cta</code>, <code>.cart-cta</code> i <code>.order-btn</code>, trzymające wyłącznie to, czego wymaga miejsce &ndash; szerokość, margines, sekwencję dodawania do koszyka")}</td>
         <td><code>--nu-bg-action</code> ${L("body","korpus")}, <code>--nu-bg-action-glow</code> ${L("edges","krawędzie")}, <code>--nu-bg-action-glow-deep</code> ${L("aura","aura")}, <code>--nu-bg-primary</code> ${L("upper edge","górna krawędź")}, <code>--nu-bg-inverse</code> ${L("contact shadow","cień styku")}, <code>--nu-fg-inverse</code> ${L("label","napis")}</td></tr>
       <tr><td>${L("Secondary","Drugorzędny")}<br><code>.btn-secondary</code></td><td>${L("A supporting action, standing beside a primary or a field without competing with it. Applying a discount code. The same glass construction without colour &ndash; a grey body a step darker than the page, outlined in <code>--nu-bg-tertiary</code>. There is no burgundy aura; a shallow grey shadow stays underneath. Hover works as it does on the primary &ndash; the light around the button grows and the body stays put","Akcja wspierająca, stojąca obok głównej albo obok pola, nie konkurując z nimi. Zastosowanie kodu rabatowego. Ta sama konstrukcja szkła, bez koloru &ndash; szary korpus o stopień ciemniejszy niż tło, obrysowany <code>--nu-bg-tertiary</code>. Nie ma burgundowej aury; pod spodem zostaje płytki szary cień. Najechanie działa tak jak w głównym &ndash; światło wokół przycisku rośnie, a korpus zostaje na miejscu")}</td>
@@ -2269,7 +2276,7 @@ const DS_SECTIONS = [
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Padding","Wypełnienie")}</td><td>${L(
+      <tr><td ${DS_COL_NAME}>${L("Padding","Wypełnienie")}</td><td>${L(
         `Primary: ${dsTok("--nu-space-milli")} vertical, ${dsTok("--nu-space-xlarge")} horizontal. Secondary: the same vertical and ${dsTok("--nu-space-small")} horizontal.`,
         `Główny: ${dsTok("--nu-space-milli")} w pionie, ${dsTok("--nu-space-xlarge")} w poziomie. Drugorzędny: ten sam pion i poziom ${dsTok("--nu-space-small")}.`)}</td></tr>
       <tr><td>${L("Icon and label","Ikona i podpis")}</td><td>${L(
@@ -2338,7 +2345,7 @@ const DS_SECTIONS = [
       <button class="chip" type="button" aria-pressed="false"><span class="chip-t">Queer</span><sup>4</sup></button>
       <button class="chip" type="button" disabled><span class="chip-t">${L("Coming soon","Wkrótce")}</span><sup>0</sup></button>
     </div>
-    <table id="chipStates"><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+    <table id="chipStates"><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Default","Domyślny")}<br><code>[aria-pressed="false"]</code></td><td>${L("The facet is available and not selected; the underline is present but transparent, so selecting one shifts nothing","Kryterium dostępne i niezaznaczone; podkreślenie istnieje, ale jest przezroczyste, więc zaznaczenie niczego nie przesuwa")}</td>
         <td><code>--nu-fg-primary</code></td></tr>
       <tr><td>${L("Selected","Zaznaczony")}<br><code>[aria-pressed="true"]</code></td><td>${L("The state lives in the attribute, not in a class, so assistive technology reads it without help","Stan zapisany jest w atrybucie, nie w klasie, więc technologie wspomagające odczytują go bez dodatkowej pomocy")}</td>
@@ -2350,7 +2357,7 @@ const DS_SECTIONS = [
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Type","Typografia")}</td><td>${L(
+      <tr><td ${DS_COL_NAME}>${L("Type","Typografia")}</td><td>${L(
         "Body M, inherited from the page. A chip does not use the Label step and takes no uppercase or tracking.",
         "Body M, dziedziczone ze strony. Chip nie używa stopnia Label i nie przyjmuje ani wersalików, ani światła.")}</td></tr>
       <tr><td>${L("Count","Licznik")}</td><td>${L(
@@ -2386,7 +2393,7 @@ const DS_SECTIONS = [
       <span class="link">${L("Design system","System projektowy")}</span>
       <span class="link has-icon">${ICON_BACK}<span class="lbl">${L("Back to shop","Wróć do sklepu")}</span></span>
     </div>
-    <table id="linkVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+    <table id="linkVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Default","Domyślny")}</td>
         <td>${L("Moves forward, to somewhere the reader has not been: the design system from the footer.","Prowadzi naprzód, w miejsce, w którym czytelniczka jeszcze nie była: system projektowy ze stopki.")}</td>
         <td><code>--nu-fg-primary</code>; ${L("on hover","przy najechaniu")} <code>--nu-fg-secondary</code> ${L("and the underline in","a podkreślenie w")} <code>currentColor</code></td></tr>
@@ -2396,7 +2403,7 @@ const DS_SECTIONS = [
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Colour","Kolor")}</td><td>${L(
+      <tr><td ${DS_COL_NAME}>${L("Colour","Kolor")}</td><td>${L(
         "<code>--nu-fg-primary</code> at rest, <code>--nu-fg-secondary</code> on hover &ndash; full strength first, lightening under the pointer. That is the tertiary button's register, and a link borrows it: both take the reader out of where they are, so they read as the same kind of offer. A link carries no fill and no box.",
         "<code>--nu-fg-primary</code> w spoczynku, <code>--nu-fg-secondary</code> przy najechaniu &ndash; najpierw pełna siła, potem rozjaśnienie pod kursorem. To rejestr przycisku trzeciorzędnego, a link go pożycza: oba wyprowadzają czytelniczkę z miejsca, w którym jest, więc czytają się jako ta sama propozycja. Link nie nosi ani wypełnienia, ani kontenera.")}</td></tr>
       <tr><td>${L("Underline","Podkreślenie")}</td><td>${L(
@@ -2433,7 +2440,7 @@ const DS_SECTIONS = [
       <div class="tile">${coverHTML(BOOKS[2])}</div>
       <div class="ci-cover">${coverHTML(BOOKS[2])}</div>
     </div>
-    <table id="tileVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+    <table id="tileVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Tile","Kafel")}<br><code>.tile</code></td>
         <td>${L("A field with a cover centred in it, and room for one badge. The grid and the product page carry the same tile at two scales, which is what lets opening a book be one uninterrupted zoom.","Pole z wyśrodkowaną okładką i miejscem na jedną odznakę. Siatka i karta produktu mają ten sam kafel w dwóch skalach i to właśnie pozwala, by otwarcie książki było jednym nieprzerwanym powiększeniem.")}</td>
         <td><code>--nu-bg-secondary</code>, ${dsTok("--nu-cover-w")}</td></tr>
@@ -2443,7 +2450,7 @@ const DS_SECTIONS = [
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Tile ratio","Proporcje kafla")}</td><td>${L(
+      <tr><td ${DS_COL_NAME}>${L("Tile ratio","Proporcje kafla")}</td><td>${L(
         "4:5, the same in the grid and on the product page.","4:5, takie same w siatce i na karcie produktu.")}</td></tr>
       <tr><td>${L("Tile surface","Powierzchnia kafla")}</td><td><code>--nu-bg-secondary</code></td></tr>
       <tr><td>${L("Cover ratio","Proporcje okładki")}</td><td>${L(
@@ -2488,7 +2495,7 @@ const DS_SECTIONS = [
     <p class="note">${L(
       "Both specimens work: raise the left one and its minus becomes active.",
       "Oba okazy działają: podnieś lewy, a jego minus stanie się aktywny.")}</p>
-    <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+    <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Default","Domyślny")}</td>
         <td>${L("Two or more copies. Both buttons work.","Dwa egzemplarze lub więcej. Oba przyciski działają.")}</td>
         <td><code>--nu-fg-primary</code>, <code>--nu-border-neutral</code></td></tr>
@@ -2501,7 +2508,7 @@ const DS_SECTIONS = [
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Button size","Rozmiar przycisku")}</td><td>${L(
+      <tr><td ${DS_COL_NAME}>${L("Button size","Rozmiar przycisku")}</td><td>${L(
         `${dsTok("--nu-control-sm")} square, the smallest touch target in the shop. WCAG asks for 24&times;24 CSS px, which this exceeds with a margin.`,
         `Kwadrat ${dsTok("--nu-control-sm")}, najmniejsze pole dotyku w sklepie. WCAG wymaga 24&times;24 px CSS, co ta wartość przekracza z zapasem.`)}</td></tr>
       <tr><td>${L("Value column","Kolumna wartości")}</td><td>${L(
@@ -2550,7 +2557,7 @@ const DS_SECTIONS = [
         <figcaption>${L("Error","Błąd")}</figcaption>
       </figure>
     </div>
-    <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+    <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Default","Domyślny")}</td>
         <td>${L("Empty, or holding a value that passed the check.","Pole puste albo z wartością, która przeszła sprawdzenie.")}</td>
         <td><code>--nu-border-neutral</code>, <code>--nu-bg-primary</code></td></tr>
@@ -2563,7 +2570,7 @@ const DS_SECTIONS = [
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Border","Ramka")}</td><td>${L(
+      <tr><td ${DS_COL_NAME}>${L("Border","Ramka")}</td><td>${L(
         "1px <code>--nu-border-neutral</code>, square corners. The corners are declared rather than left alone, because iOS rounds a text field by default.",
         "1px <code>--nu-border-neutral</code>, narożniki ostre. Narożniki są zadeklarowane, a nie zostawione, bo na iOS pole tekstowe jest domyślnie zaokrąglone.")}</td></tr>
       <tr><td>${L("Padding","Wypełnienie")}</td><td>${dsTok("--nu-space-milli")} ${L("on every side","z każdej strony")}</td></tr>
@@ -2605,7 +2612,7 @@ const DS_SECTIONS = [
         </span>
       </div>
     </div>
-    <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+    <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Default","Domyślny")}</td>
         <td>${L("Shows the chosen option.","Pokazuje wybraną opcję.")}</td>
         <td><code>--nu-border-neutral</code>, <code>--nu-bg-primary</code></td></tr>
@@ -2615,7 +2622,7 @@ const DS_SECTIONS = [
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Border","Ramka")}</td><td>${L(
+      <tr><td ${DS_COL_NAME}>${L("Border","Ramka")}</td><td>${L(
         "The same box as a text field &ndash; 1px <code>--nu-border-neutral</code>, square corners, padding ",
         "Ta sama ramka co w polu tekstowym &ndash; 1px <code>--nu-border-neutral</code>, narożniki ostre, wypełnienie ")}${dsTok("--nu-space-milli")}${L(
         " &ndash; declared here rather than borrowed.",
@@ -2648,7 +2655,7 @@ const DS_SECTIONS = [
 
     <h3>${L("Layout","Układ")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Field","Pole")}<br><code>.field</code></td><td>${L(
+      <tr><td ${DS_COL_NAME}>${L("Field","Pole")}<br><code>.field</code></td><td>${L(
         "Label above, control below, message under the control. The class carries the layout and nothing else &ndash; the border belongs to the control.",
         "Etykieta nad kontrolką, kontrolka, komunikat pod nią. Klasa niesie sam układ &ndash; ramka należy do kontrolki.")}</td></tr>
       <tr><td>${L("Label","Etykieta")}</td><td>${L(
@@ -2712,7 +2719,7 @@ const DS_SECTIONS = [
 
     <h3>${L("Error state","Stan błędu")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("When it appears","Kiedy się pojawia")}</td><td>${L(
+      <tr><td ${DS_COL_NAME}>${L("When it appears","Kiedy się pojawia")}</td><td>${L(
         "On leaving a field the reader has typed in, and on submit for everything. A field nobody has typed in says nothing on the way out: leaving an empty field is not a mistake, it is a reader who has not got there.",
         "Przy opuszczeniu pola, w którym czytelniczka pisała, i przy wysyłce dla wszystkiego. Pole, w którym nikt nie pisał, przy wyjściu milczy: opuszczenie pustego pola nie jest pomyłką, tylko czytelniczką, która jeszcze tam nie dotarła.")}</td></tr>
       <tr><td>${L("When it goes","Kiedy znika")}</td><td>${L(
@@ -2734,7 +2741,7 @@ const DS_SECTIONS = [
 
     <h3>${L("Choices and consents","Wybór i zgody")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Choice row","Wiersz wyboru")}<br><code>.opt</code></td><td>${L(
+      <tr><td ${DS_COL_NAME}>${L("Choice row","Wiersz wyboru")}<br><code>.opt</code></td><td>${L(
         `A radio button, a name, a note and a price in one bordered row &ndash; delivery method and payment method. The whole row is a <code>label</code>, so the click target is the row and not the dot. The border answers the pointer with <code>--nu-border-hover</code> and the chosen row holds <code>--nu-border-primary</code>.`,
         `Przycisk radio, nazwa, dopisek i cena w jednym obramowanym wierszu &ndash; sposób dostawy i metoda płatności. Cały wiersz jest elementem <code>label</code>, więc celem kliknięcia jest wiersz, a nie kropka. Ramka odpowiada na wskaźnik kolorem <code>--nu-border-hover</code>, a wiersz wybrany trzyma <code>--nu-border-primary</code>.`)}</td></tr>
       <tr><td>${L("Consent","Zgoda")}<br><code>.consent</code></td><td>${L(
@@ -2766,7 +2773,7 @@ const DS_SECTIONS = [
       "The shop is fully bilingual (PL / EN) and dual-currency (PLN / EUR). No string is hard-coded in markup &ndash; everything resolves through <code>I18N</code>. This documentation follows the same rule.",
       "Sklep jest w pełni dwujęzyczny (PL / EN) i dwuwalutowy (PLN / EUR). Żaden tekst nie jest wpisany na sztywno &ndash; wszystko rozwiązuje się przez <code>I18N</code>. Ta dokumentacja stosuje tę samą zasadę.")}</p>
     <table><tbody>
-      <tr><td style="width:190px">${L("Book copy","Teksty książek")}</td><td>${L("Plain hyphens, never em dashes","Zwykłe myślniki, nigdy długie")}</td></tr>
+      <tr><td ${DS_COL_NAME}>${L("Book copy","Teksty książek")}</td><td>${L("Plain hyphens, never em dashes","Zwykłe myślniki, nigdy długie")}</td></tr>
       <tr><td>${L("Quote attribution","Podpis pod cytatem")}</td><td>${L("Em dash + speaker (&ldquo;&ndash;&nbsp;Offred&rdquo;), at 72% opacity so the rule doesn't outweigh the type","Długi myślnik + postać („&ndash;&nbsp;Offred”), przy 72% krycia, żeby kreska nie przeważyła nad tekstem")}</td></tr>
       <tr><td>${L("Prices","Ceny")}</td><td>${L("Tabular numerals. PLN with a comma (59,90&nbsp;z&#322;), EUR with a dot (&euro;14.00)","Cyfry tabelaryczne. PLN z przecinkiem (59,90&nbsp;z&#322;), EUR z kropką (&euro;14.00)")}</td></tr>
       <tr><td>${L("Filter counts","Liczniki filtrów")}</td><td>${L("Always reflect the current combination of other filters; options that would return zero are disabled","Zawsze odzwierciedlają bieżącą kombinację pozostałych filtrów; opcje bez wyników są wyłączone")}</td></tr>
