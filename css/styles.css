@@ -689,6 +689,12 @@
     transform-origin:center;
     transition:box-shadow .18s ease, background .25s ease, transform .12s ease;
   }
+  /* Colour and light still answer the pointer; only the 1px press stops being
+     eased, so nothing on the page travels. */
+  @media (prefers-reduced-motion:reduce){
+    .btn-primary,
+    .btn-secondary{transition:box-shadow .18s ease, background .25s ease}
+  }
   /* Same move as the primary: the body holds its colour and the light around it
      grows — highlight up, inner shading deeper, drop shadow longer. Swapping the
      ground for a darker mix, as this used to, reads as a different button rather
@@ -757,6 +763,10 @@
     transition:opacity .25s ease, transform .25s ease;
   }
   .ci.removing{opacity:0;transform:translateX(14px)}
+  /* The row still leaves, it just stops travelling on the way out. */
+  @media (prefers-reduced-motion:reduce){
+    .ci{transition:none}
+  }
   .ci-cover{width:var(--nu-thumb-sm);flex-shrink:0}
   .ci-cover .cover{width:100%;max-width:none;box-shadow:0 2px 8px color-mix(in srgb, var(--nu-bg-inverse) 18%, transparent)}
   .ci-main{flex:1;min-width:0}
@@ -782,6 +792,10 @@
   .fs-note{color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-micro)}
   .fs-bar{height:2px;background:var(--nu-border-neutral);margin-bottom:var(--nu-space-medium);overflow:hidden}
   .fs-fill{height:100%;background:var(--nu-fg-primary);transition:width .45s ease}
+  /* The bar shows the new length instead of growing into it. */
+  @media (prefers-reduced-motion:reduce){
+    .fs-fill{transition:none}
+  }
   .sum-row{display:flex;justify-content:space-between;padding:var(--nu-space-nano) 0;font-variant-numeric:tabular-nums}
   .sum-row.muted{color:var(--nu-fg-secondary);font-size:var(--nu-text-body-m)}
   .sum-row.total{font-size:var(--nu-text-body-l);padding-top:var(--nu-space-milli);margin-top:var(--nu-space-micro);border-top:1px solid var(--nu-border-neutral)}
@@ -1324,6 +1338,7 @@
   }
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
   @media (prefers-reduced-motion:reduce){
+    .filters{transition:none}
     body.fsheet .shop .filters{animation:none}
     body.fsheet.fsheet-out .shop .filters{transition:none}
     .sheet-backdrop{transition:none}
