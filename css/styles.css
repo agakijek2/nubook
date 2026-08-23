@@ -840,6 +840,11 @@
     grid-template-rows:auto auto auto;gap:0 var(--nu-space-milli);
   }
   .f-addr .field{display:grid;grid-template-rows:subgrid;grid-row:span 3}
+  /* The label row is as tall as the tallest label, so a short label would float
+     above its control while a two-line one sat right on top of its own. Every
+     label goes to the bottom of that row instead, and each one keeps the same
+     distance from the control it names. */
+  .f-addr .field label{align-self:end}
   /* Two components, not one built out of the other. They declare the same box
      twice on purpose: a shared selector list is what made a select impossible to
      place outside a form field, and made a group of two controls undo somebody
