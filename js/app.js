@@ -2755,18 +2755,20 @@ const DS_SECTIONS = [
     <h1>${L("Motion","Ruch")}</h1>
     <p class="ds-lede">${L("Animation shows where something came from or where it went.","Animacja pokazuje, skąd coś przyszło albo dokąd odeszło.")}</p>
     <table><thead><tr><th>${L("Transition","Przejście")}</th><th>${L("Duration","Czas")}</th><th>${L("Curve","Krzywa")}</th><th>${L("Why","Po co")}</th></tr></thead><tbody>
-      <tr><td>${L("Open a product","Otwarcie produktu")}</td><td>560ms</td><td>ease-out</td>
+      <tr><td>${L("Open a product","Otwarcie produktu")}</td><td>560ms</td><td><code>cubic-bezier(.22,.8,.2,1)</code></td>
         <td>${L("Tile zooms to the packshot; info and CTA dissolve after it lands, in that order","Kafel powiększa się do packshotu; informacje i przycisk rozpuszczają się po wylądowaniu, w tej kolejności")}</td></tr>
       <tr><td>${L("Toggle filters","Przełączenie filtrów")}</td><td>${L("280ms tiles / 90ms column","280ms kafle / 90ms kolumna")}</td><td>linear</td>
         <td>${L("Tiles resize in place; the column clears first so nothing overlaps","Kafle skalują się w miejscu; kolumna znika pierwsza, żeby nic na siebie nie nachodziło")}</td></tr>
-      <tr><td>${L("First paint of the grid","Pierwsze wyświetlenie siatki")}</td><td>~900ms</td><td>ease</td>
+      <tr><td>${L("First paint of the grid","Pierwsze wyświetlenie siatki")}</td><td>${L("550ms a card, starts spread over 900ms","550ms na kartę, starty rozłożone w 900ms")}</td><td>ease</td>
         <td>${L("Cards dissolve in a random order &ndash; a mosaic, shown once per visit","Karty pojawiają się w losowej kolejności &ndash; mozaika, raz na wizytę")}</td></tr>
-      <tr><td>${L("Add to cart","Dodanie do koszyka")}</td><td>180&ndash;350ms</td><td>ease</td>
+      <tr><td>${L("Add to cart","Dodanie do koszyka")}</td><td>160&ndash;380ms</td><td>${L("ease, the drawer on a curve of its own","ease, szuflada na własnej krzywej")}</td>
         <td>${L("Label crossfades, counter fades in, drawer follows","Napis przenika, licznik się pojawia, potem wysuwa się szuflada")}</td></tr>
       <tr><td>${L("Logo accent","Akcent w logo")}</td><td>${L("26s loop","pętla 26s")}</td><td>ease-in-out</td>
         <td>${L("The dot blooms into a rainbow glow once per cycle &ndash; a rare accent, not a loop that demands attention","Kropka raz na cykl rozkwita tęczową poświatą &ndash; rzadki akcent, nie pętla domagająca się uwagi")}</td></tr>
     </tbody></table>
-    <p class="note">${L("Every rule above is disabled under <code>prefers-reduced-motion: reduce</code>.","Każda z powyższych reguł wyłącza się przy <code>prefers-reduced-motion: reduce</code>.")}</p>` },
+    <p class="note">${L(
+      "All of the movement above yields to <code>prefers-reduced-motion: reduce</code>, in two places: the logo, the mosaic, the counter, the drawer and the button label through a rule in the stylesheet, and opening a product and toggling the filters through the script, which checks the setting before it runs.",
+      "Cały powyższy ruch ustępuje przy <code>prefers-reduced-motion: reduce</code>, w dwóch miejscach: logo, mozaika, licznik, szuflada i napis przycisku przez regułę w arkuszu, a otwarcie produktu i przełączenie filtrów przez skrypt, który sprawdza to ustawienie przed uruchomieniem.")}</p>` },
 
   { group:{en:"Patterns",pl:"Wzorce"}, id:"content", label:{en:"Content",pl:"Treść"}, body: ()=>`
     <h1>${L("Content","Treść")}</h1>
