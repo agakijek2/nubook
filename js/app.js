@@ -1641,10 +1641,10 @@ const DS_SECTIONS = [
     <table><tbody>
       <tr><td style="width:190px"><strong>${L("Quiet by default","Domyślnie cicho")}</strong></td>
           <td>${L("The books carry the colour. The interface is white, hairlines and near-black type.",
-                  "Kolor niosą książki. Interfejs to biel, cienkie linie i niemal czarna typografia.")}</td></tr>
+                  "Kolor wnoszą książki. Interfejs to biel, cienkie linie i niemal czarna typografia.")}</td></tr>
       <tr><td><strong>${L("One committing action","Jedna akcja wiążąca")}</strong></td>
           <td>${L("A view carries at most one primary button, built as dark translucent glass. Below it stand three lighter tiers &ndash; secondary, tertiary and ghost &ndash; and beside them the chip and the link.",
-                  "Widok niesie najwyżej jeden przycisk główny, zbudowany jako ciemne, półprzezroczyste szkło. Pod nim stoją trzy lżejsze stopnie &ndash; drugorzędny, trzeciorzędny i ghost &ndash; a obok nich chip i link.")}</td></tr>
+                  "Widok ma najwyżej jeden przycisk główny, zbudowany jako ciemne, półprzezroczyste szkło. Pod nim stoją trzy lżejsze stopnie &ndash; drugorzędny, trzeciorzędny i ghost &ndash; a obok nich chip i link.")}</td></tr>
       <tr><td><strong>${L("Motion explains","Ruch objaśnia")}</strong></td>
           <td>${L("Animation shows where something came from or where it went. That is its only job.",
                   "Animacja pokazuje, skąd coś przyszło albo dokąd odeszło. To jej jedyne zadanie.")}</td></tr>
@@ -2035,7 +2035,7 @@ const DS_SECTIONS = [
     </tbody></table>
     <p class="note">${L(
       "The icon is marked <code>aria-hidden</code> and the name is carried by the control: its visible text, or an <code>aria-label</code> where the control shows the icon alone. Every icon in the shop is on this list and follows the rules above.",
-      "Ikona jest oznaczona <code>aria-hidden</code>, a nazwę niesie kontrolka: jej widoczny tekst albo <code>aria-label</code>, gdy kontrolka pokazuje samą ikonę. Każda ikona w sklepie jest na tej liście i trzyma się powyższych reguł.")}</p>` },
+      "Ikona jest oznaczona <code>aria-hidden</code>, a nazwę ma kontrolka: jej widoczny tekst albo <code>aria-label</code>, gdy kontrolka pokazuje samą ikonę. Każda ikona w sklepie jest na tej liście i trzyma się powyższych reguł.")}</p>` },
 
   { group:{en:"Components",pl:"Komponenty"}, id:"badge", label:{en:"Badge",pl:"Odznaka"}, body: ()=>`
     <h1>${L("Badge","Odznaka")}</h1>
@@ -2097,7 +2097,7 @@ const DS_SECTIONS = [
     <h1>${L("Button","Przycisk")}</h1>
     <p class="ds-lede">${L(
       "A button initiates an action: something happens in place, on the page the reader is already on &ndash; a title enters the cart, an order is placed, a panel opens. The four tiers differ in how much weight that action carries. When the point is to move the reader elsewhere &ndash; another page of the shop, or an external address &ndash; the element is a link, whatever it looks like.",
-      "Przycisk inicjuje akcję: coś dzieje się na miejscu, na stronie, na której czytelniczka już jest &ndash; tytuł trafia do koszyka, zamówienie zostaje złożone, otwiera się panel. Cztery stopnie różnią się wagą, jaką ta akcja niesie. Kiedy celem jest przeniesienie czytelniczki gdzie indziej &ndash; na inną stronę sklepu albo pod adres zewnętrzny &ndash; elementem jest link, niezależnie od tego, jak wygląda.")}</p>
+      "Przycisk inicjuje akcję: coś dzieje się na miejscu, na stronie, na której czytelniczka już jest &ndash; tytuł trafia do koszyka, zamówienie zostaje złożone, otwiera się panel. Cztery stopnie różnią się wagą tej akcji. Kiedy celem jest przeniesienie czytelniczki gdzie indziej &ndash; na inną stronę sklepu albo pod adres zewnętrzny &ndash; elementem jest link, niezależnie od tego, jak wygląda.")}</p>
     <div class="ds-specimens ds-buttons">
       <figure><div class="demo on-page"><span class="btn-primary">${L("Add to cart","Dodaj do koszyka")}</span></div>
         <figcaption>${L("Primary","Główny")}</figcaption></figure>
@@ -2213,10 +2213,10 @@ const DS_SECTIONS = [
         "<code>sup</code> w stopniu Caption i kolorze <code>--nu-fg-tertiary</code>, podający, ile wyników dałoby kryterium przy wszystkich pozostałych ustawionych filtrach. Chipy w nagłówku licznika nie noszą: para języka albo waluty nie ma czego liczyć.")}</td></tr>
       <tr><td>${L("Padding","Wypełnienie")}</td><td>${L(
         "1px below the label, none elsewhere. One of the few literal pixel values in the shop: it separates the text from its own underline and sits below the spacing scale, which starts four times higher. The underline is carried by <code>.chip-t</code> rather than by the button, so it stops before the count.",
-        "1px pod etykietą, zero poza nią. Jedna z nielicznych dosłownych wartości w sklepie: oddziela tekst od własnego podkreślenia i leży poniżej skali odstępów, która zaczyna się czterokrotnie wyżej. Podkreślenie niesie <code>.chip-t</code>, a nie przycisk, więc kończy się przed licznikiem.")}</td></tr>
+        "1px pod etykietą, zero poza nią. Jedna z nielicznych dosłownych wartości w sklepie: oddziela tekst od własnego podkreślenia i leży poniżej skali odstępów, która zaczyna się czterokrotnie wyżej. Podkreślenie rysuje <code>.chip-t</code>, a nie przycisk, więc kończy się przed licznikiem.")}</td></tr>
       <tr><td>${L("Row","Rząd")}</td><td>${L(
         `Filter chips wrap in <code>.chip-row</code> with ${dsTok("--nu-space-nano")} between lines and ${dsTok("--nu-space-small")} between chips, aligned on the baseline so the counts line up. The row is also the unit of meaning: it carries <code>role=&quot;group&quot;</code> and takes its name from the heading above it, so a chip is never read out without the facet it belongs to. The header pairs stand in <code>.sw-group</code> instead: two options either side of a slash, no wrapping, and the group name written into an <code>aria-label</code>, there being no heading above them.`,
-        `Chipy filtrów zawijają się w <code>.chip-row</code> z ${dsTok("--nu-space-nano")} między wierszami i ${dsTok("--nu-space-small")} między chipami, wyrównane do linii pisma, żeby liczniki stały w jednej linii. Rząd jest też jednostką znaczeniową: niesie <code>role=&quot;group&quot;</code> i bierze nazwę z nagłówka nad sobą, więc chip nigdy nie zostaje odczytany bez kryterium, do którego należy. Pary w nagłówku stoją w <code>.sw-group</code>: dwie opcje po obu stronach ukośnika, bez zawijania, z nazwą grupy wpisaną w <code>aria-label</code>, bo nie mają nad sobą nagłówka.`)}</td></tr>
+        `Chipy filtrów zawijają się w <code>.chip-row</code> z ${dsTok("--nu-space-nano")} między wierszami i ${dsTok("--nu-space-small")} między chipami, wyrównane do linii pisma, żeby liczniki stały w jednej linii. Rząd jest też jednostką znaczeniową: ma <code>role=&quot;group&quot;</code> i bierze nazwę z nagłówka nad sobą, więc chip nigdy nie zostaje odczytany bez kryterium, do którego należy. Pary w nagłówku stoją w <code>.sw-group</code>: dwie opcje po obu stronach ukośnika, bez zawijania, z nazwą grupy wpisaną w <code>aria-label</code>, bo nie mają nad sobą nagłówka.`)}</td></tr>
       <tr><td>${L("Focus","Fokus")}</td><td>${L(
         "<code>1.5px solid var(--nu-border-primary)</code> at a 2px offset &ndash; tighter than a button's 3px, because a chip has no box of its own to clear.",
         "<code>1.5px solid var(--nu-border-primary)</code> z odsunięciem 2px &ndash; ciaśniej niż 3px przycisku, bo chip nie ma własnego kontenera do ominięcia.")}</td></tr>
@@ -2290,7 +2290,7 @@ const DS_SECTIONS = [
     </div>
     <table id="tileVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Tile","Kafel")}<br><code>.tile</code></td>
-        <td>${L("A field with a cover centred in it, and room for one badge. The grid and the product page carry the same tile at two scales, which is what lets opening a book be one uninterrupted zoom.","Pole z wyśrodkowaną okładką i miejscem na jedną odznakę. Siatka i karta produktu niosą ten sam kafel w dwóch skalach i to właśnie pozwala, by otwarcie książki było jednym nieprzerwanym powiększeniem.")}</td>
+        <td>${L("A field with a cover centred in it, and room for one badge. The grid and the product page carry the same tile at two scales, which is what lets opening a book be one uninterrupted zoom.","Pole z wyśrodkowaną okładką i miejscem na jedną odznakę. Siatka i karta produktu mają ten sam kafel w dwóch skalach i to właśnie pozwala, by otwarcie książki było jednym nieprzerwanym powiększeniem.")}</td>
         <td><code>--nu-bg-secondary</code>, ${dsTok("--nu-cover-w")}</td></tr>
       <tr><td>${L("Thumbnail","Miniatura")}<br><code>.ci-cover</code></td>
         <td>${L("The cover alone: no field, no badge, and a width of its own. Used in the cart drawer and on the cart page, where a title only has to be recognisable in a list.","Sama okładka: bez pola, bez odznaki, z własną szerokością. Używana w szufladzie koszyka i na stronie koszyka, gdzie tytuł ma być tylko rozpoznawalny na liście.")}</td>
@@ -2306,7 +2306,7 @@ const DS_SECTIONS = [
         "7:10, trzymane przez pole, a nie przez obrazek, więc okładka o dowolnych proporcjach jest kadrowana do jednego kształtu w całym sklepie.")}</td></tr>
       <tr><td>${L("Cover width","Szerokość okładki")}</td><td>${L(
         `Inside a tile: ${dsTok("--nu-cover-w")} of it, one value per breakpoint. Standing alone, the cover fills its thumbnail instead, and the thumbnail carries the width: ${dsTok("--nu-thumb-sm")} in the cart drawer, ${dsTok("--nu-thumb-md")} on the cart page.`,
-        `W kaflu: ${dsTok("--nu-cover-w")} jego szerokości, jedna wartość na próg. Stojąc sama, okładka wypełnia miniaturę, a szerokość niesie miniatura: ${dsTok("--nu-thumb-sm")} w szufladzie koszyka, ${dsTok("--nu-thumb-md")} na stronie koszyka.`)}</td></tr>
+        `W kaflu: ${dsTok("--nu-cover-w")} jego szerokości, jedna wartość na próg. Stojąc sama, okładka wypełnia miniaturę, a szerokość ma miniatura: ${dsTok("--nu-thumb-sm")} w szufladzie koszyka, ${dsTok("--nu-thumb-md")} na stronie koszyka.`)}</td></tr>
       <tr><td>${L("Shadow","Cień")}</td><td>${L(
         "The cover casts a shadow, the tile does not &ndash; that is what separates the two. A thumbnail casts a shallower one, because it stands in a list rather than on a surface.",
         "Cień rzuca okładka, nie kafel &ndash; dzięki temu odcina się od pola. Miniatura rzuca płytszy, bo stoi na liście, a nie na powierzchni.")}</td></tr>
@@ -2341,14 +2341,14 @@ const DS_SECTIONS = [
       ${qtyHTML(-2, 3)}
     </div>
     <p class="note">${L(
-      "Both specimens work: raise the left one and its minus wakes up.",
-      "Oba okazy działają: podnieś lewy, a jego minus się obudzi.")}</p>
+      "Both specimens work: raise the left one and its minus becomes active.",
+      "Oba okazy działają: podnieś lewy, a jego minus stanie się aktywny.")}</p>
     <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Default","Domyślny")}</td>
         <td>${L("Two or more copies. Both buttons work.","Dwa egzemplarze lub więcej. Oba przyciski działają.")}</td>
         <td><code>--nu-fg-primary</code>, <code>--nu-border-neutral</code></td></tr>
       <tr><td>${L("One copy","Jedna sztuka")}<br><code>:disabled</code></td>
-        <td>${L("The minus is disabled. Taking the last copy away is what the Remove button does, and doing it from here would be a different action wearing the same face.","Minus jest wyłączony. Zabranie ostatniego egzemplarza należy do przycisku „Usuń”, a zrobienie tego stąd byłoby inną akcją pod tą samą twarzą.")}</td>
+        <td>${L("The minus is disabled. Taking the last copy away is what the Remove button does, and doing it from here would put two different actions under one button.","Minus jest wyłączony. Zabranie ostatniego egzemplarza należy do przycisku „Usuń”, a wykonanie tego stąd oznaczałoby dwie różne czynności pod jednym przyciskiem.")}</td>
         <td><code>--nu-fg-tertiary</code></td></tr>
       <tr><td>Hover<br><code>:hover</code></td>
         <td>${L("The button cell fills, the outline stays put.","Komórka przycisku wypełnia się, obrys zostaje na miejscu.")}</td>
@@ -2357,27 +2357,27 @@ const DS_SECTIONS = [
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td style="width:190px">${L("Button size","Rozmiar przycisku")}</td><td>${L(
-        `${dsTok("--nu-control-sm")} square, the smallest touch target in the shop. WCAG asks for 24&times;24 CSS px and this keeps a margin over it.`,
-        `Kwadrat ${dsTok("--nu-control-sm")}, najmniejsze pole dotyku w sklepie. WCAG wymaga 24&times;24 px CSS, a ta wartość trzyma zapas ponad nim.`)}</td></tr>
+        `${dsTok("--nu-control-sm")} square, the smallest touch target in the shop. WCAG asks for 24&times;24 CSS px, which this exceeds with a margin.`,
+        `Kwadrat ${dsTok("--nu-control-sm")}, najmniejsze pole dotyku w sklepie. WCAG wymaga 24&times;24 px CSS, co ta wartość przekracza z zapasem.`)}</td></tr>
       <tr><td>${L("Value column","Kolumna wartości")}</td><td>${L(
-        `The same ${dsTok("--nu-control-sm")} as a minimum, in tabular figures, so the control does not resize between 9 and 10.`,
-        `Minimum ${dsTok("--nu-control-sm")}, tyle samo, cyframi tabelarycznymi, żeby kontrolka nie zmieniała szerokości między 9 a 10.`)}</td></tr>
+        `The same value as a minimum width, in tabular figures &ndash; that is what keeps the control from resizing between 9 and 10.`,
+        `Ta sama wartość jako szerokość minimalna, cyfry tabelaryczne &ndash; dzięki temu kontrolka nie zmienia szerokości między 9 a 10.`)}</td></tr>
       <tr><td>${L("Icons","Ikony")}</td><td>${L(
         "Minus and plus at the smaller of the two icon sizes, on the terms set out under Iconography. The plus is the same drawing the sort menu uses.",
         "Minus i plus w mniejszym z dwóch rozmiarów ikon, na zasadach opisanych w Ikonografii. Plus to ten sam rysunek, którego używa menu sortowania.")}</td></tr>
       <tr><td>${L("Name","Nazwa")}</td><td>${L(
         "Each button carries an <code>aria-label</code> naming the action, not the sign: a screen reader says &ldquo;increase quantity&rdquo; rather than &ldquo;plus&rdquo;.",
-        "Każdy przycisk niesie <code>aria-label</code> nazywający czynność, a nie znak: czytnik ekranu mówi „zwiększ ilość”, a nie „plus”.")}</td></tr>
+        "Każdy przycisk ma <code>aria-label</code> nazywający czynność, a nie znak: czytnik ekranu mówi „zwiększ ilość”, a nie „plus”.")}</td></tr>
       <tr><td>${L("Border","Obramowanie")}</td><td>${L(
         "1px <code>--nu-border-neutral</code> around the whole control, square corners. The buttons have none of their own &ndash; the outline holds all three cells together.",
         "1px <code>--nu-border-neutral</code> wokół całej kontrolki, narożniki ostre. Przyciski nie mają własnego &ndash; obrys spina wszystkie trzy komórki.")}</td></tr>
       <tr><td>${L("Paired with","W parze z")}</td><td>${L(
-        `A ghost button &ldquo;Remove&rdquo;, ${dsTok("--nu-space-micro")} below and aligned left. Counting down and removing are two actions, so they are two controls.`,
-        `Przyciskiem ghost „Usuń”, ${dsTok("--nu-space-micro")} niżej, wyrównanym do lewej. Odliczanie w dół i usuwanie to dwie czynności, więc są dwiema kontrolkami.`)}</td></tr>
+        `A ghost button &ldquo;Remove&rdquo;, ${dsTok("--nu-space-micro")} below and aligned left. Changing the count and removing the line are two actions, so they are two controls.`,
+        `Przyciskiem ghost „Usuń”, ${dsTok("--nu-space-micro")} niżej, wyrównanym do lewej. Zmiana liczby i usunięcie pozycji to dwie różne czynności, więc mają dwie kontrolki.`)}</td></tr>
     </tbody></table>
     <p class="note">${L(
-      "This tab has no live preview. The stepper's states live in its children and in the count, not in a class on the control, so a preview driven by class names would show something the component does not have.",
-      "Ta zakładka nie ma podglądu na żywo. Stany steppera mieszkają w jego dzieciach i w liczbie, a nie w klasie na kontrolce, więc podgląd sterowany nazwami klas pokazywałby coś, czego komponent nie ma.")}</p>` },
+      "This tab has no live preview. The stepper's state depends on the count and on whether the minus is disabled, not on a class on the control, so a preview driven by class names would show something the component does not have.",
+      "Ta zakładka nie ma podglądu na żywo. Stan steppera zależy od liczby i od tego, czy minus jest wyłączony, a nie od klasy na kontrolce, więc podgląd sterowany nazwami klas pokazywałby coś, czego komponent nie ma.")}</p>` },
 
   { group:{en:"Components",pl:"Komponenty"}, id:"field", label:{en:"Form field",pl:"Pole formularza"}, body: ()=>`
     <h1>${L("Form field","Pole formularza")}</h1>
