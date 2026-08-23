@@ -135,6 +135,11 @@
        a margin over it and sets the width of the value between the two buttons,
        so the control does not resize between 9 and 10. */
     --nu-control-sm:26px;
+    /* Fields whose content has a known length: a building or flat number, and
+       a dialling code of up to four digits. Written here once, so two fields
+       meant to match cannot drift apart. */
+    --nu-field-num:96px;
+    --nu-field-code:96px;
 
     --nu-icon-lg:24px;   --nu-icon-lg-inset:2px; --nu-icon-lg-stroke:1.5;
     --nu-icon-sm:16px;   --nu-icon-sm-inset:1px; --nu-icon-sm-stroke:1.25;
@@ -783,19 +788,15 @@
   .cart-cta{display:block;width:100%;text-align:center;margin-top:var(--nu-space-medium);padding:var(--nu-space-milli) 0}
   .cart-page-list .ci-cover{width:var(--nu-thumb-md)}
   .cart-page-list .ci{padding:var(--nu-space-medium) 0}
-  .disc-row{display:flex;gap:var(--nu-space-micro);margin-bottom:var(--nu-space-micro)}
-  .disc-row input{
-    flex:1;border:1px solid var(--nu-border-neutral);padding:var(--nu-space-milli) var(--nu-space-milli);font:inherit;background:var(--nu-bg-primary);
-    transition:border-color .2s ease;
-    text-transform:uppercase;letter-spacing:var(--nu-tracking-caps);
-  }
+  .disc-row{display:flex;gap:var(--nu-space-micro);margin-bottom:var(--nu-space-milli)}
+  /* The discount code is a text field with two things of its own: it grows into
+     the row and it reads in capitals. */
+  .disc-row .input{flex:1;text-transform:uppercase;letter-spacing:var(--nu-tracking-caps)}
   /* the code itself is uppercased as you type, but the hint stays sentence case -
      and drops the tracking with it, which belongs to capitals */
-  .disc-row input::placeholder{
-    text-transform:none;letter-spacing:var(--nu-tracking-body);color:var(--nu-fg-tertiary);
+  .disc-row .input::placeholder{
+    text-transform:none;letter-spacing:var(--nu-tracking-body);
   }
-  .disc-row input:focus{outline:none;border-color:var(--nu-border-primary)}
-  .disc-msg{font-size:var(--nu-text-label);color:var(--nu-fg-alert);min-height:15px;margin-bottom:var(--nu-space-milli)}
   .disc-applied{font-size:var(--nu-text-body-m);margin-bottom:var(--nu-space-milli)}
   .disc-applied .btn-ghost{margin-left:var(--nu-space-micro)}
 
@@ -826,28 +827,78 @@
   }
   .f-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--nu-space-milli)}
   .f-grid .wide{grid-column:1/-1}
-  .field input,.field select{
+  /* Street, building and flat are one address, so they share a row. The row
+     declares three tracks - label, control, message - and each field hands its
+     own three rows up to it through subgrid. That is what keeps the controls in
+     line: a label that wraps to two lines, or a message that appears under one
+     field, moves that row for the whole group instead of shifting one field
+     against its neighbours. Street takes what is left, the numbers take the
+     width they need. */
+  .f-addr{
+    grid-column:1/-1;display:grid;align-content:start;
+    grid-template-columns:1fr var(--nu-field-num) var(--nu-field-num);
+    grid-template-rows:auto auto auto;gap:0 var(--nu-space-milli);
+  }
+  .f-addr .field{display:grid;grid-template-rows:subgrid;grid-row:span 3}
+  /* Two components, not one built out of the other. They declare the same box
+     twice on purpose: a shared selector list is what made a select impossible to
+     place outside a form field, and made a group of two controls undo somebody
+     else's rule. */
+
+  /* Text field. */
+  .input{
     width:100%;box-sizing:border-box;
-    border:1px solid var(--nu-border-neutral);padding:var(--nu-space-milli);font:inherit;line-height:1.45;
-    background:var(--nu-bg-primary);transition:border-color .2s ease;border-radius:0;
+    border:1px solid var(--nu-border-neutral);border-radius:0;
+    padding:var(--nu-space-milli);font:inherit;line-height:1.45;
+    background:var(--nu-bg-primary);transition:border-color .2s ease;
   }
-  /* native selects render taller/shorter than inputs and park the arrow on the edge,
-     so draw our own caret and match the input box exactly */
-  .field select{
+  .input:focus{outline:none;border-color:var(--nu-border-primary)}
+  .input::placeholder{color:var(--nu-fg-tertiary)}
+  .input.is-error{border-color:var(--nu-border-alert)}
+
+  /* Select. Native selects render taller or shorter than a text field and park
+     their arrow on the edge, so the native look is dropped and the chevron is
+     drawn as an icon, which takes the field's own colour through currentColor.
+     The right padding is the room that chevron stands in. */
+  .select{
+    width:100%;box-sizing:border-box;
+    border:1px solid var(--nu-border-neutral);border-radius:0;
+    padding:var(--nu-space-milli);padding-right:var(--nu-space-xlarge);
+    font:inherit;line-height:1.45;
+    background:var(--nu-bg-primary);transition:border-color .2s ease;
     appearance:none;-webkit-appearance:none;-moz-appearance:none;
-    padding-right:var(--nu-space-xlarge);
   }
-  .field select::-ms-expand{display:none}
-  /* The caret was a data URI with a hex baked into the URL - a colour no token
-     owned, invisible to any audit that reads declarations. As an element it takes
-     the field's own colour through currentColor. */
+  .select::-ms-expand{display:none}
+  .select:focus{outline:none;border-color:var(--nu-border-primary)}
   .select-wrap{position:relative;display:block}
-  .select-wrap .ico-caret{
+  .select-wrap .ico-chevron{
     position:absolute;right:var(--nu-space-small);top:50%;
     transform:translateY(-50%);pointer-events:none;
   }
-  .field input:focus,.field select:focus{outline:none;border-color:var(--nu-border-primary)}
+
+  /* Two controls that are one answer stand side by side without a gap; the left
+     one gives up its right border, so the seam between them is a single line.
+     Focus and error take the whole group, otherwise the outline would change
+     colour halfway along its top edge. */
+  .f-group{display:grid;grid-template-columns:var(--nu-field-code) 1fr}
+  .f-group .select{border-right:0;padding-right:var(--nu-space-large)}
+  .f-group .ico-chevron{right:var(--nu-space-milli)}
+  .f-group:focus-within .select,
+  .f-group:focus-within .input{border-color:var(--nu-border-primary)}
+  .f-group:has(.is-error) .select{border-color:var(--nu-border-alert)}
+
   .field label{display:block;font-size:var(--nu-text-label);color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-nano)}
+  .f-hint{text-transform:none;letter-spacing:var(--nu-tracking-body);color:var(--nu-fg-tertiary)}
+  /* A line that stays empty until something is wrong. It pushes the fields below
+     it rather than reserving space in every one: eight fields holding a blank
+     line each would cost more than the shift costs when one is wrong. */
+  .field-msg{
+    font-size:var(--nu-text-label);color:var(--nu-fg-alert);
+    margin-top:var(--nu-space-nano);
+  }
+  .field-msg:empty{display:none}
+  /* A checkbox draws no border of its own, so the alert is an outline. */
+  .consent input.is-error{outline:1.5px solid var(--nu-border-alert);outline-offset:2px}
   .opt{
     display:flex;align-items:center;gap:var(--nu-space-milli);
     border:1px solid var(--nu-border-neutral);padding:var(--nu-space-milli) var(--nu-space-small);margin-bottom:var(--nu-space-micro);cursor:pointer;
@@ -1042,6 +1093,8 @@
   }
   .ds .ds-specimens figure{margin:0}
   .ds .ds-badges{grid-template-columns:repeat(3,1fr)}
+  .ds .ds-fields{grid-template-columns:repeat(2,1fr)}
+  .ds .ds-fields .demo{margin:0;display:block}
   .ds .ds-buttons,
   .ds .ds-links{grid-template-columns:repeat(2,1fr)}
   .ds .ds-buttons .demo,
@@ -1141,6 +1194,13 @@
     .co-grid{grid-template-columns:1fr;gap:var(--nu-space-large)}
     .co-side{position:static}
     .f-grid{grid-template-columns:1fr}
+    /* Narrow enough that a row of fields would cost more than it explains, so
+       the row unwinds: one field under another, subgrid off, ordinary gap on. */
+    .f-addr{
+      grid-template-columns:1fr;grid-template-rows:none;
+      gap:var(--nu-space-milli) 0;
+    }
+    .f-addr .field{display:block}
     header{
       padding:var(--nu-space-small) var(--nu-space-milli) var(--nu-space-milli);
       flex-wrap:wrap;align-items:center;row-gap:var(--nu-space-milli);

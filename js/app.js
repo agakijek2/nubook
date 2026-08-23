@@ -194,8 +194,15 @@ const I18N = {
     freeLeft:"away from free shipping", freeDone:"Free shipping unlocked!",
     coTitle:"Checkout", backShop:"Back to shop",
     secContact:"Contact & delivery address", secShip:"Delivery method", secPay:"Payment method", secConsent:"Consents",
-    fName:"Full name", fEmail:"E-mail", fPhone:"Phone", fStreet:"Street & number",
+    fName:"Full name", fEmail:"E-mail", fPhone:"Phone", fPrefix:"Prefix",
+    fStreet:"Street", fHouse:"No.", fFlat:"Flat", fFlatHint:"(optional)",
     fZip:"Postal code", fCity:"City", fCountry:"Country",
+    errRequired:"Fill in this field.",
+    errEmail:"Enter an address in the form name@domain.com.",
+    errPhone:"A phone number has 9 digits.",
+    errAlnum:"Digits and letters only.",
+    errZip:"A postal code has the form 00-000.",
+    errConsent:"Accepting the terms is required to place an order.",
     shipNames:{inpost:"InPost parcel locker", courier:"DPD courier", pickup:"Pick up at the bookshop"},
     shipDesc:{inpost:"1–2 business days", courier:"1–2 business days", pickup:"Wrocław, same day"},
     freeWord:"free",
@@ -240,8 +247,15 @@ const I18N = {
     freeLeft:"do darmowej dostawy", freeDone:"Masz darmową dostawę!",
     coTitle:"Zamówienie", backShop:"Wróć do sklepu",
     secContact:"Dane kontaktowe i adres dostawy", secShip:"Sposób dostawy", secPay:"Metoda płatności", secConsent:"Zgody",
-    fName:"Imię i nazwisko", fEmail:"E-mail", fPhone:"Telefon", fStreet:"Ulica i numer",
+    fName:"Imię i nazwisko", fEmail:"E-mail", fPhone:"Telefon", fPrefix:"Prefiks",
+    fStreet:"Ulica", fHouse:"Nr domu", fFlat:"Nr lokalu", fFlatHint:"(opcjonalnie)",
     fZip:"Kod pocztowy", fCity:"Miasto", fCountry:"Kraj",
+    errRequired:"Uzupełnij to pole.",
+    errEmail:"Podaj adres w postaci nazwa@domena.pl.",
+    errPhone:"Numer telefonu ma 9 cyfr.",
+    errAlnum:"Tylko cyfry i litery.",
+    errZip:"Kod pocztowy ma postać 00-000.",
+    errConsent:"Do złożenia zamówienia potrzebna jest akceptacja regulaminu.",
     shipNames:{inpost:"Paczkomat InPost", courier:"Kurier DPD", pickup:"Odbiór w księgarni"},
     shipDesc:{inpost:"1–2 dni robocze", courier:"1–2 dni robocze", pickup:"Wrocław, od ręki"},
     freeWord:"za darmo",
@@ -778,6 +792,8 @@ const ICON_PLUS = '<svg class="ico-sm ico-plus" viewBox="0 0 16 16" aria-hidden=
   '<path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg>';
 const ICON_CHECK = '<svg class="ico-check ico-sm" viewBox="0 0 16 16" aria-hidden="true">' +
   '<path d="M2.75 8.35l3.5 3.5 7-8.05"/></svg>';
+const ICON_CHEVRON = '<svg class="ico-chevron ico-sm" viewBox="0 0 16 16" aria-hidden="true">' +
+  '<path d="M3.5 6.25L8 10.75l4.5-4.5"/></svg>';
 /* A link that names where it goes is an <a>: it announces as a link, opens in a
    new tab on a middle click and hands its address to the context menu. Hash
    routing already listens for the address changing, so no handler is needed.
@@ -822,14 +838,15 @@ const shipCost = () => {
 };
 
 function applyDiscount(){
-  const inp = document.getElementById("discInput"),
-        msg = document.getElementById("discMsg");
+  const inp = document.getElementById("discInput");
   const code = (inp.value || "").trim().toUpperCase();
   if (DISCOUNTS[code]){
     discount = {code, pct: DISCOUNTS[code]};
     renderCartPage();
   } else {
-    msg.textContent = T().discountInvalid;
+    // a code that does not exist is a wrong value in a field, marked the way
+    // every other wrong value is
+    markField(inp, T().discountInvalid);
   }
 }
 function removeDiscount(){
@@ -1008,11 +1025,12 @@ function renderCartPage(){
         ? `<div class="disc-applied">${discount.code} (−${Math.round(discount.pct*100)}%)
              <button type="button" class="btn-ghost" onclick="removeDiscount()">${t.discountRemove}</button></div>`
         : `<div class="disc-row">
-             <input id="discInput" placeholder="${t.discountPh}"
+             <input class="input" id="discInput" aria-label="${t.discount}" placeholder="${t.discountPh}" aria-describedby="discMsg"
+               oninput="markField(this,'')"
                onkeydown="if(event.key==='Enter'){event.preventDefault();applyDiscount()}">
              <button class="btn-secondary" onclick="applyDiscount()">${t.discountApply}</button>
            </div>
-           <div class="disc-msg" id="discMsg"></div>`}
+           <p class="field-msg" id="discMsg"></p>`}
       <div style="margin-top:var(--nu-space-micro)">
         <div class="sum-row muted"><span>${t.subtotal}</span><span>${fmtMoney(sub)}</span></div>
         ${discount ? `<div class="sum-row muted"><span>${t.discountRow}</span><span>−${fmtMoney(disc)}</span></div>` : ""}
@@ -1029,6 +1047,81 @@ function renderCartPage(){
 const checkoutEl = document.getElementById("checkout"),
       coBarEl = document.getElementById("coBar"),
       doneEl = document.getElementById("doneView");
+
+/* One shape for every field: a label bound to its control by id, the control,
+   and a line underneath that stays empty until something is wrong. The message
+   is announced through aria-describedby, so a screen reader reads it as part of
+   the field rather than as loose text nearby. */
+const fieldHTML = (key, label, attrs = "", cls = "") => `
+  <div class="field${cls ? " " + cls : ""}">
+    <label for="f-${key}">${label}</label>
+    <input class="input" id="f-${key}" name="${key}" aria-describedby="e-${key}" ${attrs}>
+    <p class="field-msg" id="e-${key}"></p>
+  </div>`;
+
+/* What a field accepts and what it must end up being. The mask runs while the
+   reader types and only ever takes characters away, so nothing can be entered
+   that would later fail; the pattern is checked on leaving the field and on
+   submit. Both live here, side by side, because a mask that lets through what
+   the pattern rejects is the way these two drift apart. */
+/* One list, two controls: the dialling code and the country name are the same
+   six countries, so they are written once and read twice. */
+const COUNTRIES = [
+  {code: "48",  name: "Polska"},      {code: "49",  name: "Deutschland"},
+  {code: "420", name: "\u010cesko"},  {code: "421", name: "Slovensko"},
+  {code: "370", name: "Lietuva"},     {code: "43",  name: "\u00d6sterreich"},
+];
+
+const FORM_RULES = {
+  name:   {},
+  email:  {re: /^[^\s@]+@[^\s@.]+(\.[^\s@.]{2,})+$/, err: "errEmail"},
+  phone:  {mask: "digits", max: 9, re: /^\d{9}$/, err: "errPhone"},
+  street: {},
+  house:  {mask: "alnum", re: /^[\p{L}\d]+$/u, err: "errAlnum"},
+  flat:   {mask: "alnum", re: /^[\p{L}\d]+$/u, err: "errAlnum", optional: true},
+  zip:    {mask: "zip", re: /^\d{2}-\d{3}$/, err: "errZip"},
+  city:   {},
+  terms:  {err: "errConsent"},
+};
+const MASKS = {
+  digits: (v, max) => v.replace(/\D/g, "").slice(0, max),
+  alnum:  v => v.replace(/[^\p{L}\d]/gu, ""),
+  /* The hyphen is written by the field, not by the reader: five digits go in,
+     00-000 comes out. */
+  zip: v => {
+    const d = v.replace(/\D/g, "").slice(0, 5);
+    return d.length > 2 ? d.slice(0, 2) + "-" + d.slice(2) : d;
+  },
+};
+function fieldError(input){
+  const rule = FORM_RULES[input.name];
+  if (!rule) return "";
+  if (input.type === "checkbox") return input.checked ? "" : T()[rule.err];
+  const v = input.value.trim();
+  if (!v) return rule.optional ? "" : T().errRequired;
+  return rule.re && !rule.re.test(v) ? T()[rule.err] : "";
+}
+/* The message goes to the element the control already points at through
+   aria-describedby, so a container holding two controls — prefix and number —
+   writes each message under its own field. */
+function markField(input, msg){
+  const out = document.getElementById(input.getAttribute("aria-describedby"));
+  input.classList.toggle("is-error", !!msg);
+  input.setAttribute("aria-invalid", msg ? "true" : "false");
+  if (out) out.textContent = msg;
+}
+/* Returns the first field that failed, so the caller can put focus there:
+   an error the reader cannot find is an error twice over. */
+function validateForm(form){
+  let first = null;
+  form.querySelectorAll("input[name]").forEach(input => {
+    if (!(input.name in FORM_RULES)) return;
+    const msg = fieldError(input);
+    markField(input, msg);
+    if (msg && !first) first = input;
+  });
+  return first;
+}
 
 function shipRow(s){
   const t = T();
@@ -1054,19 +1147,36 @@ function renderCheckout(){
       <div class="co-sec">
         <h3>${t.secContact}</h3>
         <div class="f-grid">
-          <div class="field wide"><label>${t.fName}</label><input name="name" required autocomplete="name"></div>
-          <div class="field"><label>${t.fEmail}</label><input name="email" type="email" required autocomplete="email"></div>
-          <div class="field"><label>${t.fPhone}</label><input name="phone" type="tel" required autocomplete="tel"></div>
-          <div class="field wide"><label>${t.fStreet}</label><input name="street" required autocomplete="street-address"></div>
-          <div class="field"><label>${t.fZip}</label><input name="zip" required autocomplete="postal-code" placeholder="00-000"></div>
-          <div class="field"><label>${t.fCity}</label><input name="city" required autocomplete="address-level2"></div>
-          <div class="field wide"><label>${t.fCountry}</label>
+          ${fieldHTML("name", t.fName, 'required autocomplete="name"', "wide")}
+          ${fieldHTML("email", t.fEmail, 'type="email" required autocomplete="email" inputmode="email"')}
+          <div class="field">
+            <label for="f-phone">${t.fPhone}</label>
+            <div class="f-group">
+              <span class="select-wrap">
+                <select class="select" id="f-prefix" name="prefix" aria-label="${t.fPrefix}" autocomplete="tel-country-code">
+                  ${/* The country is the group's name, not the option's: a group label
+                        shows in the open list and never in the closed field, so the
+                        field holds digits only without anything rewriting it. */""}
+                  ${COUNTRIES.map(c => `<optgroup label="${c.name}"><option value="${c.code}">+${c.code}</option></optgroup>`).join("")}
+                </select>${ICON_CHEVRON}
+              </span>
+              <input class="input" id="f-phone" name="phone" type="tel" required inputmode="numeric"
+                autocomplete="tel-national" aria-describedby="e-phone">
+            </div>
+            <p class="field-msg" id="e-phone"></p>
+          </div>
+          <div class="f-addr">
+            ${fieldHTML("street", t.fStreet, 'required autocomplete="address-line1"')}
+            ${fieldHTML("house", t.fHouse, 'required autocomplete="address-line2" maxlength="6"')}
+            ${fieldHTML("flat", `${t.fFlat} <span class="f-hint">${t.fFlatHint}</span>`, 'autocomplete="address-line3" maxlength="6"')}
+          </div>
+          ${fieldHTML("zip", t.fZip, 'required autocomplete="postal-code" inputmode="numeric" placeholder="00-000"')}
+          ${fieldHTML("city", t.fCity, 'required autocomplete="address-level2"')}
+          <div class="field wide"><label for="f-country">${t.fCountry}</label>
             <span class="select-wrap">
-              <select name="country">
-                <option>Polska</option><option>Deutschland</option><option>Česko</option>
-                <option>Slovensko</option><option>Lietuva</option><option>Österreich</option>
-              </select>
-              <svg class="ico-sm ico-caret" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6.25 8 10.75 12.5 6.25"/></svg>
+              <select class="select" id="f-country" name="country">
+                ${COUNTRIES.map(c => `<option>${c.name}</option>`).join("")}
+              </select>${ICON_CHEVRON}
             </span>
           </div>
         </div>
@@ -1085,7 +1195,8 @@ function renderCheckout(){
       </div>
       <div class="co-sec">
         <h3>${t.secConsent}</h3>
-        <label class="consent"><input type="checkbox" name="terms" required><span>${t.consentReq}</span></label>
+        <label class="consent"><input type="checkbox" name="terms" required aria-describedby="e-terms"><span>${t.consentReq}</span></label>
+        <p class="field-msg" id="e-terms"></p>
         <label class="consent"><input type="checkbox" name="news"><span>${t.consentNews}</span></label>
         <p class="legal">${t.withdrawal}<br>${t.gdpr}</p>
       </div>
@@ -1107,7 +1218,40 @@ function renderCheckout(){
     </aside>
   </div>
   </form>`;
-  document.getElementById("coForm").onsubmit = submitOrder;
+  const form = document.getElementById("coForm");
+  form.onsubmit = submitOrder;
+  /* Delegated, because the form is rebuilt whenever the language or the currency
+     changes and per-field handlers would go with it. The mask only ever removes
+     characters, so the caret goes to the end of what is left. */
+  form.addEventListener("input", e => {
+    const rule = FORM_RULES[e.target.name];
+    if (!rule) return;
+    if (rule.mask){
+      const masked = MASKS[rule.mask](e.target.value, rule.max);
+      if (masked !== e.target.value){
+        e.target.value = masked;
+        e.target.setSelectionRange(masked.length, masked.length);
+      }
+    }
+    // clearing on the way in, checking on the way out: nobody wants to be told
+    // the address is wrong while still typing it
+    e.target.dataset.typed = "1";
+    markField(e.target, "");
+  });
+  form.addEventListener("change", e => {
+    if (e.target.type === "checkbox" && e.target.name in FORM_RULES)
+      markField(e.target, fieldError(e.target));
+  });
+  /* A field nobody has typed in yet says nothing on the way out: leaving an
+     empty field is not a mistake, it is a reader who has not got there. Once
+     a character has been typed the field reports for the rest of the visit,
+     and the submit checks everything regardless. */
+  form.addEventListener("focusout", e => {
+    const el = e.target;
+    if (!(el.name in FORM_RULES)) return;
+    if (!el.value && !el.dataset.typed) return;
+    markField(el, fieldError(el));
+  }, true);
   /* Mobile: amount due and the submit follow the user down the form. The button
      lives outside <form> (see index.html) and reaches it by id instead. */
   coBarEl.innerHTML = `
@@ -1130,7 +1274,8 @@ function refreshTotals(){
 function submitOrder(e){
   e.preventDefault();
   const form = e.target;
-  if (!form.checkValidity()){ form.reportValidity(); return; }
+  const bad = validateForm(form);
+  if (bad){ bad.focus(); return; }
   // whichever one is on screen, both report the same state
   ["orderBtn","orderBtnBar"].forEach(id=>{
     const btn = document.getElementById(id);
@@ -1699,7 +1844,7 @@ const DS_SECTIONS = [
       <tr><td class="spec"><code>fg-secondary</code> / <code>bg-secondary</code></td><td>${dsContrastCell("--nu-fg-secondary","--nu-bg-secondary")}</td>
           <td>${L("Order summary headings, empty cart &ndash; supporting text on a panel misses the threshold for body size","Nagłówki podsumowania zamówienia, pusty koszyk &ndash; tekst wspierający na panelu nie osiąga progu dla rozmiaru tekstowego")}</td></tr>
       <tr><td class="spec"><code>fg-tertiary</code> / <code>bg-primary</code></td><td>${dsContrastCell("--nu-fg-tertiary","--nu-bg-primary")}</td>
-          <td>${L("Filter counts, disabled chips, the discount placeholder. A disabled control is exempt from the requirement; the count and the placeholder are not","Liczniki przy filtrach, wyłączone chipy, podpowiedź w polu rabatu. Kontrolka wyłączona jest z wymogu zwolniona; licznik i podpowiedź nie są")}</td></tr>
+          <td>${L("Filter counts, disabled chips, placeholders in fields. A disabled control is exempt from the requirement; the count and the placeholder are not","Liczniki przy filtrach, wyłączone chipy, podpowiedzi w polach. Kontrolka wyłączona jest z wymogu zwolniona; licznik i podpowiedź nie są")}</td></tr>
       <tr><td class="spec"><code>fg-inverse</code> / <code>bg-inverse</code></td><td>${dsContrastCell("--nu-fg-inverse","--nu-bg-inverse")}</td>
           <td>${L("Cart counter, pre-order badge","Licznik koszyka, odznaka przedpremierowa")}</td></tr>
       <tr><td class="spec"><code>fg-warning</code> / <code>bg-primary</code></td><td>${dsContrastCell("--nu-fg-warning","--nu-bg-primary")}</td>
@@ -2379,20 +2524,221 @@ const DS_SECTIONS = [
       "This tab has no live preview. The stepper's state depends on the count and on whether the minus is disabled, not on a class on the control, so a preview driven by class names would show something the component does not have.",
       "Ta zakładka nie ma podglądu na żywo. Stan steppera zależy od liczby i od tego, czy minus jest wyłączony, a nie od klasy na kontrolce, więc podgląd sterowany nazwami klas pokazywałby coś, czego komponent nie ma.")}</p>` },
 
-  { group:{en:"Components",pl:"Komponenty"}, id:"field", label:{en:"Form field",pl:"Pole formularza"}, body: ()=>`
-    <h1>${L("Form field","Pole formularza")}</h1>
-    <p class="ds-lede">${L("Label above, control below. Used throughout checkout.","Etykieta nad, kontrolka pod. Używane w całym procesie zamówienia.")}</p>
+  { group:{en:"Components",pl:"Komponenty"}, id:"input", label:{en:"Text field",pl:"Pole tekstowe"}, body: ()=>`
+    <h1>${L("Text field","Pole tekstowe")}</h1>
+    <p class="ds-lede">${L(
+      "A box the reader types an answer into, class <code>.input</code>. It appears in checkout and at the discount code in the cart.",
+      "Kontener, w który czytelniczka wpisuje odpowiedź, klasa <code>.input</code>. Występuje w kasie i przy kodzie rabatowym w koszyku.")}</p>
+    <div class="ds-specimens ds-fields">
+      <figure>
+        <div class="demo on-page">
+          <div class="field" style="width:100%">
+            <label for="ds-in-a">${L("City","Miasto")}</label>
+            <input class="input" id="ds-in-a" value="Wrocław" readonly>
+          </div>
+        </div>
+        <figcaption>${L("Default","Domyślny")}</figcaption>
+      </figure>
+      <figure>
+        <div class="demo on-page">
+          <div class="field" style="width:100%">
+            <label for="ds-in-b">${L("E-mail","E-mail")}</label>
+            <input class="input is-error" id="ds-in-b" value="aga.pl" aria-invalid="true" aria-describedby="ds-in-b-msg" readonly>
+            <p class="field-msg" id="ds-in-b-msg">${L("Enter an address in the form name@domain.com.","Podaj adres w postaci nazwa@domena.pl.")}</p>
+          </div>
+        </div>
+        <figcaption>${L("Error","Błąd")}</figcaption>
+      </figure>
+    </div>
+    <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+      <tr><td>${L("Default","Domyślny")}</td>
+        <td>${L("Waiting for an answer.","Czeka na odpowiedź.")}</td>
+        <td><code>--nu-border-neutral</code>, <code>--nu-bg-primary</code></td></tr>
+      <tr><td>${L("Focus","Fokus")}<br><code>:focus</code></td>
+        <td>${L("The border darkens. The system ring is dropped, because a ring drawn inside a box that already has a border reads as a second border.","Ramka ciemnieje. Systemowa obwódka jest zdjęta, bo obwódka rysowana wewnątrz kontenera, który ma już ramkę, czyta się jak druga ramka.")}</td>
+        <td><code>--nu-border-primary</code></td></tr>
+      <tr><td>${L("Error","Błąd")}<br><code>.is-error</code></td>
+        <td>${L("The value does not match what the field accepts. The class is put on by the script that checks the value, and the message underneath says what is wrong.","Wartość nie zgadza się z tym, co pole przyjmuje. Klasę nakłada skrypt sprawdzający wartość, a komunikat pod spodem mówi, co jest nie tak.")}</td>
+        <td><code>--nu-border-alert</code></td></tr>
+    </tbody></table>
+    <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Label","Etykieta")}</td><td>${L(
-        `Label style, <code>--nu-fg-secondary</code>, ${dsTok("--nu-space-nano")} below`,
-        `Styl Label, <code>--nu-fg-secondary</code>, ${dsTok("--nu-space-nano")} odstępu`)}</td></tr>
-      <tr><td>${L("Control","Kontrolka")}</td><td>${L(
-        `1px <code>--nu-border-neutral</code>, square corners, padding ${dsTok("--nu-space-milli")}`,
-        `1px <code>--nu-border-neutral</code>, narożniki ostre, padding ${dsTok("--nu-space-milli")}`)}</td></tr>
-      <tr><td>${L("Focus","Fokus")}</td><td>${L("Border darkens to <code>--nu-border-primary</code>; never removed","Obramowanie ciemnieje do <code>--nu-border-primary</code>; nigdy nie usuwane")}</td></tr>
-      <tr><td>Select</td><td>${L("Native appearance dropped; custom chevron drawn 16px from the right edge so height matches inputs exactly across browsers","Natywny wygląd wyłączony; własny daszek rysowany 16px od prawej krawędzi, żeby wysokość zgadzała się z polami we wszystkich przeglądarkach")}</td></tr>
-      <tr><td>${L("Validation","Walidacja")}</td><td>${L("Message in <code>--nu-fg-alert</code>, below the control","Komunikat w <code>--nu-fg-alert</code>, pod kontrolką")}</td></tr>
-    </tbody></table>` },
+      <tr><td style="width:190px">${L("Border","Ramka")}</td><td>${L(
+        "1px <code>--nu-border-neutral</code>, square corners. The corners are declared rather than left alone, because a text field arrives rounded on iOS.",
+        "1px <code>--nu-border-neutral</code>, narożniki ostre. Narożniki są zadeklarowane, a nie zostawione, bo na iOS pole tekstowe przychodzi zaokrąglone.")}</td></tr>
+      <tr><td>${L("Padding","Wypełnienie")}</td><td>${dsTok("--nu-space-milli")} ${L("on every side","z każdej strony")}</td></tr>
+      <tr><td>${L("Type","Typografia")}</td><td>${L(
+        "Inherited from its surroundings, line height 1.45. The field sets no face and no size of its own.",
+        "Dziedziczona z otoczenia, interlinia 1.45. Pole nie ustawia własnego kroju ani stopnia.")}</td></tr>
+      <tr><td>${L("Placeholder","Podpowiedź")}</td><td>${L(
+        "<code>--nu-fg-tertiary</code>, lighter than an answer so the two do not read alike. It shows the shape of the answer &ndash; <code>00-000</code> for a postal code &ndash; and never carries the name of the field: a label that disappears once typing starts leaves the reader with a filled field and nothing saying what is in it.",
+        "<code>--nu-fg-tertiary</code>, jaśniejsza niż odpowiedź, żeby jedno nie czytało się jak drugie. Pokazuje kształt odpowiedzi &ndash; <code>00-000</code> przy kodzie pocztowym &ndash; i nigdy nie niesie nazwy pola: etykieta znikająca po pierwszym znaku zostawia czytelniczkę z wypełnionym polem i bez informacji, co w nim jest.")}</td></tr>
+      <tr><td>${L("Width","Szerokość")}</td><td>${L(
+        "The full width of the place it stands in, borders counted in. Whatever holds it decides how wide that is.",
+        "Cała szerokość miejsca, w którym stoi, wraz z ramką. O tym, ile to jest, decyduje to, co pole trzyma.")}</td></tr>
+      <tr><td>${L("Own declaration","Własna deklaracja")}</td><td>${L(
+        "The text field and the select declare the same box separately. Each one then works outside a form field, and a group of two controls has no rule of somebody else's to undo.",
+        "Pole tekstowe i select deklarują tę samą ramkę osobno. Dzięki temu każde z nich działa poza polem formularza, a grupa dwóch kontrolek nie ma cudzej reguły do cofania.")}</td></tr>
+      <tr><td>${L("In the cart","W koszyku")}</td><td>${L(
+        "The discount code is the same field with two additions: it grows into its row and reads in capitals, with the placeholder left in sentence case. A code that does not exist is marked the way every other wrong value is.",
+        "Kod rabatowy to to samo pole z dwoma dodatkami: rośnie w swoim rzędzie i czyta się wersalikami, a podpowiedź zostaje w zwykłym zapisie. Kod, którego nie ma, jest oznaczany tak samo jak każda inna zła wartość.")}</td></tr>
+    </tbody></table>
+    <p class="note">${L(
+      "This tab has no live preview. The only state a class can express is the error one, and it stands among the specimens above; focus belongs to the browser, not to the markup.",
+      "Ta zakładka nie ma podglądu na żywo. Jedyny stan, który da się wyrazić klasą, to błąd, a ten stoi wśród okazów powyżej; fokus należy do przeglądarki, a nie do znaczników.")}</p>` },
+
+  { group:{en:"Components",pl:"Komponenty"}, id:"select", label:{en:"Select",pl:"Select"}, body: ()=>`
+    <h1>Select</h1>
+    <p class="ds-lede">${L(
+      "A control whose answer is picked from a list, class <code>.select</code>. There are two in the shop: country and telephone dialling code.",
+      "Kontrolka, w której odpowiedź wybiera się z listy, klasa <code>.select</code>. W sklepie są dwie: kraj i prefiks telefonu.")}</p>
+    <div class="demo on-page">
+      <div class="field" style="width:260px">
+        <label for="ds-sel">${L("Country","Kraj")}</label>
+        <span class="select-wrap">
+          <select class="select" id="ds-sel">
+            ${COUNTRIES.map(c => `<option>${c.name}</option>`).join("")}
+          </select>${ICON_CHEVRON}
+        </span>
+      </div>
+    </div>
+    <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+      <tr><td>${L("Default","Domyślny")}</td>
+        <td>${L("Shows the chosen option.","Pokazuje wybraną opcję.")}</td>
+        <td><code>--nu-border-neutral</code>, <code>--nu-bg-primary</code></td></tr>
+      <tr><td>${L("Focus","Fokus")}<br><code>:focus</code></td>
+        <td>${L("The border darkens, on the same terms as a text field.","Ramka ciemnieje, na tych samych zasadach co w polu tekstowym.")}</td>
+        <td><code>--nu-border-primary</code></td></tr>
+    </tbody></table>
+    <h3>${L("Specification","Specyfikacja")}</h3>
+    <table><tbody>
+      <tr><td style="width:190px">${L("Border","Ramka")}</td><td>${L(
+        "The same box as a text field &ndash; 1px <code>--nu-border-neutral</code>, square corners, padding ",
+        "Ta sama ramka co w polu tekstowym &ndash; 1px <code>--nu-border-neutral</code>, narożniki ostre, wypełnienie ")}${dsTok("--nu-space-milli")}${L(
+        " &ndash; declared here rather than borrowed.",
+        " &ndash; zadeklarowana tutaj, a nie pożyczona.")}</td></tr>
+      <tr><td>${L("Native look","Natywny wygląd")}</td><td>${L(
+        "Dropped with <code>appearance:none</code>. A native select renders taller or shorter than a text field and puts its own arrow on the edge, so two controls standing side by side would not line up.",
+        "Zdjęty przez <code>appearance:none</code>. Natywny select renderuje się wyższy albo niższy niż pole tekstowe i stawia własną strzałkę na krawędzi, więc dwie kontrolki obok siebie nie zgadzałyby się wysokością.")}</td></tr>
+      <tr><td>Chevron</td><td>${L(
+        `An icon at the smaller of the two sizes, on the terms set out under Iconography. <code>.select-wrap</code> places it ${dsTok("--nu-space-small")} from the right edge and takes it out of pointer events, so a click on the chevron opens the list. It takes the field's colour through <code>currentColor</code>.`,
+        `Ikona w mniejszym z dwóch rozmiarów, na zasadach opisanych w Ikonografii. <code>.select-wrap</code> ustawia ją ${dsTok("--nu-space-small")} od prawej krawędzi i wyłącza z obsługi wskaźnika, więc kliknięcie w chevron rozwija listę. Kolor bierze z pola przez <code>currentColor</code>.`)}</td></tr>
+      <tr><td>${L("Room for it","Miejsce na chevron")}</td><td>${L(
+        `Right padding ${dsTok("--nu-space-xlarge")}, so the longest option never runs under the icon.`,
+        `Prawe wypełnienie ${dsTok("--nu-space-xlarge")}, żeby najdłuższa opcja nie wchodziła pod ikonę.`)}</td></tr>
+      <tr><td>${L("Group names","Nazwy grup")}</td><td>${L(
+        "<code>optgroup label</code> shows on the open list and never in the closed field. That is how the dialling code carries the country name beside the digits while the field itself holds digits alone.",
+        "<code>optgroup label</code> pokazuje się na rozwiniętej liście i nigdy w zamkniętym polu. Tak prefiks niesie nazwę kraju obok cyfr, a w samym polu zostają same cyfry.")}</td></tr>
+      <tr><td>${L("Value","Wartość")}</td><td>${L(
+        "One of the listed options. A select has no error state, because there is nothing outside the list to choose.",
+        "Jedna z wypisanych opcji. Select nie ma stanu błędu, bo poza listą nie ma czego wybrać.")}</td></tr>
+    </tbody></table>
+    <p class="note">${L(
+      "This tab has no live preview, for the same reason as the text field: the states it has are the browser's, not the markup's.",
+      "Ta zakładka nie ma podglądu na żywo z tego samego powodu co pole tekstowe: stany, które ma, należą do przeglądarki, a nie do znaczników.")}</p>` },
+
+  { group:{en:"Patterns",pl:"Wzorce"}, id:"form", label:{en:"Form",pl:"Formularz"}, body: ()=>`
+    <h1>${L("Form","Formularz")}</h1>
+    <p class="ds-lede">${L(
+      "How controls become a form: what describes them, how they lie beside one another, and what happens when an answer is missing or malformed. It covers the text field, the select, and the delivery, payment and consent rows.",
+      "Jak z kontrolek powstaje formularz: co je opisuje, jak leżą obok siebie i co się dzieje, gdy odpowiedź jest niepełna albo niepoprawna. Dotyczy pola tekstowego, selecta oraz wierszy dostawy, płatności i zgód.")}</p>
+
+    <h3>${L("Layout","Układ")}</h3>
+    <table><tbody>
+      <tr><td style="width:190px">${L("Field","Pole")}<br><code>.field</code></td><td>${L(
+        "Label above, control below, message under the control. The class carries the layout and nothing else &ndash; the border belongs to the control.",
+        "Etykieta nad kontrolką, kontrolka, komunikat pod nią. Klasa niesie sam układ &ndash; ramka należy do kontrolki.")}</td></tr>
+      <tr><td>${L("Label","Etykieta")}</td><td>${L(
+        `Label type, <code>--nu-fg-secondary</code>, ${dsTok("--nu-space-nano")} above the control. It is bound to the control by <code>for</code>, so clicking the words puts the cursor in the field and a screen reader reads them as its name.`,
+        `Typografia Label, <code>--nu-fg-secondary</code>, ${dsTok("--nu-space-nano")} nad kontrolką. Wiąże się z kontrolką przez <code>for</code>, więc kliknięcie w napis stawia kursor w polu, a czytnik ekranu czyta go jako nazwę pola.`)}</td></tr>
+      <tr><td>${L("Note in a label","Dopisek w etykiecie")}<br><code>.f-hint</code></td><td>${L(
+        "&ldquo;(optional)&rdquo; beside the label, in <code>--nu-fg-tertiary</code> and without the capitals, so it reads as an aside rather than as part of the name.",
+        "„(opcjonalnie)” obok etykiety, w <code>--nu-fg-tertiary</code> i bez wersalików, żeby czytało się jako dopisek, a nie jako część nazwy.")}</td></tr>
+      <tr><td>${L("Grid","Siatka")}<br><code>.f-grid</code></td><td>${L(
+        `Two equal columns with ${dsTok("--nu-space-milli")} between them. <code>.wide</code> takes both. Below the narrow breakpoint there is one column.`,
+        `Dwie równe kolumny, ${dsTok("--nu-space-milli")} między nimi. <code>.wide</code> zajmuje obie. Poniżej progu wąskiego ekranu zostaje jedna kolumna.`)}</td></tr>
+      <tr><td>${L("Address row","Wiersz adresu")}<br><code>.f-addr</code></td><td>${L(
+        "Street, building number and flat number are one address, so they share a row. Each field hands its three rows &ndash; label, control, message &ndash; up to the row through subgrid. A label that wraps to two lines, or a message appearing under one field, then moves that row for the whole group instead of shifting one field against its neighbours.",
+        "Ulica, numer domu i numer lokalu to jeden adres, więc dzielą wiersz. Każde pole oddaje wierszowi swoje trzy rzędy &ndash; etykietę, kontrolkę i komunikat &ndash; przez subgrid. Etykieta łamiąca się na dwie linie albo komunikat pojawiający się pod jednym polem przesuwa wtedy cały rząd, a nie jedno pole względem sąsiadów.")}</td></tr>
+      <tr><td>${L("Fixed widths","Szerokości stałe")}</td><td>${L(
+        `Fields whose content has a known length are sized once: ${dsTok("--nu-field-num")} for a building or flat number, ${dsTok("--nu-field-code")} for a dialling code. Two fields meant to match cannot then drift apart.`,
+        `Pola o znanej długości zawartości mają rozmiar podany raz: ${dsTok("--nu-field-num")} dla numeru domu i lokalu, ${dsTok("--nu-field-code")} dla prefiksu. Dwa pola, które mają się zgadzać, nie mogą się wtedy rozjechać.`)}</td></tr>
+    </tbody></table>
+
+    <h3>${L("Two controls, one answer","Dwie kontrolki, jedna odpowiedź")}</h3>
+    <p>${L(
+      "A dialling code and a telephone number are one answer, so they stand side by side without a gap: <code>.f-group</code>. The left control gives up its right border, which leaves a single line between them instead of two. Focus and error take the whole group &ndash; otherwise the outline would change colour halfway along its top edge.",
+      "Prefiks i numer telefonu to jedna odpowiedź, więc stoją obok siebie bez odstępu: <code>.f-group</code>. Lewa kontrolka oddaje swoją prawą ramkę, przez co między nimi zostaje jedna kreska zamiast dwóch. Fokus i błąd obejmują całą grupę &ndash; inaczej ramka zmieniałaby kolor w połowie górnej krawędzi.")}</p>
+    <div class="demo on-page">
+      <div class="field" style="width:300px">
+        <label for="ds-tel">${L("Phone","Telefon")}</label>
+        <div class="f-group">
+          <span class="select-wrap">
+            <select class="select" id="ds-tel-p" aria-label="${L("Prefix","Prefiks")}">
+              ${COUNTRIES.map(c => `<optgroup label="${c.name}"><option>+${c.code}</option></optgroup>`).join("")}
+            </select>${ICON_CHEVRON}
+          </span>
+          <input class="input" id="ds-tel" value="600 100 200" readonly>
+        </div>
+      </div>
+    </div>
+    <p class="note">${L(
+      "The group is written for the one that exists. A general group taking any pair of controls would have to stop knowing what stands inside it, and there is no second group to say what that would need.",
+      "Grupa jest napisana pod tę jedną, która istnieje. Grupa ogólna, przyjmująca dowolną parę kontrolek, musiałaby przestać wiedzieć, co w niej stoi, a nie ma drugiego przypadku, który powiedziałby, czego to wymaga.")}</p>
+
+    <h3>${L("Character rules","Weryfikacja znaków")}</h3>
+    <p>${L(
+      "Every field has two gates. A mask runs while the reader types and only ever takes characters away, so nothing can be entered that would later fail. A pattern is checked on leaving the field and again on submit. Both are declared side by side in the code, because a mask that lets through what the pattern rejects is how these two drift apart.",
+      "Każde pole ma dwie bramki. Maska działa w trakcie pisania i wyłącznie odbiera znaki, więc nie da się wpisać czegoś, co później nie przejdzie. Wzorzec sprawdza się przy opuszczeniu pola i ponownie przy wysyłce. Oba są zadeklarowane obok siebie w kodzie, bo maska przepuszczająca to, co wzorzec odrzuca, jest sposobem, w jaki te dwie rzeczy się rozjeżdżają.")}</p>
+    <table><thead><tr><th>${L("Field","Pole")}</th><th>${L("Mask","Maska")}</th><th>${L("Pattern","Wzorzec")}</th></tr></thead><tbody>
+      <tr><td>${L("Full name, street, city","Imię i nazwisko, ulica, miasto")}</td><td>&ndash;</td>
+        <td>${L("Any answer, but not none.","Dowolna odpowiedź, byle nie żadna.")}</td></tr>
+      <tr><td>${L("E-mail","E-mail")}</td><td>&ndash;</td>
+        <td>${L("An <code>@</code>, then a domain with a dot in it. <code>aga.pl</code> and <code>aga@pl</code> do not pass.","Znak <code>@</code>, a po nim domena z kropką. <code>aga.pl</code> i <code>aga@pl</code> nie przechodzą.")}</td></tr>
+      <tr><td>${L("Phone","Telefon")}</td><td>${L("Digits only","Tylko cyfry")}</td>
+        <td>${L("Exactly nine.","Dokładnie dziewięć.")}</td></tr>
+      <tr><td>${L("Building and flat number","Numer domu i lokalu")}</td><td>${L("Digits and letters","Cyfry i litery")}</td>
+        <td>${L("At least one character; the flat number may stay empty.","Przynajmniej jeden znak; numer lokalu może zostać pusty.")}</td></tr>
+      <tr><td>${L("Postal code","Kod pocztowy")}</td><td>${L("Digits only, with the hyphen written by the field after the second one","Tylko cyfry, myślnik po drugiej dopisuje pole")}</td>
+        <td>${L("Five digits, in the form 00-000.","Pięć cyfr, w postaci 00-000.")}</td></tr>
+      <tr><td>${L("Dialling code, country","Prefiks, kraj")}</td><td>&ndash;</td>
+        <td>${L("Picked from a list, so there is nothing to check.","Wybierane z listy, więc nie ma czego sprawdzać.")}</td></tr>
+      <tr><td>${L("Terms","Zgoda na regulamin")}</td><td>&ndash;</td>
+        <td>${L("Ticked.","Zaznaczona.")}</td></tr>
+    </tbody></table>
+
+    <h3>${L("Error state","Stan błędu")}</h3>
+    <table><tbody>
+      <tr><td style="width:190px">${L("When it appears","Kiedy się pojawia")}</td><td>${L(
+        "On leaving a field the reader has typed in, and on submit for everything. A field nobody has typed in says nothing on the way out: leaving an empty field is not a mistake, it is a reader who has not got there.",
+        "Przy opuszczeniu pola, w którym czytelniczka pisała, i przy wysyłce dla wszystkiego. Pole, w którym nikt nie pisał, przy wyjściu milczy: opuszczenie pustego pola nie jest pomyłką, tylko czytelniczką, która jeszcze tam nie dotarła.")}</td></tr>
+      <tr><td>${L("When it goes","Kiedy znika")}</td><td>${L(
+        "At the first character typed after it appeared, rather than at the next check. Correcting an answer stops the field arguing straight away.",
+        "Przy pierwszym znaku wpisanym po jego pojawieniu się, a nie przy kolejnym sprawdzeniu. Poprawianie odpowiedzi od razu kończy spór z polem.")}</td></tr>
+      <tr><td>${L("Mark","Oznaczenie")}</td><td>${L(
+        "<code>.is-error</code> on the control, which turns its border to <code>--nu-border-alert</code>. A checkbox draws no border of its own, so the consent row takes an outline instead.",
+        "<code>.is-error</code> na kontrolce, co zmienia jej ramkę na <code>--nu-border-alert</code>. Checkbox nie rysuje własnej ramki, więc wiersz zgody dostaje kontur.")}</td></tr>
+      <tr><td>${L("Message","Komunikat")}<br><code>.field-msg</code></td><td>${L(
+        `Label type in <code>--nu-fg-alert</code>, ${dsTok("--nu-space-nano")} under the control. An empty message takes no space at all, so eight fields do not each hold a blank line waiting for a mistake that will land in one of them.`,
+        `Typografia Label w <code>--nu-fg-alert</code>, ${dsTok("--nu-space-nano")} pod kontrolką. Pusty komunikat nie zajmuje miejsca, więc osiem pól nie trzyma po pustym wierszu w oczekiwaniu na pomyłkę, która trafi w jedno z nich.`)}</td></tr>
+      <tr><td>${L("Announcement","Ogłoszenie")}</td><td>${L(
+        "<code>aria-invalid</code> on the control and <code>aria-describedby</code> pointing at the message, so a screen reader reads it as part of the field rather than as loose text nearby.",
+        "<code>aria-invalid</code> na kontrolce i <code>aria-describedby</code> wskazujący komunikat, więc czytnik ekranu czyta go jako część pola, a nie jako luźny tekst obok.")}</td></tr>
+      <tr><td>${L("On submit","Przy wysyłce")}</td><td>${L(
+        "Every field is checked, all the failures are marked at once, and focus goes to the first of them. An error the reader cannot find is an error twice over.",
+        "Sprawdzane są wszystkie pola, wszystkie błędy zostają oznaczone naraz, a fokus przechodzi na pierwszy z nich. Błąd, którego czytelniczka nie umie znaleźć, jest błędem podwójnym.")}</td></tr>
+    </tbody></table>
+
+    <h3>${L("Choices and consents","Wybór i zgody")}</h3>
+    <table><tbody>
+      <tr><td style="width:190px">${L("Choice row","Wiersz wyboru")}<br><code>.opt</code></td><td>${L(
+        `A radio button, a name, a note and a price in one bordered row &ndash; delivery method and payment method. The whole row is a <code>label</code>, so the click target is the row and not the dot. The border answers the pointer with <code>--nu-border-hover</code> and the chosen row holds <code>--nu-border-primary</code>.`,
+        `Przycisk radio, nazwa, dopisek i cena w jednym obramowanym wierszu &ndash; sposób dostawy i metoda płatności. Cały wiersz jest elementem <code>label</code>, więc celem kliknięcia jest wiersz, a nie kropka. Ramka odpowiada na wskaźnik kolorem <code>--nu-border-hover</code>, a wiersz wybrany trzyma <code>--nu-border-primary</code>.`)}</td></tr>
+      <tr><td>${L("Consent","Zgoda")}<br><code>.consent</code></td><td>${L(
+        "A checkbox and a sentence, with no border of its own. The required one says so in its own wording, and is checked on submit like any other field.",
+        "Checkbox i zdanie, bez własnej ramki. Ta wymagana mówi o tym we własnym brzmieniu i jest sprawdzana przy wysyłce jak każde inne pole.")}</td></tr>
+    </tbody></table>
+` },
 
   { group:{en:"Patterns",pl:"Wzorce"}, id:"motion", label:{en:"Motion",pl:"Ruch"}, body: ()=>`
     <h1>${L("Motion","Ruch")}</h1>
