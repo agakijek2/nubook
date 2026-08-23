@@ -2623,8 +2623,8 @@ const DS_SECTIONS = [
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Border","Ramka")}</td><td>${L(
-        `The same box as a text field &ndash; 1px <code>--nu-border-neutral</code>, square corners &ndash; declared here rather than borrowed. Padding ${dsTok("--nu-space-milli")} at the top, at the bottom and on the left. On the right, enough to hold the chevron and the gap in front of it: the padding, the icon and the gap added together.`,
-        `Ta sama ramka co w polu tekstowym &ndash; 1px <code>--nu-border-neutral</code>, narożniki ostre &ndash; zadeklarowana tutaj, a nie pożyczona. Wypełnienie ${dsTok("--nu-space-milli")} z góry, z dołu i z lewej. Z prawej tyle, żeby zmieścił się chevron i odstęp przed nim: suma wypełnienia, ikony i odstępu.`)}</td></tr>
+        `The same box and the same inset as a text field &ndash; 1px <code>--nu-border-neutral</code>, square corners, ${dsTok("--nu-space-milli")} from the border on every side &ndash; declared here rather than borrowed. The chevron stands in that inset on the right, so the value stops earlier than in a text field: by the width of the icon and the gap in front of it. The declared right padding is those three added together.`,
+        `Ta sama ramka i to samo wcięcie co w polu tekstowym &ndash; 1px <code>--nu-border-neutral</code>, narożniki ostre, ${dsTok("--nu-space-milli")} od ramki z każdej strony &ndash; zadeklarowane tutaj, a nie pożyczone. W prawym wcięciu stoi chevron, więc wartość zatrzymuje się wcześniej niż w polu tekstowym: o szerokość ikony i odstęp przed nią. Zadeklarowane prawe wypełnienie to suma tych trzech.`)}</td></tr>
       <tr><td>${L("Native look","Natywny wygląd")}</td><td>${L(
         "Dropped with <code>appearance:none</code>, along with the system marker on the edge. The box and the chevron are drawn.",
         "Zdjęty przez <code>appearance:none</code>, razem z systemowym znacznikiem na krawędzi. Ramka i chevron są rysowane.")}</td></tr>
