@@ -171,7 +171,7 @@ BOOKS.forEach((b,i)=>b.id=i);
 const I18N = {
   en: {
     docTitle:"nubook. — novels on women & gender",
-    coverAlt:"Cover of",
+    coverAlt:"Cover of", qtyLess:"Decrease quantity", qtyMore:"Increase quantity",
     strap:"novels on women & gender",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
     all:"All",
@@ -217,7 +217,7 @@ const I18N = {
   },
   pl: {
     docTitle:"nubook. — powieści o kobietach i płci",
-    coverAlt:"Okładka:",
+    coverAlt:"Okładka:", qtyLess:"Zmniejsz ilość", qtyMore:"Zwiększ ilość",
     strap:"powieści o kobietach i płci",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
     all:"Wszystkie",
@@ -772,6 +772,10 @@ const FREE_OVER = {pln:150, eur:35};
    in the content layer and taking its weight from the font. */
 const ICON_BACK = '<svg class="ico-back ico-sm" viewBox="0 0 16 16" aria-hidden="true">' +
   '<path d="M13.6 8H2.75"/><path d="M6.95 3.45L2.4 8l4.55 4.55"/></svg>';
+const ICON_MINUS = '<svg class="ico-sm ico-minus" viewBox="0 0 16 16" aria-hidden="true">' +
+  '<path d="M3.5 8h9"/></svg>';
+const ICON_PLUS = '<svg class="ico-sm ico-plus" viewBox="0 0 16 16" aria-hidden="true">' +
+  '<path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg>';
 const ICON_CHECK = '<svg class="ico-check ico-sm" viewBox="0 0 16 16" aria-hidden="true">' +
   '<path d="M2.75 8.35l3.5 3.5 7-8.05"/></svg>';
 /* A link that names where it goes is an <a>: it announces as a link, opens in a
@@ -779,6 +783,15 @@ const ICON_CHECK = '<svg class="ico-check ico-sm" viewBox="0 0 16 16" aria-hidde
    routing already listens for the address changing, so no handler is needed.
    Stepping back through history is not a destination, so that one stays a
    button. */
+/* The stepper, written once because it stands in two places: the cart drawer and
+   the cart page. At one the minus is disabled - taking the last copy away is the
+   Remove button's job, not a side effect of counting down. */
+const qtyHTML = (id, q) => `<span class="qty">
+  <button type="button" aria-label="${T().qtyLess}"${q <= 1 ? " disabled" : ""} onclick="setQty(${id},${q - 1})">${ICON_MINUS}</button>
+  <span>${q}</span>
+  <button type="button" aria-label="${T().qtyMore}" onclick="setQty(${id},${q + 1})">${ICON_PLUS}</button>
+</span>`;
+
 const backHref = (text, href, cls = "back") =>
   `<a class="${cls} link has-icon" href="${href}">${ICON_BACK}<span class="lbl">${text}</span></a>`;
 /* Stepping back has no address, so it is not a link but the lightest button
@@ -909,11 +922,7 @@ function renderCart(){
         <span class="ci-title">${titleOf(b)}</span>
         <div class="ci-price">${fmtMoney(priceOf(b))}</div>
         <div class="ci-row">
-          <span class="qty">
-            <button aria-label="−" onclick="setQty(${id},${q-1})">−</button>
-            <span>${q}</span>
-            <button aria-label="+" onclick="setQty(${id},${q+1})">+</button>
-          </span>
+            ${qtyHTML(id, q)}
           <span class="ci-line">${fmtMoney(priceOf(b)*q)}</span>
         </div>
         <button class="ci-remove btn-ghost" onclick="removeItem(${id})">${t.removeItem}</button>
@@ -985,11 +994,7 @@ function renderCartPage(){
             <span class="ci-title">${titleOf(b)}</span>
             <div class="ci-price">${b.a} · ${fmtMoney(priceOf(b))}</div>
             <div class="ci-row">
-              <span class="qty">
-                <button aria-label="−" onclick="setQty(${id},${q-1})">−</button>
-                <span>${q}</span>
-                <button aria-label="+" onclick="setQty(${id},${q+1})">+</button>
-              </span>
+            ${qtyHTML(id, q)}
               <span class="ci-line">${fmtMoney(priceOf(b)*q)}</span>
             </div>
             <button class="ci-remove btn-ghost" onclick="removeItem(${id})">${t.removeItem}</button>
@@ -1865,11 +1870,8 @@ const DS_SECTIONS = [
                   "Poniżej 820px tytuł produktu i znak marki przechodzą na Heading 2. Pozostałe zastosowania Heading 1 oraz reszta skali zostają bez zmian.")}</td></tr>
     </tbody></table>
     <h3>${L("Outside the scale","Poza skalą")}</h3>
-    <p>${L("Two things sit outside the seven steps.","Poza siedmioma stopniami stoją dwie rzeczy.")}</p>
+    <p>${L("One thing sits outside the seven steps.","Poza siedmioma stopniami stoi jedna rzecz.")}</p>
     <table><colgroup><col style="width:190px"><col></colgroup><tbody>
-      <tr><td>${L("Glyph control","Znak sterujący")}</td>
-          <td>${L("The quantity stepper is set in a glyph sized to its target area rather than to the type scale: 14px for a control whose whole content is a plus or a minus. A glyph standing in for an icon is not text, and forcing it onto a text scale would size the tap target by the wrong measure. Every other icon in the shop is drawn rather than set, which takes it off this scale entirely.",
-                  "Stepper ilości używa znaku dobranego do swojego pola dotyku, nie do skali pisma: 14px dla kontrolki, której całą treścią jest plus albo minus. Znak zastępujący ikonę nie jest tekstem, a wymuszenie na nim skali pisma wyznaczałoby pole dotyku niewłaściwą miarą. Każda inna ikona w sklepie jest rysowana, a nie składana, co wyprowadza ją z tej skali w ogóle.")}</td></tr>
       <tr><td>${L("Monospace in these pages","Krój maszynowy na tych stronach")}</td>
           <td>${L("Token names and code blocks in this documentation are set in a monospace face at 11.5px. It is not a design system family and the shop neither loads nor uses it &ndash; it exists so that hyphens and underscores in a token name stay legible. Treat it as a property of the documentation, not of the system it documents.",
                   "Nazwy tokenów i bloki kodu w tej dokumentacji składane są krojem maszynowym w 11.5px. Nie jest to rodzina design systemu i sklep ani go nie wczytuje, ani nie używa &ndash; istnieje po to, żeby myślniki i podkreślenia w nazwie tokenu pozostały czytelne. Traktuj go jako właściwość dokumentacji, nie systemu, który ona opisuje.")}</td></tr>
@@ -2021,7 +2023,9 @@ const DS_SECTIONS = [
       <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 5h12"/><path d="M2 11h12"/></svg></td>
         <td>${L("Filter","Filtry")}</td><td>${L("Opens and closes the filter panel. The lower bar runs full width while the panel is closed and shortens once it opens.","Otwiera i zamyka panel filtrów. Dolna kreska ma pełną szerokość przy zamkniętym panelu i skraca się po jego otwarciu.")}</td></tr>
       <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></td>
-        <td>${L("Plus","Plus")}</td><td>${L("Opens the sort menu; turns 45&deg; into the cross while the menu is open.","Otwiera menu sortowania; przy otwartym menu obraca się o 45&deg; w krzyżyk.")}</td></tr>
+        <td>${L("Plus","Plus")}</td><td>${L("Adds one: opens the sort menu, where it turns 45&deg; into the cross while the menu is open, and raises the quantity in the stepper.","Dokłada jeden: otwiera menu sortowania, gdzie przy otwartym menu obraca się o 45&deg; w krzyżyk, i zwiększa ilość w stepperze.")}</td></tr>
+      <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/></svg></td>
+        <td>${L("Minus","Minus")}</td><td>${L("Takes one away in the stepper. Disabled at one, where there is nothing left to take.","Odejmuje jeden w stepperze. Wyłączony przy jednej sztuce, gdy nie ma już czego odejmować.")}</td></tr>
       <tr><td class="ico-cell"><svg class="ico-sm ico-close" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></td>
         <td>${L("Cross","Krzyżyk")}</td><td>${L("Closes a drawer or the filter sheet. The same drawing as the plus, turned.","Zamyka szufladę albo arkusz filtrów. Ten sam rysunek co plus, obrócony.")}</td></tr>
       <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6.25 8 10.75 12.5 6.25"/></svg></td>
@@ -2330,16 +2334,50 @@ const DS_SECTIONS = [
   { group:{en:"Components",pl:"Komponenty"}, id:"stepper", label:{en:"Quantity stepper",pl:"Stepper ilości"}, body: ()=>`
     <h1>${L("Quantity stepper","Stepper ilości")}</h1>
     <p class="ds-lede">${L(
-      "Used in the cart drawer and on the cart page: minus, value, plus inside one outline.",
-      "Używany w wysuwanym koszyku i na stronie koszyka: minus, wartość, plus w jednym obrysie.")}</p>
+      "Minus, value and plus in one outline. It changes how many copies of a title are in the cart, and it appears in the cart drawer and on the cart page.",
+      "Minus, wartość i plus w jednym obrysie. Zmienia liczbę egzemplarzy tytułu w koszyku i występuje w szufladzie koszyka oraz na stronie koszyka.")}</p>
+    <div class="demo on-page ds-qty">
+      ${qtyHTML(-1, 1)}
+      ${qtyHTML(-2, 3)}
+    </div>
+    <p class="note">${L(
+      "Both specimens work: raise the left one and its minus wakes up.",
+      "Oba okazy działają: podnieś lewy, a jego minus się obudzi.")}</p>
+    <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+      <tr><td>${L("Default","Domyślny")}</td>
+        <td>${L("Two or more copies. Both buttons work.","Dwa egzemplarze lub więcej. Oba przyciski działają.")}</td>
+        <td><code>--nu-fg-primary</code>, <code>--nu-border-neutral</code></td></tr>
+      <tr><td>${L("One copy","Jedna sztuka")}<br><code>:disabled</code></td>
+        <td>${L("The minus is disabled. Taking the last copy away is what the Remove button does, and doing it from here would be a different action wearing the same face.","Minus jest wyłączony. Zabranie ostatniego egzemplarza należy do przycisku „Usuń”, a zrobienie tego stąd byłoby inną akcją pod tą samą twarzą.")}</td>
+        <td><code>--nu-fg-tertiary</code></td></tr>
+      <tr><td>Hover<br><code>:hover</code></td>
+        <td>${L("The button cell fills, the outline stays put.","Komórka przycisku wypełnia się, obrys zostaje na miejscu.")}</td>
+        <td><code>--nu-bg-secondary</code></td></tr>
+    </tbody></table>
+    <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
-      <tr><td style="width:190px">${L("Border","Obramowanie")}</td><td>${L("1px <code>--nu-border-neutral</code> around the whole control","1px <code>--nu-border-neutral</code> wokół całej kontrolki")}</td></tr>
-      <tr><td>${L("Value column","Kolumna wartości")}</td><td>${L("Fixed min-width, tabular numerals &ndash; the control must not resize between 9 and 10","Stała szerokość minimalna, cyfry tabelaryczne &ndash; kontrolka nie może zmieniać rozmiaru między 9 a 10")}</td></tr>
-      <tr><td>Hover</td><td>${L("Button cell fills with <code>--nu-bg-secondary</code>","Komórka przycisku wypełnia się <code>--nu-bg-secondary</code>")}</td></tr>
+      <tr><td style="width:190px">${L("Button size","Rozmiar przycisku")}</td><td>${L(
+        `${dsTok("--nu-control-sm")} square, the smallest touch target in the shop. WCAG asks for 24&times;24 CSS px and this keeps a margin over it.`,
+        `Kwadrat ${dsTok("--nu-control-sm")}, najmniejsze pole dotyku w sklepie. WCAG wymaga 24&times;24 px CSS, a ta wartość trzyma zapas ponad nim.`)}</td></tr>
+      <tr><td>${L("Value column","Kolumna wartości")}</td><td>${L(
+        `The same ${dsTok("--nu-control-sm")} as a minimum, in tabular figures, so the control does not resize between 9 and 10.`,
+        `Minimum ${dsTok("--nu-control-sm")}, tyle samo, cyframi tabelarycznymi, żeby kontrolka nie zmieniała szerokości między 9 a 10.`)}</td></tr>
+      <tr><td>${L("Icons","Ikony")}</td><td>${L(
+        "Minus and plus at the smaller of the two icon sizes, on the terms set out under Iconography. The plus is the same drawing the sort menu uses.",
+        "Minus i plus w mniejszym z dwóch rozmiarów ikon, na zasadach opisanych w Ikonografii. Plus to ten sam rysunek, którego używa menu sortowania.")}</td></tr>
+      <tr><td>${L("Name","Nazwa")}</td><td>${L(
+        "Each button carries an <code>aria-label</code> naming the action, not the sign: a screen reader says &ldquo;increase quantity&rdquo; rather than &ldquo;plus&rdquo;.",
+        "Każdy przycisk niesie <code>aria-label</code> nazywający czynność, a nie znak: czytnik ekranu mówi „zwiększ ilość”, a nie „plus”.")}</td></tr>
+      <tr><td>${L("Border","Obramowanie")}</td><td>${L(
+        "1px <code>--nu-border-neutral</code> around the whole control, square corners. The buttons have none of their own &ndash; the outline holds all three cells together.",
+        "1px <code>--nu-border-neutral</code> wokół całej kontrolki, narożniki ostre. Przyciski nie mają własnego &ndash; obrys spina wszystkie trzy komórki.")}</td></tr>
       <tr><td>${L("Paired with","W parze z")}</td><td>${L(
-        `A &ldquo;Remove&rdquo; text link, ${dsTok("--nu-space-micro")} below and left-aligned`,
-        `Linkiem „Usuń”, ${dsTok("--nu-space-micro")} niżej, wyrównanym do lewej`)}</td></tr>
-    </tbody></table>` },
+        `A ghost button &ldquo;Remove&rdquo;, ${dsTok("--nu-space-micro")} below and aligned left. Counting down and removing are two actions, so they are two controls.`,
+        `Przyciskiem ghost „Usuń”, ${dsTok("--nu-space-micro")} niżej, wyrównanym do lewej. Odliczanie w dół i usuwanie to dwie czynności, więc są dwiema kontrolkami.`)}</td></tr>
+    </tbody></table>
+    <p class="note">${L(
+      "This tab has no live preview. The stepper's states live in its children and in the count, not in a class on the control, so a preview driven by class names would show something the component does not have.",
+      "Ta zakładka nie ma podglądu na żywo. Stany steppera mieszkają w jego dzieciach i w liczbie, a nie w klasie na kontrolce, więc podgląd sterowany nazwami klas pokazywałby coś, czego komponent nie ma.")}</p>` },
 
   { group:{en:"Components",pl:"Komponenty"}, id:"field", label:{en:"Form field",pl:"Pole formularza"}, body: ()=>`
     <h1>${L("Form field","Pole formularza")}</h1>
@@ -2523,6 +2561,19 @@ function renderDesignSystem(){
   dsPlay(dsEl);
   /* The chip row is the one specimen that works: toggling it is the quickest way
      to see that the state lives in the attribute and the underline follows. */
+  /* The stepper specimens count for real: the disabled minus at one is the whole
+     point of the component, and it only reads as a rule once it is felt. */
+  dsEl.querySelectorAll(".ds-qty").forEach(row => {
+    row.querySelectorAll(".qty").forEach(q => {
+      const val = q.querySelector("span"), [less, more] = q.querySelectorAll("button");
+      // the attribute has to go first: it and the property are the same slot,
+      // so removing it afterwards would wipe the handler just assigned
+      less.removeAttribute("onclick"); more.removeAttribute("onclick");
+      const set = n => { val.textContent = n; less.disabled = n <= 1; };
+      less.onclick = () => set(+val.textContent - 1);
+      more.onclick = () => set(+val.textContent + 1);
+    });
+  });
   dsEl.querySelectorAll(".ds-chips .chip:not([disabled])").forEach(c => {
     c.onclick = () => c.setAttribute("aria-pressed", String(c.getAttribute("aria-pressed") !== "true"));
   });

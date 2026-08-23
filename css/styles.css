@@ -131,6 +131,10 @@
     /* A cover standing on its own, outside a tile. Two sizes of one thing:
        the cart drawer is narrower than the cart page. */
     --nu-thumb-sm:44px;  --nu-thumb-md:64px;
+    /* Smallest touch target in the shop. WCAG asks for 24x24 CSS px; this keeps
+       a margin over it and sets the width of the value between the two buttons,
+       so the control does not resize between 9 and 10. */
+    --nu-control-sm:26px;
 
     --nu-icon-lg:24px;   --nu-icon-lg-inset:2px; --nu-icon-lg-stroke:1.5;
     --nu-icon-sm:16px;   --nu-icon-sm-inset:1px; --nu-icon-sm-stroke:1.25;
@@ -756,11 +760,16 @@
   .ci-row{display:flex;align-items:center;justify-content:space-between;gap:var(--nu-space-milli)}
   .qty{display:inline-flex;align-items:center;border:1px solid var(--nu-border-neutral)}
   .qty button{
-    width:26px;height:26px;line-height:1;font-size:14px;color:var(--nu-fg-primary);
-    transition:background .15s ease;
+    width:var(--nu-control-sm);height:var(--nu-control-sm);
+    display:inline-flex;align-items:center;justify-content:center;
+    color:var(--nu-fg-primary);transition:background .15s ease;
   }
   .qty button:hover{background:var(--nu-bg-secondary)}
-  .qty span{min-width:26px;text-align:center;font-variant-numeric:tabular-nums}
+  /* At one the minus has nothing to take away: removing the line is what the
+     Remove button is for, and doing it silently from here would be a different
+     action wearing the same face. */
+  .qty button:disabled{color:var(--nu-fg-tertiary);pointer-events:none}
+  .qty span{min-width:var(--nu-control-sm);text-align:center;font-variant-numeric:tabular-nums}
   .ci-line{font-variant-numeric:tabular-nums}
   .ci-remove{margin-top:var(--nu-space-micro);align-self:flex-start}
   .cart-empty{color:var(--nu-fg-secondary);padding:var(--nu-space-large) 0}
@@ -1046,7 +1055,8 @@
      crop is asked for by name instead of being imposed on every tile in a stage. */
   .ds .ds-play-stage .tile{width:140px}
   .ds .ds-play-stage .tile.ds-crop{aspect-ratio:auto;width:240px;height:88px}
-  .ds .ds-tiles{justify-content:center;align-items:flex-end}
+  .ds .ds-tiles,
+  .ds .ds-qty{justify-content:center;align-items:flex-end}
   .ds .ds-tiles .tile{width:140px}
   .ds .ds-specimens figcaption{
     font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
