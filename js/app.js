@@ -2623,20 +2623,20 @@ const DS_SECTIONS = [
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Border","Ramka")}</td><td>${L(
-        `The same box as a text field &ndash; 1px <code>--nu-border-neutral</code>, square corners &ndash; declared here rather than borrowed. Padding ${dsTok("--nu-space-milli")} on three sides and ${dsTok("--nu-space-xlarge")} on the right, which is the room the chevron stands in: the longest option stops before it instead of running underneath.`,
-        `Ta sama ramka co w polu tekstowym &ndash; 1px <code>--nu-border-neutral</code>, narożniki ostre &ndash; zadeklarowana tutaj, a nie pożyczona. Wypełnienie ${dsTok("--nu-space-milli")} z trzech stron i ${dsTok("--nu-space-xlarge")} z prawej, bo tam stoi chevron: najdłuższa opcja kończy się przed nim, zamiast wchodzić pod spód.`)}</td></tr>
+        `The same box as a text field &ndash; 1px <code>--nu-border-neutral</code>, square corners &ndash; declared here rather than borrowed. Padding ${dsTok("--nu-space-milli")} on every side. On the right that padding holds the chevron, so the value stops earlier: at the padding, the icon and the gap between them added together.`,
+        `Ta sama ramka co w polu tekstowym &ndash; 1px <code>--nu-border-neutral</code>, narożniki ostre &ndash; zadeklarowana tutaj, a nie pożyczona. Wypełnienie ${dsTok("--nu-space-milli")} z każdej strony. Z prawej w tym wypełnieniu stoi chevron, więc wartość kończy się wcześniej: na sumie wypełnienia, ikony i odstępu między nimi.`)}</td></tr>
       <tr><td>${L("Native look","Natywny wygląd")}</td><td>${L(
         "Dropped with <code>appearance:none</code>, along with the system marker on the edge. The box and the chevron are drawn.",
         "Zdjęty przez <code>appearance:none</code>, razem z systemowym znacznikiem na krawędzi. Ramka i chevron są rysowane.")}</td></tr>
       <tr><td>Chevron</td><td>${L(
-        `An icon at the smaller of the two sizes, on the terms set out under Iconography. <code>.select-wrap</code> places it ${dsTok("--nu-space-small")} from the right edge and takes it out of pointer events, so a click on the chevron opens the list. It takes the field's colour through <code>currentColor</code>.`,
-        `Ikona w mniejszym z dwóch rozmiarów, na zasadach opisanych w Ikonografii. <code>.select-wrap</code> ustawia ją ${dsTok("--nu-space-small")} od prawej krawędzi i wyłącza z obsługi wskaźnika, więc kliknięcie w chevron rozwija listę. Kolor bierze z pola przez <code>currentColor</code>.`)}</td></tr>
+        `An icon at the smaller of the two sizes, ${dsTok("--nu-icon-sm")}, on the terms set out under Iconography. It stands inside the field's own padding, ${dsTok("--nu-space-milli")} from the right edge, with ${dsTok("--nu-space-medium")} between it and the value. Pointer events are off, so a click on the chevron opens the list, and the colour comes from the field through <code>currentColor</code>.`,
+        `Ikona w mniejszym z dwóch rozmiarów, ${dsTok("--nu-icon-sm")}, na zasadach opisanych w Ikonografii. Stoi we własnym wypełnieniu pola, ${dsTok("--nu-space-milli")} od prawej krawędzi, a między nią a wartością jest ${dsTok("--nu-space-medium")}. Obsługa wskaźnika jest wyłączona, więc kliknięcie w chevron rozwija listę, a kolor bierze się z pola przez <code>currentColor</code>.`)}</td></tr>
       <tr><td>${L("Type","Typografia")}</td><td>${L(
         "Inherited from its surroundings, line height 1.45. The select sets no face and no size of its own.",
         "Dziedziczona z otoczenia, interlinia 1.45. Select nie ustawia własnego kroju ani stopnia.")}</td></tr>
       <tr><td>${L("Width","Szerokość")}</td><td>${L(
-        "The full width of the place it stands in, borders counted in. That place decides how wide it is, not the select.",
-        "Cała szerokość miejsca, w którym stoi, wraz z ramką. Szerokość ustala to miejsce, a nie select.")}</td></tr>
+        `Three ways, and the place of use picks one: the full width of the space it stands in, as the country select does; the width its longest option needs; or a fixed width from a token, as the dialling code does with ${dsTok("--nu-field-short")}.`,
+        `Trzy możliwości, a wybiera miejsce użycia: cała szerokość obszaru, w którym select stoi, jak przy kraju; szerokość, której potrzebuje najdłuższa opcja; albo stała szerokość z tokenu, jak przy prefiksie &ndash; ${dsTok("--nu-field-short")}.`)}</td></tr>
       <tr><td>${L("Group names","Nazwy grup")}</td><td>${L(
         "<code>optgroup label</code> shows on the open list and never in the closed field. At the dialling code the country name therefore stands above its code on the list, while the field itself holds digits alone.",
         "<code>optgroup label</code> pokazuje się na rozwiniętej liście i nigdy w zamkniętym polu. Dzięki temu przy prefiksie nazwa kraju stoi na liście nad swoim kodem, a w samym polu zostają same cyfry.")}</td></tr>
@@ -2672,8 +2672,8 @@ const DS_SECTIONS = [
         "Street, building number and flat number are one address, so they share a row. Each field hands its three rows &ndash; label, control, message &ndash; up to the row through subgrid. A label that wraps to two lines, or a message appearing under one field, then moves that row for the whole group instead of shifting one field against its neighbours. Labels sit at the bottom of their row, so each one keeps the same distance from the control it names.",
         "Ulica, numer domu i numer lokalu to jeden adres, więc dzielą wiersz. Każde pole oddaje wierszowi swoje trzy rzędy &ndash; etykietę, kontrolkę i komunikat &ndash; przez subgrid. Etykieta łamiąca się na dwie linie albo komunikat pojawiający się pod jednym polem przesuwa wtedy cały rząd, a nie jedno pole względem sąsiadów. Etykiety siedzą przy dolnej krawędzi swojego rzędu, więc każda stoi w tej samej odległości od kontrolki, którą nazywa.")}</td></tr>
       <tr><td>${L("Fixed widths","Szerokości stałe")}</td><td>${L(
-        `Fields whose content has a known length are sized once: ${dsTok("--nu-field-num")} for a building or flat number, ${dsTok("--nu-field-code")} for a dialling code. Two fields meant to match cannot then drift apart.`,
-        `Pola o znanej długości zawartości mają rozmiar podany raz: ${dsTok("--nu-field-num")} dla numeru domu i lokalu, ${dsTok("--nu-field-code")} dla prefiksu. Dwa pola, które mają się zgadzać, nie mogą się wtedy rozjechać.`)}</td></tr>
+        `A building number, a flat number and a dialling code hold up to four characters each, so all three take one width: ${dsTok("--nu-field-short")}. It is set by the widest case, the dialling code, because a select holds the four characters, the gap and the chevron; the plain fields follow it and the row lines up.`,
+        `Numer domu, numer lokalu i prefiks mieszczą po najwyżej cztery znaki, więc wszystkie trzy mają jedną szerokość: ${dsTok("--nu-field-short")}. Ustala ją przypadek najszerszy, czyli prefiks, bo select mieści cztery znaki, odstęp i chevron; pozostałe pola idą za nim i wiersz się wyrównuje.`)}</td></tr>
     </tbody></table>
 
     <h3>${L("Two controls, one answer","Dwie kontrolki, jedna odpowiedź")}</h3>

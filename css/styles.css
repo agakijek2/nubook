@@ -135,11 +135,11 @@
        a margin over it and sets the width of the value between the two buttons,
        so the control does not resize between 9 and 10. */
     --nu-control-sm:26px;
-    /* Fields whose content has a known length: a building or flat number, and
-       a dialling code of up to four digits. Written here once, so two fields
-       meant to match cannot drift apart. */
-    --nu-field-num:96px;
-    --nu-field-code:96px;
+    /* A field holding up to four characters: a building number, a flat number,
+       a dialling code. One value for all three, so fields that stand in a row
+       line up. The width is set by the widest case, a select - it holds the four
+       characters, the gap and the chevron - and the plain fields follow it. */
+    --nu-field-short:104px;
 
     --nu-icon-lg:24px;   --nu-icon-lg-inset:2px; --nu-icon-lg-stroke:1.5;
     --nu-icon-sm:16px;   --nu-icon-sm-inset:1px; --nu-icon-sm-stroke:1.25;
@@ -836,7 +836,7 @@
      width they need. */
   .f-addr{
     grid-column:1/-1;display:grid;align-content:start;
-    grid-template-columns:1fr var(--nu-field-num) var(--nu-field-num);
+    grid-template-columns:1fr var(--nu-field-short) var(--nu-field-short);
     grid-template-rows:auto auto auto;gap:0 var(--nu-space-milli);
   }
   .f-addr .field{display:grid;grid-template-rows:subgrid;grid-row:span 3}
@@ -868,7 +868,10 @@
   .select{
     width:100%;box-sizing:border-box;
     border:1px solid var(--nu-border-neutral);border-radius:0;
-    padding:var(--nu-space-milli);padding-right:var(--nu-space-xlarge);
+    padding:var(--nu-space-milli);
+    /* the room the chevron stands in: the field's own padding, the icon, and the
+       gap between the value and it */
+    padding-right:calc(var(--nu-space-milli) + var(--nu-icon-sm) + var(--nu-space-medium));
     font:inherit;line-height:1.45;
     background:var(--nu-bg-primary);transition:border-color .2s ease;
     appearance:none;-webkit-appearance:none;-moz-appearance:none;
@@ -877,7 +880,7 @@
   .select:focus{outline:none;border-color:var(--nu-border-primary)}
   .select-wrap{position:relative;display:block}
   .select-wrap .ico-chevron{
-    position:absolute;right:var(--nu-space-small);top:50%;
+    position:absolute;right:var(--nu-space-milli);top:50%;
     transform:translateY(-50%);pointer-events:none;
   }
 
@@ -885,7 +888,7 @@
      one gives up its right border, so the seam between them is a single line.
      Focus and error take the whole group, otherwise the outline would change
      colour halfway along its top edge. */
-  .f-group{display:grid;grid-template-columns:var(--nu-field-code) 1fr}
+  .f-group{display:grid;grid-template-columns:var(--nu-field-short) 1fr}
   .f-group .select{border-right:0}
   .f-group:focus-within .select,
   .f-group:focus-within .input{border-color:var(--nu-border-primary)}
