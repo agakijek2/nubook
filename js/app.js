@@ -1652,6 +1652,31 @@ function dsDecl(token){
    order it is declared. Names carry no position, so a step can be dropped or
    renamed without renumbering anything — only its note is looked up, and a step
    with no note says so instead of quietly vanishing. */
+/* The three curves CSS names with a keyword, written here as the numbers the
+   specification gives them. Ours come from the sheet instead. */
+const DS_CURVE_KEYWORDS = {
+  "linear":      [0, 0, 1, 1],
+  "ease":        [.25, .1, .25, 1],
+  "ease-in-out": [.42, 0, .58, 1],
+};
+/* One drawing, one movement, one source: the path and the dot both take their
+   numbers from the same place, so a curve cannot be drawn as one thing and run
+   as another. */
+function dsCurveGraph(spec){
+  const nums = spec.startsWith("--")
+    ? (dsVal(spec).match(/-?\d*\.?\d+/g) || []).map(Number)
+    : DS_CURVE_KEYWORDS[spec];
+  if (!nums || nums.length !== 4) return "";
+  const X = v => (10 + v * 64).toFixed(1), Y = v => (74 - v * 64).toFixed(1);
+  const timing = spec.startsWith("--") ? `var(${spec})` : spec;
+  return `<svg class="ds-curve" width="84" height="84" viewBox="0 0 84 84" aria-hidden="true">
+    <rect x="10" y="10" width="64" height="64" rx="3"/>
+    <path class="ref" d="M10 74L74 10"/>
+    <path class="crv" d="M10 74C${X(nums[0])} ${Y(nums[1])} ${X(nums[2])} ${Y(nums[3])} 74 10"/>
+    <g class="cx"><g class="cy" style="animation-timing-function:${timing}"><circle class="dot" cx="10" cy="74" r="3"/></g></g>
+  </svg>`;
+}
+
 /* The motion scale read back from the sheet, on the same terms as the spacing
    scale: names from :root when its text can be reached, values always from the
    computed style. */
@@ -2801,6 +2826,26 @@ const DS_SECTIONS = [
       ${dsMotionSteps().map(([name, val, note]) =>
         `<tr><td class="spec"><code>${name}</code></td><td>${val}</td><td>${note}</td></tr>`).join("")}
     </tbody></table>
+
+    <h3>${L("Curves","Krzywe")}</h3>
+    <p>${L(
+      "A curve says how the movement is spread over its duration, not how long it lasts. Time runs left to right, the distance already covered runs bottom to top, and the dashed diagonal is <code>linear</code> for comparison: the steeper the curve at a point, the faster the element moves just then.",
+      "Krzywa mówi, jak ruch rozkłada się w czasie, a nie jak długo trwa. Poziomo płynie czas, pionowo rośnie przebyta droga, a przerywana przekątna to <code>linear</code> do porównania: im krzywa stromsza w danym miejscu, tym szybciej element się wtedy porusza.")}</p>
+    <table><thead><tr><th ${DS_COL_NAME}>${L("Curve","Krzywa")}</th><th>${L("Shape","Kształt")}</th><th>${L("Where it runs","Gdzie działa")}</th></tr></thead><tbody>
+      <tr><td class="spec">${dsTok("--nu-ease-zoom")}</td><td>${dsCurveGraph("--nu-ease-zoom")}</td>
+        <td>${L("The most decisive of the four: about four fifths of the way is behind it in the first quarter of the time, and the rest settles gently. The tile growing into a packshot.","Najbardziej zdecydowana z czterech: w pierwszej ćwiartce czasu ma za sobą jakieś cztery piąte drogi, a resztę osiada łagodnie. Kafel rosnący do packshotu.")}</td></tr>
+      <tr><td class="spec">${dsTok("--nu-ease-slide")}</td><td>${dsCurveGraph("--nu-ease-slide")}</td>
+        <td>${L("The same family, a tone calmer. The cart drawer and the filter sheet arrive decisively, without looking fired from somewhere.","Ta sama rodzina, o ton spokojniejsza. Szuflada koszyka i panel filtrów przyjeżdżają zdecydowanie, bez wrażenia wystrzelenia.")}</td></tr>
+      <tr><td class="spec"><code>ease</code></td><td>${dsCurveGraph("ease")}</td>
+        <td>${L("The browser's default. Sets off briskly, covers most of the way early, finishes calmly. It fits wherever the movement has nothing to say beyond &ldquo;it happened&rdquo;, which is most of the shop.","Domyślna krzywa przeglądarki. Rusza żwawo, większość drogi ma za sobą wcześnie, końcówkę dojeżdża spokojnie. Pasuje wszędzie tam, gdzie ruch nie ma nic do powiedzenia poza „stało się”, czyli w większości sklepu.")}</td></tr>
+      <tr><td class="spec"><code>ease-in-out</code></td><td>${dsCurveGraph("ease-in-out")}</td>
+        <td>${L("Symmetrical: slow off the mark, quick through the middle, slow into the end. With no marked start and no marked landing it takes repetition well, which is why it carries the one loop in the shop &ndash; the accent in the logo.","Symetryczna: wolno rusza, przyspiesza w środku, wolno hamuje. Bez wyraźnego startu i bez wyraźnego lądowania dobrze znosi powtarzanie, dlatego prowadzi jedyną pętlę w sklepie &ndash; akcent w logo.")}</td></tr>
+      <tr><td class="spec"><code>linear</code></td><td>${dsCurveGraph("linear")}</td>
+        <td>${L("The same speed throughout. The filter toggle uses it because the tiles are being measured from one place to another, and any easing would read as the layout hesitating.","Stała prędkość przez cały czas. Używa jej przełączenie filtrów, bo kafle są przemierzane z jednego miejsca w drugie, a każde wygładzenie czytałoby się jako wahanie układu.")}</td></tr>
+    </tbody></table>
+    <p class="note">${L(
+      "None of them starts slowly. A curve with a lazy opening makes a click look ignored for the first tenth of a second, which reads as the interface stalling rather than as a style.",
+      "Żadna z nich nie zaczyna się powoli. Krzywa z leniwym startem sprawia, że kliknięcie wygląda na zignorowane przez pierwszą dziesiątą sekundy, a to czyta się jako zacinanie interfejsu, nie jako styl.")}</p>
 
     <h3>${L("Transitions","Przejścia")}</h3>
     <table><thead><tr><th>${L("Transition","Przejście")}</th><th>${L("Duration","Czas")}</th><th>${L("Curve","Krzywa")}</th><th>${L("Why","Po co")}</th></tr></thead><tbody>

@@ -1154,6 +1154,24 @@
   .ds .ds-qty{justify-content:center;align-items:flex-end}
   .ds .ds-select,
   .ds .ds-group{justify-content:center}
+  /* A curve drawn from the same numbers that drive the dot: the shape is the
+     path, the movement is the timing function, and both read the token. Time
+     runs left to right, distance covered runs bottom to top, and the dashed
+     diagonal is linear for comparison. */
+  .ds .ds-curve{display:block}
+  .ds .ds-curve rect{fill:var(--nu-bg-primary);stroke:var(--nu-border-neutral);stroke-width:.5}
+  .ds .ds-curve .ref{fill:none;stroke:var(--nu-border-neutral);stroke-width:.5;stroke-dasharray:2 2}
+  .ds .ds-curve .crv{fill:none;stroke:var(--nu-fg-primary);stroke-width:1.25}
+  .ds .ds-curve .dot{fill:var(--nu-fg-primary)}
+  .ds .ds-curve .cx{animation:dsCurveX var(--nu-motion-loop) linear infinite;animation-duration:2.4s}
+  .ds .ds-curve .cy{animation-name:dsCurveY;animation-duration:2.4s;animation-iteration-count:infinite}
+  @keyframes dsCurveX{0%{transform:translateX(0)}60%{transform:translateX(64px)}100%{transform:translateX(64px)}}
+  @keyframes dsCurveY{0%{transform:translateY(0)}60%{transform:translateY(-64px)}100%{transform:translateY(-64px)}}
+  @media (prefers-reduced-motion:reduce){
+    .ds .ds-curve .cx,
+    .ds .ds-curve .cy{animation:none}
+    .ds .ds-curve .dot{display:none}
+  }
   .ds .ds-tiles .tile{width:140px}
   .ds .ds-specimens figcaption{
     font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
