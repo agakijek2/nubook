@@ -118,6 +118,25 @@
     --nu-space-huge:48px;
     --nu-space-max:64px;
 
+    /* Motion. Named by the job, like the spacing scale, so a value can move
+       between steps without every rule being renamed. Instant is under the
+       threshold where a change reads as a move; quick answers in place; base
+       carries colour and a small turn; slow is for something arriving or
+       leaving; slower is for the two moments that cross the page. */
+    --nu-motion-instant:90ms;
+    --nu-motion-quick:150ms;
+    --nu-motion-base:250ms;
+    --nu-motion-slow:350ms;
+    --nu-motion-slower:550ms;
+    --nu-motion-loop:26s;
+    /* The starts of the mosaic are spread over this, not the length of one card. */
+    --nu-motion-stagger:900ms;
+    /* Two curves that are decisions rather than defaults: a panel sliding into
+       place, and a tile growing into a packshot. Plain ease and linear stay
+       keywords. */
+    --nu-ease-slide:cubic-bezier(.32,.72,.27,1);
+    --nu-ease-zoom:cubic-bezier(.22,.8,.2,1);
+
     /* layout */
     /* Icon sizes. Container is what the icon occupies on the page; inset is the
        margin the drawing keeps inside it, stroke included; stroke is measured in
@@ -222,7 +241,7 @@
     position:relative;left:1px;z-index:-1;
     transform-origin:center;
     background:var(--nu-fg-primary);
-    animation:dotBloom 26s ease-in-out infinite;
+    animation:dotBloom var(--nu-motion-loop) ease-in-out infinite;
   }
   @keyframes dotBloom{
     /* resting: plain black dot, no glow — most of the cycle */
@@ -388,12 +407,12 @@
      the stroke alone, since a horizontal rule's weight is its vertical extent. */
   .ico-filter .bar-bot{
     transform-box:view-box;transform-origin:2px 11px;
-    transform:scaleX(.62);transition:transform .25s ease;
+    transform:scaleX(.62);transition:transform var(--nu-motion-base) ease;
   }
   .btn-tertiary[aria-expanded="false"] .ico-filter .bar-bot{transform:scaleX(1)}
   /* Plus and close are one drawing: the cross is the plus turned 45 degrees.
      Sized so the rotated form still clears the safe area. */
-  .ico-plus{transition:transform .25s ease}
+  .ico-plus{transition:transform var(--nu-motion-base) ease}
   .ico-close{transform:rotate(45deg)}
   .btn-tertiary[aria-expanded="true"] .ico-plus{transform:rotate(45deg)}
   /* Both belong to the mobile bars only; declared here so the desktop default
@@ -405,7 +424,7 @@
   .sheet-backdrop{
     position:fixed;inset:0;z-index:70;
     background:var(--nu-bg-scrim);
-    opacity:0;pointer-events:none;transition:opacity .28s ease;
+    opacity:0;pointer-events:none;transition:opacity var(--nu-motion-base) ease;
   }
   .sheet-backdrop.open{opacity:1;pointer-events:auto}
 
@@ -476,7 +495,7 @@
   }
   .card{position:relative}
   /* first-visit mosaic: cards dissolve in, in random order */
-  .grid.mosaic .card{opacity:0;animation:cardIn .55s ease forwards;animation-delay:var(--d,0ms)}
+  .grid.mosaic .card{opacity:0;animation:cardIn var(--nu-motion-slower) ease forwards;animation-delay:var(--d,0ms)}
   @keyframes cardIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){
     .grid.mosaic .card{animation:none;opacity:1}
@@ -516,7 +535,7 @@
     width:var(--nu-cover-w);max-width:none;aspect-ratio:7/10;
     position:relative;overflow:hidden;
     box-shadow:0 14px 22px -10px color-mix(in srgb, var(--nu-bg-inverse) 35%, transparent), 0 2px 4px color-mix(in srgb, var(--nu-bg-inverse) 12%, transparent);
-    transition:transform .35s ease;
+    transition:transform var(--nu-motion-slow) ease;
     flex-shrink:0;
   }
   .card a, .card .cardlink{display:block}
@@ -554,9 +573,11 @@
   .p-tile .badge{top:var(--nu-space-small);left:var(--nu-space-small)}
   /* open transition: info + CTA dissolve in separately */
   .p-info.p-enter{opacity:0;transform:translateY(6px)}
-  .p-info.p-enter-in{opacity:1;transform:none;transition:opacity .45s ease .05s, transform .45s ease .05s}
+  /* The 50ms is a delay, not a duration: a beat that lets the tile land before
+     the text starts, too short to be a step on the scale. */
+  .p-info.p-enter-in{opacity:1;transform:none;transition:opacity var(--nu-motion-slower) ease .05s, transform var(--nu-motion-slower) ease .05s}
   .p-cta.p-enter-cta{opacity:0}
-  .p-cta.p-enter-cta-in{opacity:1;transition:opacity .4s ease .4s}
+  .p-cta.p-enter-cta-in{opacity:1;transition:opacity var(--nu-motion-slow) ease var(--nu-motion-slow)}
   .fly-tile{overflow:hidden;background:var(--nu-bg-secondary)}
   .fly-tile .badge{display:none}
   .p-info{max-width:480px;padding-top:var(--nu-space-micro)}
@@ -588,7 +609,7 @@
   /* author drawer */
   .drawer-backdrop{
     position:fixed;inset:0;z-index:90;background:var(--nu-bg-scrim);
-    opacity:0;pointer-events:none;transition:opacity .3s ease;
+    opacity:0;pointer-events:none;transition:opacity var(--nu-motion-slow) ease;
   }
   .drawer-backdrop.open{opacity:1;pointer-events:auto}
   .drawer{
@@ -597,7 +618,7 @@
     background:var(--nu-bg-primary);border-left:1px solid var(--nu-border-neutral);
     box-shadow:-18px 0 50px color-mix(in srgb, var(--nu-bg-inverse) 8%, transparent);
     transform:translateX(102%);visibility:hidden;
-    transition:transform .38s cubic-bezier(.32,.72,.27,1), visibility .38s;
+    transition:transform var(--nu-motion-slow) var(--nu-ease-slide), visibility var(--nu-motion-slow);
     padding:var(--nu-space-medium) var(--nu-space-large) var(--nu-space-xlarge);overflow-y:auto;
   }
   .drawer.open{transform:none;visibility:visible}
@@ -647,7 +668,7 @@
       0 7px 16px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 60%, transparent),
       0 1px 3px color-mix(in srgb, var(--nu-bg-inverse) 18%, transparent);
     transform-origin:center;
-    transition:box-shadow .18s ease, transform .12s ease, background .25s ease;
+    transition:box-shadow var(--nu-motion-quick) ease, transform var(--nu-motion-quick) ease, background var(--nu-motion-base) ease;
   }
   .btn-primary:hover{
     box-shadow:
@@ -687,13 +708,13 @@
       inset 0 -10px 18px -12px color-mix(in srgb, var(--nu-bg-tertiary) 40%, transparent),
       0 2px 5px -2px color-mix(in srgb, var(--nu-bg-inverse) 14%, transparent);
     transform-origin:center;
-    transition:box-shadow .18s ease, background .25s ease, transform .12s ease;
+    transition:box-shadow var(--nu-motion-quick) ease, background var(--nu-motion-base) ease, transform var(--nu-motion-quick) ease;
   }
   /* Colour and light still answer the pointer; only the 1px press stops being
      eased, so nothing on the page travels. */
   @media (prefers-reduced-motion:reduce){
     .btn-primary,
-    .btn-secondary{transition:box-shadow .18s ease, background .25s ease}
+    .btn-secondary{transition:box-shadow var(--nu-motion-quick) ease, background var(--nu-motion-base) ease}
   }
   /* Same move as the primary: the body holds its colour and the light around it
      grows — highlight up, inner shading deeper, drop shadow longer. Swapping the
@@ -734,9 +755,9 @@
   }
 
   /* ---------- cart & checkout ---------- */
-  .cart-n.dot-in{animation:dotIn .28s ease-out}
+  .cart-n.dot-in{animation:dotIn var(--nu-motion-base) ease-out}
   @keyframes dotIn{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
-  .cart-n.bump{animation:softBump .3s ease}
+  .cart-n.bump{animation:softBump var(--nu-motion-slow) ease}
   @keyframes softBump{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
   /* A row, so the confirmation glyph can stand beside the word - and block-level,
      not inline-flex. An inline-flex box takes its baseline from its first item,
@@ -746,7 +767,7 @@
      box to sit in, so the height is the row's height and nothing else. */
   .p-cta .cta-label{
     display:flex;align-items:center;justify-content:center;gap:var(--nu-space-micro);
-    transition:opacity .16s ease, transform .16s ease;
+    transition:opacity var(--nu-motion-quick) ease, transform var(--nu-motion-quick) ease;
   }
   .p-cta.swap-out .cta-label{opacity:0;transform:translateY(-6px)}
   .p-cta.swap-in .cta-label{opacity:0;transform:translateY(6px)}
@@ -760,7 +781,7 @@
   .ci{
     display:flex;gap:var(--nu-space-small);align-items:flex-start;
     padding:var(--nu-space-small) 0;border-bottom:1px solid var(--nu-border-neutral);
-    transition:opacity .25s ease, transform .25s ease;
+    transition:opacity var(--nu-motion-base) ease, transform var(--nu-motion-base) ease;
   }
   .ci.removing{opacity:0;transform:translateX(14px)}
   /* The row still leaves, it just stops travelling on the way out. */
@@ -777,7 +798,7 @@
   .qty button{
     width:var(--nu-control-sm);height:var(--nu-control-sm);
     display:inline-flex;align-items:center;justify-content:center;
-    color:var(--nu-fg-primary);transition:background .15s ease;
+    color:var(--nu-fg-primary);transition:background var(--nu-motion-quick) ease;
   }
   .qty button:hover{background:var(--nu-bg-secondary)}
   /* At one the minus has nothing to take away: removing the line is what the
@@ -791,7 +812,7 @@
   .cart-foot{padding-top:var(--nu-space-medium)}
   .fs-note{color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-micro)}
   .fs-bar{height:2px;background:var(--nu-border-neutral);margin-bottom:var(--nu-space-medium);overflow:hidden}
-  .fs-fill{height:100%;background:var(--nu-fg-primary);transition:width .45s ease}
+  .fs-fill{height:100%;background:var(--nu-fg-primary);transition:width var(--nu-motion-slower) ease}
   /* The bar shows the new length instead of growing into it. */
   @media (prefers-reduced-motion:reduce){
     .fs-fill{transition:none}
@@ -820,10 +841,10 @@
      Centring the view (not the grid) keeps the back link and title on the
      same left edge as the columns below them. */
   .checkout{
-    padding:0 var(--nu-space-small) var(--nu-space-max);animation:fadeUp .35s ease;
+    padding:0 var(--nu-space-small) var(--nu-space-max);animation:fadeUp var(--nu-motion-slow) ease;
     max-width:var(--nu-measure-form);margin-inline:auto;
   }
-  .done-view{padding:var(--nu-space-max) var(--nu-space-small);text-align:center;animation:fadeUp .35s ease}
+  .done-view{padding:var(--nu-space-max) var(--nu-space-small);text-align:center;animation:fadeUp var(--nu-motion-slow) ease}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){
     .checkout,.done-view{animation:none}
@@ -869,7 +890,7 @@
     width:100%;box-sizing:border-box;
     border:1px solid var(--nu-border-neutral);border-radius:0;
     padding:var(--nu-space-milli);font:inherit;line-height:1.45;
-    background:var(--nu-bg-primary);transition:border-color .2s ease;
+    background:var(--nu-bg-primary);transition:border-color var(--nu-motion-base) ease;
   }
   .input:focus{outline:none;border-color:var(--nu-border-primary)}
   .input::placeholder{color:var(--nu-fg-tertiary)}
@@ -887,7 +908,7 @@
        gap between the value and it */
     padding-right:calc(var(--nu-space-milli) + var(--nu-icon-sm) + var(--nu-space-medium));
     font:inherit;line-height:1.45;
-    background:var(--nu-bg-primary);transition:border-color .2s ease;
+    background:var(--nu-bg-primary);transition:border-color var(--nu-motion-base) ease;
     appearance:none;-webkit-appearance:none;-moz-appearance:none;
   }
   .select::-ms-expand{display:none}
@@ -923,7 +944,7 @@
   .opt{
     display:flex;align-items:center;gap:var(--nu-space-milli);
     border:1px solid var(--nu-border-neutral);padding:var(--nu-space-milli) var(--nu-space-small);margin-bottom:var(--nu-space-micro);cursor:pointer;
-    transition:border-color .2s ease;
+    transition:border-color var(--nu-motion-base) ease;
   }
   .opt:hover{border-color:var(--nu-border-hover)}
   .opt:has(input:checked){border-color:var(--nu-border-primary)}
@@ -1242,14 +1263,14 @@
       position:static;
       max-height:1000px;overflow:hidden;
       border-top:1px solid var(--nu-border-neutral);margin-bottom:var(--nu-space-small);padding-top:var(--nu-space-small);
-      transition:max-height .35s linear, opacity .35s linear, margin .35s linear, padding .35s linear;
+      transition:max-height var(--nu-motion-slow) linear, opacity var(--nu-motion-slow) linear, margin var(--nu-motion-slow) linear, padding var(--nu-motion-slow) linear;
     }
     .shop.filters-hidden .filters{
       max-height:0;opacity:0;margin:0;padding:0;border-top-color:transparent;
     }
     /* Raising or dropping the sheet takes the panel in and out of the flow. That
        has to happen in one frame so the scroll can be corrected against it —
-       an animated collapse would move the list for 350ms afterwards. */
+       an animated collapse would move the list for the whole transition afterwards. */
     .filters.no-anim{transition:none}
 
     /* ---------- mobile: sticky bottom bars ----------
@@ -1302,13 +1323,13 @@
       background:var(--nu-bg-primary);
       border-top:1px solid var(--nu-border-neutral);
       box-shadow:0 -14px 40px color-mix(in srgb, var(--nu-bg-inverse) 10%, transparent);
-      animation:sheetUp .3s cubic-bezier(.32,.72,.27,1);
+      animation:sheetUp var(--nu-motion-slow) var(--nu-ease-slide);
     }
     /* closing: drop it past the bar before it goes back into the flow */
     body.fsheet.fsheet-out .shop .filters{
       animation:none;
       transform:translateY(calc(100% + var(--nu-mobar-h)));
-      transition:transform .26s ease;
+      transition:transform var(--nu-motion-base) ease;
     }
     body.fsheet .fsheet-head{
       display:flex;align-items:center;justify-content:space-between;

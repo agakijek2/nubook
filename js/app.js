@@ -388,8 +388,18 @@ sortMenu.querySelectorAll("button").forEach(b=>{
 const shopEl = document.getElementById("shop"),
       filterToggle = document.getElementById("filterToggle");
 const filtersEl = document.getElementById("filters");
-const FT_MS = 280, FT_EASE = "linear";   // tiles
-const FT_GHOST_MS = 90;                      // filters clear well before the tiles expand
+/* How long a movement takes is decided in one place, the stylesheet. The script
+   reads the same token instead of keeping a second copy that could drift away
+   from it. */
+const motionMs = name => {
+  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return v.endsWith("ms") ? parseFloat(v) : parseFloat(v) * 1000;
+};
+const motionCurve = name =>
+  getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+const FT_MS = motionMs("--nu-motion-base"), FT_EASE = "linear";   // tiles
+const FT_GHOST_MS = motionMs("--nu-motion-instant");  // filters clear well before the tiles expand
 
 filterToggle.onclick = ()=>{
   const desktop = window.matchMedia("(min-width:821px)").matches;
@@ -517,7 +527,7 @@ function closeFilterSheet(){
   const settle = ()=>keepListStill(()=>{
     document.body.classList.remove("fsheet","fsheet-out");
   });
-  reduce ? settle() : setTimeout(settle, 260);
+  reduce ? settle() : setTimeout(settle, motionMs("--nu-motion-base"));
 }
 function mobileFilterTap(){
   if (sheetOpen()){ closeFilterSheet(); return; }
@@ -654,7 +664,7 @@ function render(rebuildChips = true){
     // give each card a random slot in a staggered sequence -> mosaic-like reveal
     const cards = [...grid.querySelectorAll(".card")];
     const order = cards.map((_,i)=>i).sort(()=>Math.random()-.5);
-    const step = Math.max(28, Math.min(80, 900 / Math.max(cards.length,1)));
+    const step = Math.max(28, Math.min(80, motionMs("--nu-motion-stagger") / Math.max(cards.length,1)));
     order.forEach((cardIdx, slot)=>{
       cards[cardIdx].style.setProperty("--d", (slot*step) + "ms");
     });
@@ -727,7 +737,7 @@ function playOpenTransition(){
   const anim = clone.animate([
     { transform:"translate(0,0) scale(1)" },
     { transform:`translate(${dx}px,${dy}px) scale(${s})` }
-  ], { duration: 560, easing:"cubic-bezier(.22,.8,.2,1)", fill:"forwards" });
+  ], { duration: motionMs("--nu-motion-slower"), easing: motionCurve("--nu-ease-zoom"), fill:"forwards" });
 
   anim.onfinish = ()=>{
     ptile.style.visibility = "";
@@ -869,7 +879,7 @@ function addToCart(id, btn){
   const wasEmpty = cartCount() === 0;
   CART.set(id, (CART.get(id) || 0) + 1);
   updateBadge(wasEmpty ? "in" : "bump");
-  setTimeout(openCart, 350);
+  setTimeout(openCart, motionMs("--nu-motion-slow"));
   if (btn){
     const label = btn.querySelector(".cta-label") || btn;
     const orig = label.innerHTML;
@@ -911,7 +921,7 @@ function setQty(id, q){
 function removeItem(id){
   const rows = [document.getElementById("ci"+id), document.getElementById("cp"+id)].filter(Boolean);
   const finish = ()=>{ CART.delete(id); updateBadge(false); refreshCartViews(); };
-  if (rows.length){ rows.forEach(r=>r.classList.add("removing")); setTimeout(finish, 240); } else finish();
+  if (rows.length){ rows.forEach(r=>r.classList.add("removing")); setTimeout(finish, motionMs("--nu-motion-base")); } else finish();
 }
 
 /* ---------------- cart drawer ---------------- */
@@ -1642,6 +1652,34 @@ function dsDecl(token){
    order it is declared. Names carry no position, so a step can be dropped or
    renamed without renumbering anything — only its note is looked up, and a step
    with no note says so instead of quietly vanishing. */
+/* The motion scale read back from the sheet, on the same terms as the spacing
+   scale: names from :root when its text can be reached, values always from the
+   computed style. */
+function dsMotionSteps(){
+  const notes = new Map([
+    ["instant", L("Below the threshold where a change reads as a move. One thing clears out of another's way.",
+                  "Poniżej progu, przy którym zmiana czyta się jako ruch. Jedna rzecz schodzi drugiej z drogi.")],
+    ["quick",   L("An answer in place: a button pressing, a cell filling, a label crossfading.",
+                  "Odpowiedź w miejscu: wciśnięcie przycisku, wypełnienie komórki, przenikanie napisu.")],
+    ["base",    L("Colour and a small turn: a field border, a chosen row, an icon rotating, a cart line leaving.",
+                  "Kolor i drobny obrót: ramka pola, wybrany wiersz, obrót ikony, znikająca pozycja koszyka.")],
+    ["slow",    L("Something arriving or leaving: the drawer, the filter panel, the backdrop.",
+                  "Coś przyjeżdża albo odjeżdża: szuflada, panel filtrów, przykrycie.")],
+    ["slower",  L("The two moments that cross the page: a tile growing into a packshot, a card appearing in the grid.",
+                  "Dwie chwile przechodzące przez stronę: kafel rosnący w packshot, karta pojawiająca się w siatce.")],
+    ["loop",    L("The one thing that repeats: the accent in the logo.",
+                  "Jedyna rzecz, która się powtarza: akcent w logo.")],
+    ["stagger", L("Not a duration: the window the starts of the mosaic are spread over.",
+                  "Nie czas trwania: okno, w którym rozkładają się starty mozaiki.")],
+  ]);
+  const P = "--nu-motion-";
+  const fromSheet = Object.keys(dsRootDecls()).filter(n => n.startsWith(P));
+  const names = fromSheet.length ? fromSheet : [...notes.keys()].map(k => P + k);
+  const undocumented = `<em>${L("not documented yet","jeszcze nieopisane")}</em>`;
+  return names
+    .map(name => [name, dsVal(name), notes.get(name.slice(P.length)) || undocumented])
+    .filter(([,val]) => val);
+}
 function dsSpaceSteps(){
   /* A Map, not an object: some step names are still bare numbers, and object
      keys that look like integers are iterated before the rest whatever order
@@ -2754,16 +2792,27 @@ const DS_SECTIONS = [
   { group:{en:"Patterns",pl:"Wzorce"}, id:"motion", label:{en:"Motion",pl:"Ruch"}, body: ()=>`
     <h1>${L("Motion","Ruch")}</h1>
     <p class="ds-lede">${L("Animation shows where something came from or where it went.","Animacja pokazuje, skąd coś przyszło albo dokąd odeszło.")}</p>
+
+    <h3>${L("Scale","Skala")}</h3>
+    <p>${L(
+      "Six steps named by the job they do, so a value can move between them without every rule being renamed. Both the stylesheet and the script read these tokens; nothing holds a second copy of a duration.",
+      "Sześć stopni nazwanych po roli, jaką pełnią, więc wartość może przejść między nimi bez przemianowywania reguł. Czyta je i arkusz, i skrypt &ndash; żaden czas nie ma drugiej kopii.")}</p>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("What it carries","Co się w nim mieści")}</th></tr></thead><tbody>
+      ${dsMotionSteps().map(([name, val, note]) =>
+        `<tr><td class="spec"><code>${name}</code></td><td>${val}</td><td>${note}</td></tr>`).join("")}
+    </tbody></table>
+
+    <h3>${L("Transitions","Przejścia")}</h3>
     <table><thead><tr><th>${L("Transition","Przejście")}</th><th>${L("Duration","Czas")}</th><th>${L("Curve","Krzywa")}</th><th>${L("Why","Po co")}</th></tr></thead><tbody>
-      <tr><td>${L("Open a product","Otwarcie produktu")}</td><td>560ms</td><td><code>cubic-bezier(.22,.8,.2,1)</code></td>
+      <tr><td>${L("Open a product","Otwarcie produktu")}</td><td>${dsTok("--nu-motion-slower")}</td><td>${dsTok("--nu-ease-zoom")}</td>
         <td>${L("Tile zooms to the packshot; info and CTA dissolve after it lands, in that order","Kafel powiększa się do packshotu; informacje i przycisk rozpuszczają się po wylądowaniu, w tej kolejności")}</td></tr>
-      <tr><td>${L("Toggle filters","Przełączenie filtrów")}</td><td>${L("280ms tiles / 90ms column","280ms kafle / 90ms kolumna")}</td><td>linear</td>
+      <tr><td>${L("Toggle filters","Przełączenie filtrów")}</td><td>${L("tiles","kafle")} ${dsTok("--nu-motion-base")}, ${L("column","kolumna")} ${dsTok("--nu-motion-instant")}</td><td>linear</td>
         <td>${L("Tiles resize in place; the column clears first so nothing overlaps","Kafle skalują się w miejscu; kolumna znika pierwsza, żeby nic na siebie nie nachodziło")}</td></tr>
-      <tr><td>${L("First paint of the grid","Pierwsze wyświetlenie siatki")}</td><td>${L("550ms a card, starts spread over 900ms","550ms na kartę, starty rozłożone w 900ms")}</td><td>ease</td>
+      <tr><td>${L("First paint of the grid","Pierwsze wyświetlenie siatki")}</td><td>${dsTok("--nu-motion-slower")} ${L("a card, starts spread over","na kartę, starty rozłożone w")} ${dsTok("--nu-motion-stagger")}</td><td>ease</td>
         <td>${L("Cards dissolve in a random order &ndash; a mosaic, shown once per visit","Karty pojawiają się w losowej kolejności &ndash; mozaika, raz na wizytę")}</td></tr>
-      <tr><td>${L("Add to cart","Dodanie do koszyka")}</td><td>160&ndash;380ms</td><td>${L("ease, the drawer on a curve of its own","ease, szuflada na własnej krzywej")}</td>
+      <tr><td>${L("Add to cart","Dodanie do koszyka")}</td><td>${L("from","od")} ${dsTok("--nu-motion-quick")} ${L("to","do")} ${dsTok("--nu-motion-slow")}</td><td>${L("ease, the drawer on","ease, szuflada na")} ${dsTok("--nu-ease-slide")}</td>
         <td>${L("Label crossfades, counter fades in, drawer follows","Napis przenika, licznik się pojawia, potem wysuwa się szuflada")}</td></tr>
-      <tr><td>${L("Logo accent","Akcent w logo")}</td><td>${L("26s loop","pętla 26s")}</td><td>ease-in-out</td>
+      <tr><td>${L("Logo accent","Akcent w logo")}</td><td>${dsTok("--nu-motion-loop")}</td><td>ease-in-out</td>
         <td>${L("The dot blooms into a rainbow glow once per cycle &ndash; a rare accent, not a loop that demands attention","Kropka raz na cykl rozkwita tęczową poświatą &ndash; rzadki akcent, nie pętla domagająca się uwagi")}</td></tr>
     </tbody></table>
     <p class="note">${L(
