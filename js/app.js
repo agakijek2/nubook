@@ -1663,14 +1663,14 @@ function dsMotionSteps(){
                   "Odpowiedź w miejscu: wciśnięcie przycisku, wypełnienie komórki, przenikanie napisu.")],
     ["base",    L("Colour and a small turn: a field border, a chosen row, an icon rotating, a cart line leaving.",
                   "Kolor i drobny obrót: ramka pola, wybrany wiersz, obrót ikony, znikająca pozycja koszyka.")],
-    ["slow",    L("Something arriving or leaving: the drawer, the filter panel, the backdrop.",
-                  "Coś przyjeżdża albo odjeżdża: szuflada, panel filtrów, przykrycie.")],
-    ["slower",  L("The two moments that cross the page: a tile growing into a packshot, a card appearing in the grid.",
-                  "Dwie chwile przechodzące przez stronę: kafel rosnący w packshot, karta pojawiająca się w siatce.")],
+    ["slow",    L("An element comes onto the screen or leaves it: the cart drawer, the filter panel, the dimmed backdrop behind them.",
+                  "Element wjeżdża na ekran albo z niego znika: szuflada koszyka, panel filtrów, przyciemnione tło pod nimi.")],
+    ["slower",  L("The longest transitions, the ones covering a larger area: a tile growing into a packshot, and cards appearing in the grid.",
+                  "Najdłuższe przejścia, te obejmujące większy obszar: kafel powiększający się do packshotu i karty pojawiające się w siatce.")],
     ["loop",    L("The one thing that repeats: the accent in the logo.",
                   "Jedyna rzecz, która się powtarza: akcent w logo.")],
-    ["stagger", L("Not a duration: the window the starts of the mosaic are spread over.",
-                  "Nie czas trwania: okno, w którym rozkładają się starty mozaiki.")],
+    ["stagger", L("This one does not set how long an animation lasts, but the window its starts are spread over: the mosaic cards begin one after another within it.",
+                  "Ten nie ustala, jak długo trwa animacja, tylko w jakim czasie rozkładają się jej starty: karty mozaiki ruszają jedna po drugiej właśnie w nim.")],
   ]);
   const P = "--nu-motion-";
   const fromSheet = Object.keys(dsRootDecls()).filter(n => n.startsWith(P));
@@ -2791,12 +2791,12 @@ const DS_SECTIONS = [
 
   { group:{en:"Patterns",pl:"Wzorce"}, id:"motion", label:{en:"Motion",pl:"Ruch"}, body: ()=>`
     <h1>${L("Motion","Ruch")}</h1>
-    <p class="ds-lede">${L("Animation shows where something came from or where it went.","Animacja pokazuje, skąd coś przyszło albo dokąd odeszło.")}</p>
+    <p class="ds-lede">${L("Animation is part of the interface's answer. It confirms that a click worked, shows where a new view came from, and takes the eye to whatever has just changed.","Animacja jest częścią odpowiedzi interfejsu. Potwierdza, że kliknięcie zadziałało, pokazuje, skąd wziął się nowy widok, i prowadzi wzrok do miejsca, w którym coś się właśnie zmieniło.")}</p>
 
     <h3>${L("Scale","Skala")}</h3>
     <p>${L(
-      "Six steps named by the job they do, so a value can move between them without every rule being renamed. Both the stylesheet and the script read these tokens; nothing holds a second copy of a duration.",
-      "Sześć stopni nazwanych po roli, jaką pełnią, więc wartość może przejść między nimi bez przemianowywania reguł. Czyta je i arkusz, i skrypt &ndash; żaden czas nie ma drugiej kopii.")}</p>
+      "Six steps, each named after the job it does, so changing a value does not mean renaming rules. The stylesheet and the script read the same tokens, so every duration is written down in one place.",
+      "Stopni jest sześć, a każdy ma nazwę od zadania, które wykonuje. Dzięki temu zmiana wartości nie wymaga poprawiania nazw w regułach. Arkusz i skrypt czytają te same tokeny, więc każdy czas jest zapisany w jednym miejscu.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("What it carries","Co się w nim mieści")}</th></tr></thead><tbody>
       ${dsMotionSteps().map(([name, val, note]) =>
         `<tr><td class="spec"><code>${name}</code></td><td>${val}</td><td>${note}</td></tr>`).join("")}
@@ -2805,7 +2805,7 @@ const DS_SECTIONS = [
     <h3>${L("Transitions","Przejścia")}</h3>
     <table><thead><tr><th>${L("Transition","Przejście")}</th><th>${L("Duration","Czas")}</th><th>${L("Curve","Krzywa")}</th><th>${L("Why","Po co")}</th></tr></thead><tbody>
       <tr><td>${L("Open a product","Otwarcie produktu")}</td><td>${dsTok("--nu-motion-slower")}</td><td>${dsTok("--nu-ease-zoom")}</td>
-        <td>${L("Tile zooms to the packshot; info and CTA dissolve after it lands, in that order","Kafel powiększa się do packshotu; informacje i przycisk rozpuszczają się po wylądowaniu, w tej kolejności")}</td></tr>
+        <td>${L("The tile grows into the packshot, and once it settles the book details appear first, then the button","Kafel powiększa się do packshotu, a kiedy dojdzie na miejsce, pojawiają się najpierw informacje o książce, potem przycisk")}</td></tr>
       <tr><td>${L("Toggle filters","Przełączenie filtrów")}</td><td>${L("tiles","kafle")} ${dsTok("--nu-motion-base")}, ${L("column","kolumna")} ${dsTok("--nu-motion-instant")}</td><td>linear</td>
         <td>${L("Tiles resize in place; the column clears first so nothing overlaps","Kafle skalują się w miejscu; kolumna znika pierwsza, żeby nic na siebie nie nachodziło")}</td></tr>
       <tr><td>${L("First paint of the grid","Pierwsze wyświetlenie siatki")}</td><td>${dsTok("--nu-motion-slower")} ${L("a card, starts spread over","na kartę, starty rozłożone w")} ${dsTok("--nu-motion-stagger")}</td><td>ease</td>
