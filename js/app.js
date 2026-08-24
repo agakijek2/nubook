@@ -367,19 +367,49 @@ function chipData(){
 const sortBtn = document.getElementById("sortBtn"),
       sortMenu = document.getElementById("sortMenu");
 
-sortBtn.onclick = (e)=>{
-  e.stopPropagation();
-  const open = sortBtn.getAttribute("aria-expanded") !== "true";
+/* A menu button: the trigger says a menu hangs off it, the panel is a menu, and
+   each option is one choice out of a set. That is what makes aria-checked the
+   right attribute here — it belongs to a radio item, not to a list option.
+   The role also promises keyboard behaviour, so the keyboard has to deliver it:
+   arrows walk the options, Home and End reach the ends, Escape closes and hands
+   focus back to the trigger. */
+const sortItems = () => [...sortMenu.querySelectorAll('[role="menuitemradio"]')];
+const sortOpen  = () => sortBtn.getAttribute("aria-expanded") === "true";
+
+function setSortOpen(open, moveFocus = true){
   sortBtn.setAttribute("aria-expanded", String(open));
-};
-document.addEventListener("click", ()=>{ sortBtn.setAttribute("aria-expanded","false"); });
-sortMenu.querySelectorAll("button").forEach(b=>{
+  if (open && moveFocus){
+    const items = sortItems();
+    (items.find(b => b.getAttribute("aria-checked") === "true") || items[0]).focus();
+  }
+  // only take focus back if it is inside the menu, so a click elsewhere on the
+  // page closes the menu without pulling focus across the screen
+  if (!open && moveFocus && sortMenu.contains(document.activeElement)) sortBtn.focus();
+}
+
+sortBtn.onclick = (e)=>{ e.stopPropagation(); setSortOpen(!sortOpen()); };
+sortBtn.addEventListener("keydown", e=>{
+  if (e.key === "ArrowDown" || e.key === "ArrowUp"){ e.preventDefault(); setSortOpen(true); }
+});
+sortMenu.addEventListener("keydown", e=>{
+  const items = sortItems(), i = items.indexOf(document.activeElement);
+  const go = n => { e.preventDefault(); items[(n + items.length) % items.length].focus(); };
+  if (e.key === "ArrowDown") return go(i + 1);
+  if (e.key === "ArrowUp")   return go(i - 1);
+  if (e.key === "Home")      return go(0);
+  if (e.key === "End")       return go(items.length - 1);
+  // the menu answers Escape itself, so the key does not travel on to close a drawer
+  if (e.key === "Escape"){ e.stopPropagation(); setSortOpen(false); }
+  if (e.key === "Tab")       setSortOpen(false, false);
+});
+document.addEventListener("click", ()=>{ setSortOpen(false, false); });
+sortItems().forEach(b=>{
   b.onclick = (e)=>{
     e.stopPropagation();
     state.sort = b.dataset.sort;
-    sortMenu.querySelectorAll("button").forEach(x=>x.setAttribute("aria-checked", x===b));
+    sortItems().forEach(x=>x.setAttribute("aria-checked", String(x === b)));
     document.getElementById("sortLbl").textContent = b.textContent;
-    sortBtn.setAttribute("aria-expanded","false");
+    setSortOpen(false);
     render(false);
   };
 });
@@ -1389,6 +1419,7 @@ document.getElementById("backBtn").onclick = ()=>{
 };
 document.addEventListener("keydown", e=>{
   if (e.key !== "Escape") return;
+  if (sortOpen()) { setSortOpen(false); return; }
   if (sheetOpen()) { closeFilterSheet(); return; }
   if (cartOpen) { closeCart(); return; }
   if (drawerBook) { closeAuthor(); return; }
@@ -1413,9 +1444,7 @@ function applyLang(){
   document.getElementById("lblFilterSheet").textContent = t.filter;
   document.getElementById("lblSort").textContent = t.sort;
   document.getElementById("sortLbl").textContent = t.sorts[state.sort];
-  sortMenu.querySelectorAll("button").forEach(b=>{
-    b.textContent = t.sorts[b.dataset.sort];
-  });
+  sortItems().forEach(b=>{ b.textContent = t.sorts[b.dataset.sort]; });
   document.getElementById("btnFav").setAttribute("aria-label", t.aria.fav);
   document.getElementById("btnAccount").setAttribute("aria-label", t.aria.account);
   document.getElementById("btnSearch").setAttribute("aria-label", t.aria.search);
@@ -1882,11 +1911,11 @@ const DS_SECTIONS = [
           <td>${L("Every interactive element draws a <code>:focus-visible</code> ring in <code>--nu-border-primary</code>. Form fields drop the ring and darken their border instead, so the focused field is still marked without a ring sitting inside a box.",
                   "Każdy element interaktywny rysuje obwódkę <code>:focus-visible</code> w kolorze <code>--nu-border-primary</code>. Pola formularza rezygnują z obwódki na rzecz przyciemnienia własnej ramki, więc pole w fokusie nadal jest oznaczone, bez obwódki wewnątrz ramki.")}</td></tr>
       <tr><td>${L("Keyboard","Klawiatura")}</td>
-          <td>${L("Escape closes, in order: the filter sheet, the cart, the author drawer, the product view. Opening a drawer moves focus to its close button.",
-                  "Escape zamyka kolejno: panel filtrów, koszyk, szufladę autorki, widok produktu. Otwarcie szuflady przenosi fokus na jej przycisk zamknięcia.")}</td></tr>
+          <td>${L("Escape closes, in order: the sort menu, the filter sheet, the cart, the author drawer, the product view. Opening a drawer moves focus to its close button; opening the sort menu moves focus to the option in force, and closing it hands focus back to the button that opened it.",
+                  "Escape zamyka kolejno: menu sortowania, panel filtrów, koszyk, szufladę autorki, widok produktu. Otwarcie szuflady przenosi fokus na jej przycisk zamknięcia, a otwarcie menu sortowania &ndash; na obowiązującą opcję; zamknięcie oddaje fokus przyciskowi, który je otworzył.")}</td></tr>
       <tr><td>${L("Announced state","Ogłaszany stan")}</td>
-          <td>${L("<code>aria-expanded</code> on the filter and sort controls, <code>aria-pressed</code> on the language, currency and filter toggles, <code>role=&quot;listbox&quot;</code> with <code>aria-checked</code> on the sort menu, <code>role=&quot;dialog&quot;</code> with <code>aria-modal</code> on both drawers, <code>aria-invalid</code> with <code>aria-describedby</code> on a field whose value did not pass. The product grid is an <code>aria-live</code> region, so a filter change is announced rather than happening silently.",
-                  "<code>aria-expanded</code> na filtrach i sortowaniu, <code>aria-pressed</code> na przełącznikach języka, waluty i filtrów, <code>role=&quot;listbox&quot;</code> z <code>aria-checked</code> w menu sortowania, <code>role=&quot;dialog&quot;</code> z <code>aria-modal</code> w obu szufladach, <code>aria-invalid</code> wraz z <code>aria-describedby</code> na polu, którego wartość nie przeszła. Siatka produktów jest obszarem <code>aria-live</code>, więc zmiana filtra jest ogłaszana, a nie zachodzi bezgłośnie.")}</td></tr>
+          <td>${L("<code>aria-expanded</code> on the filter and sort controls, <code>aria-pressed</code> on the language, currency and filter toggles, <code>role=&quot;menu&quot;</code> with <code>aria-checked</code> on the sort options, <code>role=&quot;dialog&quot;</code> with <code>aria-modal</code> on both drawers, <code>aria-invalid</code> with <code>aria-describedby</code> on a field whose value did not pass. The product grid is an <code>aria-live</code> region, so a filter change is announced rather than happening silently.",
+                  "<code>aria-expanded</code> na filtrach i sortowaniu, <code>aria-pressed</code> na przełącznikach języka, waluty i filtrów, <code>role=&quot;menu&quot;</code> z <code>aria-checked</code> na pozycjach sortowania, <code>role=&quot;dialog&quot;</code> z <code>aria-modal</code> w obu szufladach, <code>aria-invalid</code> wraz z <code>aria-describedby</code> na polu, którego wartość nie przeszła. Siatka produktów jest obszarem <code>aria-live</code>, więc zmiana filtra jest ogłaszana, a nie zachodzi bezgłośnie.")}</td></tr>
       <tr><td>${L("Grouping","Grupowanie")}</td>
           <td>${L("Each row of filters is a <code>role=&quot;group&quot;</code> labelled by the heading standing above it, and the language and currency pairs in the header are groups of their own. A sighted reader takes that grouping from the layout; without the label tied to the row, a screen reader would read a run of toggles with nothing saying what they narrow down.",
                   "Każdy rząd filtrów jest grupą <code>role=&quot;group&quot;</code>, opisaną nagłówkiem stojącym nad nim, a pary języka i waluty w nagłówku są osobnymi grupami. Osoba widząca odczytuje to grupowanie z układu; bez etykiety powiązanej z rzędem czytnik ekranu odczytałby serię przełączników, nie mówiąc, czego dotyczą.")}</td></tr>

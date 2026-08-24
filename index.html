@@ -54,14 +54,14 @@
     <svg class="ico-sm ico-filter" viewBox="0 0 16 16" aria-hidden="true"><path class="bar-top" d="M2 5h12"/><path class="bar-bot" d="M2 11h12"/></svg><span id="lblFilter">Filtry</span>
   </button>
   <div class="sort" id="sort">
-    <button class="sort-btn btn-tertiary" id="sortBtn" aria-haspopup="listbox" aria-expanded="false">
+    <button class="sort-btn btn-tertiary" id="sortBtn" aria-haspopup="menu" aria-expanded="false">
       <span id="lblSort">Sortuj:</span> <span id="sortLbl">Nasze rekomendacje</span> <svg class="ico-sm ico-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg>
     </button>
-    <div class="sort-menu" role="listbox" id="sortMenu">
-      <button role="option" data-sort="featured" aria-checked="true">Our recommendations</button>
-      <button role="option" data-sort="newest" aria-checked="false">Newest first</button>
-      <button role="option" data-sort="price-asc" aria-checked="false">Price, low to high</button>
-      <button role="option" data-sort="pub-asc" aria-checked="false">First published: oldest</button>
+    <div class="sort-menu" role="menu" id="sortMenu">
+      <button type="button" role="menuitemradio" tabindex="-1" data-sort="featured" aria-checked="true">Our recommendations</button>
+      <button type="button" role="menuitemradio" tabindex="-1" data-sort="newest" aria-checked="false">Newest first</button>
+      <button type="button" role="menuitemradio" tabindex="-1" data-sort="price-asc" aria-checked="false">Price, low to high</button>
+      <button type="button" role="menuitemradio" tabindex="-1" data-sort="pub-asc" aria-checked="false">First published: oldest</button>
     </div>
   </div>
 </div>
