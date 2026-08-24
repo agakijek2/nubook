@@ -1864,8 +1864,8 @@ const DS_SECTIONS = [
           <td>${L("Animation shows where something came from or where it went. That is its only job.",
                   "Animacja pokazuje, skąd coś przyszło albo dokąd odeszło. To jej jedyne zadanie.")}</td></tr>
       <tr><td><strong>${L("Bilingual first","Dwujęzyczność u podstaw")}</strong></td>
-          <td>${L("Every string the reader can encounter resolves through <code>I18N</code> in Polish and English, including the labels only a screen reader reaches.",
-                  "Każdy napis, na jaki czytelniczka może natrafić, rozwiązuje się przez <code>I18N</code> po polsku i angielsku &ndash; łącznie z etykietami, do których dociera wyłącznie czytnik ekranu.")}</td></tr>
+          <td>${L("No string stays as the markup wrote it: every one passes through <code>I18N</code> in Polish and English, at start-up and on every change of language, including the labels only a screen reader reaches.",
+                  "Żaden napis nie zostaje w postaci wpisanej w znacznikach: wszystkie przechodzą przez <code>I18N</code> po polsku i angielsku, przy starcie i przy każdej zmianie języka &ndash; łącznie z etykietami, do których dociera wyłącznie czytnik ekranu.")}</td></tr>
     </tbody></table>` },
 
   { group:{en:"",pl:""}, id:"a11y", label:{en:"Accessibility",pl:"Dostępność"}, body: ()=>`
@@ -1894,8 +1894,8 @@ const DS_SECTIONS = [
           <td>${L("Everything that travels &ndash; anything sliding, scaling or changing size &ndash; yields to <code>prefers-reduced-motion</code>. Colour and shadow stay, because they answer the pointer rather than move the page. In the stylesheet a rule sits beside each animation; the transitions driven from the script check the setting before running.",
                   "Wszystko, co się przemieszcza &ndash; przesuwa, skaluje albo zmienia rozmiar &ndash; ustępuje przy <code>prefers-reduced-motion</code>. Kolor i cień zostają, bo odpowiadają na wskaźnik, a nie ruszają stroną. W arkuszu reguła stoi obok każdej animacji, a przejścia sterowane skryptem sprawdzają to ustawienie przed uruchomieniem.")}</td></tr>
       <tr><td>${L("Language","Język")}</td>
-          <td>${L("The document's <code>lang</code> follows the switch, so a screen reader changes voice with the interface. Every string resolves through <code>I18N</code>, including labels only a screen reader reaches.",
-                  "Atrybut <code>lang</code> dokumentu podąża za przełącznikiem, więc czytnik ekranu zmienia głos razem z interfejsem. Każdy napis rozwiązuje się przez <code>I18N</code>, łącznie z etykietami, do których dociera wyłącznie czytnik.")}</td></tr>
+          <td>${L("The document's <code>lang</code> follows the switch, so a screen reader changes voice with the interface. No string stays as the markup wrote it &ndash; every one passes through <code>I18N</code> at start-up and on every change of language, including the labels only a screen reader reaches.",
+                  "Atrybut <code>lang</code> dokumentu podąża za przełącznikiem, więc czytnik ekranu zmienia głos razem z interfejsem. Żaden napis nie zostaje w postaci wpisanej w znacznikach &ndash; wszystkie przechodzą przez <code>I18N</code> przy starcie i przy każdej zmianie języka, łącznie z etykietami, do których dociera wyłącznie czytnik.")}</td></tr>
       <tr><td>${L("Images","Obrazy")}</td>
           <td>${L("Covers and author photographs carry <code>alt</code>; glyphs standing in for icons are marked <code>aria-hidden</code> and labelled on the button instead.",
                   "Okładki i zdjęcia autorek mają <code>alt</code>; znaki zastępujące ikony oznaczone są jako <code>aria-hidden</code>, a etykieta stoi na przycisku.")}</td></tr>
@@ -2867,13 +2867,16 @@ const DS_SECTIONS = [
   { group:{en:"Patterns",pl:"Wzorce"}, id:"content", label:{en:"Content",pl:"Treść"}, body: ()=>`
     <h1>${L("Content","Treść")}</h1>
     <p class="ds-lede">${L(
-      "The shop is fully bilingual (PL / EN) and dual-currency (PLN / EUR). No string is hard-coded in markup &ndash; everything resolves through <code>I18N</code>. This documentation follows the same rule.",
-      "Sklep jest w pełni dwujęzyczny (PL / EN) i dwuwalutowy (PLN / EUR). Żaden tekst nie jest wpisany na sztywno &ndash; wszystko rozwiązuje się przez <code>I18N</code>. Ta dokumentacja stosuje tę samą zasadę.")}</p>
+      "The shop is fully bilingual (PL / EN) and dual-currency (PLN / EUR). No string stays in the interface as the markup wrote it: every one of them passes through <code>I18N</code> at start-up and again on every change of language. This documentation follows the same rule.",
+      "Sklep jest w pełni dwujęzyczny (PL / EN) i dwuwalutowy (PLN / EUR). Żaden napis nie zostaje w interfejsie w postaci wpisanej w znacznikach: wszystkie przechodzą przez <code>I18N</code> przy starcie i przy każdej zmianie języka. Ta dokumentacja stosuje tę samą zasadę.")}</p>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Book copy","Teksty książek")}</td><td>${L("Plain hyphens, never em dashes","Zwykłe myślniki, nigdy długie")}</td></tr>
-      <tr><td>${L("Quote attribution","Podpis pod cytatem")}</td><td>${L("Em dash + speaker (&ldquo;&ndash;&nbsp;Offred&rdquo;), at 72% opacity so the rule doesn't outweigh the type","Długi myślnik + postać („&ndash;&nbsp;Offred”), przy 72% krycia, żeby kreska nie przeważyła nad tekstem")}</td></tr>
+      <tr><td>${L("Quote attribution","Podpis pod cytatem")}</td><td>${L("Em dash + speaker (&ldquo;&mdash;&nbsp;Offred&rdquo;), in <code>--nu-fg-secondary</code> so the rule does not outweigh the type","Długi myślnik + postać („&mdash;&nbsp;Offred”), w kolorze <code>--nu-fg-secondary</code>, żeby kreska nie przeważyła nad tekstem")}</td></tr>
       <tr><td>${L("Prices","Ceny")}</td><td>${L("Tabular numerals. PLN with a comma (59,90&nbsp;z&#322;), EUR with a dot (&euro;14.00)","Cyfry tabelaryczne. PLN z przecinkiem (59,90&nbsp;z&#322;), EUR z kropką (&euro;14.00)")}</td></tr>
       <tr><td>${L("Filter counts","Liczniki filtrów")}</td><td>${L("Always reflect the current combination of other filters; options that would return zero are disabled","Zawsze odzwierciedlają bieżącą kombinację pozostałych filtrów; opcje bez wyników są wyłączone")}</td></tr>
+      <tr><td>${L("Documentation","Dokumentacja")}</td><td>${L(
+        "En dashes in prose. The em dash is kept for the quote attribution in the shop, where it stands for the act of naming the speaker.",
+        "W prozie krótkie myślniki. Długi jest zarezerwowany dla podpisu pod cytatem w sklepie, gdzie zastępuje samo wskazanie mówiącego.")}</td></tr>
       <tr><td>${L("Author labels","Etykiety autorstwa")}</td><td>${L("Gendered in Polish (o autorce / o autorze / o osobie autorskiej) from the book's <code>gd</code> field","Odmieniane po polsku (o autorce / o autorze / o osobie autorskiej) na podstawie pola <code>gd</code>")}</td></tr>
     </tbody></table>` },
 ];
