@@ -29,6 +29,7 @@ Zasady, które obowiązują zawsze:
 - **Kolor i odstęp wyłącznie z tokenów.** Żadnej wartości heks, żadnego `rgba`, żadnego piksela odstępu spoza skali. Jeżeli nie ma pasującego tokenu — patrz krok 3.
 - **Element przed atrybutem.** Kontrolka jest tym elementem HTML, który już znaczy to, co ona robi. Coś, co prowadzi pod adres, jest `<a href>`. Coś, co wykonuje akcję na miejscu, jest `<button type="button">`. ARIA dokłada wyłącznie to, na co HTML nie ma elementu.
 - **Każdy napis przez słownik tłumaczeń.** Łącznie z tekstami alternatywnymi obrazków i etykietami, do których dociera wyłącznie czytnik ekranu. Napis wpisany wprost w markup działa do pierwszego przełączenia języka.
+- **Klucz nazywa miejsce, potem rzecz.** Skrócona nazwa miejsca, w którym napis żyje, a po niej to, czym ten napis jest: `fName`, `errZip`, `secPay`, `qtyLess`. Grupa zagnieżdżona ma za klucze identyfikatory pochodzące z danych — `shipNames.inpost`, `aboutAuthor.f` — żeby kod sięgał po wartość tym, co już trzyma, zamiast tłumaczyć jedno na drugie. Nowy napis dostaje wpis w obu słownikach naraz: klucz istniejący tylko w jednym z nich nie wywoła błędu, tylko puste miejsce w tym języku, którego akurat nikt nie ogląda.
 - **Ikona z zestawu, w jednym z dwóch rozmiarów**, z `aria-hidden`, a nazwa na kontrolce, która ją niesie.
 - **Widoczny fokus na każdym elemencie interaktywnym**, w wartościach, których używa reszta systemu.
 - **Ruch objaśnia albo go nie ma** — a każda animacja ustępuje przy `prefers-reduced-motion`.

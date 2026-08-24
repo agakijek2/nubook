@@ -38,6 +38,7 @@ Wzorce, które powtarzają się najczęściej — szukaj ich celowo:
 - **Wyliczenie miejsc, które się skurczyło albo urosło.** „Widok produktu, koszyk, kasa, potwierdzenie i dokumentacja" — a dwa pierwsze już nie należą.
 - **Odwołanie do nieistniejącego sąsiada.** Przypis mówiący „ta para", gdy pary już nie ma, bo komponent wyniesiono do osobnej zakładki.
 - **Martwy kod udający źródło prawdy.** Napisy, stałe albo klasy, które wyglądają na używane, a nie są. Ktoś je poprawi i nie zobaczy efektu.
+- **Napis, którego brak niczego nie wywala.** W projekcie dwujęzycznym brakujący klucz słownika nie kończy się błędem — kontrolka pokazuje puste miejsce albo `undefined`, i to tylko w tym języku, którego nikt akurat nie ogląda. Sprawdź skryptem, czy oba słowniki mają dokładnie ten sam zbiór kluczy i czy żadne odwołanie w kodzie nie wskazuje na klucz, którego nie ma. Dwie pułapki: klucze sięgane dynamicznie (`t.shipNames[s.id]`, `T()[rule.err]`) wyglądają na nieużywane, a wywołania metod na zmiennej o nazwie `t` (`t.replace`, `t.localeCompare`) wyglądają na klucze.
 - **Milczenie zamiast nieprawdy.** Zakładka opisuje komponent w jednym kontekście, choć w kodzie występuje w trzech — i wszystko, co mówi, jest prawdą. Sprawdź nie tylko, czy twierdzenia są prawdziwe, ale czy obejmują wszystkie miejsca, w których rzecz żyje. Wyszukaj funkcję albo klasę komponentu w całym kodzie i policz konteksty.
 
 ### Nie ufaj własnemu skryptowi
@@ -45,6 +46,8 @@ Wzorce, które powtarzają się najczęściej — szukaj ich celowo:
 **Gdy skrypt audytu mówi „wszystko w porządku", sprawdź, czy złapałby przypadek, o którym wiesz, że jest zły.** Skrypty potrafią przechodzić, bo szukają nie tam: dopasowanie po tekście nie trafia, bo wcięcie się nie zgadza, albo wyrażenie regularne łapie `border-bottom` przy szukaniu `bottom`. Cichy fałszywy sukces jest gorszy niż brak testu.
 
 **Gdy skrypt zgłasza lawinę naruszeń, najpierw podejrzewaj skrypt.** Dwadzieścia naruszeń w kodzie, który wygląda na zadbany, to zwykle błąd metody, nie kodu. Zanim zaczniesz raportować, sprawdź jedno naruszenie ręcznie w źródle.
+
+Dwie pułapki przy czytaniu arkusza wyrażeniem regularnym, obie dające fałszywy wynik w przeciwnych kierunkach. **Selektor rozpisany na kilka linii** (`.a,` w jednej, `.b{` w następnej) nie zostanie dopasowany wzorcem szukającym selektora i klamry w tej samej linii — audyt zgłosi wtedy jako nieobsłużone reguły, które są obsłużone. **Komentarz stojący przed regułą** wchodzi w dopasowanie selektora, jeśli wzorzec nie wycina komentarzy najpierw — audyt zwróci wtedy listę „selektorów" będących zdaniami z komentarza. Wycinaj komentarze przed parsowaniem i dopasowuj selektor jako wszystko do klamry, bez względu na łamanie linii.
 
 Konkretna pułapka środowiska testowego: **wyliczone style dla SVG są niewiarygodne**. `fill`, `stroke`, `stroke-width` to atrybuty prezentacyjne i silnik testowy potrafi zwracać dla nich wartości niezgodne z arkuszem — audyt zgłosi wtedy, że każda ikona ma wypełnienie, choć reguła wspólna ustawia `fill:none`. Twierdzenia o wyglądzie SVG weryfikuj **czytając arkusz**, a nie odpytując wyliczony styl. Geometrię ścieżek licz z atrybutu `d`, nie z wymiarów renderowanego elementu.
 
@@ -69,6 +72,7 @@ Kryteria: rzeczowo, fachowo, oznajmująco, naturalnie.
 - **Pisz, jak jest, nie jak nie jest.** „Ikona ma dwa rozmiary" zamiast „Dwa rozmiary i żadnych innych". Zdania przez zaprzeczenie brzmią jak obrona przed zarzutem.
 - **Bez kroniki.** „Teraz", „już nie", „zostaje przy" w znaczeniu historycznym opisują przebudowę, a nie stan. Czytelniczka nie zna poprzedniej wersji.
 - **Bez ozdobników.** „Obraca się o pół kąta prostego" to 45°. Ozdobnik kosztuje uwagę i nic nie wnosi.
+- **Bez tłumaczenia się z decyzji.** Wiersz opisujący, jak wyglądałby komponent bez podjętej decyzji, mówi o stanie, którego nie ma. Napisz, co jest zdjęte i co jest w zamian, a nie jak byłoby, gdyby.
 - **Jedno słowo, jedno znaczenie w obrębie strony.** Jeśli „etykieta" znaczy raz styl typograficzny, a raz napis kontrolki, jedno z nich musi ustąpić.
 
 ### Naturalna polszczyzna
@@ -77,9 +81,9 @@ Najtrudniejsze do wyłapania, bo tekst wygląda poprawnie. Trzy odmiany tego sam
 
 **Kalki słownikowe.** „Stan mieszka w atrybucie", „pudełko" na `box`. Osobne słowo brzmi znajomo, całość nie jest polszczyzną.
 
-**Konstrukcje, których się nie używa.** Wszystkie słowa polskie, składnia z angielskiego: „dwa poziomy jednej rzeczy", „pole, w którym staje okładka", „okładka to to, co w nim stoi". Zdanie da się zrozumieć i nikt tak nie mówi.
+**Konstrukcje, których się nie używa.** Wszystkie słowa polskie, składnia z angielskiego: „dwa poziomy jednej rzeczy", „pole, w którym staje okładka", „okładka to to, co w nim stoi", „wartość kończy się na sumie wypełnienia i ikony". Zdanie da się zrozumieć i nikt tak nie mówi.
 
-**Personifikacja rzeczy bez sprawczości.** „Okładka potrafi chodzić sama", „miniatura rzuca cień, bo stoi na liście". Metafora ruchu wciska się w opis układu i brzmi jak literatura, nie jak specyfikacja.
+**Personifikacja rzeczy bez sprawczości.** „Okładka potrafi chodzić sama", „miniatura rzuca cień, bo stoi na liście", „pole czeka na odpowiedź". Metafora ruchu wciska się w opis układu i brzmi jak literatura, nie jak specyfikacja.
 
 Test, który to wyłapuje: **przeczytaj zdanie na głos i sprawdź, czy powiedziałabyś je tak w rozmowie o pracy.** Jeśli nie — przepisz najprostszym możliwym szykiem: co jest czym, co gdzie stoi, co się dzieje. „Kafel to szare pole 4:5 z okładką w środku" zamiast „pole, w którym staje okładka".
 
