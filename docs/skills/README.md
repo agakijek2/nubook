@@ -54,6 +54,13 @@ wartością po wyrenderowaniu.
 
 ## Uwaga o kopiach
 
-Pliki w tym katalogu nie są tym samym, co skille działające w rozmowie.
-Zmiana tutaj nie zmienia zachowania modelu, a zmiana skilla nie aktualizuje
-tych plików — przy poprawce trzeba ruszyć oba miejsca.
+Każdy skill żyje w trzech miejscach i poprawka musi ruszyć wszystkie trzy:
+
+1. **skill na koncie** — jedyna wersja, która faktycznie działa w rozmowie
+2. **polska kopia w tym katalogu** — żeby konwencja jechała razem z kodem i wchodziła
+   do historii zmian
+3. **angielskie tłumaczenie w [`en/`](en/)** — do publikacji, nieużywane w pracy
+
+Zmiana tutaj nie zmienia zachowania modelu, a zmiana skilla nie aktualizuje tych
+plików. Pracujemy na polskich; angielskie powstają po to, żeby metodę dało się
+pokazać poza projektem, i aktualizuje się je razem z polskimi.
