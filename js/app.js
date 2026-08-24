@@ -1657,10 +1657,10 @@ function dsDecl(token){
    computed style. */
 function dsMotionSteps(){
   const notes = new Map([
-    ["instant", L("Below the threshold where a change reads as a move. One thing clears out of another's way.",
-                  "Poniżej progu, przy którym zmiana czyta się jako ruch. Jedna rzecz schodzi drugiej z drogi.")],
-    ["quick",   L("An answer in place: a button pressing, a cell filling, a label crossfading.",
-                  "Odpowiedź w miejscu: wciśnięcie przycisku, wypełnienie komórki, przenikanie napisu.")],
+    ["instant", L("Short enough that the change does not read as movement, it simply happens. The filter column disappears within it, before the tiles start to spread.",
+                  "Tak krótki, że zmiana nie wygląda na ruch, tylko po prostu następuje. Kolumna filtrów znika w tym czasie, zanim kafle zaczną się rozsuwać.")],
+    ["quick",   L("An element answers a click or a hover without leaving its place: a button presses, a stepper cell fills, a label crossfades into the next one.",
+                  "Element odpowiada na kliknięcie albo najechanie, nie zmieniając położenia: przycisk się wciska, komórka steppera wypełnia się tłem, napis przechodzi w kolejny.")],
     ["base",    L("Colour and a small turn: a field border, a chosen row, an icon rotating, a cart line leaving.",
                   "Kolor i drobny obrót: ramka pola, wybrany wiersz, obrót ikony, znikająca pozycja koszyka.")],
     ["slow",    L("An element comes onto the screen or leaves it: the cart drawer, the filter panel, the dimmed backdrop behind them.",
