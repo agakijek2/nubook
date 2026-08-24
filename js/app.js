@@ -1688,8 +1688,8 @@ function dsMotionSteps(){
                   "Element odpowiada na kliknięcie albo najechanie, nie zmieniając położenia: przycisk się wciska, komórka steppera wypełnia się tłem, napis przechodzi w kolejny.")],
     ["base",    L("Colour and a small turn: a field border, a chosen row, an icon rotating, a cart line leaving.",
                   "Kolor i drobny obrót: ramka pola, wybrany wiersz, obrót ikony, znikająca pozycja koszyka.")],
-    ["slow",    L("An element comes onto the screen or leaves it: the cart drawer, the filter panel, the dimmed backdrop behind them.",
-                  "Element wjeżdża na ekran albo z niego znika: szuflada koszyka, panel filtrów, przyciemnione tło pod nimi.")],
+    ["slow",    L("An element comes onto the screen or leaves it: either drawer, the filter panel, the dimmed backdrop behind them.",
+                  "Element wjeżdża na ekran albo z niego znika: każda z dwóch szuflad, panel filtrów, przyciemnione tło pod nimi.")],
     ["slower",  L("The longest transitions, the ones covering a larger area: a tile growing into a packshot, and cards appearing in the grid.",
                   "Najdłuższe przejścia, te obejmujące większy obszar: kafel powiększający się do packshotu i karty pojawiające się w siatce.")],
     ["loop",    L("The one thing that repeats: the accent in the logo.",
@@ -2835,7 +2835,7 @@ const DS_SECTIONS = [
       <tr><td class="spec">${dsTok("--nu-ease-zoom")}</td><td>${dsCurveGraph("--nu-ease-zoom")}</td>
         <td>${L("The most decisive of the four: about four fifths of the way is behind it in the first quarter of the time, and the rest settles gently. The tile growing into a packshot.","Najbardziej zdecydowana z czterech: w pierwszej ćwiartce czasu ma za sobą jakieś cztery piąte drogi, a resztę osiada łagodnie. Kafel rosnący do packshotu.")}</td></tr>
       <tr><td class="spec">${dsTok("--nu-ease-slide")}</td><td>${dsCurveGraph("--nu-ease-slide")}</td>
-        <td>${L("The same family, a tone calmer. The cart drawer and the filter sheet arrive decisively, without looking fired from somewhere.","Ta sama rodzina, o ton spokojniejsza. Szuflada koszyka i panel filtrów przyjeżdżają zdecydowanie, bez wrażenia wystrzelenia.")}</td></tr>
+        <td>${L("The same family, a tone calmer. Both drawers &ndash; the author's and the cart's &ndash; and the filter sheet arrive decisively, without looking fired from somewhere.","Ta sama rodzina, o ton spokojniejsza. Obie szuflady &ndash; z informacją o autorce i koszyka &ndash; oraz panel filtrów przyjeżdżają zdecydowanie, bez wrażenia wystrzelenia.")}</td></tr>
       <tr><td class="spec"><code>ease</code></td><td>${dsCurveGraph("ease")}</td>
         <td>${L("The browser's default. Sets off briskly, covers most of the way early, finishes calmly. It fits wherever the movement has nothing to say beyond &ldquo;it happened&rdquo;, which is most of the shop.","Domyślna krzywa przeglądarki. Rusza żwawo, większość drogi ma za sobą wcześnie, końcówkę dojeżdża spokojnie. Pasuje wszędzie tam, gdzie ruch nie ma nic do powiedzenia poza „stało się”, czyli w większości sklepu.")}</td></tr>
       <tr><td class="spec"><code>ease-in-out</code></td><td>${dsCurveGraph("ease-in-out")}</td>
