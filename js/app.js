@@ -2140,8 +2140,8 @@ const DS_SECTIONS = [
 
     <h3>${L("Component","Komponentowy")}</h3>
     <p>${L(
-      "Belongs to one component and is read by that component alone. Some point at a scale; others hold a number of their own, because no scale covers what they measure &ndash; a proportion of a column, a limit on the window.",
-      "Należy do jednego komponentu i czyta go tylko ten komponent. Część wskazuje na skalę, część trzyma własną liczbę, bo żadna skala nie obejmuje tego, co mierzą &ndash; proporcji kolumny, granicy okna.")}</p>
+      "Belongs to one component and is read by that component alone.",
+      "Należy do jednego komponentu i czyta go tylko ten komponent.")}</p>
     ${dsNamePattern([L("prefix","prefiks"), L("component","komponent"), L("property","właściwość")])}
     ${dsTokenExamples(["--nu-mobar-height","--nu-cover-width","--nu-form-max-width"], false)}
     <p class="note">${L(
