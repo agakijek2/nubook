@@ -2104,8 +2104,8 @@ const DS_SECTIONS = [
     return `
     <h1>${L("Tokens","Tokeny")}</h1>
     <p class="ds-lede">${L(
-      `<strong>Design tokens</strong> are the single source of truth for the shop's design decisions: they give each decision a name and a place to be kept, so the whole interface reads it from there.${total ? ` There are ${total} of those names and this tab lists all of them.` : ""}`,
-      `<strong>Tokeny projektowe</strong> (design tokens) to jedno źródło prawdy dla decyzji projektowych w sklepie: nadają każdej decyzji nazwę i miejsce, w którym jest przechowywana, żeby cały interfejs czytał ją stamtąd.${total ? ` Tych nazw jest ${total} i ta zakładka wymienia je wszystkie.` : ""}`)}</p>
+      "<strong>Design tokens</strong> are the single source of truth for the shop's design decisions: they give each decision a name and a place to be kept, so the whole interface reads it from there.",
+      "<strong>Tokeny projektowe</strong> (design tokens) to jedno źródło prawdy dla decyzji projektowych w sklepie: nadają każdej decyzji nazwę i miejsce, w którym jest przechowywana, żeby cały interfejs czytał ją stamtąd.")}</p>
 
     <h3>${L("Purpose","Cel")}</h3>
     <table><tbody>
