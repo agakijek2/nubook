@@ -1200,6 +1200,19 @@
      cut rather than wrapped: a second line would make it look like a different
      size. */
   .ds .ds-eg{display:block;max-width:340px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* A face specimen: the name above, the letterforms below. Three lines rather
+     than a sentence, because what is being judged here is the shapes themselves
+     - including the Polish diacritics, which is where a face either holds up or
+     does not. */
+  .ds .ds-face + .ds-face{margin-top:var(--nu-space-medium)}
+  .ds .ds-face .lbl{
+    display:block;margin-bottom:var(--nu-space-micro);
+    font-family:var(--ds-font-mono);font-size:0.71875rem;color:var(--nu-fg-secondary);
+  }
+  .ds .ds-face .glyphs{
+    display:block;font-size:var(--nu-text-size-lg);line-height:var(--nu-line-snug);
+    overflow-wrap:anywhere;
+  }
   /* A style specimen carries its own name beside it, because a style is the one
      thing here that cannot be read off a value. */
   .ds .ds-style-row{display:flex;align-items:baseline;gap:var(--nu-space-small);margin-bottom:var(--nu-space-milli)}
