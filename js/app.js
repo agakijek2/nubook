@@ -1904,7 +1904,7 @@ function dsTypeSteps(){
     ["Body L","--nu-text-body-l",
      `<span style="font-size:var(--nu-text-body-l)">59,90 z&#322;</span>`],
     ["Body M","--nu-text-body-m",
-     `<span style="font-size:var(--nu-text-body-m)">${L("Novels about women, gender and society.","Powieści o kobietach, płci i społeczeństwie.")}</span>`],
+     `<span style="font-size:var(--nu-text-body-m)">${L("Novels about women and gender.","Powieści o kobietach i płci.")}</span>`],
     ["Label","--nu-text-label",
      `<span style="font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-compact);text-transform:uppercase;color:var(--nu-fg-secondary)">${L("Genre","Gatunek")}</span>`],
     ["Caption","--nu-text-caption",
@@ -2219,29 +2219,39 @@ const DS_SECTIONS = [
     </tbody></table>
 
     <h3>${L("Size","Stopień")}</h3>
-    <div class="demo on-page" style="display:block">
-      ${dsTypeSteps().map(([name,token,sample])=>`
-        <div class="scale-row"><span class="lbl">${name} &middot; ${dsVal(token)}</span>
-          ${sample}</div>`).join("")}
-    </div>
+    ${(() => {
+      const role = {
+        "--nu-text-h1": L("The subject of a view","Temat widoku"),
+        "--nu-text-h2": L("A section within a view","Sekcja w widoku"),
+        "--nu-text-h3": L("The smallest display step","Najmniejszy stopień tytułowy"),
+        "--nu-text-body-l": L("Emphasis in running copy","Wyróżnienie w tekście ciągłym"),
+        "--nu-text-body-m": L("The base size of the page","Bazowy stopień strony"),
+        "--nu-text-label": L("Uppercase interface strings","Napisy interfejsu wersalikami"),
+        "--nu-text-caption": L("Counts bound to a larger element","Liczniki przypięte do większego elementu"),
+      };
+      return `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Specimen","Okaz")}</th><th>${L("Role","Rola")}</th></tr></thead><tbody>
+      ${dsTypeSteps().map(([, token, sample]) =>
+        `<tr><td class="spec"><code>${token.replace("--nu-text-","")}</code></td><td>${dsVal(token)}</td><td>${sample}</td><td>${role[token] || ""}</td></tr>`).join("")}
+    </tbody></table>`;
+    })()}
 
     <h3>${L("Line height","Interlinia")}</h3>
     <p>${L(
       "Six steps, named after how much air the line needs rather than after the number. A step is a ratio, so it holds at every size.",
       "Sześć stopni, nazwanych od tego, ile powietrza potrzebuje wiersz, a nie od liczby. Stopień jest proporcją, więc trzyma się przy każdym stopniu pisma.")}</p>
-    <table><tbody>
-      <tr><td ${DS_COL_NAME}>${dsTok("--nu-line-flat")}</td><td>${L("The box sets the height: badge, cart counter, wordmark.","Wysokość ustala kontener: odznaka, licznik koszyka, znak marki.")}</td></tr>
-      <tr><td>${dsTok("--nu-line-tight")}</td><td>${L("Display sizes, where a looser line would leave the heading gaping.","Stopnie tytułowe, gdzie luźniejszy wiersz zostawiłby w nagłówku dziurę.")}</td></tr>
-      <tr><td>${dsTok("--nu-line-snug")}</td><td>${L("A title inside a list row, where two lines have to stay one object.","Tytuł w wierszu listy, gdzie dwa wiersze mają zostać jednym przedmiotem.")}</td></tr>
-      <tr><td>${dsTok("--nu-line-normal")}</td><td>${L("Running copy and the text inside controls.","Tekst ciągły i tekst wewnątrz kontrolek.")}</td></tr>
-      <tr><td>${dsTok("--nu-line-relaxed")}</td><td>${L("Prose read at length: the quote, the biography, the legal note.","Proza czytana dłużej: cytat, biogram, nota prawna.")}</td></tr>
-      <tr><td>${dsTok("--nu-line-loose")}</td><td>${L("Code blocks in this documentation.","Bloki kodu w tej dokumentacji.")}</td></tr>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
+      <tr><td class="spec"><code>line-flat</code></td><td>${dsVal("--nu-line-flat")}</td><td>${L("The box sets the height: badge, cart counter, wordmark.","Wysokość ustala kontener: odznaka, licznik koszyka, znak marki.")}</td></tr>
+      <tr><td class="spec"><code>line-tight</code></td><td>${dsVal("--nu-line-tight")}</td><td>${L("Display sizes, where a looser line would leave the heading gaping.","Stopnie tytułowe, gdzie luźniejszy wiersz zostawiłby w nagłówku dziurę.")}</td></tr>
+      <tr><td class="spec"><code>line-snug</code></td><td>${dsVal("--nu-line-snug")}</td><td>${L("A title inside a list row, where two lines have to stay one object.","Tytuł w wierszu listy, gdzie dwa wiersze mają zostać jednym przedmiotem.")}</td></tr>
+      <tr><td class="spec"><code>line-normal</code></td><td>${dsVal("--nu-line-normal")}</td><td>${L("Running copy and the text inside controls.","Tekst ciągły i tekst wewnątrz kontrolek.")}</td></tr>
+      <tr><td class="spec"><code>line-relaxed</code></td><td>${dsVal("--nu-line-relaxed")}</td><td>${L("Prose read at length: the quote, the biography, the legal note.","Proza czytana dłużej: cytat, biogram, nota prawna.")}</td></tr>
+      <tr><td class="spec"><code>line-loose</code></td><td>${dsVal("--nu-line-loose")}</td><td>${L("Code blocks in this documentation.","Bloki kodu w tej dokumentacji.")}</td></tr>
     </tbody></table>
 
     <h3>${L("Weight","Grubość")}</h3>
-    <table><tbody>
-      <tr><td ${DS_COL_NAME}>${dsTok("--nu-weight-normal")}</td><td>${L("Everything, including every display heading.","Wszystko, łącznie z każdym nagłówkiem tytułowym.")}</td></tr>
-      <tr><td>${dsTok("--nu-weight-medium")}</td><td>${L("Two section headings in checkout, and the <code>strong</code> element.","Dwa nagłówki sekcji w kasie oraz element <code>strong</code>.")}</td></tr>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
+      <tr><td class="spec"><code>weight-normal</code></td><td>${dsVal("--nu-weight-normal")}</td><td>${L("Everything, including every display heading.","Wszystko, łącznie z każdym nagłówkiem tytułowym.")}</td></tr>
+      <tr><td class="spec"><code>weight-medium</code></td><td>${dsVal("--nu-weight-medium")}</td><td>${L("Two section headings in checkout, and the <code>strong</code> element.","Dwa nagłówki sekcji w kasie oraz element <code>strong</code>.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "The display family ships one weight and the text family two. Nothing heavier is loaded, so asking for a weight the shop does not hold would have the browser synthesise it from 400 and smear the letterforms &ndash; which is why display headings state 400 rather than leaving it to a default.",
@@ -2251,14 +2261,14 @@ const DS_SECTIONS = [
     <p>${L(
       "Set against size and string length, not against case. Four values cover the shop, all relative, so they follow the type size instead of being restated per breakpoint. This is the one property a style token cannot carry, so a style that needs it declares it beside.",
       "Dobierane do stopnia i długości ciągu, nie do wielkości liter. Cztery wartości obsługują cały sklep, wszystkie względne, więc idą za stopniem pisma, zamiast być powtarzane przy każdym progu. To jedyna właściwość, której token stylu nie unosi, więc styl, który jej potrzebuje, deklaruje ją obok.")}</p>
-    <table><tbody>
-      <tr><td ${DS_COL_NAME}>${dsTok("--nu-tracking-display")}</td>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
+      <tr><td class="spec"><code>tracking-display</code></td><td>${dsVal("--nu-tracking-display")}</td>
           <td>${L("Negative. Large display type sets loosely by default, so it is drawn in. One application: the wordmark.","Ujemne. Duży krój tytułowy składa się z natury luźno, więc jest ściągany. Jedno zastosowanie: znak marki.")}</td></tr>
-      <tr><td>${dsTok("--nu-tracking-body")}</td>
+      <tr><td class="spec"><code>tracking-body</code></td><td>${dsVal("--nu-tracking-body")}</td>
           <td>${L("Zero, declared on <code>body</code>. Tracking applied to a paragraph distorts word shapes and slows reading.","Zero, zadeklarowane na <code>body</code>. Światło nałożone na akapit zniekształca kształty słów i spowalnia czytanie.")}</td></tr>
-      <tr><td>${dsTok("--nu-tracking-compact")}</td>
+      <tr><td class="spec"><code>tracking-compact</code></td><td>${dsVal("--nu-tracking-compact")}</td>
           <td>${L("Short mixed-case strings that read as objects rather than prose: button labels, quote attributions, the avatar initial.","Krótkie ciągi pisane normalnie, czytające się jako obiekty, a nie proza: napisy przycisków, podpisy pod cytatem, inicjał w awatarze.")}</td></tr>
-      <tr><td>${dsTok("--nu-tracking-caps")}</td>
+      <tr><td class="spec"><code>tracking-caps</code></td><td>${dsVal("--nu-tracking-caps")}</td>
           <td>${L("Every uppercase interface string and only those: uppercase letterforms sit tighter than lowercase and need the air put back.","Każdy napis interfejsu pisany wersalikami i tylko one: wersaliki stoją ciaśniej niż małe litery i trzeba im to powietrze oddać.")}</td></tr>
     </tbody></table>
 

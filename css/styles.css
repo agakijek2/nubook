@@ -1240,11 +1240,6 @@
     text-transform:uppercase;color:var(--nu-fg-secondary);margin-top:var(--nu-space-micro);
   }
   .ds .note{color:var(--nu-fg-secondary);font-size:var(--nu-text-body-m);margin-bottom:var(--nu-space-medium)}
-  .ds .scale-row{display:flex;align-items:baseline;gap:var(--nu-space-small);margin-bottom:var(--nu-space-milli)}
-  .ds .scale-row .lbl{
-    flex:none;width:130px;font-size:var(--nu-text-label);color:var(--nu-fg-secondary);
-    letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
-  }
   /* same tint as the figures: a bar in this table is a measured distance too,
      and one reading for that across the whole tab */
   .ds .space-bar{background:var(--nu-bg-measure);height:12px;display:inline-block}
