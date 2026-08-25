@@ -469,9 +469,10 @@
   .sort-menu{
     position:absolute;right:0;top:calc(100% + var(--nu-space-micro));z-index:30;
     background:var(--nu-bg-primary);border:1px solid var(--nu-border-neutral);
-    /* max-content sizes the panel to its longest option, so no label ever wraps —
-       and it re-measures on its own when the labels swap between EN and PL */
-    width:max-content;min-width:200px;
+    /* The panel is as wide as its longest option and no wider: max-content plus
+       nowrap on the options means no label ever breaks, and the width re-measures
+       itself when the labels swap between EN and PL, where they differ. */
+    width:max-content;
     padding:var(--nu-space-micro) 0;display:none;text-align:left;
     box-shadow:0 8px 24px color-mix(in srgb, var(--nu-bg-inverse) 6%, transparent);
   }
@@ -533,7 +534,7 @@
   .empty{
     grid-column:1/-1;padding:var(--nu-space-max) 0;text-align:center;color:var(--nu-fg-secondary);
   }
-  .empty button{text-decoration:underline;text-underline-offset:3px;margin-left:var(--nu-space-micro);color:var(--nu-fg-primary)}
+  .empty .btn-ghost{margin-left:var(--nu-space-micro)}
 
   /* ---------- covers (pure CSS book jackets) ---------- */
   .cover{
@@ -1162,7 +1163,7 @@
   /* The panel is positioned against the trigger and hidden until asked for. In a
      specimen it has to stand still and stay open, so the docs put it back in the
      flow by name rather than imposing it on every panel in a frame. */
-  .ds .ds-sort{display:block}
+  .ds .ds-sort{display:flex;justify-content:center}
   .ds .ds-sort .sort{text-align:left}
   .ds .ds-sort .sort-menu{position:static;display:block;min-width:0;box-shadow:none}
   /* A curve drawn from the same numbers that drive the dot: the shape is the
