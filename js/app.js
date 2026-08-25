@@ -2249,7 +2249,7 @@ const DS_SECTIONS = [
           <div class="ds-face-set" style="font-family:var(${token})">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz &#260;&#262;&#280;&#321;&#323;&#211;&#346;&#377;&#379; &#261;&#263;&#281;&#322;&#324;&#243;&#347;&#378;&#380; 0123456789 , . ; : ! ? &bdquo;&rdquo; &mdash; &ndash; z&#322; &euro;</div>
         </div>`).join("")}
     </div>
-    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("When to reach for it","Kiedy sięgnąć")}</th></tr></thead><tbody>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-font-display</code></td><td>${dsVal("--nu-font-display")}</td>
           <td>${L("Identity and headings.","Identyfikacja i nagłówki.")}</td></tr>
       <tr><td class="spec"><code>--nu-font-text</code></td><td>${dsVal("--nu-font-text")}</td>
@@ -2268,7 +2268,7 @@ const DS_SECTIONS = [
     <h3>${L("Line height","Interlinia")}</h3>
     <p>${L("A step is a ratio, so it holds at every size.",
            "Stopień jest proporcją, więc trzyma się przy każdym stopniu pisma.")}</p>
-    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("When to reach for it","Kiedy sięgnąć")}</th></tr></thead><tbody>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-line-flat</code></td><td>${dsVal("--nu-line-flat")}</td><td>${L("The box sets the height, not the line.","Wysokość ustala kontener, a nie wiersz.")}</td></tr>
       <tr><td class="spec"><code>--nu-line-tight</code></td><td>${dsVal("--nu-line-tight")}</td><td>${L("Display sizes: a looser line would leave the heading gaping.","Stopnie tytułowe: luźniejszy wiersz zostawiłby w nagłówku dziurę.")}</td></tr>
       <tr><td class="spec"><code>--nu-line-snug</code></td><td>${dsVal("--nu-line-snug")}</td><td>${L("Two lines that have to read as one object.","Dwa wiersze, które mają czytać się jako jeden przedmiot.")}</td></tr>
@@ -2279,7 +2279,7 @@ const DS_SECTIONS = [
       "Blok kodu w tej dokumentacji ma wiersz jeszcze luźniejszy, 1.7. Nie jest to stopień tej skali: blok składany jest krojem, którego sklep nie wczytuje, więc jego interlinia nosi przedrostek dokumentacji, a nie sklepu.")}</p>
 
     <h3>${L("Weight","Grubość")}</h3>
-    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("When to reach for it","Kiedy sięgnąć")}</th></tr></thead><tbody>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-weight-normal</code></td><td>${dsVal("--nu-weight-normal")}</td><td>${L("Everything, headings included.","Wszystko, łącznie z nagłówkami.")}</td></tr>
       <tr><td class="spec"><code>--nu-weight-medium</code></td><td>${dsVal("--nu-weight-medium")}</td><td>${L("A heading that has to hold a column against what stands under it, and emphasis inside a sentence.","Nagłówek, który musi utrzymać kolumnę nad tym, co pod nim stoi, oraz wyróżnienie w zdaniu.")}</td></tr>
     </tbody></table>
@@ -2291,7 +2291,7 @@ const DS_SECTIONS = [
     <p>${L(
       "Set against size and string length, not against case. Four values cover the shop, all relative, so they follow the type size instead of being restated per breakpoint. This is the one property a style token cannot carry, so a style that needs it declares it beside.",
       "Dobierane do stopnia i długości ciągu, nie do wielkości liter. Cztery wartości obsługują cały sklep, wszystkie względne, więc idą za stopniem pisma, zamiast być powtarzane przy każdym progu. To jedyna właściwość, której token stylu nie unosi, więc styl, który jej potrzebuje, deklaruje ją obok.")}</p>
-    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("When to reach for it","Kiedy sięgnąć")}</th></tr></thead><tbody>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-tracking-display</code></td><td>${dsVal("--nu-tracking-display")}</td>
           <td>${L("Negative. Large display type sets loosely by default, so it is drawn in. One application: the wordmark.","Ujemne. Duży krój tytułowy składa się z natury luźno, więc jest ściągany. Jedno zastosowanie: znak marki.")}</td></tr>
       <tr><td class="spec"><code>--nu-tracking-body</code></td><td>${dsVal("--nu-tracking-body")}</td>
@@ -2314,7 +2314,7 @@ const DS_SECTIONS = [
     ${styles.length ? `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Weight","Grubość")}</th><th>${L("Size","Stopień")}</th><th>${L("Line","Interlinia")}</th><th>${L("Family","Rodzina")}</th></tr></thead><tbody>
       ${styles.map(t => `<tr><td class="spec"><code>${t.name}</code></td><td class="spec"><code>${t.weight}</code></td><td class="spec"><code>${t.size}</code></td><td class="spec"><code>${t.line}</code></td><td class="spec"><code>${t.family}</code></td></tr>`).join("")}
     </tbody></table>
-    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("When to reach for it","Kiedy sięgnąć")}</th></tr></thead><tbody>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
       ${styles.map(t => `<tr><td class="spec"><code>${t.name}</code></td><td>${useOf[t.name] || ""}</td></tr>`).join("")}
     </tbody></table>` : `<p class="note">${L(
       "The table of styles needs the stylesheet to be readable, which it is not in this way of opening the page. Open the built page, or serve the folder over http.",
