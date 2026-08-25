@@ -1927,13 +1927,16 @@ function dsTypeSpecimens(){
     ["--nu-type-caption", "12", ""],
   ];
 }
+/* Token, what it is built from, and the rule it stands for. Deliberately not a
+   list of the places it is used: that is inventory the code already holds, it
+   goes stale the moment a component moves, and every component tab states which
+   tokens it takes - so the same fact would live in two places and drift in one. */
 function dsColorRows(rows){
-  return rows.map(([token, role, usage]) => `
+  return rows.map(([token, role]) => `
     <tr>
       <td class="spec"><span class="swatch" style="background:${dsVal(token)}"></span><code>${token}</code></td>
       <td>${dsDecl(token)}</td>
       <td>${role}</td>
-      <td>${usage}</td>
     </tr>`).join("");
 }
 
@@ -2158,19 +2161,19 @@ const DS_SECTIONS = [
     <h3>Background</h3>
     <table class="tok-table">
     <colgroup><col class="c-token"><col class="c-source"><col><col></colgroup>
-    <thead><tr><th>Token</th><th>${L("Built from","Zbudowany z")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead>
+    <thead><tr><th>Token</th><th>${L("Built from","Zbudowany z")}</th><th>${L("Meaning","Znaczenie")}</th></tr></thead>
     <tbody>${dsColorRows([
-      ["--nu-bg-primary",L("Default surface","Powierzchnia domyślna"),L("The page, drawers, menus, cards, and the light caught on the upper edge of glass","Strona, szuflady, menu, karty oraz światło na górnej krawędzi szkła")],
-      ["--nu-bg-secondary",L("Raised / recessed panel","Panel wyniesiony"),L("Packshot tiles, cart thumbnails, disabled CTA","Kafle packshotów, miniatury w koszyku, wyłączony przycisk")],
-      ["--nu-bg-tertiary",L("Third surface step","Trzeci stopień powierzchni"),L("The outline and lower shading of the secondary button","Obrys i dolne cieniowanie przycisku drugorzędnego")],
-      ["--nu-bg-inverse",L("Darkest surface","Powierzchnia najciemniejsza"),L("Pre-order badge, cart counter, and the contact shadow under either button","Odznaka przedpremierowa, licznik koszyka oraz cień styku pod obydwoma przyciskami")],
-      ["--nu-bg-action",L("Primary action, glass body","Akcja główna, korpus szkła"),L("Translucent near-black body of every primary button","Półprzezroczysty, niemal czarny korpus każdego przycisku głównego")],
-      ["--nu-bg-action-glow",L("Primary action, inner glow","Akcja główna, łuna wewnętrzna"),L("Burgundy pooling along the button's bottom edge; strengthens on hover","Burgund zbierający się przy dolnej krawędzi przycisku; wzmacnia się przy najechaniu")],
-      ["--nu-bg-action-glow-deep",L("Primary action, cast aura","Akcja główna, aura rzucana"),L("The aura falling beneath the button; tightens on press","Aura padająca pod przyciskiem; zacieśnia się przy wciśnięciu")],
-      ["--nu-bg-action-secondary",L("Secondary action, glass body","Akcja drugorzędna, korpus szkła"),L("Uncoloured glass: Apply, and future supporting actions","Szkło bez koloru: Zastosuj i przyszłe akcje wspierające")],
-      ["--nu-bg-highlight",L("Distinction","Wyróżnienie"),L("Award badge fill","Tło odznaki nagrody")],
-      ["--nu-bg-scrim",L("Dim behind a modal layer","Przyciemnienie pod warstwą modalną"),L("Author drawer, cart drawer, mobile filter sheet","Szuflada autorki, szuflada koszyka, mobilny panel filtrów")],
-      ["--nu-bg-measure",L("A measured distance","Mierzona odległość"),L("The spacing figures in this documentation; never in the shop itself","Rysunki odstępów w tej dokumentacji; nigdy w samym sklepie")],
+      ["--nu-bg-primary",L("Default surface","Powierzchnia domyślna")],
+      ["--nu-bg-secondary",L("Raised / recessed panel","Panel wyniesiony")],
+      ["--nu-bg-tertiary",L("Third surface step","Trzeci stopień powierzchni")],
+      ["--nu-bg-inverse",L("Darkest surface","Powierzchnia najciemniejsza")],
+      ["--nu-bg-action",L("Primary action, glass body","Akcja główna, korpus szkła")],
+      ["--nu-bg-action-glow",L("Primary action, inner glow","Akcja główna, łuna wewnętrzna")],
+      ["--nu-bg-action-glow-deep",L("Primary action, cast aura","Akcja główna, aura rzucana")],
+      ["--nu-bg-action-secondary",L("Secondary action, glass body","Akcja drugorzędna, korpus szkła")],
+      ["--nu-bg-highlight",L("Distinction","Wyróżnienie")],
+      ["--nu-bg-scrim",L("Dim behind a modal layer","Przyciemnienie pod warstwą modalną")],
+      ["--nu-bg-measure",L("A measured distance","Mierzona odległość")],
     ])}</tbody></table>
     <p class="note">${L(
       "Both glow tokens belong to the primary button. The secondary button carries neither; the absence is what separates the two.",
@@ -2178,28 +2181,28 @@ const DS_SECTIONS = [
     <h3>Foreground</h3>
     <table class="tok-table">
     <colgroup><col class="c-token"><col class="c-source"><col><col></colgroup>
-    <thead><tr><th>Token</th><th>${L("Built from","Zbudowany z")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead>
+    <thead><tr><th>Token</th><th>${L("Built from","Zbudowany z")}</th><th>${L("Meaning","Znaczenie")}</th></tr></thead>
     <tbody>${dsColorRows([
-      ["--nu-fg-primary",L("Primary content","Treść główna"),L("Titles, body copy, prices, icons","Tytuły, tekst, ceny, ikony")],
-      ["--nu-fg-secondary",L("Supporting content","Treść wspierająca"),L("Authors, labels, quotes, notes","Autorzy, etykiety, cytaty, notki")],
-      ["--nu-fg-tertiary",L("Disabled or less prominent text","Tekst wyłączony lub mniej istotny"),L("Filter counts, options returning zero results, placeholders in fields","Liczniki przy filtrach, opcje bez wyników, podpowiedzi w polach")],
-      ["--nu-fg-inverse",L("Content on an inverse background","Treść na ciemnym tle"),L("Button labels, counter digits","Etykiety przycisków, cyfry licznika")],
-      ["--nu-fg-highlight",L("Distinction","Wyróżnienie"),L("Award badge label","Napis odznaki nagrody")],
-      ["--nu-fg-warning",L("Inventory running out","Kończący się nakład"),L("&ldquo;Last copies&rdquo; badge, scarcity ribbon","Odznaka „Ostatnie sztuki”, wstążka na okładce")],
-      ["--nu-fg-alert",L("Failed validation","Nieudana walidacja"),L("Invalid discount code, form errors","Błędny kod rabatowy, błędy formularza")],
+      ["--nu-fg-primary",L("Primary content","Treść główna")],
+      ["--nu-fg-secondary",L("Supporting content","Treść wspierająca")],
+      ["--nu-fg-tertiary",L("Disabled or less prominent text","Tekst wyłączony lub mniej istotny")],
+      ["--nu-fg-inverse",L("Content on an inverse background","Treść na ciemnym tle")],
+      ["--nu-fg-highlight",L("Distinction","Wyróżnienie")],
+      ["--nu-fg-warning",L("Inventory running out","Kończący się nakład")],
+      ["--nu-fg-alert",L("Failed validation","Nieudana walidacja")],
     ])}</tbody></table>
     <h3>Border</h3>
     <table class="tok-table">
     <colgroup><col class="c-token"><col class="c-source"><col><col></colgroup>
-    <thead><tr><th>Token</th><th>${L("Built from","Zbudowany z")}</th><th>${L("Meaning","Znaczenie")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead>
+    <thead><tr><th>Token</th><th>${L("Built from","Zbudowany z")}</th><th>${L("Meaning","Znaczenie")}</th></tr></thead>
     <tbody>${dsColorRows([
-      ["--nu-border-neutral",L("Separation","Rozdzielenie"),L("Hairlines, field borders, table rules","Linie włosowe, ramki pól, linie tabel")],
-      ["--nu-border-primary",L("Emphasis / selection","Podkreślenie / zaznaczenie"),L("Focus rings, selected chip, default badge","Obwódka fokusa, zaznaczony chip, odznaka domyślna")],
-      ["--nu-border-muted",L("Receded","Wyciszony"),L("Unavailable badge outline","Kontur odznaki „Niedostępna”")],
-      ["--nu-border-hover",L("Answering the pointer","Odpowiedź na kursor"),L("The delivery option under the pointer","Opcja dostawy pod kursorem")],
-      ["--nu-border-highlight",L("Distinction","Wyróżnienie"),L("Award badge outline","Kontur odznaki nagrody")],
-      ["--nu-border-warning",L("Inventory running out","Kończący się nakład"),L("Low-stock badge outline","Kontur odznaki „Ostatnie sztuki”")],
-      ["--nu-border-alert",L("Failed validation","Nieudana walidacja"),L("Invalid field outline","Kontur błędnego pola")],
+      ["--nu-border-neutral",L("Separation","Rozdzielenie")],
+      ["--nu-border-primary",L("Emphasis / selection","Podkreślenie / zaznaczenie")],
+      ["--nu-border-muted",L("Receded","Wyciszony")],
+      ["--nu-border-hover",L("Answering the pointer","Odpowiedź na kursor")],
+      ["--nu-border-highlight",L("Distinction","Wyróżnienie")],
+      ["--nu-border-warning",L("Inventory running out","Kończący się nakład")],
+      ["--nu-border-alert",L("Failed validation","Nieudana walidacja")],
     ])}</tbody></table>
     <h3>${L("Rules","Zasady")}</h3>
     <table><tbody>
@@ -2219,15 +2222,17 @@ const DS_SECTIONS = [
 
   { group:{en:"Foundations",pl:"Fundamenty"}, id:"typography", label:{en:"Typography",pl:"Typografia"}, body: ()=>{
     const styles = dsTypeStyles();
+    /* When to reach for a style, not where it currently stands: the second is
+       inventory the code holds and the component tabs already state. */
     const useOf = {
-      "--nu-type-h1": L("The subject of a view: book title, order number, documentation chapter","Temat widoku: tytuł książki, numer zamówienia, rozdział dokumentacji"),
-      "--nu-type-h2": L("A section within a view: author name, cart heading, order title","Sekcja w widoku: nazwisko autorki, nagłówek koszyka, tytuł zamówienia"),
-      "--nu-type-h3": L("The smallest display step: the footer wordmark and the subheads on these pages","Najmniejszy stopień kroju tytułowego: znak marki w stopce i podtytuły na tych stronach"),
-      "--nu-type-body-l": L("Emphasis within running copy: price, order total, avatar initial, the opening paragraph of a page here","Wyróżnienie w tekście ciągłym: cena, suma zamówienia, inicjał w awatarze, akapit otwierający stronę w tej dokumentacji"),
-      "--nu-type-body-m": L("The page's own style, set on <code>body</code> and inherited by everything that does not say otherwise","Własny styl strony, ustawiony na <code>body</code> i dziedziczony przez wszystko, co nie mówi inaczej"),
-      "--nu-type-label": L("Uppercase interface strings: filter and section headings, field labels, badges, table headings","Napisy interfejsu pisane wersalikami: nagłówki filtrów i sekcji, etykiety pól, odznaki, nagłówki tabel"),
-      "--nu-type-label-strong": L("The same, one weight up, where a heading has to hold a column against a table below it","To samo, o jedną grubość wyżej, gdzie nagłówek musi utrzymać kolumnę nad tabelą pod sobą"),
-      "--nu-type-caption": L("The floor of the scale: counts bound to a larger element, drawer labels. Never for reading copy.","Dolna granica skali: liczniki przypięte do większego elementu, etykiety w szufladzie. Nigdy do czytania."),
+      "--nu-type-h1": L("The subject of a view","Temat widoku"),
+      "--nu-type-h2": L("A section within a view","Sekcja wewnątrz widoku"),
+      "--nu-type-h3": L("A section that needs a heading but not its weight","Sekcja, która potrzebuje nagłówka, ale nie jego ciężaru"),
+      "--nu-type-body-l": L("Emphasis within running copy","Wyróżnienie w tekście ciągłym"),
+      "--nu-type-body-m": L("The page's own style, inherited by everything that does not say otherwise","Własny styl strony, dziedziczony przez wszystko, co nie mówi inaczej"),
+      "--nu-type-label": L("An uppercase interface string","Napis interfejsu pisany wersalikami"),
+      "--nu-type-label-strong": L("The same, where the heading has to hold a column against what stands under it","To samo, gdy nagłówek musi utrzymać kolumnę nad tym, co pod nim stoi"),
+      "--nu-type-caption": L("A count bound to a larger element. Never for reading.","Liczba przypięta do większego elementu. Nigdy do czytania."),
     };
     return `
     <h1>${L("Typography","Typografia")}</h1>
@@ -2244,7 +2249,7 @@ const DS_SECTIONS = [
           <div class="ds-face-set" style="font-family:var(${token})">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz &#260;&#262;&#280;&#321;&#323;&#211;&#346;&#377;&#379; &#261;&#263;&#281;&#322;&#324;&#243;&#347;&#378;&#380; 0123456789 , . ; : ! ? &bdquo;&rdquo; &mdash; &ndash; z&#322; &euro;</div>
         </div>`).join("")}
     </div>
-    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("When to reach for it","Kiedy sięgnąć")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-font-display</code></td><td>${dsVal("--nu-font-display")}</td>
           <td>${L("Identity and headings.","Identyfikacja i nagłówki.")}</td></tr>
       <tr><td class="spec"><code>--nu-font-text</code></td><td>${dsVal("--nu-font-text")}</td>
@@ -2263,20 +2268,20 @@ const DS_SECTIONS = [
     <h3>${L("Line height","Interlinia")}</h3>
     <p>${L("A step is a ratio, so it holds at every size.",
            "Stopień jest proporcją, więc trzyma się przy każdym stopniu pisma.")}</p>
-    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
-      <tr><td class="spec"><code>--nu-line-flat</code></td><td>${dsVal("--nu-line-flat")}</td><td>${L("The box sets the height: badge, cart counter, wordmark.","Wysokość ustala kontener: odznaka, licznik koszyka, znak marki.")}</td></tr>
-      <tr><td class="spec"><code>--nu-line-tight</code></td><td>${dsVal("--nu-line-tight")}</td><td>${L("Display sizes, where a looser line would leave the heading gaping.","Stopnie tytułowe, gdzie luźniejszy wiersz zostawiłby w nagłówku dziurę.")}</td></tr>
-      <tr><td class="spec"><code>--nu-line-snug</code></td><td>${dsVal("--nu-line-snug")}</td><td>${L("A title inside a list row, where two lines have to stay one object.","Tytuł w wierszu listy, gdzie dwa wiersze mają zostać jednym przedmiotem.")}</td></tr>
-      <tr><td class="spec"><code>--nu-line-normal</code></td><td>${dsVal("--nu-line-normal")}</td><td>${L("Running copy and the text inside controls.","Tekst ciągły i tekst wewnątrz kontrolek.")}</td></tr>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("When to reach for it","Kiedy sięgnąć")}</th></tr></thead><tbody>
+      <tr><td class="spec"><code>--nu-line-flat</code></td><td>${dsVal("--nu-line-flat")}</td><td>${L("The box sets the height, not the line.","Wysokość ustala kontener, a nie wiersz.")}</td></tr>
+      <tr><td class="spec"><code>--nu-line-tight</code></td><td>${dsVal("--nu-line-tight")}</td><td>${L("Display sizes: a looser line would leave the heading gaping.","Stopnie tytułowe: luźniejszy wiersz zostawiłby w nagłówku dziurę.")}</td></tr>
+      <tr><td class="spec"><code>--nu-line-snug</code></td><td>${dsVal("--nu-line-snug")}</td><td>${L("Two lines that have to read as one object.","Dwa wiersze, które mają czytać się jako jeden przedmiot.")}</td></tr>
+      <tr><td class="spec"><code>--nu-line-normal</code></td><td>${dsVal("--nu-line-normal")}</td><td>${L("Everything read as text.","Wszystko, co czyta się jako tekst.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "A code block in this documentation runs looser still, at 1.7. It is not a step of this scale: the block is set in a face the shop never loads, so its line height carries the documentation's own prefix rather than the shop's.",
       "Blok kodu w tej dokumentacji ma wiersz jeszcze luźniejszy, 1.7. Nie jest to stopień tej skali: blok składany jest krojem, którego sklep nie wczytuje, więc jego interlinia nosi przedrostek dokumentacji, a nie sklepu.")}</p>
 
     <h3>${L("Weight","Grubość")}</h3>
-    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
-      <tr><td class="spec"><code>--nu-weight-normal</code></td><td>${dsVal("--nu-weight-normal")}</td><td>${L("Everything, including every display heading.","Wszystko, łącznie z każdym nagłówkiem tytułowym.")}</td></tr>
-      <tr><td class="spec"><code>--nu-weight-medium</code></td><td>${dsVal("--nu-weight-medium")}</td><td>${L("Two section headings in checkout, and the <code>strong</code> element.","Dwa nagłówki sekcji w kasie oraz element <code>strong</code>.")}</td></tr>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("When to reach for it","Kiedy sięgnąć")}</th></tr></thead><tbody>
+      <tr><td class="spec"><code>--nu-weight-normal</code></td><td>${dsVal("--nu-weight-normal")}</td><td>${L("Everything, headings included.","Wszystko, łącznie z nagłówkami.")}</td></tr>
+      <tr><td class="spec"><code>--nu-weight-medium</code></td><td>${dsVal("--nu-weight-medium")}</td><td>${L("A heading that has to hold a column against what stands under it, and emphasis inside a sentence.","Nagłówek, który musi utrzymać kolumnę nad tym, co pod nim stoi, oraz wyróżnienie w zdaniu.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "The display family ships one weight and the text family two. Nothing heavier is loaded, so asking for a weight the shop does not hold would have the browser synthesise it from 400 and smear the letterforms &ndash; which is why display headings state 400 rather than leaving it to a default.",
@@ -2286,13 +2291,13 @@ const DS_SECTIONS = [
     <p>${L(
       "Set against size and string length, not against case. Four values cover the shop, all relative, so they follow the type size instead of being restated per breakpoint. This is the one property a style token cannot carry, so a style that needs it declares it beside.",
       "Dobierane do stopnia i długości ciągu, nie do wielkości liter. Cztery wartości obsługują cały sklep, wszystkie względne, więc idą za stopniem pisma, zamiast być powtarzane przy każdym progu. To jedyna właściwość, której token stylu nie unosi, więc styl, który jej potrzebuje, deklaruje ją obok.")}</p>
-    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("When to reach for it","Kiedy sięgnąć")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-tracking-display</code></td><td>${dsVal("--nu-tracking-display")}</td>
           <td>${L("Negative. Large display type sets loosely by default, so it is drawn in. One application: the wordmark.","Ujemne. Duży krój tytułowy składa się z natury luźno, więc jest ściągany. Jedno zastosowanie: znak marki.")}</td></tr>
       <tr><td class="spec"><code>--nu-tracking-body</code></td><td>${dsVal("--nu-tracking-body")}</td>
           <td>${L("Zero, declared on <code>body</code>. Tracking applied to a paragraph distorts word shapes and slows reading.","Zero, zadeklarowane na <code>body</code>. Światło nałożone na akapit zniekształca kształty słów i spowalnia czytanie.")}</td></tr>
       <tr><td class="spec"><code>--nu-tracking-compact</code></td><td>${dsVal("--nu-tracking-compact")}</td>
-          <td>${L("Short mixed-case strings that read as objects rather than prose: button labels, quote attributions, the avatar initial.","Krótkie ciągi pisane normalnie, czytające się jako obiekty, a nie proza: napisy przycisków, podpisy pod cytatem, inicjał w awatarze.")}</td></tr>
+          <td>${L("Short mixed-case strings that read as objects rather than prose.","Krótkie ciągi pisane normalnie, czytające się jako obiekty, a nie proza.")}</td></tr>
       <tr><td class="spec"><code>--nu-tracking-caps</code></td><td>${dsVal("--nu-tracking-caps")}</td>
           <td>${L("Every uppercase interface string and only those: uppercase letterforms sit tighter than lowercase and need the air put back.","Każdy napis interfejsu pisany wersalikami i tylko one: wersaliki stoją ciaśniej niż małe litery i trzeba im to powietrze oddać.")}</td></tr>
     </tbody></table>
@@ -2309,7 +2314,7 @@ const DS_SECTIONS = [
     ${styles.length ? `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Weight","Grubość")}</th><th>${L("Size","Stopień")}</th><th>${L("Line","Interlinia")}</th><th>${L("Family","Rodzina")}</th></tr></thead><tbody>
       ${styles.map(t => `<tr><td class="spec"><code>${t.name}</code></td><td class="spec"><code>${t.weight}</code></td><td class="spec"><code>${t.size}</code></td><td class="spec"><code>${t.line}</code></td><td class="spec"><code>${t.family}</code></td></tr>`).join("")}
     </tbody></table>
-    <table><tbody>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("When to reach for it","Kiedy sięgnąć")}</th></tr></thead><tbody>
       ${styles.map(t => `<tr><td class="spec"><code>${t.name}</code></td><td>${useOf[t.name] || ""}</td></tr>`).join("")}
     </tbody></table>` : `<p class="note">${L(
       "The table of styles needs the stylesheet to be readable, which it is not in this way of opening the page. Open the built page, or serve the folder over http.",
@@ -2484,7 +2489,7 @@ const DS_SECTIONS = [
       `Ikonę narysowaną w większym rozmiarze przenosi się na mniejszy przez przeskalowanie rysunku o ${dsIconRatio()} &ndash; jedno pole bezpieczne przechodzi wtedy w drugie. Obrys ustawiany jest osobno, żeby zachował widoczną grubość, zamiast cienieć razem z rysunkiem.`)}</p>
 
     <h3>${L("The set","Zestaw")}</h3>
-    <table><thead><tr><th>${L("Icon","Ikona")}</th><th>${L("Name","Nazwa")}</th><th>${L("Use","Zastosowanie")}</th></tr></thead><tbody>
+    <table><thead><tr><th>${L("Icon","Ikona")}</th><th>${L("Name","Nazwa")}</th></tr></thead><tbody>
       <tr><td class="ico-cell"><svg class="ico-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg></td>
         <td>${L("Magnifier","Lupa")}</td><td>${L("Find a title or an author. Header, first position.","Znajdź tytuł lub autorkę. Nagłówek, pierwsza pozycja.")}</td></tr>
       <tr><td class="ico-cell"><svg class="ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.69L4.45 12.14C2.75 10.44 2.75 7.71 4.45 6.01c1.7-1.7 4.34-1.7 6.04 0L12 7.52 13.51 6.01c1.7-1.7 4.34-1.7 6.04 0 1.7 1.7 1.7 4.44 0 6.13z"/></svg></td>
@@ -2589,7 +2594,7 @@ const DS_SECTIONS = [
       <figure><div class="demo on-page"><span class="btn-ghost">Margaret Atwood</span></div>
         <figcaption>Ghost</figcaption></figure>
     </div>
-    <table id="btnTypes"><thead><tr><th>${L("Type","Typ")}</th><th>${L("Use","Zastosowanie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+    <table id="btnTypes"><thead><tr><th>${L("Type","Typ")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Primary","Główny")}<br><code>.btn-primary</code></td><td>${L("The committing action &ndash; the most consequential thing a view offers, and the only one of its kind on that view. Add to cart, go to checkout, place order. Beside the tier class sit <code>.p-cta</code>, <code>.cart-cta</code> and <code>.order-btn</code>, holding only what the place requires &ndash; width, margin, the add-to-cart sequence","Akcja wiążąca &ndash; najważniejsza rzecz, jaką widok oferuje, i jedyna tego rodzaju w tym widoku. Dodaj do koszyka, przejdź do kasy, zamów. Obok klasy stopnia stoją <code>.p-cta</code>, <code>.cart-cta</code> i <code>.order-btn</code>, trzymające wyłącznie to, czego wymaga miejsce &ndash; szerokość, margines, sekwencję dodawania do koszyka")}</td>
         <td><code>--nu-bg-action</code> ${L("body","korpus")}, <code>--nu-bg-action-glow</code> ${L("edges","krawędzie")}, <code>--nu-bg-action-glow-deep</code> ${L("aura","aura")}, <code>--nu-bg-primary</code> ${L("upper edge","górna krawędź")}, <code>--nu-bg-inverse</code> ${L("contact shadow","cień styku")}, <code>--nu-fg-inverse</code> ${L("label","napis")}</td></tr>
       <tr><td>${L("Secondary","Drugorzędny")}<br><code>.btn-secondary</code></td><td>${L("A supporting action, standing beside a primary or a field without competing with it. Applying a discount code. The same glass construction without colour &ndash; a grey body a step darker than the page, outlined in <code>--nu-bg-tertiary</code>. There is no burgundy aura; a shallow grey shadow stays underneath. Hover works as it does on the primary &ndash; the light around the button grows and the body stays put","Akcja wspierająca, stojąca obok głównej albo obok pola, nie konkurując z nimi. Zastosowanie kodu rabatowego. Ta sama konstrukcja szkła, bez koloru &ndash; szary korpus o stopień ciemniejszy niż tło, obrysowany <code>--nu-bg-tertiary</code>. Nie ma burgundowej aury; pod spodem zostaje płytki szary cień. Najechanie działa tak jak w głównym &ndash; światło wokół przycisku rośnie, a korpus zostaje na miejscu")}</td>
