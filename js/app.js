@@ -1670,8 +1670,25 @@ const DS_TOKEN_GROUPS = [
   ["motion",    ["--nu-motion","--nu-ease"]],
   ["focus",     ["--nu-focus"]],
 ];
+/* Names of every token, from whichever source can be reached. A value is easy:
+   the computed style hands it back for any name you ask about, which is why the
+   other tabs work anywhere. Listing them all is the hard part, because it needs
+   the names, and where they come from depends on how the page was opened:
+
+   1. the stylesheet inlined in a <style> — the built page. Keeps the order the
+      sheet declares them in and says what each one is built from.
+   2. the CSSOM — the folder served over http. Same names, same order.
+   A stylesheet arriving through a <link> from a local file is readable by
+   neither: the browser treats it as opaque. Enumerating the computed style
+   looks like a third way out and is not taken, because browsers differ in what
+   they expose there — a list that is complete in one browser and short in
+   another is worse in a tab whose whole point is completeness. When the names
+   cannot be read the tab says so instead of printing a confident number. */
+function dsTokenNames(){
+  return Object.keys(dsRootDecls()).filter(n => n.startsWith("--nu-"));
+}
 function dsTokenGroups(){
-  const names = Object.keys(dsRootDecls()).filter(n => n.startsWith("--nu-"));
+  const names = dsTokenNames();
   const out = new Map(DS_TOKEN_GROUPS.map(([k]) => [k, []]));
   out.set("other", []);
   names.forEach(n => {
@@ -2002,14 +2019,22 @@ const DS_SECTIONS = [
       other: L("Not sorted yet","Jeszcze nieprzypisane"),
     };
     const total = [...G.values()].reduce((n, list) => n + list.length, 0);
-    const table = list => `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Built from","Zbudowany z")}</th></tr></thead><tbody>
-      ${list.map(n => `<tr><td class="spec"><code>${n}</code></td><td>${dsVal(n)}</td><td>${dsDecl(n)}</td></tr>`).join("")}
+    const unreadable = `<p class="note">${L(
+      "The list of names cannot be read in this way of opening the page: the stylesheet arrives through a <code>link</code> from a local file and the browser will not hand its text back. Open the built page, or serve the folder over http, and the inventory fills itself in. Everything else on this tab holds either way.",
+      "Spisu nazw nie da się odczytać przy tym sposobie otwarcia strony: arkusz przychodzi przez <code>link</code> z pliku lokalnego, a przeglądarka nie oddaje jego treści. Otwórz stronę zbudowaną albo podaj folder przez http, a spis wypełni się sam. Wszystko pozostałe na tej zakładce obowiązuje tak czy inaczej.")}</p>`;
+    // the source column only appears when the declarations can be read; otherwise
+    // it would repeat the value column, the browser having already substituted it
+    const haveDecls = Object.keys(dsRootDecls()).length > 0;
+    const table = list => `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th>${
+      haveDecls ? `<th>${L("Built from","Zbudowany z")}</th>` : ""}</tr></thead><tbody>
+      ${list.map(n => `<tr><td class="spec"><code>${n}</code></td><td>${dsVal(n)}</td>${
+        haveDecls ? `<td>${dsDecl(n)}</td>` : ""}</tr>`).join("")}
     </tbody></table>`;
     return `
     <h1>${L("Tokens","Tokeny")}</h1>
     <p class="ds-lede">${L(
-      `Every value in the shop is declared once, under a name, in one place. There are ${total} of those names and this tab lists all of them.`,
-      `Każda wartość w sklepie jest zadeklarowana raz, pod nazwą, w jednym miejscu. Tych nazw jest ${total} i ta zakładka wymienia je wszystkie.`)}</p>
+      `Every value in the shop is declared once, under a name, in one place.${total ? ` There are ${total} of those names and this tab lists all of them.` : ""}`,
+      `Każda wartość w sklepie jest zadeklarowana raz, pod nazwą, w jednym miejscu.${total ? ` Tych nazw jest ${total} i ta zakładka wymienia je wszystkie.` : ""}`)}</p>
 
     <h3>${L("What they are","Czym są")}</h3>
     <p>${L(
@@ -2047,10 +2072,10 @@ const DS_SECTIONS = [
 
     <h3>${L("Every token","Wszystkie tokeny")}</h3>
     <p>${L(
-      "Read from <code>:root</code> in the order it declares them, grouped by the prefix each one carries. What a token is for is described by the tab of its layer; this list is the inventory.",
-      "Odczytane z <code>:root</code> w kolejności, w jakiej są tam zadeklarowane, pogrupowane po przedrostku. O tym, do czego dany token służy, mówi zakładka jego warstwy; ta lista jest spisem.")}</p>
-    ${[...G.entries()].filter(([, list]) => list.length).map(([key, list]) =>
-      `<h3 class="ds-tok-h">${names[key]} <span class="ds-tok-n">${list.length}</span></h3>${table(list)}`).join("")}
+      "Read back from the shop's own stylesheet and grouped by the prefix each one carries. What a token is for is described by the tab of its layer; this list is the inventory.",
+      "Odczytane z arkusza, na którym działa sklep, i pogrupowane po przedrostku. O tym, do czego dany token służy, mówi zakładka jego warstwy; ta lista jest spisem.")}</p>
+    ${total ? [...G.entries()].filter(([, list]) => list.length).map(([key, list]) =>
+      `<h3 class="ds-tok-h">${names[key]} <span class="ds-tok-n">${list.length}</span></h3>${table(list)}`).join("") : unreadable}
 
     <p class="note">${L("Sources","Źródła")}: <a class="link" href="https://www.designtokens.org/" target="_blank" rel="noopener">Design Tokens Community Group</a>, <a class="link" href="https://www.w3.org/community/design-tokens/2025/10/28/design-tokens-specification-reaches-first-stable-version/" target="_blank" rel="noopener">W3C</a> ${L("(checked August 2026)","(sprawdzone w sierpniu 2026)")}.</p>`;
   } },
