@@ -2236,15 +2236,13 @@ const DS_SECTIONS = [
       "Dwie rodziny, cztery skale i dziewięć stylów z nich złożonych. Styl nazwany jest przez poziom &ndash; Heading 1, Body, Label &ndash; a nie przez widok, w którym występuje, więc jeden styl obsługuje każdy kontekst, który go wymaga.")}</p>
 
     <h3>${L("Families","Rodziny")}</h3>
-    <div class="demo on-page" style="display:block">
-      ${["--nu-font-display","--nu-font-text"].map(token => `
+    <div class="ds-faces">
+      ${[["--nu-font-display", L("Identity and headings","Identyfikacja i nagłówki")],
+         ["--nu-font-text", L("Everything else","Cała reszta")]].map(([token, role]) => `
         <div class="ds-face">
-          <span class="lbl">${token}</span>
-          <span class="glyphs" style="font-family:var(${token})">
-            ABCDEFGHIJKLMNOPQRSTUVWXYZ &#260;&#262;&#280;&#321;&#323;&#211;&#346;&#377;&#379;<br>
-            abcdefghijklmnopqrstuvwxyz &#261;&#263;&#281;&#322;&#324;&#243;&#347;&#378;&#380;<br>
-            0123456789 &nbsp; , . ; : ! ? &bdquo;&rdquo; &mdash; &ndash; z&#322; &euro;
-          </span>
+          <div class="ds-face-head"><span class="name">${token}</span><span class="role">${role}</span></div>
+          <div class="ds-face-aa" style="font-family:var(${token})">Aa</div>
+          <div class="ds-face-set" style="font-family:var(${token})">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz &#260;&#262;&#280;&#321;&#323;&#211;&#346;&#377;&#379; &#261;&#263;&#281;&#322;&#324;&#243;&#347;&#378;&#380; 0123456789 , . ; : ! ? &bdquo;&rdquo; &mdash; &ndash; z&#322; &euro;</div>
         </div>`).join("")}
     </div>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
