@@ -1214,17 +1214,10 @@
     background:var(--nu-bg-primary);border:1px solid var(--nu-border-neutral);
     padding:var(--nu-space-medium);overflow:hidden;
   }
-  /* The card's own labels stay in the documentation's voice: setting them in the
+  /* The card's own label stays in the documentation's voice: setting it in the
      face being shown would make the specimen judge itself. */
-  .ds .ds-face-head{
-    display:flex;align-items:baseline;justify-content:space-between;
-    gap:var(--nu-space-small);margin-bottom:var(--nu-space-medium);
-  }
+  .ds .ds-face-head{margin-bottom:var(--nu-space-medium)}
   .ds .ds-face-head .name{font-family:var(--ds-font-mono);font-size:0.71875rem}
-  .ds .ds-face-head .role{
-    font:var(--nu-type-label);text-transform:uppercase;
-    letter-spacing:var(--nu-tracking-caps);color:var(--nu-fg-secondary);
-  }
   .ds .ds-face-aa{font-size:4.5rem;line-height:var(--nu-line-flat);margin-bottom:var(--nu-space-medium)}
   .ds .ds-face-set{font-size:var(--nu-text-size-lg);line-height:var(--nu-line-snug);overflow-wrap:anywhere}
   /* A style specimen carries its own name beside it, because a style is the one

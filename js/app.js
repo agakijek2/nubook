@@ -2237,10 +2237,9 @@ const DS_SECTIONS = [
 
     <h3>${L("Families","Rodziny")}</h3>
     <div class="ds-faces">
-      ${[["--nu-font-display", L("Identity and headings","Identyfikacja i nagłówki")],
-         ["--nu-font-text", L("Everything else","Cała reszta")]].map(([token, role]) => `
+      ${["--nu-font-display","--nu-font-text"].map(token => `
         <div class="ds-face">
-          <div class="ds-face-head"><span class="name">${token}</span><span class="role">${role}</span></div>
+          <div class="ds-face-head"><span class="name">${token}</span></div>
           <div class="ds-face-aa" style="font-family:var(${token})">Aa</div>
           <div class="ds-face-set" style="font-family:var(${token})">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz &#260;&#262;&#280;&#321;&#323;&#211;&#346;&#377;&#379; &#261;&#263;&#281;&#322;&#324;&#243;&#347;&#378;&#380; 0123456789 , . ; : ! ? &bdquo;&rdquo; &mdash; &ndash; z&#322; &euro;</div>
         </div>`).join("")}
