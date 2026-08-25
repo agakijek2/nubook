@@ -43,7 +43,7 @@
     --nu-bg-action:color-mix(in srgb, var(--nu-grey-900) 85%, transparent); /* glass CTA body */
     /* derived, not duplicated: the secondary button borrows the panel surface,
        so the two can never drift apart by accident */
-    --nu-bg-action-secondary:var(--nu-bg-secondary); /* secondary button body */
+    --nu-bg-action-secondary:var(--nu-grey-100); /* secondary button body */
     --nu-bg-action-glow:var(--nu-burgundy-500);      /* CTA inner glow, bottom edge */
     --nu-bg-action-glow-deep:var(--nu-burgundy-700); /* CTA aura cast beneath */
 

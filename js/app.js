@@ -1514,8 +1514,14 @@ const _applyCur = applyCur;
 applyCur = function(){ _applyCur(); const b = currentProduct(); if (b) renderProduct(b); if (cartOpen) renderCart(); if (!cartPageEl.hidden) renderCartPage(); if (!checkoutEl.hidden) renderCheckout(); };
 
 /* ------------------------------------------------------- design system docs */
+/* The value a token really has, asked of the element that carries it: the shop's
+   tokens live on the root, the documentation's own two on the documentation
+   page, so a token declared there is read there rather than coming back empty. */
 function dsVal(name){
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const host = name.startsWith("--ds-")
+    ? (document.getElementById("dsPage") || document.documentElement)
+    : document.documentElement;
+  return getComputedStyle(host).getPropertyValue(name).trim();
 }
 /* Both the palette and what each colour feeds are discovered in :root. Typed out
    beside the table they went stale twice over &mdash; once for the scrim, once for
@@ -1640,25 +1646,38 @@ function dsPrimitiveCount(){
 /* The declared source of a token, read from the stylesheet itself: a semantic token
    shows the primitive it points at, never a hex value. */
 let DS_DECLS = null;
-/* Every :root declaration, in source order. The built shop inlines the sheet in
-   a <style>, so reading the text is enough; served from a <link> there is no
-   text to read, and the CSSOM has to be asked instead. Order matters — the docs
-   list the scale in the order it is declared, not in an order repeated here. */
+/* Every token declared in the sheet, in source order. Two blocks hold them:
+   ":root" for the shop and ".ds" for the two the documentation declares for
+   itself. Both are read, because the inventory promises every token and a
+   reader who meets --ds-font-mono in another tab has to find it here. The built
+   shop inlines the sheet in a <style>, so reading the text is enough; served
+   from a <link> there is no text to read, and the CSSOM has to be asked
+   instead. Order matters — the docs list a scale in the order it is declared,
+   not in an order repeated here. */
 function dsRootDecls(){
   if (DS_DECLS) return DS_DECLS;
   DS_DECLS = {};
-  let root = "";
+  const blocks = [];
   const inline = [...document.querySelectorAll("style")].map(s=>s.textContent).join("\n");
   if (inline.includes(":root{")){
-    root = inline.slice(inline.indexOf(":root{"), inline.indexOf("}", inline.indexOf(":root{")));
+    blocks.push(inline.slice(inline.indexOf(":root{"), inline.indexOf("}", inline.indexOf(":root{"))));
+    /* The documentation's own tokens sit in a .ds rule, and .ds is not the only
+       rule with that selector, so the block is found by what it declares rather
+       than by where it stands. Comments go first: one sits between the two
+       declarations and would otherwise be read as part of a value. */
+    const bare = inline.replace(/\/\*[\s\S]*?\*\//g, "");
+    blocks.push([...bare.matchAll(/[{;]\s*(--ds-[\w-]+\s*:\s*[^;]+)/g)].map(m=>m[1]).join(";"));
   } else {
     for (const sheet of document.styleSheets){
       let rules; try { rules = sheet.cssRules; } catch { continue; }   // cross-origin
-      for (const r of rules || []) if (r.selectorText === ":root") root = r.style.cssText;
-      if (root) break;
+      for (const r of rules || []){
+        if (r.selectorText === ":root") blocks.push(r.style.cssText);
+        else if (r.style && r.style.cssText && r.style.cssText.includes("--ds-")) blocks.push(r.style.cssText);
+      }
+      if (blocks.length) break;
     }
   }
-  root.split(";").forEach(line=>{
+  blocks.join(";").split(";").forEach(line=>{
     const m = line.match(/(--[\w-]+)\s*:\s*([^;]+)/);
     if (m) DS_DECLS[m[1]] = m[2].replace(/\/\*[\s\S]*?\*\//g, "").trim();
   });
@@ -1689,6 +1708,7 @@ const DS_TOKEN_GROUPS = [
   ["icon",   ["--nu-icon"]],
   ["motion", ["--nu-motion","--nu-ease"]],
   ["focus",  ["--nu-focus"]],
+  ["docs",   ["--ds-"]],
 ];
 /* Names of every token, from whichever source can be reached. A value is easy:
    the computed style hands it back for any name you ask about, which is why the
@@ -1705,7 +1725,7 @@ const DS_TOKEN_GROUPS = [
    another is worse in a tab whose whole point is completeness. When the names
    cannot be read the tab says so instead of printing a confident number. */
 function dsTokenNames(){
-  return Object.keys(dsRootDecls()).filter(n => n.startsWith("--nu-"));
+  return Object.keys(dsRootDecls()).filter(n => /^--(nu|ds)-/.test(n));
 }
 /* The shape of a name shown rather than described: its parts as badges in a
    specimen box, written in the general form, with real tokens standing
@@ -2078,7 +2098,7 @@ const DS_SECTIONS = [
       colour: L("Colour","Kolor"), type: L("Typography","Typografia"),
       space: L("Spacing","Odstępy"), layout: L("Layout and components","Układ i komponenty"),
       icon: L("Icons","Ikony"), motion: L("Motion","Ruch"), focus: L("Focus","Fokus"),
-      other: L("Not sorted yet","Jeszcze nieprzypisane"),
+      docs: L("Documentation","Dokumentacja"), other: L("Not sorted yet","Jeszcze nieprzypisane"),
       primitive: L("Primitives","Prymitywy"), semantic: L("Semantic","Semantyczne"),
       style: L("Styles","Style"),
       scale: L("From the scale","Ze skali"), own: L("A value of its own","Własna wartość"),
@@ -2122,23 +2142,23 @@ const DS_SECTIONS = [
 
     <h2>${L("How they are built","Jak są budowane")}</h2>
     <p>${L(
-      "In the stylesheet a token is a CSS custom property declared in <code>:root</code>. They stand on three levels, and a name says by its parts which level it belongs to.",
-      "W arkuszu token jest własną właściwością CSS zadeklarowaną w <code>:root</code>. Stoją na trzech poziomach, a nazwa swoimi częściami mówi, na którym.")}</p>
+      "In the stylesheet a token is a CSS property declared in <code>:root</code>. Tokens stand on three levels, and the name says which one.",
+      "W arkuszu token jest właściwością CSS zadeklarowaną w <code>:root</code>. Tokeny stoją na trzech poziomach, a nazwa wskazuje, na którym.")}</p>
 
     <h3>${L("Primitive","Prymityw")}</h3>
     <p>${L(
-      "Holds a value and nothing else. A step is named after the job it does rather than after its number, so a value can move between steps without a single rule being renamed. Text sizes are the exception and are named by size, because there the job belongs to the style standing above them.",
-      "Trzyma wartość i nic poza tym. Stopień nazwany jest od zadania, które wykonuje, a nie od swojego numeru, więc wartość może przejść między stopniami bez przemianowania choćby jednej reguły. Wyjątkiem są rozmiary pisma, nazwane wielkością, bo tam zadanie należy do stylu stojącego nad nimi.")}</p>
+      "Holds a value and nothing else. A step is named after the job it does rather than after a number, so a value can move between steps without a single rule being renamed. Colour primitives and text sizes are the exception: they are named by their own measure &ndash; lightness and size &ndash; because there the job belongs to the token standing above them.",
+      "Trzyma wartość i nic poza tym. Stopień nazwany jest zadaniem, które wykonuje, a nie liczbą, więc wartość może przejść między stopniami bez przemianowania choćby jednej reguły. Wyjątkiem są prymitywy koloru i rozmiary pisma, nazwane własną miarą &ndash; jasnością i wielkością &ndash; bo tam zadanie należy do tokenu stojącego nad nimi.")}</p>
     ${dsNamePattern([L("prefix","prefiks"), L("area","obszar"), L("step","stopień")])}
     ${dsTokenExamples(["--nu-grey-600","--nu-space-milli","--nu-text-size-lg","--nu-motion-slow"], true)}
     <p>${L(
-      "Not one colour primitive is read outside <code>:root</code>: a grey can move without every rule using it having to be found. The typographic primitives are read directly, because the <code>font:</code> shorthand carries neither letter-spacing nor uppercase, so a style cannot always stand in for them.",
-      "Ani jeden prymityw koloru nie jest czytany poza <code>:root</code>: szarość może się zmienić bez szukania wszystkich reguł, które jej używają. Prymitywy typograficzne są czytane wprost, bo skrót <code>font:</code> nie niesie ani trackingu, ani wersalików, więc styl nie zawsze może je zastąpić.")}</p>
+      "A colour primitive is read inside <code>:root</code> and nowhere else: a grey can be changed in one place, without going through the rules that use it. The typographic primitives are read directly, because the <code>font:</code> shorthand carries neither letter-spacing nor uppercase, so a style cannot always stand in for them.",
+      "Prymityw koloru czytany jest wyłącznie w <code>:root</code>: szarość da się zmienić w jednym miejscu, bez przeglądania reguł, które jej używają. Prymitywy typograficzne są czytane wprost, bo skrót <code>font:</code> nie niesie ani trackingu, ani wersalików, więc styl nie zawsze może je zastąpić.")}</p>
 
     <h3>${L("Semantic","Semantyczny")}</h3>
     <p>${L(
-      "Names a role and points at the level below. This is what any rule in the sheet reads. A second name is written when one value carries roles that have to be able to part company later &ndash; not for symmetry.",
-      "Nazywa rolę i wskazuje na poziom niżej. To po niego sięga każda reguła w arkuszu. Druga nazwa powstaje wtedy, gdy jedna wartość obsługuje role, które muszą móc się później rozejść &ndash; a nie dla symetrii.")}</p>
+      "Names a role and points at the level below. This is the level a rule in the sheet reads. Two roles holding one value get two names, so that one of them can be changed later without the other: <code>--nu-border-muted</code> and <code>--nu-border-hover</code> point at the same grey today.",
+      "Nazywa rolę i wskazuje na poziom niżej. Po ten poziom sięgają reguły w arkuszu. Dwie role o tej samej wartości dostają dwie nazwy, żeby dało się później zmienić jedną, nie ruszając drugiej: <code>--nu-border-muted</code> i <code>--nu-border-hover</code> wskazują dziś na tę samą szarość.")}</p>
     ${dsNamePattern([L("prefix","prefiks"), L("area","obszar"), L("role","rola")])}
     ${dsTokenExamples(["--nu-fg-secondary","--nu-border-alert","--nu-type-body-m"], false)}
 
@@ -2167,8 +2187,8 @@ const DS_SECTIONS = [
 
     <h2>${L("Every token","Wszystkie tokeny")}</h2>
     <p>${L(
-      "Read back from the shop's own stylesheet: a category by the prefix a token carries, a section by whether the token holds a value or points at another token. What a token is for is described by the tab of its layer; this list is the inventory.",
-      "Odczytane z arkusza, na którym działa sklep: kategoria po przedrostku, który token nosi, sekcja po tym, czy token trzyma wartość, czy wskazuje na inny token. O tym, do czego dany token służy, mówi zakładka jego warstwy; ta lista jest spisem.")}</p>
+      "Read back from the stylesheet: a category by the prefix a token carries, a section by whether the token holds a value or points at another token. The last category gathers what the <code>--ds-</code> prefix marks &ndash; tokens declared for these documentation pages and used nowhere in the shop. What a token is for is described by the tab of its layer; this list is the inventory.",
+      "Odczytane z arkusza: kategoria po przedrostku, który token nosi, sekcja po tym, czy token trzyma wartość, czy wskazuje na inny token. Ostatnia kategoria zbiera to, co oznacza przedrostek <code>--ds-</code> &ndash; tokeny zadeklarowane dla stron dokumentacji i nieużywane nigdzie w sklepie. O tym, do czego dany token służy, mówi zakładka jego warstwy; ta lista jest spisem.")}</p>
     ${total ? G.map(g =>
       `<h3>${names[g.key]}</h3>${
         g.sections.map(sec => (sec.key ? `<h4>${names[sec.key]}</h4>` : "")
