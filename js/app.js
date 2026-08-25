@@ -1922,7 +1922,6 @@ function dsTypeSpecimens(){
     ["--nu-type-h3", "nubook.", ""],
     ["--nu-type-body-l", "59,90 z&#322;", ""],
     ["--nu-type-body-m", L("Novels about women and gender.","Powieści o kobietach i płci."), ""],
-    ["--nu-type-prose", L("Nolite te bastardes carborundorum.","Nolite te bastardes carborundorum."), "font-style:italic"],
     ["--nu-type-label", L("Sort by","Sortuj"), caps],
     ["--nu-type-label-strong", L("Contact details","Dane kontaktowe"), caps],
     ["--nu-type-caption", "12", ""],
@@ -2226,7 +2225,6 @@ const DS_SECTIONS = [
       "--nu-type-h3": L("The smallest display step: the footer wordmark and the subheads on these pages","Najmniejszy stopień kroju tytułowego: znak marki w stopce i podtytuły na tych stronach"),
       "--nu-type-body-l": L("Emphasis within running copy: price, order total, avatar initial, the opening paragraph of a page here","Wyróżnienie w tekście ciągłym: cena, suma zamówienia, inicjał w awatarze, akapit otwierający stronę w tej dokumentacji"),
       "--nu-type-body-m": L("The page's own style, set on <code>body</code> and inherited by everything that does not say otherwise","Własny styl strony, ustawiony na <code>body</code> i dziedziczony przez wszystko, co nie mówi inaczej"),
-      "--nu-type-prose": L("Text read at length, where the line needs more air: the quote, the biography, the legal note","Tekst czytany dłużej, gdzie wiersz potrzebuje więcej powietrza: cytat, biogram, nota prawna"),
       "--nu-type-label": L("Uppercase interface strings: filter and section headings, field labels, badges, table headings","Napisy interfejsu pisane wersalikami: nagłówki filtrów i sekcji, etykiety pól, odznaki, nagłówki tabel"),
       "--nu-type-label-strong": L("The same, one weight up, where a heading has to hold a column against a table below it","To samo, o jedną grubość wyżej, gdzie nagłówek musi utrzymać kolumnę nad tabelą pod sobą"),
       "--nu-type-caption": L("The floor of the scale: counts bound to a larger element, drawer labels. Never for reading copy.","Dolna granica skali: liczniki przypięte do większego elementu, etykiety w szufladzie. Nigdy do czytania."),
@@ -2247,26 +2245,25 @@ const DS_SECTIONS = [
     </tbody></table>
 
     <h3>${L("Size","Rozmiar")}</h3>
-    <p>${L(
-      "Six steps, named by size rather than by what they are for. A step says how big; what for is the business of a style, which points at one of them. Two styles sharing a step part company by pointing at different ones, not by the scale growing a second value of the same size.",
-      "Sześć stopni, nazwanych rozmiarem, a nie przeznaczeniem. Stopień mówi, jak duży; do czego służy, jest sprawą stylu, który na niego wskazuje. Dwa style dzielące stopień rozejdą się przez wskazanie innych, a nie przez dołożenie do skali drugiej wartości tej samej wielkości.")}</p>
+    <p>${L("A step says how big. What for is the business of a style, which points at one of them.",
+           "Stopień mówi, jak duży. Do czego służy, jest sprawą stylu, który na niego wskazuje.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Example","Przykład")}</th></tr></thead><tbody>
       ${dsTypeSteps().map(([token, sample]) =>
         `<tr><td class="spec"><code>${token}</code></td><td>${dsVal(token)}</td><td>${sample}</td></tr>`).join("")}
     </tbody></table>
 
     <h3>${L("Line height","Interlinia")}</h3>
-    <p>${L(
-      "Six steps, named after how much air the line needs rather than after the number. A step is a ratio, so it holds at every size.",
-      "Sześć stopni, nazwanych od tego, ile powietrza potrzebuje wiersz, a nie od liczby. Stopień jest proporcją, więc trzyma się przy każdym stopniu pisma.")}</p>
+    <p>${L("A step is a ratio, so it holds at every size.",
+           "Stopień jest proporcją, więc trzyma się przy każdym stopniu pisma.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-line-flat</code></td><td>${dsVal("--nu-line-flat")}</td><td>${L("The box sets the height: badge, cart counter, wordmark.","Wysokość ustala kontener: odznaka, licznik koszyka, znak marki.")}</td></tr>
       <tr><td class="spec"><code>--nu-line-tight</code></td><td>${dsVal("--nu-line-tight")}</td><td>${L("Display sizes, where a looser line would leave the heading gaping.","Stopnie tytułowe, gdzie luźniejszy wiersz zostawiłby w nagłówku dziurę.")}</td></tr>
       <tr><td class="spec"><code>--nu-line-snug</code></td><td>${dsVal("--nu-line-snug")}</td><td>${L("A title inside a list row, where two lines have to stay one object.","Tytuł w wierszu listy, gdzie dwa wiersze mają zostać jednym przedmiotem.")}</td></tr>
       <tr><td class="spec"><code>--nu-line-normal</code></td><td>${dsVal("--nu-line-normal")}</td><td>${L("Running copy and the text inside controls.","Tekst ciągły i tekst wewnątrz kontrolek.")}</td></tr>
-      <tr><td class="spec"><code>--nu-line-relaxed</code></td><td>${dsVal("--nu-line-relaxed")}</td><td>${L("Prose read at length: the quote, the biography, the legal note.","Proza czytana dłużej: cytat, biogram, nota prawna.")}</td></tr>
-      <tr><td class="spec"><code>--nu-line-loose</code></td><td>${dsVal("--nu-line-loose")}</td><td>${L("Code blocks in this documentation.","Bloki kodu w tej dokumentacji.")}</td></tr>
     </tbody></table>
+    <p class="note">${L(
+      "A code block in this documentation runs looser still, at 1.7. It is not a step of this scale: the block is set in a face the shop never loads, so its line height carries the documentation's own prefix rather than the shop's.",
+      "Blok kodu w tej dokumentacji ma wiersz jeszcze luźniejszy, 1.7. Nie jest to stopień tej skali: blok składany jest krojem, którego sklep nie wczytuje, więc jego interlinia nosi przedrostek dokumentacji, a nie sklepu.")}</p>
 
     <h3>${L("Weight","Grubość")}</h3>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
