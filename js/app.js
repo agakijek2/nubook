@@ -2623,6 +2623,82 @@ const DS_SECTIONS = [
       "This tab has no live preview. The stepper's state depends on the count and on whether the minus is disabled, not on a class on the control, so a preview driven by class names would show something the component does not have.",
       "Ta zakładka nie ma podglądu na żywo. Stan steppera zależy od liczby i od tego, czy minus jest wyłączony, a nie od klasy na kontrolce, więc podgląd sterowany nazwami klas pokazywałby coś, czego komponent nie ma.")}</p>` },
 
+  { group:{en:"Components",pl:"Komponenty"}, id:"sort", label:{en:"Sort menu",pl:"Menu sortowania"}, body: ()=>`
+    <h1>${L("Sort menu","Menu sortowania")}</h1>
+    <p class="ds-lede">${L(
+      "A button that opens a short list and changes the order of the grid. The component is <code>.sort</code>: the trigger <code>.sort-btn</code> and the panel <code>.sort-menu</code> hanging off it. It stands once in the shop, above the product grid.",
+      "Przycisk, który rozwija krótką listę i zmienia kolejność siatki. Komponent to <code>.sort</code>: przycisk <code>.sort-btn</code> i wiszący przy nim panel <code>.sort-menu</code>. W sklepie stoi raz, nad siatką produktów.")}</p>
+    <div class="ds-specimens ds-fields">
+      <figure>
+        <div class="demo on-page ds-sort">
+          <div class="sort">
+            <span class="sort-btn btn-tertiary">${L("Sort by:","Sortuj:")} ${L("Our recommendations","Nasze rekomendacje")}
+              <svg class="ico-sm ico-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></span>
+          </div>
+        </div>
+        <figcaption>${L("Closed","Zamknięte")}</figcaption>
+      </figure>
+      <figure>
+        <div class="demo on-page ds-sort">
+          <div class="sort">
+            <div class="sort-menu">
+              <button type="button" aria-checked="true">${L("Our recommendations","Nasze rekomendacje")}</button>
+              <button type="button" aria-checked="false">${L("Newest first","Od najnowszych")}</button>
+              <button type="button" aria-checked="false">${L("Price, low to high","Cena: od najniższej")}</button>
+            </div>
+          </div>
+        </div>
+        <figcaption>${L("The open panel","Rozwinięty panel")}</figcaption>
+      </figure>
+    </div>
+    <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+      <tr><td>${L("Closed","Zamknięte")}</td>
+        <td>${L("The button carries the label and the order in force, so the current sort is readable without opening anything.","Przycisk niesie podpis i obowiązującą kolejność, więc bieżące sortowanie da się odczytać bez rozwijania.")}</td>
+        <td><code>--nu-fg-primary</code></td></tr>
+      <tr><td>${L("Open","Rozwinięte")}<br><code>[aria-expanded="true"]</code></td>
+        <td>${L("The panel appears under the button and the plus turns 45&deg; into a cross. The attribute sits on the trigger and the panel is its next sibling, so one attribute drives both.","Panel pojawia się pod przyciskiem, a plus obraca się o 45&deg; w krzyżyk. Atrybut stoi na przycisku, a panel jest jego następnym sąsiadem, więc jeden atrybut prowadzi oba.")}</td>
+        <td><code>--nu-bg-primary</code>, <code>--nu-border-neutral</code></td></tr>
+      <tr><td>${L("Option in force","Opcja obowiązująca")}<br><code>[aria-checked="true"]</code></td>
+        <td>${L("Underlined, 3px below the type. One option carries it at any time; the same attribute tells a screen reader which one is chosen.","Podkreślona, 3px pod tekstem. W danej chwili niesie to jedna opcja; ten sam atrybut mówi czytnikowi ekranu, która jest wybrana.")}</td>
+        <td>&ndash;</td></tr>
+      <tr><td>Hover<br><code>:hover</code></td>
+        <td>${L("The row fills across the whole width of the panel, so the target is the row and not the words.","Wiersz wypełnia się na całą szerokość panelu, więc celem jest wiersz, a nie same słowa.")}</td>
+        <td><code>--nu-bg-secondary</code></td></tr>
+    </tbody></table>
+    <h3>${L("Specification","Specyfikacja")}</h3>
+    <table><tbody>
+      <tr><td ${DS_COL_NAME}>${L("Element","Element")}</td><td>${L(
+        "A menu button: the trigger declares <code>aria-haspopup=&quot;menu&quot;</code>, the panel is a <code>menu</code> and each option is a <code>menuitemradio</code> &ndash; one choice out of a set. That is what makes <code>aria-checked</code> the right attribute here; on a list option it would be the wrong one.",
+        "Przycisk menu: przycisk deklaruje <code>aria-haspopup=&quot;menu&quot;</code>, panel jest elementem <code>menu</code>, a każda opcja to <code>menuitemradio</code> &ndash; jeden wybór ze zbioru. Dlatego <code>aria-checked</code> jest tu atrybutem właściwym; przy opcji listy byłby niewłaściwy.")}</td></tr>
+      <tr><td>${L("Trigger","Przycisk")}</td><td>${L(
+        `A tertiary button on the terms set out under Button, with ${dsTok("--nu-space-nano")} above and below and none at the sides &ndash; it stands at the edge of the grid and any side padding would push it out of line with the column beneath.`,
+        `Przycisk trzeciorzędny na zasadach opisanych w Przycisku, z odstępem ${dsTok("--nu-space-nano")} u góry i u dołu, a bez bocznego &ndash; stoi przy krawędzi siatki i boczne wypełnienie wypchnęłoby go z linii kolumny pod nim.`)}</td></tr>
+      <tr><td>${L("Panel","Panel")}</td><td>${L(
+        `1px <code>--nu-border-neutral</code> on <code>--nu-bg-primary</code>, ${dsTok("--nu-space-micro")} of air above and below the options and ${dsTok("--nu-space-micro")} between the panel and the button. It is as wide as its longest option and re-measures itself when the labels change language.`,
+        `1px <code>--nu-border-neutral</code> na <code>--nu-bg-primary</code>, ${dsTok("--nu-space-micro")} powietrza nad opcjami i pod nimi oraz ${dsTok("--nu-space-micro")} między panelem a przyciskiem. Jest szeroki na najdłuższą swoją opcję i przemierza się sam, gdy podpisy zmieniają język.`)}</td></tr>
+      <tr><td>${L("Option","Opcja")}</td><td>${L(
+        `Full width of the panel, text to the left, ${dsTok("--nu-space-micro")} of padding vertically and ${dsTok("--nu-space-small")} horizontally. Labels do not wrap: a two-line option would read as two.`,
+        `Cała szerokość panelu, tekst do lewej, wypełnienie ${dsTok("--nu-space-micro")} w pionie i ${dsTok("--nu-space-small")} w poziomie. Podpisy się nie łamią: opcja w dwóch wierszach czytałaby się jak dwie.`)}</td></tr>
+      <tr><td>${L("Icon","Ikona")}</td><td>${L(
+        "The plus at the smaller of the two sizes, on the terms set out under Iconography, turning 45&deg; into the cross while the panel is open. The same drawing the stepper uses.",
+        "Plus w mniejszym z dwóch rozmiarów, na zasadach opisanych w Ikonografii, obracający się o 45&deg; w krzyżyk przy rozwiniętym panelu. Ten sam rysunek, którego używa stepper.")}</td></tr>
+      <tr><td>${L("Keyboard","Klawiatura")}</td><td>${L(
+        "The role promises keyboard behaviour, so the keyboard delivers it: the down arrow opens the menu and lands on the option in force, the arrows walk the options and wrap at the ends, Home and End reach the first and the last, Escape closes and hands focus back to the trigger, Tab closes and lets focus travel on. Escape stops at the menu instead of travelling on to close a drawer.",
+        "Rola obiecuje obsługę klawiatury, więc klawiatura ją zapewnia: strzałka w dół rozwija menu i staje na obowiązującej opcji, strzałki przechodzą między opcjami i zawijają na krańcach, Home i End sięgają pierwszej i ostatniej, Escape zamyka i oddaje fokus przyciskowi, a Tab zamyka i puszcza fokus dalej. Escape zatrzymuje się na menu, zamiast lecieć dalej i zamykać szufladę.")}</td></tr>
+      <tr><td>${L("Focus","Fokus")}</td><td>${L(
+        "An option draws its focus ring inside its own edge, so the ring does not run along the panel's border.",
+        "Opcja rysuje obwódkę fokusu wewnątrz własnej krawędzi, więc obwódka nie biegnie po obramowaniu panelu.")}</td></tr>
+      <tr><td>${L("On a narrow screen","Na wąskim ekranie")}</td><td>${L(
+        "The panel opens upwards, above the bottom bar, and the button's label is cut with an ellipsis rather than taking a second line.",
+        "Panel rozwija się w górę, nad dolną belką, a podpis przycisku jest przycinany wielokropkiem, zamiast zajmować drugi wiersz.")}</td></tr>
+    </tbody></table>
+    <p class="note">${L(
+      "The panel arrives without motion. It is switched between <code>display:none</code> and <code>display:block</code>, and display cannot be animated &ndash; giving it the movement the drawer has would mean building it differently.",
+      "Panel pojawia się bez ruchu. Przełącza się między <code>display:none</code> a <code>display:block</code>, a wyświetlania nie da się animować &ndash; nadanie mu ruchu, który ma szuflada, oznaczałoby inną konstrukcję.")}</p>
+    <p class="note">${L(
+      "This tab has no live preview. The component is a trigger and a panel driven by one attribute, and the preview builds a single element from a class name.",
+      "Ta zakładka nie ma podglądu na żywo. Komponent to przycisk i panel prowadzone jednym atrybutem, a podgląd buduje pojedynczy element z nazwy klasy.")}</p>` },
+
   { group:{en:"Components",pl:"Komponenty"}, id:"input", label:{en:"Text field",pl:"Pole tekstowe"}, body: ()=>`
     <h1>${L("Text field","Pole tekstowe")}</h1>
     <p class="ds-lede">${L(
