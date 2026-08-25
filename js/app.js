@@ -2095,22 +2095,32 @@ const DS_SECTIONS = [
     </tbody></table>
 
     <h3>${L("Three levels","Trzy poziomy")}</h3>
+    <table><thead><tr><th ${DS_COL_NAME}>${L("Level","Poziom")}</th><th>${L("What it names","Co nazywa")}</th><th>${L("Example","Przykład")}</th><th>${L("Who reads it","Kto po niego sięga")}</th></tr></thead><tbody>
+      <tr><td>${L("Primitive","Prymityw")}</td>
+          <td>${L("A value and nothing else.","Wartość i nic poza tym.")}</td>
+          <td class="spec"><code>--nu-grey-600</code></td>
+          <td>${L("Only a semantic token. No rule in the sheet reads one.","Tylko token semantyczny. Żadna reguła w arkuszu po niego nie sięga.")}</td></tr>
+      <tr><td>${L("Semantic","Semantyczny")}</td>
+          <td>${L("A role, pointing at the level below.","Rolę, wskazując na poziom niżej.")}</td>
+          <td class="spec"><code>--nu-fg-secondary</code></td>
+          <td>${L("Any rule in the sheet.","Każda reguła w arkuszu.")}</td></tr>
+      <tr><td>${L("Component","Komponentowy")}</td>
+          <td>${L("A value belonging to one component.","Wartość należącą do jednego komponentu.")}</td>
+          <td class="spec"><code>--nu-mobar-height</code></td>
+          <td>${L("That component, and nothing else.","Ten komponent i nic poza nim.")}</td></tr>
+    </tbody></table>
     <p>${L(
-      "A <strong>primitive</strong> names a value and nothing else: <code>--nu-grey-600</code> is a grey, and primitives are the only place a hex appears in the whole sheet. A <strong>semantic</strong> token names a role and points at a primitive: <code>--nu-fg-secondary</code> is supporting text, which today happens to be that grey. A rule in the sheet reaches for the second level, never the first. That is what lets the grey move without every rule that uses it having to be found, and what lets two roles holding the same value part company later without anything breaking.",
-      "<strong>Prymityw</strong> nazywa wartość i nic poza tym: <code>--nu-grey-600</code> to szarość, a prymitywy są jedynym miejscem w całym arkuszu, gdzie pojawia się zapis heks. Token <strong>semantyczny</strong> nazywa rolę i wskazuje na prymityw: <code>--nu-fg-secondary</code> to tekst pomocniczy, który dziś akurat jest tą szarością. Reguła w arkuszu sięga po drugi poziom, nigdy po pierwszy. Dzięki temu szarość może się zmienić bez szukania wszystkich reguł, które jej używają, a dwie role o tej samej wartości mogą się później rozejść, nic nie psując.")}</p>
-
+      "The levels hold in the code: not one primitive is read outside <code>:root</code>. That is what lets a grey move without every rule using it having to be found, and what lets two roles holding the same value part company later without anything breaking.",
+      "Poziomy trzymają się w kodzie: ani jeden prymityw nie jest czytany poza <code>:root</code>. Dzięki temu szarość może się zmienić bez szukania wszystkich reguł, które jej używają, a dwie role o tej samej wartości mogą się później rozejść, nic nie psując.")}</p>
     <p>${L(
       "This is not a colour arrangement, although colour is where it shows most. Five tokens name a role over the spacing scale: <code>--nu-gutter-column</code>, <code>--nu-mobar-height</code>, <code>--nu-cobar-height</code>, <code>--nu-mobar-padding</code> and <code>--nu-mobar-gap</code>. The two bar heights point at one step because the bars are meant to be the same height; the last two hold the same value and stay apart precisely so they can move apart later.",
       "To nie jest układ kolorystyczny, choć przy kolorze widać go najmocniej. Pięć tokenów nazywa rolę nad skalą odstępów: <code>--nu-gutter-column</code>, <code>--nu-mobar-height</code>, <code>--nu-cobar-height</code>, <code>--nu-mobar-padding</code> i <code>--nu-mobar-gap</code>. Wysokości obu belek wskazują na jeden stopień, bo belki mają być tej samej wysokości; dwa ostatnie mają tę samą wartość i są osobno właśnie po to, żeby móc się później rozejść.")}</p>
     <p>${L(
-      "A <strong>component</strong> token is the third level: a value belonging to one component and read nowhere else &ndash; the height of the mobile bar, the size of a cart thumbnail, the width of a four-character field. It is named that way in <a class=\"link\" href=\"https://primer.style/product/primitives/token-names/\" target=\"_blank\" rel=\"noopener\">Primer</a>, GitHub's design system, which keeps the same three levels and allows a component token only in that component's own CSS.",
-      "Token <strong>komponentowy</strong> to trzeci poziom: wartość należąca do jednego komponentu i nieczytana nigdzie indziej &ndash; wysokość belki na telefonie, rozmiar miniatury w koszyku, szerokość pola na cztery znaki. Tak nazywa go <a class=\"link\" href=\"https://primer.style/product/primitives/token-names/\" target=\"_blank\" rel=\"noopener\">Primer</a>, system projektowy GitHuba, który trzyma te same trzy poziomy i dopuszcza token komponentowy wyłącznie w CSS swojego komponentu.")}</p>
-    <p>${L(
-      "The levels hold in the code: not one primitive is read outside <code>:root</code> &ndash; every rule in the sheet reaches for a semantic or a component token instead. What the shop does not have is a dimension ramp under the scales, of the kind Primer writes as <code>base-size-4</code>. A base level of that sort earns its place by being referenced from a functional level above it, and here the scales are that level already: a step is named after the job it does, so a second name beneath it would say the number and nothing more.",
-      "Poziomy trzymają się w kodzie: ani jeden prymityw nie jest czytany poza <code>:root</code> &ndash; każda reguła w arkuszu sięga po token semantyczny albo komponentowy. Czego sklep nie ma, to rampy wymiarów pod skalami, takiej jak <code>base-size-4</code> w Primerze. Taki poziom bazowy zarabia na siebie tym, że odwołuje się do niego poziom funkcjonalny nad nim &ndash; a u nas skale są już tym poziomem: stopień nazwany jest od zadania, które wykonuje, więc druga nazwa pod nim mówiłaby liczbę i nic poza tym.")}</p>
-    <p>${L(
-      "A second name is written when one value carries roles that have to be able to part company &ndash; not for symmetry. Common practice states the rule more strictly: a component should never point at a primitive at all. The spacing scale here is read directly by components and holds up under that, because its steps are named after the job they do rather than after a number, and the Spacing tab gives each of them its two roles. A grey called <code>--nu-grey-900</code> says nothing about its job, and one grey serves three unrelated ones &ndash; which is the whole reason that layer exists.",
-      "Druga nazwa powstaje wtedy, gdy jedna wartość obsługuje role, które muszą móc się rozjechać &ndash; a nie dla symetrii. Praktyka branżowa ujmuje tę zasadę ostrzej: komponent nie powinien wskazywać na prymityw w ogóle. Skala odstępów jest tu czytana przez komponenty wprost i broni się tym, że jej stopnie nazwane są od zadania, które wykonują, a nie od liczby &ndash; zakładka Odstępy przypisuje każdemu dwie role. Szarość o nazwie <code>--nu-grey-900</code> nie mówi nic o swoim zadaniu, a jedna szarość obsługuje trzy niepowiązane &ndash; i to jest cały powód, dla którego ta warstwa istnieje.")}</p>
+      "A second name is written when one value carries roles that have to be able to part company &ndash; not for symmetry. Typography is where the three levels are complete: <code>--nu-text-size-lg</code> names a size and nothing more, the styles above it name what that size is for, and a rule reads a style. The spacing scale has no such ramp beneath it and needs none, because its steps are named after the job they do rather than after a number &ndash; a second name under <code>--nu-space-milli</code> would say the number and nothing else.",
+      "Druga nazwa powstaje wtedy, gdy jedna wartość obsługuje role, które muszą móc się rozjechać &ndash; a nie dla symetrii. Przy typografii trzy poziomy są kompletne: <code>--nu-text-size-lg</code> nazywa wielkość i nic poza tym, style nad nim nazywają, do czego ta wielkość służy, a reguła sięga po styl. Skala odstępów nie ma pod sobą takiej rampy i nie potrzebuje jej, bo jej stopnie nazwane są od zadania, które wykonują, a nie od liczby &ndash; druga nazwa pod <code>--nu-space-milli</code> mówiłaby liczbę i nic poza tym.")}</p>
+    <p class="note">${L(
+      "Common practice puts the rule more strictly: a component should never point at a primitive at all. <a class=\"link\" href=\"https://primer.style/product/primitives/token-names/\" target=\"_blank\" rel=\"noopener\">Primer</a>, GitHub's design system, keeps the same three levels and allows a component token only in that component's own CSS.",
+      "Praktyka branżowa ujmuje tę zasadę ostrzej: komponent nie powinien wskazywać na prymityw w ogóle. <a class=\"link\" href=\"https://primer.style/product/primitives/token-names/\" target=\"_blank\" rel=\"noopener\">Primer</a>, system projektowy GitHuba, trzyma te same trzy poziomy i dopuszcza token komponentowy wyłącznie w CSS swojego komponentu.")}</p>
 
     <h3>${L("Pixels and rem","Piksele i rem")}</h3>
     <p>${L(
@@ -2126,9 +2136,23 @@ const DS_SECTIONS = [
     </tbody></table>
 
     <h3>${L("How they are named","Jak są nazywane")}</h3>
+    <p>${L("Three parts, always in this order:","Trzy części, zawsze w tej kolejności:")}</p>
+    <div class="ds-name">
+      ${[["--nu-", L("prefix","przedrostek")], ["fg", L("area","obszar")], ["secondary", L("role","rola")]]
+        .map(([seg, tag]) => `<span class="ds-name-part"><span class="seg">${seg}</span><span class="tag">${tag}</span></span>`).join("")}
+    </div>
+    <table><thead><tr><th ${DS_COL_NAME}>${L("Prefix","Przedrostek")}</th><th>${L("Area","Obszar")}</th><th>${L("Role","Rola")}</th><th>${L("What the role says","Co mówi rola")}</th></tr></thead><tbody>
+      ${[["fg","secondary", L("Its place in the interface","Miejsce w interfejsie")],
+         ["space","milli", L("The job the step does","Zadanie, które wykonuje stopień")],
+         ["text-size","lg", L("How big the step is","Jak duży jest stopień")],
+         ["motion","slow", L("The job the step does","Zadanie, które wykonuje stopień")],
+         ["focus","offset-inset", L("The property, then which one of it","Właściwość, a po niej która z nich")]]
+        .map(([area, role, says]) =>
+          `<tr><td class="spec"><code>--nu-</code></td><td class="spec"><code>${area}</code></td><td class="spec"><code>${role}</code></td><td>${says}</td></tr>`).join("")}
+    </tbody></table>
     <p>${L(
-      "<code>--nu-</code> for the shop, then the area, then the role: <code>--nu-fg-secondary</code>, <code>--nu-space-milli</code>, <code>--nu-motion-slow</code>. Scales are named by the job a step does rather than by its number, so a value can move between steps without every rule being renamed &ndash; and a step can be added in the middle without renumbering the ones around it.",
-      "<code>--nu-</code> od sklepu, dalej obszar, na końcu rola: <code>--nu-fg-secondary</code>, <code>--nu-space-milli</code>, <code>--nu-motion-slow</code>. Skale nazywane są od zadania, które dany stopień wykonuje, a nie od jego numeru &ndash; dzięki temu wartość może przejść między stopniami bez przemianowywania reguł, a nowy stopień da się wstawić w środek bez przenumerowywania sąsiadów.")}</p>
+      "Most scales are named after the job a step does rather than after its number, so a value can move between steps without a single rule being renamed, and a step can be added in the middle without renumbering its neighbours. Text sizes are the exception and are named by size, because there the job belongs to the style above them.",
+      "Większość skal nazwana jest od zadania, które dany stopień wykonuje, a nie od jego numeru &ndash; dzięki temu wartość może przejść między stopniami bez przemianowania choćby jednej reguły, a nowy stopień da się wstawić w środek bez przenumerowywania sąsiadów. Wyjątkiem są rozmiary pisma, nazwane wielkością, bo tam zadanie należy do stylu stojącego nad nimi.")}</p>
 
     <h3>${L("Every token","Wszystkie tokeny")}</h3>
     <p>${L(

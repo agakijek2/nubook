@@ -1204,6 +1204,23 @@
      Polish diacritics, which is where a face either holds up or does not. Two
      cards side by side where there is room; auto-fit rather than a breakpoint,
      so the card decides from the space it has rather than from the viewport. */
+  /* A token name taken apart: each segment underlined, its part named beneath.
+     The shape of the name is the thing being explained, so it is shown rather
+     than described. */
+  .ds .ds-name{
+    display:flex;flex-wrap:wrap;justify-content:center;
+    gap:var(--nu-space-micro);margin:var(--nu-space-medium) 0;
+  }
+  .ds .ds-name-part{display:flex;flex-direction:column;align-items:center}
+  .ds .ds-name-part .seg{
+    font-family:var(--ds-font-mono);font-size:var(--nu-text-size-lg);
+    padding-bottom:var(--nu-space-micro);border-bottom:1px solid var(--nu-border-muted);
+  }
+  .ds .ds-name-part .tag{
+    margin-top:var(--nu-space-micro);
+    font:var(--nu-type-label);text-transform:uppercase;letter-spacing:var(--nu-tracking-caps);
+    color:var(--nu-fg-secondary);
+  }
   .ds .ds-faces{
     display:grid;gap:var(--nu-space-small);
     grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
