@@ -123,6 +123,13 @@
        threshold where a change reads as a move; quick answers in place; base
        carries colour and a small turn; slow is for something arriving or
        leaving; slower is for the two moments that cross the page. */
+    /* The focus ring: one thickness everywhere, and two distances. Outward is the
+       normal case; inward is for a control sitting flush inside another one's
+       outline, where there is no room outside for a ring to stand. */
+    --nu-focus-ring:1.5px;
+    --nu-focus-offset:2px;
+    --nu-focus-offset-inset:-2px;
+
     --nu-motion-instant:90ms;
     --nu-motion-quick:150ms;
     --nu-motion-base:250ms;
@@ -329,7 +336,7 @@
     vertical-align:middle;
   }
   .btn-tertiary:hover{color:var(--nu-fg-secondary)}
-  .btn-tertiary:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:3px}
+  .btn-tertiary:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
 
   /* ---------- ghost button and link ----------
      What separates them is what happens, not how they look at first glance: a
@@ -344,7 +351,7 @@
     border-bottom:1px solid var(--nu-border-neutral);padding-bottom:1px;
   }
   .btn-ghost:hover{color:var(--nu-fg-primary);border-bottom-color:var(--nu-border-primary)}
-  .btn-ghost:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:2px}
+  .btn-ghost:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   /* A ghost that carries an icon moves its underline onto the label, for the same
      reason the chip does: the mark belongs to the words, not to the glyph. */
   .btn-ghost.has-icon .lbl{border-bottom:1px solid var(--nu-border-neutral);padding-bottom:1px}
@@ -362,7 +369,7 @@
     border-bottom:1px solid transparent;padding-bottom:1px;
   }
   .link:hover{color:var(--nu-fg-secondary);border-bottom-color:currentColor}
-  .link:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:3px}
+  .link:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   /* A link with an icon is built exactly as a ghost with one: the underline moves
      onto the label so it does not run under the glyph, and the icon is a drawn
      SVG rather than a typed arrow, so it follows the colour and the size of the
@@ -456,7 +463,7 @@
   .chip sup{font-size:var(--nu-text-caption);color:var(--nu-fg-tertiary);margin-left:var(--nu-space-nano)}
   .chip[aria-pressed="true"] .chip-t{border-bottom-color:var(--nu-border-primary)}
   .chip:hover .chip-t{border-bottom-color:var(--nu-fg-secondary)}
-  .chip:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:2px}
+  .chip:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   .chip:disabled{color:var(--nu-fg-tertiary);pointer-events:none}
 
 
@@ -485,7 +492,7 @@
   /* Inset, because both controls sit inside a box of their own: a positive offset
      would draw the ring outside the stepper's outline and outside the menu panel. */
   .qty button:focus-visible,
-  .sort-menu button:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:-2px}
+  .sort-menu button:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset-inset)}
   /* The mark on the option in force is the underline the chip, the link and the
      ghost button all draw: a border under the label with 1px of air, so every
      underlined thing in the shop sits the same distance from its word. It rides
@@ -546,7 +553,7 @@
   }
   .card a, .card .cardlink{display:block}
   .card .cardlink{cursor:pointer}
-  .card a:focus-visible, .card .cardlink:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:3px}
+  .card a:focus-visible, .card .cardlink:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   .card a:hover .cover, .card .cardlink:hover .cover,
   .card a:focus-visible .cover, .card .cardlink:focus-visible .cover{transform:translateY(-4px)}
   @media (prefers-reduced-motion:reduce){
@@ -739,14 +746,14 @@
       inset 0 -8px 14px -12px color-mix(in srgb, var(--nu-bg-tertiary) 45%, transparent),
       0 1px 3px -2px color-mix(in srgb, var(--nu-bg-inverse) 12%, transparent);
   }
-  .btn-secondary:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:3px}
+  .btn-secondary:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   .p-cta.is-adding{
     pointer-events:none;
     box-shadow:
       inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 22%, transparent),
       inset 0 -14px 24px -12px color-mix(in srgb, var(--nu-bg-action-glow) 85%, transparent);
   }
-  .btn-primary:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:3px}
+  .btn-primary:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   .btn-primary:disabled{
     background:var(--nu-bg-secondary);color:var(--nu-fg-secondary);cursor:not-allowed;
     backdrop-filter:none;-webkit-backdrop-filter:none;border:0;box-shadow:none;transform:none;
@@ -946,7 +953,7 @@
   }
   .field-msg:empty{display:none}
   /* A checkbox draws no border of its own, so the alert is an outline. */
-  .consent input.is-error{outline:1.5px solid var(--nu-border-alert);outline-offset:2px}
+  .consent input.is-error{outline:var(--nu-focus-ring) solid var(--nu-border-alert);outline-offset:var(--nu-focus-offset)}
   .opt{
     display:flex;align-items:center;gap:var(--nu-space-milli);
     border:1px solid var(--nu-border-neutral);padding:var(--nu-space-milli) var(--nu-space-small);margin-bottom:var(--nu-space-micro);cursor:pointer;
@@ -1003,7 +1010,7 @@
   }
   .ds-nav-item:hover{color:var(--nu-fg-primary)}
   .ds-nav-item.is-active{color:var(--nu-fg-primary);border-left-color:var(--nu-border-primary)}
-  .ds-nav-item:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:2px}
+  .ds-nav-item:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   .ds-body{max-width:720px;min-width:0}
   @media (max-width:820px){
     .ds-layout{grid-template-columns:1fr;gap:var(--nu-space-medium)}

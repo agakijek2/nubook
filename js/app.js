@@ -1908,8 +1908,8 @@ const DS_SECTIONS = [
           <td>${L("A control is the HTML element that already means what it does: a chip is a <code>button</code>, a link and a product card are <code>a</code> with an <code>href</code>, a quantity stepper is two buttons around a number. Those elements bring focus, keyboard handling and a spoken role with them. ARIA adds only what HTML has no element for &ndash; that a panel is open, that a drawer is a dialogue, that a button showing one glyph is called Close.",
                   "Kontrolka jest tym elementem HTML, który już znaczy to, co ona robi: chip to <code>button</code>, link i karta produktu to <code>a</code> z atrybutem <code>href</code>, stepper ilości to dwa przyciski wokół liczby. Te elementy przynoszą ze sobą fokus, obsługę klawiatury i wypowiadaną rolę. ARIA dokłada wyłącznie to, na co HTML nie ma elementu &ndash; że panel jest rozwinięty, że szuflada jest dialogiem, że przycisk z jednym znakiem nazywa się Zamknij.")}</td></tr>
       <tr><td>${L("Visible focus","Widoczny fokus")}</td>
-          <td>${L("Every interactive element draws a <code>:focus-visible</code> ring in <code>--nu-border-primary</code>. Form fields drop the ring and darken their border instead, so the focused field is still marked without a ring sitting inside a box.",
-                  "Każdy element interaktywny rysuje obwódkę <code>:focus-visible</code> w kolorze <code>--nu-border-primary</code>. Pola formularza rezygnują z obwódki na rzecz przyciemnienia własnej ramki, więc pole w fokusie nadal jest oznaczone, bez obwódki wewnątrz ramki.")}</td></tr>
+          <td>${L("Every interactive element draws a <code>:focus-visible</code> ring in <code>--nu-border-primary</code>, one thickness throughout and one distance out. A control sitting flush inside another one's outline &ndash; a stepper button, an option in the sort menu &ndash; draws the ring inward instead, because outside there is no room for it to stand. Form fields drop the ring and darken their border instead, so the focused field is still marked without a ring sitting inside a box.",
+                  "Każdy element interaktywny rysuje obwódkę <code>:focus-visible</code> w kolorze <code>--nu-border-primary</code>, o jednej grubości i jednym odsunięciu na zewnątrz. Kontrolka siedząca ciasno w cudzym obrysie &ndash; przycisk steppera, opcja w menu sortowania &ndash; rysuje obwódkę do środka, bo na zewnątrz nie ma dla niej miejsca. Pola formularza rezygnują z obwódki na rzecz przyciemnienia własnej ramki, więc pole w fokusie nadal jest oznaczone, bez obwódki wewnątrz ramki.")}</td></tr>
       <tr><td>${L("Keyboard","Klawiatura")}</td>
           <td>${L("Escape closes, in order: the sort menu, the filter sheet, the cart, the author drawer, the product view. Opening a drawer moves focus to its close button; opening the sort menu moves focus to the option in force, and closing it hands focus back to the button that opened it.",
                   "Escape zamyka kolejno: menu sortowania, panel filtrów, koszyk, szufladę autorki, widok produktu. Otwarcie szuflady przenosi fokus na jej przycisk zamknięcia, a otwarcie menu sortowania &ndash; na obowiązującą opcję; zamknięcie oddaje fokus przyciskowi, który je otworzył.")}</td></tr>
@@ -2406,7 +2406,9 @@ const DS_SECTIONS = [
         <td>${L("Not defined","Nie dotyczy")}</td>
         <td>${L("The two tertiary buttons that open something &ndash; Filter and Sort. They do not finish their work on the click: they leave a region of the page open, so they have to say which of the two positions they are in","Dotyczy dwóch trzeciorzędnych przycisków, które coś otwierają &ndash; Filtry i Sortuj. Nie kończą działania na kliknięciu: zostawiają otwarty fragment strony, więc muszą powiedzieć, w której z dwóch pozycji są")}</td></tr>
       <tr><td>${L("Focus","Fokus")}<br><code>:focus-visible</code></td>
-        <td colspan="3">${L("<code>1.5px solid var(--nu-border-primary)</code> on every type, offset 3px, except ghost at 2px because it has no box to clear. Never removed","<code>1.5px solid var(--nu-border-primary)</code> na każdym typie, odsunięcie 3px, poza ghostem z 2px, bo nie ma kontenera do ominięcia. Nigdy nieusuwane")}</td></tr>
+        <td colspan="3">${L(
+          `${dsTok("--nu-focus-ring")} in <code>--nu-border-primary</code> at ${dsTok("--nu-focus-offset")}, the same on every type. Never removed`,
+          `${dsTok("--nu-focus-ring")} w kolorze <code>--nu-border-primary</code> z odsunięciem ${dsTok("--nu-focus-offset")}, tak samo na każdym typie. Nigdy nieusuwane`)}</td></tr>
     </tbody></table>
     <h3>${L("Adding to cart","Dodawanie do koszyka")}</h3>
     <p>${L(
@@ -2462,8 +2464,8 @@ const DS_SECTIONS = [
         `Filter chips wrap in <code>.chip-row</code> with ${dsTok("--nu-space-nano")} between lines and ${dsTok("--nu-space-small")} between chips, aligned on the baseline so the counts line up. The row is also the unit of meaning: it carries <code>role=&quot;group&quot;</code> and takes its name from the heading above it, so a chip is never read out without the facet it belongs to. The header pairs stand in <code>.sw-group</code> instead: two options either side of a slash, no wrapping, and the group name written into an <code>aria-label</code>, there being no heading above them.`,
         `Chipy filtrów zawijają się w <code>.chip-row</code> z ${dsTok("--nu-space-nano")} między wierszami i ${dsTok("--nu-space-small")} między chipami, wyrównane do linii pisma, żeby liczniki stały w jednej linii. Rząd jest też jednostką znaczeniową: ma <code>role=&quot;group&quot;</code> i bierze nazwę z nagłówka nad sobą, więc chip nigdy nie zostaje odczytany bez kryterium, do którego należy. Pary w nagłówku stoją w <code>.sw-group</code>: dwie opcje po obu stronach ukośnika, bez zawijania, z nazwą grupy wpisaną w <code>aria-label</code>, bo nie mają nad sobą nagłówka.`)}</td></tr>
       <tr><td>${L("Focus","Fokus")}</td><td>${L(
-        "<code>1.5px solid var(--nu-border-primary)</code> at a 2px offset &ndash; tighter than a button's 3px, because a chip has no box of its own to clear.",
-        "<code>1.5px solid var(--nu-border-primary)</code> z odsunięciem 2px &ndash; ciaśniej niż 3px przycisku, bo chip nie ma własnego kontenera do ominięcia.")}</td></tr>
+        `${dsTok("--nu-focus-ring")} in <code>--nu-border-primary</code> at ${dsTok("--nu-focus-offset")}, the distance every control standing on the page keeps.`,
+        `${dsTok("--nu-focus-ring")} w kolorze <code>--nu-border-primary</code> z odsunięciem ${dsTok("--nu-focus-offset")}, czyli tyle, co każda kontrolka stojąca na stronie.`)}</td></tr>
     </tbody></table>
 
     <h3>${L("Live preview","Podgląd na żywo")}</h3>
@@ -2615,6 +2617,9 @@ const DS_SECTIONS = [
       <tr><td>${L("Border","Obramowanie")}</td><td>${L(
         "1px <code>--nu-border-neutral</code> around the whole control, square corners. The buttons have none of their own &ndash; the outline holds all three cells together.",
         "1px <code>--nu-border-neutral</code> wokół całej kontrolki, narożniki ostre. Przyciski nie mają własnego &ndash; obrys spina wszystkie trzy komórki.")}</td></tr>
+      <tr><td>${L("Focus","Fokus")}</td><td>${L(
+        `${dsTok("--nu-focus-ring")} in <code>--nu-border-primary</code>, drawn inward at ${dsTok("--nu-focus-offset-inset")}: the button sits flush inside the stepper's outline and a ring set outward would land on it.`,
+        `${dsTok("--nu-focus-ring")} w kolorze <code>--nu-border-primary</code>, rysowana do środka z odsunięciem ${dsTok("--nu-focus-offset-inset")}: przycisk siedzi ciasno w obrysie steppera, a obwódka na zewnątrz położyłaby się na nim.`)}</td></tr>
       <tr><td>${L("Paired with","W parze z")}</td><td>${L(
         `A ghost button &ldquo;Remove&rdquo;, ${dsTok("--nu-space-micro")} below and aligned left. Changing the count and removing the line are two actions, so they are two controls.`,
         `Przyciskiem ghost „Usuń”, ${dsTok("--nu-space-micro")} niżej, wyrównanym do lewej. Zmiana liczby i usunięcie pozycji to dwie różne czynności, więc mają dwie kontrolki.`)}</td></tr>
@@ -2686,8 +2691,8 @@ const DS_SECTIONS = [
         "<code>role=&quot;menu&quot;</code> tells a screen reader that this control answers the arrows, Home, End and Escape, so it has to answer them. The down arrow opens the menu and lands on the option in force, the arrows walk the options and wrap at the ends, Home and End reach the first and the last, Escape closes and hands focus back to the trigger, Tab closes and lets focus travel on. Escape stops at the menu instead of travelling on to close a drawer.",
         "<code>role=&quot;menu&quot;</code> mówi czytnikowi ekranu, że ta kontrolka odpowiada na strzałki, Home, End i Escape &ndash; więc musi na nie odpowiadać. Strzałka w dół rozwija menu i staje na obowiązującej opcji, strzałki przechodzą między opcjami i zawijają na krańcach, Home i End sięgają pierwszej i ostatniej, Escape zamyka i oddaje fokus przyciskowi, a Tab zamyka i puszcza fokus dalej. Escape zatrzymuje się na menu, zamiast lecieć dalej i zamykać szufladę.")}</td></tr>
       <tr><td>${L("Focus","Fokus")}</td><td>${L(
-        "An option draws its focus ring inside its own edge, so the ring does not run along the panel's border.",
-        "Opcja rysuje obwódkę fokusu wewnątrz własnej krawędzi, więc obwódka nie biegnie po obramowaniu panelu.")}</td></tr>
+        `${dsTok("--nu-focus-ring")} in <code>--nu-border-primary</code>, drawn inward at ${dsTok("--nu-focus-offset-inset")}: an option runs the full width of the panel, so its side edges are the panel's border and a ring set outward would cross it.`,
+        `${dsTok("--nu-focus-ring")} w kolorze <code>--nu-border-primary</code>, rysowana do środka z odsunięciem ${dsTok("--nu-focus-offset-inset")}: opcja zajmuje całą szerokość panelu, więc jej boczne krawędzie są obramowaniem panelu, a obwódka na zewnątrz przeszłaby przez nie.`)}</td></tr>
       <tr><td>${L("On a narrow screen","Na wąskim ekranie")}</td><td>${L(
         "The panel opens upwards, above the bottom bar, and the button's label is cut with an ellipsis rather than taking a second line.",
         "Panel rozwija się w górę, nad dolną belką, a podpis przycisku jest przycinany wielokropkiem, zamiast zajmować drugi wiersz.")}</td></tr>
