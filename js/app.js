@@ -2273,7 +2273,7 @@ const DS_SECTIONS = [
       <tr><td class="ico-cell"><svg class="ico-sm ico-close" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></td>
         <td>${L("Cross","Krzyżyk")}</td><td>${L("Closes a drawer or the filter sheet. The same drawing as the plus, turned.","Zamyka szufladę albo arkusz filtrów. Ten sam rysunek co plus, obrócony.")}</td></tr>
       <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6.25 8 10.75 12.5 6.25"/></svg></td>
-        <td>${L("Chevron","Chevron")}</td><td>${L("Marks a select as a list to open. Sits inside the field, on its right.","Oznacza pole wyboru jako listę do rozwinięcia. Stoi wewnątrz pola, po jego prawej.")}</td></tr>
+        <td>${L("Chevron","Chevron")}</td><td>${L("Marks a select as a list to open. Sits inside the field, on its right. It does not turn when the list opens, because a native select gives the page no signal that it did &ndash; unlike the plus, which sits on a control that knows.","Oznacza pole wyboru jako listę do rozwinięcia. Stoi wewnątrz pola, po jego prawej. Nie obraca się przy rozwinięciu listy, bo natywny select nie daje stronie znać, że to nastąpiło &ndash; inaczej niż plus, który siedzi na kontrolce, która wie.")}</td></tr>
       <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.75 8.35l3.5 3.5 7-8.05"/></svg></td>
         <td>${L("Check","Ptaszek")}</td><td>${L("Something just succeeded. Leads the primary button through the &ldquo;Added&rdquo; sequence; in the promotion bar it replaces the sheets for 1.8s.","Coś się właśnie udało. Prowadzi przycisk główny w sekwencji „Dodano”; w belce promocyjnej zastępuje kartki na 1,8s.")}</td></tr>
     </tbody></table>
@@ -2697,7 +2697,16 @@ const DS_SECTIONS = [
       "Panel pojawia się bez ruchu. Przełącza się między <code>display:none</code> a <code>display:block</code>, a wyświetlania nie da się animować &ndash; nadanie mu ruchu, który ma szuflada, oznaczałoby inną konstrukcję.")}</p>
     <p class="note">${L(
       "This tab has no live preview. The component is a trigger and a panel driven by one attribute, and the preview builds a single element from a class name.",
-      "Ta zakładka nie ma podglądu na żywo. Komponent to przycisk i panel prowadzone jednym atrybutem, a podgląd buduje pojedynczy element z nazwy klasy.")}</p>` },
+      "Ta zakładka nie ma podglądu na żywo. Komponent to przycisk i panel prowadzone jednym atrybutem, a podgląd buduje pojedynczy element z nazwy klasy.")}</p>
+
+    <h3>${L("Why this is not a select","Dlaczego to nie jest select")}</h3>
+    <p>${L(
+      "Both controls pick one option out of a list, so a single component covering the two of them looks tempting. It is not possible today: a native <code>select</code> renders its open list through the operating system, and that list takes no styling &ndash; no padding, no border, no mark on the option in force. Building the sort menu as a select would mean giving up the panel; building the country field as a menu would mean giving up the native keyboard, the native picker on a phone and everything screen readers know about a select without being told.",
+      "Obie kontrolki wybierają jedną opcję z listy, więc jeden komponent obejmujący obie wygląda kusząco. Dziś nie jest to możliwe: natywny <code>select</code> rysuje rozwiniętą listę przez system operacyjny, a ta lista nie przyjmuje stylów &ndash; ani wypełnienia, ani obramowania, ani oznaczenia opcji obowiązującej. Zbudowanie menu sortowania jako selecta oznaczałoby rezygnację z panelu; zbudowanie pola „Kraj” jako menu oznaczałoby rezygnację z natywnej klawiatury, natywnego wybieraka na telefonie i z tego, co czytniki ekranu wiedzą o selekcie bez pytania.")}</p>
+    <p>${L(
+      "This is a matter of time rather than of principle. <code>appearance: base-select</code> lets a native select's own panel be styled, and it works in Chromium browsers. In August 2026 it is not Baseline &ndash; Safari has it in a technology preview and Firefox behind a flag &ndash; so it cannot carry a shop without a fallback path. When it becomes ordinary, the two controls can become one: native behaviour with a panel of our own.",
+      "To kwestia czasu, a nie zasady. <code>appearance: base-select</code> pozwala ostylować własny panel natywnego selecta i działa w przeglądarkach opartych na Chromium. W sierpniu 2026 nie ma statusu Baseline &ndash; Safari ma to w przeglądzie technicznym, Firefox za flagą &ndash; więc nie uniesie sklepu bez ścieżki zapasowej. Kiedy stanie się zwyczajne, obie kontrolki będą mogły stać się jedną: natywne zachowanie z własnym panelem.")}</p>
+    <p class="note">${L("Sources","Źródła")}: <a class="link" href="https://developer.chrome.com/blog/a-customizable-select" target="_blank" rel="noopener">Chrome for Developers</a>, <a class="link" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Customizable_select" target="_blank" rel="noopener">MDN</a>, <a class="link" href="https://bugzilla.mozilla.org/show_bug.cgi?id=1958445" target="_blank" rel="noopener">Bugzilla</a> ${L("(checked August 2026)","(sprawdzone w sierpniu 2026)")}.</p>` },
 
   { group:{en:"Components",pl:"Komponenty"}, id:"input", label:{en:"Text field",pl:"Pole tekstowe"}, body: ()=>`
     <h1>${L("Text field","Pole tekstowe")}</h1>
@@ -2811,6 +2820,9 @@ const DS_SECTIONS = [
       <tr><td>${L("Value","Wartość")}</td><td>${L(
         "One of the listed options. A select has no error state, because there is nothing outside the list to choose.",
         "Jedna z wypisanych opcji. Select nie ma stanu błędu, bo poza listą nie ma czego wybrać.")}</td></tr>
+      <tr><td>${L("Or the sort menu","Albo menu sortowania")}</td><td>${L(
+        "Both pick one option out of a list, and the choice between them is what the answer does. A select answers a question in a form and the answer is submitted with it. The sort menu changes what is on screen at once, and its list is styled, which a native select does not allow.",
+        "Oba wybierają jedną opcję z listy, a o wyborze między nimi decyduje to, co odpowiedź robi. Select odpowiada na pytanie w formularzu i odpowiedź wysyła się razem z nim. Menu sortowania zmienia to, co jest na ekranie, od razu, a jego lista jest ostylowana, na co natywny select nie pozwala.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "This tab has no live preview, for the same reason as the text field: the states it has are the browser's, not the markup's.",
