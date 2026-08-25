@@ -2216,7 +2216,7 @@ const DS_SECTIONS = [
       "Dwie rodziny, cztery skale i dziewięć stylów z nich złożonych. Styl nazwany jest przez poziom &ndash; Heading 1, Body, Label &ndash; a nie przez widok, w którym występuje, więc jeden styl obsługuje każdy kontekst, który go wymaga.")}</p>
 
     <h3>${L("Families","Rodziny")}</h3>
-    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Gdzie występuje")}</th></tr></thead><tbody>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-font-display</code></td><td>${dsVal("--nu-font-display")}</td>
           <td>${L("Identity and headings.","Identyfikacja i nagłówki.")}</td></tr>
       <tr><td class="spec"><code>--nu-font-text</code></td><td>${dsVal("--nu-font-text")}</td>
