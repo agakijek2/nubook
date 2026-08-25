@@ -1599,8 +1599,17 @@ function dsIconRatio(){
   const r = safe("sm") / safe("lg");
   return String(Math.round(r * 100) / 100).replace(".", L(".", ","));
 }
+/* A token's value in pixels, whatever unit it is written in. The icon table
+   measures a drawing against its container, and that arithmetic is in pixels
+   even when the container is declared in rem. */
+function dsPx(token){
+  const v = dsVal(token);
+  const n = parseFloat(v) || 0;
+  if (v.endsWith("rem")) return n * (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16);
+  return n;
+}
 function dsIconRows(){
-  const px = t => parseFloat(dsVal(t)) || 0;
+  const px = t => dsPx(t);
   return [["lg", "--nu-icon-lg"], ["sm", "--nu-icon-sm"]].map(([k, box]) => {
     const size = px(box), inset = px(`--nu-icon-${k}-inset`);
     const stroke = dsVal(`--nu-icon-${k}-stroke`);
@@ -2102,6 +2111,19 @@ const DS_SECTIONS = [
       "A second name is written when one value carries roles that have to be able to part company &ndash; not for symmetry. Common practice states the rule more strictly: a component should never point at a primitive at all. The spacing scale here is read directly by components and holds up under that, because its steps are named after the job they do rather than after a number, and the Spacing tab gives each of them its two roles. A grey called <code>--nu-grey-900</code> says nothing about its job, and one grey serves three unrelated ones &ndash; which is the whole reason that layer exists.",
       "Druga nazwa powstaje wtedy, gdy jedna wartość obsługuje role, które muszą móc się rozjechać &ndash; a nie dla symetrii. Praktyka branżowa ujmuje tę zasadę ostrzej: komponent nie powinien wskazywać na prymityw w ogóle. Skala odstępów jest tu czytana przez komponenty wprost i broni się tym, że jej stopnie nazwane są od zadania, które wykonują, a nie od liczby &ndash; zakładka Odstępy przypisuje każdemu dwie role. Szarość o nazwie <code>--nu-grey-900</code> nie mówi nic o swoim zadaniu, a jedna szarość obsługuje trzy niepowiązane &ndash; i to jest cały powód, dla którego ta warstwa istnieje.")}</p>
 
+    <h3>${L("Pixels and rem","Piksele i rem")}</h3>
+    <p>${L(
+      "A reader who sets a larger default text size in the browser is telling every site what they need. A value written in <code>px</code> ignores that; a value in <code>rem</code> follows it. Which is right depends on one question: does the value exist because of the text, or in spite of it?",
+      "Czytelniczka, która ustawia w przeglądarce większy domyślny rozmiar tekstu, mówi każdej stronie, czego potrzebuje. Wartość zapisana w <code>px</code> to ignoruje, wartość w <code>rem</code> za tym idzie. Co jest właściwe, rozstrzyga jedno pytanie: czy ta wartość istnieje przez tekst, czy mimo tekstu?")}</p>
+    <table><thead><tr><th ${DS_COL_NAME}>${L("Unit","Jednostka")}</th><th>${L("What is written in it","Co jest w niej zapisane")}</th></tr></thead><tbody>
+      <tr><td class="spec"><code>rem</code></td><td>${L(
+        "Text sizes, the whole spacing scale, icon containers, and a field sized for four characters. All of these exist because of the text, so all of them grow with it: padding keeps its proportion to the words it surrounds, and an icon standing beside a word stays the size of that word.",
+        "Rozmiary tekstu, cała skala odstępów, kontenery ikon i pole zwymiarowane pod cztery znaki. Wszystkie istnieją przez tekst, więc wszystkie razem z nim rosną: wypełnienie zachowuje proporcję do słów, które obejmuje, a ikona stojąca przy słowie zostaje wielkości tego słowa.")}</td></tr>
+      <tr><td class="spec"><code>px</code></td><td>${L(
+        "The focus ring and its offsets &ndash; a hairline is meant to stay a hairline. Touch targets and the smallest control, which are measured against a finger and against the WCAG minimum, not against a letter. The view's maximum width, which is a limit on the window. And the figures inside an icon's own drawing grid.",
+        "Obwódka fokusu i jej odsunięcia &ndash; włos ma zostać włosem. Pola dotyku i najmniejsza kontrolka, mierzone palcem i minimum WCAG, a nie literą. Maksymalna szerokość widoku, która jest granicą okna. Oraz liczby wewnątrz własnej siatki rysunku ikony.")}</td></tr>
+    </tbody></table>
+
     <h3>${L("How they are named","Jak są nazywane")}</h3>
     <p>${L(
       "<code>--nu-</code> for the shop, then the area, then the role: <code>--nu-fg-secondary</code>, <code>--nu-space-milli</code>, <code>--nu-motion-slow</code>. Scales are named by the job a step does rather than by its number, so a value can move between steps without every rule being renamed &ndash; and a step can be added in the middle without renumbering the ones around it.",
@@ -2330,8 +2352,8 @@ const DS_SECTIONS = [
   { group:{en:"Foundations",pl:"Fundamenty"}, id:"spacing", label:{en:"Spacing",pl:"Odstępy"}, body: ()=>`
     <h1>${L("Spacing","Odstępy")}</h1>
     <p class="ds-lede">${L(
-      "Every gap, padding, margin and inset in the shop is a multiple of 4px, taken from one of nine named steps. The names order the steps from smallest to largest without binding any of them to an index, so merging a step away means pointing its users at a neighbour and deleting one line &ndash; the rest keep their names and leave no gap in a sequence.",
-      "Każdy odstęp, wypełnienie, margines i kotwiczenie w sklepie to wielokrotność 4px, wzięta z jednego z dziewięciu nazwanych stopni. Nazwy porządkują stopnie od najmniejszego do największego, nie przypisując żadnego do numeru w kolejności, więc zwinięcie stopnia to wskazanie jego użyciom sąsiada i skasowanie jednej linijki &ndash; reszta zachowuje nazwy i nie zostawia dziury w ciągu.")}</p>
+      "Every gap, padding, margin and inset in the shop comes from one of nine named steps, each a quarter of the base text size apart. They are declared in <code>rem</code>, so the whole rhythm grows when the reader enlarges text. The names order the steps from smallest to largest without binding any of them to an index, so merging a step away means pointing its users at a neighbour and deleting one line &ndash; the rest keep their names and leave no gap in a sequence.",
+      "Każdy odstęp, wypełnienie, margines i kotwiczenie w sklepie pochodzi z jednego z dziewięciu nazwanych stopni, odległych o ćwierć bazowego rozmiaru tekstu. Zadeklarowane są w <code>rem</code>, więc cały rytm rośnie, kiedy czytelniczka powiększy tekst. Nazwy porządkują stopnie od najmniejszego do największego, nie przypisując żadnego do numeru w kolejności, więc zwinięcie stopnia to wskazanie jego użyciom sąsiada i skasowanie jednej linijki &ndash; reszta zachowuje nazwy i nie zostawia dziury w ciągu.")}</p>
 
     <h3>${L("Padding and gap","Wypełnienie i odstęp")}</h3>
     <p>${L(

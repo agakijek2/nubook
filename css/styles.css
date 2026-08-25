@@ -73,12 +73,12 @@
        what for is the business of a style, which points at one of these. Two
        styles sharing a step today part company by pointing at different ones,
        not by the scale growing a second value of the same size. */
-    --nu-text-size-xs:10px;
-    --nu-text-size-sm:11px;
-    --nu-text-size-md:13px;
-    --nu-text-size-lg:18px;
-    --nu-text-size-xl:24px;
-    --nu-text-size-2xl:30px;
+    --nu-text-size-xs:0.625rem;
+    --nu-text-size-sm:0.6875rem;
+    --nu-text-size-md:0.8125rem;
+    --nu-text-size-lg:1.125rem;
+    --nu-text-size-xl:1.5rem;
+    --nu-text-size-2xl:1.875rem;
 
     /* line height — six steps, named after how much air the line needs rather
        than after the number. A step is a ratio, so it holds at every size. */
@@ -143,15 +143,15 @@
 
        Everything else — space between two separate things, at a size of its
        own — comes off the scale. */
-    --nu-space-nano:4px;
-    --nu-space-micro:8px;
-    --nu-space-milli:12px;
-    --nu-space-small:16px;
-    --nu-space-medium:24px;
-    --nu-space-large:32px;
-    --nu-space-xlarge:40px;
-    --nu-space-huge:48px;
-    --nu-space-max:64px;
+    --nu-space-nano:0.25rem;
+    --nu-space-micro:0.5rem;
+    --nu-space-milli:0.75rem;
+    --nu-space-small:1rem;
+    --nu-space-medium:1.5rem;
+    --nu-space-large:2rem;
+    --nu-space-xlarge:2.5rem;
+    --nu-space-huge:3rem;
+    --nu-space-max:4rem;
 
     /* Motion. Named by the job, like the spacing scale, so a value can move
        between steps without every rule being renamed. Instant is under the
@@ -200,10 +200,10 @@
        a dialling code. One value for all three, so fields that stand in a row
        line up. The width is set by the widest case, a select - it holds the four
        characters, the gap and the chevron - and the plain fields follow it. */
-    --nu-field-width-short:104px;
+    --nu-field-width-short:6.5rem;
 
-    --nu-icon-lg:24px;   --nu-icon-lg-inset:2px; --nu-icon-lg-stroke:1.5;
-    --nu-icon-sm:16px;   --nu-icon-sm-inset:1px; --nu-icon-sm-stroke:1.25;
+    --nu-icon-lg:1.5rem;   --nu-icon-lg-inset:2px; --nu-icon-lg-stroke:1.5;
+    --nu-icon-sm:1rem;   --nu-icon-sm-inset:1px; --nu-icon-sm-stroke:1.25;
 
     --nu-form-max-width:1440px;      /* cart & checkout: grows, then stops and centres */
     /* One gutter for every side-by-side layout: shop, product, checkout, docs.
@@ -798,12 +798,12 @@
   .cart-n{
     position:absolute;
     top:calc(var(--nu-space-micro) * -1);right:calc(var(--nu-space-micro) * -1);
-    min-width:15px;height:15px;border-radius:50%;
+    min-width:0.9375rem;height:0.9375rem;border-radius:50%;
     background:var(--nu-bg-inverse);color:var(--nu-fg-inverse);font-size:var(--nu-text-size-xs);
-    /* The one line height in pixels rather than a ratio: it equals the circle's
-       own height, which is what centres the count in it. A ratio would drift
-       against that height the moment the caption size moved. */
-    line-height:15px;
+    /* A length rather than a ratio: it equals the circle's own height, which is
+       what centres the count in it. Both are in rem, so the circle and the digit
+       inside it grow together when the reader enlarges text. */
+    line-height:0.9375rem;
     text-align:center;padding:0 var(--nu-space-nano);
   }
 
@@ -1130,14 +1130,14 @@
      else. The shop itself never loads or uses it. */
   .ds{--ds-font-mono:ui-monospace,SFMono-Regular,Menlo,monospace}
   .ds code{
-    font-family:var(--ds-font-mono);font-size:11.5px;
+    font-family:var(--ds-font-mono);font-size:0.885em;
     background:var(--nu-bg-secondary);padding:var(--nu-space-nano) var(--nu-space-nano);
   }
   .ds .ds-code{
     background:var(--nu-bg-secondary);
     padding:var(--nu-space-milli) var(--nu-space-small);
     margin:var(--nu-space-milli) 0 var(--nu-space-medium);
-    font-family:var(--ds-font-mono);font-size:11.5px;line-height:var(--nu-line-loose);
+    font-family:var(--ds-font-mono);font-size:0.71875rem;line-height:var(--nu-line-loose);
     white-space:pre;overflow-x:auto;
   }
   /* Live preview. The frame reuses .demo so the specimen stands on the same
