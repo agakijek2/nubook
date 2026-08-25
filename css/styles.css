@@ -1192,6 +1192,18 @@
     margin:var(--nu-space-milli) 0 var(--nu-space-medium);
   }
   .ds .ds-specimens figure{margin:0}
+  /* One sentence set at every step, so the steps are compared against each
+     other rather than against different words. A step wider than the column is
+     cut rather than wrapped: a second line would make it look like a different
+     size. */
+  .ds .ds-eg{display:block;max-width:340px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* A style specimen carries its own name beside it, because a style is the one
+     thing here that cannot be read off a value. */
+  .ds .ds-style-row{display:flex;align-items:baseline;gap:var(--nu-space-small);margin-bottom:var(--nu-space-milli)}
+  .ds .ds-style-row .lbl{
+    flex:none;width:190px;
+    font-family:var(--ds-font-mono);font-size:11.5px;color:var(--nu-fg-secondary);
+  }
   .ds .ds-badges{grid-template-columns:repeat(3,1fr)}
   .ds .ds-fields{grid-template-columns:repeat(2,1fr)}
   .ds .ds-fields .demo{margin:0;display:block}

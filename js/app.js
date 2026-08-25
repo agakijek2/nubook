@@ -1892,21 +1892,31 @@ function dsTypeStyles(){
     return m ? {name, weight: m[1], size: m[2], line: m[3], family: m[4]} : null;
   }).filter(Boolean);
 }
+/* One sentence at every step of the scale: the steps are then compared against
+   each other rather than against different words. */
 function dsTypeSteps(){
-  const disp = "font-family:var(--nu-font-display)";
+  const line = L("Novels about women and gender.", "Powieści o kobietach i płci.");
+  return ["--nu-text-size-2xl","--nu-text-size-xl","--nu-text-size-lg",
+          "--nu-text-size-md","--nu-text-size-sm","--nu-text-size-xs"]
+    .map(token => [token,
+      `<span class="ds-eg" style="font-family:var(--nu-font-text);font-size:var(${token})">${line}</span>`]);
+}
+
+/* Each style set in itself. The two label styles add the case and the tracking
+   here, because the shorthand carries neither - which is the limitation the tab
+   states just below. */
+function dsTypeSpecimens(){
+  const caps = "text-transform:uppercase;letter-spacing:var(--nu-tracking-caps)";
   return [
-    ["2xl","--nu-text-size-2xl",
-     `<span style="${disp};font-size:var(--nu-text-size-2xl)">${L("The Handmaid&rsquo;s Tale","Opowieść podręcznej")}</span>`],
-    ["xl","--nu-text-size-xl",
-     `<span style="${disp};font-size:var(--nu-text-size-xl)">${L("Your cart","Twój koszyk")}</span>`],
-    ["lg","--nu-text-size-lg",
-     `<span style="${disp};font-size:var(--nu-text-size-lg)">nubook.</span>`],
-    ["md","--nu-text-size-md",
-     `<span style="font-size:var(--nu-text-size-md)">${L("Novels about women and gender.","Powieści o kobietach i płci.")}</span>`],
-    ["sm","--nu-text-size-sm",
-     `<span style="font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-compact);text-transform:uppercase;color:var(--nu-fg-secondary)">${L("Genre","Gatunek")}</span>`],
-    ["xs","--nu-text-size-xs",
-     `<span style="font-size:var(--nu-text-size-md);color:var(--nu-fg-secondary)">${L("Classic","Klasyka")}<sup style="font-size:var(--nu-text-size-xs);color:var(--nu-fg-tertiary)">6</sup></span>`],
+    ["--nu-type-h1", L("The Handmaid&rsquo;s Tale","Opowieść podręcznej"), ""],
+    ["--nu-type-h2", L("Your cart","Twój koszyk"), ""],
+    ["--nu-type-h3", "nubook.", ""],
+    ["--nu-type-body-l", "59,90 z&#322;", ""],
+    ["--nu-type-body-m", L("Novels about women and gender.","Powieści o kobietach i płci."), ""],
+    ["--nu-type-prose", L("Nolite te bastardes carborundorum.","Nolite te bastardes carborundorum."), "font-style:italic"],
+    ["--nu-type-label", L("Sort by","Sortuj"), caps],
+    ["--nu-type-label-strong", L("Contact details","Dane kontaktowe"), caps],
+    ["--nu-type-caption", "12", ""],
   ];
 }
 function dsColorRows(rows){
@@ -2188,8 +2198,6 @@ const DS_SECTIONS = [
 
   { group:{en:"Foundations",pl:"Fundamenty"}, id:"typography", label:{en:"Typography",pl:"Typografia"}, body: ()=>{
     const styles = dsTypeStyles();
-    const short = t => t.replace(/^--nu-(weight|text|line|font)-/, "");
-    const cell = t => `<code>${short(t)}</code> &middot; ${dsVal(t)}`;
     const useOf = {
       "--nu-type-h1": L("The subject of a view: book title, order number, documentation chapter","Temat widoku: tytuł książki, numer zamówienia, rozdział dokumentacji"),
       "--nu-type-h2": L("A section within a view: author name, cart heading, order title","Sekcja w widoku: nazwisko autorki, nagłówek koszyka, tytuł zamówienia"),
@@ -2220,38 +2228,28 @@ const DS_SECTIONS = [
     <p>${L(
       "Six steps, named by size rather than by what they are for. A step says how big; what for is the business of a style, which points at one of them. Two styles sharing a step part company by pointing at different ones, not by the scale growing a second value of the same size.",
       "Sześć stopni, nazwanych rozmiarem, a nie przeznaczeniem. Stopień mówi, jak duży; do czego służy, jest sprawą stylu, który na niego wskazuje. Dwa style dzielące stopień rozejdą się przez wskazanie innych, a nie przez dołożenie do skali drugiej wartości tej samej wielkości.")}</p>
-    ${(() => {
-      const role = {
-        "--nu-text-size-2xl": L("Taken by Heading 1","Bierze go Heading 1"),
-        "--nu-text-size-xl": L("Taken by Heading 2","Bierze go Heading 2"),
-        "--nu-text-size-lg": L("Taken by Heading 3 and Body L","Biorą go Heading 3 i Body L"),
-        "--nu-text-size-md": L("Taken by Body M and the prose style; the page's own size","Biorą go Body M i styl prozy; własny rozmiar strony"),
-        "--nu-text-size-sm": L("Taken by both label styles","Biorą go oba style etykiety"),
-        "--nu-text-size-xs": L("Taken by Caption","Bierze go Caption"),
-      };
-      return `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Specimen","Okaz")}</th><th>${L("Taken by","Kto go bierze")}</th></tr></thead><tbody>
-      ${dsTypeSteps().map(([, token, sample]) =>
-        `<tr><td class="spec"><code>${token.replace("--nu-text-","")}</code></td><td>${dsVal(token)}</td><td>${sample}</td><td>${role[token] || ""}</td></tr>`).join("")}
-    </tbody></table>`;
-    })()}
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Example","Przykład")}</th></tr></thead><tbody>
+      ${dsTypeSteps().map(([token, sample]) =>
+        `<tr><td class="spec"><code>${token}</code></td><td>${dsVal(token)}</td><td>${sample}</td></tr>`).join("")}
+    </tbody></table>
 
     <h3>${L("Line height","Interlinia")}</h3>
     <p>${L(
       "Six steps, named after how much air the line needs rather than after the number. A step is a ratio, so it holds at every size.",
       "Sześć stopni, nazwanych od tego, ile powietrza potrzebuje wiersz, a nie od liczby. Stopień jest proporcją, więc trzyma się przy każdym stopniu pisma.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
-      <tr><td class="spec"><code>line-flat</code></td><td>${dsVal("--nu-line-flat")}</td><td>${L("The box sets the height: badge, cart counter, wordmark.","Wysokość ustala kontener: odznaka, licznik koszyka, znak marki.")}</td></tr>
-      <tr><td class="spec"><code>line-tight</code></td><td>${dsVal("--nu-line-tight")}</td><td>${L("Display sizes, where a looser line would leave the heading gaping.","Stopnie tytułowe, gdzie luźniejszy wiersz zostawiłby w nagłówku dziurę.")}</td></tr>
-      <tr><td class="spec"><code>line-snug</code></td><td>${dsVal("--nu-line-snug")}</td><td>${L("A title inside a list row, where two lines have to stay one object.","Tytuł w wierszu listy, gdzie dwa wiersze mają zostać jednym przedmiotem.")}</td></tr>
-      <tr><td class="spec"><code>line-normal</code></td><td>${dsVal("--nu-line-normal")}</td><td>${L("Running copy and the text inside controls.","Tekst ciągły i tekst wewnątrz kontrolek.")}</td></tr>
-      <tr><td class="spec"><code>line-relaxed</code></td><td>${dsVal("--nu-line-relaxed")}</td><td>${L("Prose read at length: the quote, the biography, the legal note.","Proza czytana dłużej: cytat, biogram, nota prawna.")}</td></tr>
-      <tr><td class="spec"><code>line-loose</code></td><td>${dsVal("--nu-line-loose")}</td><td>${L("Code blocks in this documentation.","Bloki kodu w tej dokumentacji.")}</td></tr>
+      <tr><td class="spec"><code>--nu-line-flat</code></td><td>${dsVal("--nu-line-flat")}</td><td>${L("The box sets the height: badge, cart counter, wordmark.","Wysokość ustala kontener: odznaka, licznik koszyka, znak marki.")}</td></tr>
+      <tr><td class="spec"><code>--nu-line-tight</code></td><td>${dsVal("--nu-line-tight")}</td><td>${L("Display sizes, where a looser line would leave the heading gaping.","Stopnie tytułowe, gdzie luźniejszy wiersz zostawiłby w nagłówku dziurę.")}</td></tr>
+      <tr><td class="spec"><code>--nu-line-snug</code></td><td>${dsVal("--nu-line-snug")}</td><td>${L("A title inside a list row, where two lines have to stay one object.","Tytuł w wierszu listy, gdzie dwa wiersze mają zostać jednym przedmiotem.")}</td></tr>
+      <tr><td class="spec"><code>--nu-line-normal</code></td><td>${dsVal("--nu-line-normal")}</td><td>${L("Running copy and the text inside controls.","Tekst ciągły i tekst wewnątrz kontrolek.")}</td></tr>
+      <tr><td class="spec"><code>--nu-line-relaxed</code></td><td>${dsVal("--nu-line-relaxed")}</td><td>${L("Prose read at length: the quote, the biography, the legal note.","Proza czytana dłużej: cytat, biogram, nota prawna.")}</td></tr>
+      <tr><td class="spec"><code>--nu-line-loose</code></td><td>${dsVal("--nu-line-loose")}</td><td>${L("Code blocks in this documentation.","Bloki kodu w tej dokumentacji.")}</td></tr>
     </tbody></table>
 
     <h3>${L("Weight","Grubość")}</h3>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
-      <tr><td class="spec"><code>weight-normal</code></td><td>${dsVal("--nu-weight-normal")}</td><td>${L("Everything, including every display heading.","Wszystko, łącznie z każdym nagłówkiem tytułowym.")}</td></tr>
-      <tr><td class="spec"><code>weight-medium</code></td><td>${dsVal("--nu-weight-medium")}</td><td>${L("Two section headings in checkout, and the <code>strong</code> element.","Dwa nagłówki sekcji w kasie oraz element <code>strong</code>.")}</td></tr>
+      <tr><td class="spec"><code>--nu-weight-normal</code></td><td>${dsVal("--nu-weight-normal")}</td><td>${L("Everything, including every display heading.","Wszystko, łącznie z każdym nagłówkiem tytułowym.")}</td></tr>
+      <tr><td class="spec"><code>--nu-weight-medium</code></td><td>${dsVal("--nu-weight-medium")}</td><td>${L("Two section headings in checkout, and the <code>strong</code> element.","Dwa nagłówki sekcji w kasie oraz element <code>strong</code>.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "The display family ships one weight and the text family two. Nothing heavier is loaded, so asking for a weight the shop does not hold would have the browser synthesise it from 400 and smear the letterforms &ndash; which is why display headings state 400 rather than leaving it to a default.",
@@ -2262,13 +2260,13 @@ const DS_SECTIONS = [
       "Set against size and string length, not against case. Four values cover the shop, all relative, so they follow the type size instead of being restated per breakpoint. This is the one property a style token cannot carry, so a style that needs it declares it beside.",
       "Dobierane do stopnia i długości ciągu, nie do wielkości liter. Cztery wartości obsługują cały sklep, wszystkie względne, więc idą za stopniem pisma, zamiast być powtarzane przy każdym progu. To jedyna właściwość, której token stylu nie unosi, więc styl, który jej potrzebuje, deklaruje ją obok.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Zastosowanie")}</th></tr></thead><tbody>
-      <tr><td class="spec"><code>tracking-display</code></td><td>${dsVal("--nu-tracking-display")}</td>
+      <tr><td class="spec"><code>--nu-tracking-display</code></td><td>${dsVal("--nu-tracking-display")}</td>
           <td>${L("Negative. Large display type sets loosely by default, so it is drawn in. One application: the wordmark.","Ujemne. Duży krój tytułowy składa się z natury luźno, więc jest ściągany. Jedno zastosowanie: znak marki.")}</td></tr>
-      <tr><td class="spec"><code>tracking-body</code></td><td>${dsVal("--nu-tracking-body")}</td>
+      <tr><td class="spec"><code>--nu-tracking-body</code></td><td>${dsVal("--nu-tracking-body")}</td>
           <td>${L("Zero, declared on <code>body</code>. Tracking applied to a paragraph distorts word shapes and slows reading.","Zero, zadeklarowane na <code>body</code>. Światło nałożone na akapit zniekształca kształty słów i spowalnia czytanie.")}</td></tr>
-      <tr><td class="spec"><code>tracking-compact</code></td><td>${dsVal("--nu-tracking-compact")}</td>
+      <tr><td class="spec"><code>--nu-tracking-compact</code></td><td>${dsVal("--nu-tracking-compact")}</td>
           <td>${L("Short mixed-case strings that read as objects rather than prose: button labels, quote attributions, the avatar initial.","Krótkie ciągi pisane normalnie, czytające się jako obiekty, a nie proza: napisy przycisków, podpisy pod cytatem, inicjał w awatarze.")}</td></tr>
-      <tr><td class="spec"><code>tracking-caps</code></td><td>${dsVal("--nu-tracking-caps")}</td>
+      <tr><td class="spec"><code>--nu-tracking-caps</code></td><td>${dsVal("--nu-tracking-caps")}</td>
           <td>${L("Every uppercase interface string and only those: uppercase letterforms sit tighter than lowercase and need the air put back.","Każdy napis interfejsu pisany wersalikami i tylko one: wersaliki stoją ciaśniej niż małe litery i trzeba im to powietrze oddać.")}</td></tr>
     </tbody></table>
 
@@ -2276,11 +2274,16 @@ const DS_SECTIONS = [
     <p>${L(
       "A text style is four properties that have to travel together: weight, size, line height and family. Changing the size without the line height breaks the rhythm; changing the family without the tracking changes the width of everything. So each style is packed into one token, assembled from the four scales above.",
       "Styl tekstu to cztery właściwości, które muszą podróżować razem: grubość, stopień, interlinia i rodzina. Zmiana stopnia bez interlinii psuje rytm, zmiana rodziny bez światła zmienia szerokość wszystkiego. Dlatego każdy styl jest spakowany w jeden token, złożony z czterech skal powyżej.")}</p>
+    <div class="demo on-page" style="display:block">
+      ${dsTypeSpecimens().map(([token, sample, extra]) =>
+        `<div class="ds-style-row"><span class="lbl">${token}</span>
+          <span style="font:var(${token})${extra ? ";" + extra : ""}">${sample}</span></div>`).join("")}
+    </div>
     ${styles.length ? `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Weight","Grubość")}</th><th>${L("Size","Stopień")}</th><th>${L("Line","Interlinia")}</th><th>${L("Family","Rodzina")}</th></tr></thead><tbody>
-      ${styles.map(t => `<tr><td class="spec"><code>${t.name.replace("--nu-type-","")}</code></td><td>${cell(t.weight)}</td><td>${cell(t.size)}</td><td>${cell(t.line)}</td><td><code>${short(t.family)}</code></td></tr>`).join("")}
+      ${styles.map(t => `<tr><td class="spec"><code>${t.name}</code></td><td class="spec"><code>${t.weight}</code></td><td class="spec"><code>${t.size}</code></td><td class="spec"><code>${t.line}</code></td><td class="spec"><code>${t.family}</code></td></tr>`).join("")}
     </tbody></table>
     <table><tbody>
-      ${styles.map(t => `<tr><td ${DS_COL_NAME}><code>${t.name.replace("--nu-type-","")}</code></td><td>${useOf[t.name] || ""}</td></tr>`).join("")}
+      ${styles.map(t => `<tr><td class="spec"><code>${t.name}</code></td><td>${useOf[t.name] || ""}</td></tr>`).join("")}
     </tbody></table>` : `<p class="note">${L(
       "The table of styles needs the stylesheet to be readable, which it is not in this way of opening the page. Open the built page, or serve the folder over http.",
       "Tabela stylów potrzebuje czytelnego arkusza, a przy tym sposobie otwarcia strony arkusz czytelny nie jest. Otwórz stronę zbudowaną albo podaj folder przez http.")}</p>`}
