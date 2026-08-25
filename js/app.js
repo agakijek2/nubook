@@ -1880,6 +1880,18 @@ function dsMeasure(root){
    asked of the stylesheet, and the specimen itself is set from the same token,
    so the two cannot disagree. Every style on a specimen goes through a token —
    a literal here would be a value the shop has no way of honouring. */
+/* The nine styles read back from their own declarations and split into the four
+   properties the shorthand packs, so the table cannot describe a style the
+   stylesheet does not have. Returns an empty list when the declarations are out
+   of reach, and the tab says so rather than printing an empty table. */
+function dsTypeStyles(){
+  const decls = dsRootDecls();
+  const shape = /var\((--nu-weight-[\w-]+)\)\s+var\((--nu-text-[\w-]+)\)\/var\((--nu-line-[\w-]+)\)\s+var\((--nu-font-[\w-]+)\)/;
+  return Object.keys(decls).filter(n => n.startsWith("--nu-type-")).map(name => {
+    const m = (decls[name] || "").match(shape);
+    return m ? {name, weight: m[1], size: m[2], line: m[3], family: m[4]} : null;
+  }).filter(Boolean);
+}
 function dsTypeSteps(){
   const disp = "font-family:var(--nu-font-display)";
   return [
@@ -2176,80 +2188,110 @@ const DS_SECTIONS = [
                   "<code>--nu-border-muted</code> jest o stopień jaśniejszy niż tekst, który otacza: <code>--nu-grey-400</code> wobec <code>--nu-grey-600</code> odznaki. Lita linia 1px czyta się ciężej niż wygładzany tekst 11px, więc dokładne zrównanie wartości wygląda na niedopasowane.")}</td></tr>
     </tbody></table>` },
 
-  { group:{en:"Foundations",pl:"Fundamenty"}, id:"typography", label:{en:"Typography",pl:"Typografia"}, body: ()=>`
+  { group:{en:"Foundations",pl:"Fundamenty"}, id:"typography", label:{en:"Typography",pl:"Typografia"}, body: ()=>{
+    const styles = dsTypeStyles();
+    const short = t => t.replace(/^--nu-(weight|text|line|font)-/, "");
+    const cell = t => `<code>${short(t)}</code> &middot; ${dsVal(t)}`;
+    const useOf = {
+      "--nu-type-h1": L("The subject of a view: book title, order number, documentation chapter","Temat widoku: tytuł książki, numer zamówienia, rozdział dokumentacji"),
+      "--nu-type-h2": L("A section within a view: author name, cart heading, order title","Sekcja w widoku: nazwisko autorki, nagłówek koszyka, tytuł zamówienia"),
+      "--nu-type-h3": L("The smallest display step: the footer wordmark and the subheads on these pages","Najmniejszy stopień kroju tytułowego: znak marki w stopce i podtytuły na tych stronach"),
+      "--nu-type-body-l": L("Emphasis within running copy: price, order total, avatar initial, the opening paragraph of a page here","Wyróżnienie w tekście ciągłym: cena, suma zamówienia, inicjał w awatarze, akapit otwierający stronę w tej dokumentacji"),
+      "--nu-type-body-m": L("The page's own style, set on <code>body</code> and inherited by everything that does not say otherwise","Własny styl strony, ustawiony na <code>body</code> i dziedziczony przez wszystko, co nie mówi inaczej"),
+      "--nu-type-prose": L("Text read at length, where the line needs more air: the quote, the biography, the legal note","Tekst czytany dłużej, gdzie wiersz potrzebuje więcej powietrza: cytat, biogram, nota prawna"),
+      "--nu-type-label": L("Uppercase interface strings: filter and section headings, field labels, badges, table headings","Napisy interfejsu pisane wersalikami: nagłówki filtrów i sekcji, etykiety pól, odznaki, nagłówki tabel"),
+      "--nu-type-label-strong": L("The same, one weight up, where a heading has to hold a column against a table below it","To samo, o jedną grubość wyżej, gdzie nagłówek musi utrzymać kolumnę nad tabelą pod sobą"),
+      "--nu-type-caption": L("The floor of the scale: counts bound to a larger element, drawer labels. Never for reading copy.","Dolna granica skali: liczniki przypięte do większego elementu, etykiety w szufladzie. Nigdy do czytania."),
+    };
+    return `
     <h1>${L("Typography","Typografia")}</h1>
     <p class="ds-lede">${L(
-      "Two families and seven steps. Styles are named by level &ndash; Heading 1, Body, Label &ndash; not by the view they appear in, so one style serves every context that calls for it.",
-      "Dwie rodziny i siedem stopni. Style nazwane są przez poziom &ndash; Heading 1, Body, Label &ndash; nie przez widok, w którym występują, więc jeden styl obsługuje każdy kontekst, który go wymaga.")}</p>
-    <h3>${L("A style is one token","Styl to jeden token")}</h3>
-    <p>${L(
-      "A text style is four properties that have to travel together: weight, size, line height and family. Changing the size without the line height breaks the rhythm; changing the family without the tracking changes the width of everything. So each style is packed into one token and a rule says which style it is:",
-      "Styl tekstu to cztery właściwości, które muszą podróżować razem: grubość, stopień, interlinia i rodzina. Zmiana stopnia bez interlinii psuje rytm, zmiana rodziny bez światła zmienia szerokość wszystkiego. Dlatego każdy styl jest spakowany w jeden token, a reguła mówi tylko, którym stylem jest:")}</p>
-    <pre class="ds-code">.p-title{ font:var(--nu-type-h1); margin-bottom:var(--nu-space-nano) }</pre>
-    <p>${L(
-      "Underneath, the token points at the scales: <code>--nu-type-body-m</code> is the normal weight, the medium body size, the normal line height and the text family. Nine styles are declared this way and fourteen rules read them; the rest of the shop inherits from the page, which is set to the medium body style.",
-      "Pod spodem token wskazuje na skale: <code>--nu-type-body-m</code> to zwykła grubość, średni stopień tekstu, zwykła interlinia i rodzina tekstowa. Dziewięć stylów jest tak zadeklarowanych, a czternaście reguł po nie sięga; reszta sklepu dziedziczy po stronie, ustawionej na średni stopień tekstu.")}</p>
-    <p class="note">${L(
-      "Two things the shorthand cannot carry, both stated where they are needed rather than hidden: letter-spacing is not part of it, and it resets every font property it does not mention &ndash; so a rule wanting italics or tabular figures puts the style first and the exception after it.",
-      "Dwie rzeczy, których skrót nie unosi, obie zapisane tam, gdzie są potrzebne, a nie ukryte: światła w nim nie ma, a sam skrót zeruje każdą właściwość kroju, której nie wymienia &ndash; więc reguła chcąca kursywy albo cyfr tabelarycznych stawia styl pierwszy, a wyjątek po nim.")}</p>
+      "Two families, four scales, and nine styles assembled from them. A style is named by level &ndash; Heading 1, Body, Label &ndash; not by the view it appears in, so one style serves every context that calls for it.",
+      "Dwie rodziny, cztery skale i dziewięć stylów z nich złożonych. Styl nazwany jest przez poziom &ndash; Heading 1, Body, Label &ndash; a nie przez widok, w którym występuje, więc jeden styl obsługuje każdy kontekst, który go wymaga.")}</p>
 
     <h3>${L("Families","Rodziny")}</h3>
-    <table><tbody>
-      <tr><td ${DS_COL_NAME}><code>--nu-font-display</code></td>
-          <td>${L("DM Serif Display, single weight 400. Identity and headings.",
-                  "DM Serif Display, jedna grubość 400. Identyfikacja i nagłówki.")}</td></tr>
-      <tr><td><code>--nu-font-text</code></td>
-          <td>${L("Archivo. All functional text: copy, labels, prices, controls, forms.",
-                  "Archivo. Cały tekst użytkowy: treść, etykiety, ceny, kontrolki, formularze.")}</td></tr>
+    <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Where it is used","Gdzie występuje")}</th></tr></thead><tbody>
+      <tr><td class="spec"><code>--nu-font-display</code></td><td>${dsVal("--nu-font-display")}</td>
+          <td>${L("Identity and headings.","Identyfikacja i nagłówki.")}</td></tr>
+      <tr><td class="spec"><code>--nu-font-text</code></td><td>${dsVal("--nu-font-text")}</td>
+          <td>${L("All functional text: copy, labels, prices, controls, forms.",
+                  "Cały tekst użytkowy: treść, etykiety, ceny, kontrolki, formularze.")}</td></tr>
     </tbody></table>
-    <h3>${L("Scale","Skala")}</h3>
+
+    <h3>${L("Size","Stopień")}</h3>
     <div class="demo on-page" style="display:block">
       ${dsTypeSteps().map(([name,token,sample])=>`
         <div class="scale-row"><span class="lbl">${name} &middot; ${dsVal(token)}</span>
           ${sample}</div>`).join("")}
     </div>
-    <table class="type-table">
-    <colgroup><col class="c-style"><col class="c-token"><col class="c-family"><col></colgroup>
-    <thead><tr><th>${L("Style","Styl")}</th><th>Token</th><th>${L("Family","Rodzina")}</th><th>${L("Applied to","Zastosowanie")}</th></tr></thead><tbody>
-      <tr><td>Heading 1</td><td><code>--nu-text-h1</code></td><td>Display</td>
-          <td>${L("The subject of a view: wordmark, book title, order number, documentation chapter","Temat widoku: znak marki, tytuł książki, numer zamówienia, rozdział dokumentacji")}</td></tr>
-      <tr><td>Heading 2</td><td><code>--nu-text-h2</code></td><td>Display</td>
-          <td>${L("A section within a view: author name, cart drawer heading, order title","Sekcja w widoku: nazwisko autorki, nagłówek szuflady koszyka, tytuł zamówienia")}</td></tr>
-      <tr><td>Heading 3</td><td><code>--nu-text-h3</code></td><td>Display</td>
-          <td>${L("The smallest display step. Two applications: the footer wordmark and the subheads on these pages. Section headings in checkout use Label instead.","Najmniejszy stopień kroju tytułowego. Dwa zastosowania: znak marki w stopce i podnagłówki na tych stronach. Nagłówki sekcji w zamówieniu korzystają z Label.")}</td></tr>
-      <tr><td>Body L</td><td><code>--nu-text-body-l</code></td><td>Text</td>
-          <td>${L("Emphasis within running copy: product price, order total, avatar initial, and the opening paragraph of every page in this documentation","Wyróżnienie w tekście ciągłym: cena produktu, suma zamówienia, inicjał awatara oraz wstęp każdej strony tej dokumentacji")}</td></tr>
-      <tr><td>Body M</td><td><code>--nu-text-body-m</code></td><td>Text</td>
-          <td>${L("The base size, set on <code>body</code> and inherited: copy, descriptions, controls, form fields, legal text","Rozmiar bazowy, ustawiony na <code>body</code> i dziedziczony: treść, opisy, kontrolki, pola formularza, teksty prawne")}</td></tr>
-      <tr><td>Label</td><td><code>--nu-text-label</code></td><td>Text</td>
-          <td>${L("Filter and section headings, field labels, badges, the strapline beside the wordmark, the navigation group headings on these pages","Nagłówki filtrów i sekcji, etykiety pól, odznaki, podpis obok znaku marki, nagłówki grup w nawigacji tych stron")}</td></tr>
-      <tr><td>Caption</td><td><code>--nu-text-caption</code></td><td>Text</td>
-          <td>${L("The floor of the scale: counts bound to a larger element and the drawer's own labels. Filter counts, the cart counter, drawer labels. Never for reading copy.","Dolna granica skali: liczniki przypięte do większego elementu i etykiety w szufladzie. Liczniki przy filtrach, licznik koszyka, etykiety szuflady. Nigdy dla tekstu do czytania.")}</td></tr>
+
+    <h3>${L("Line height","Interlinia")}</h3>
+    <p>${L(
+      "Six steps, named after how much air the line needs rather than after the number. A step is a ratio, so it holds at every size.",
+      "Sześć stopni, nazwanych od tego, ile powietrza potrzebuje wiersz, a nie od liczby. Stopień jest proporcją, więc trzyma się przy każdym stopniu pisma.")}</p>
+    <table><tbody>
+      <tr><td ${DS_COL_NAME}>${dsTok("--nu-line-flat")}</td><td>${L("The box sets the height: badge, cart counter, wordmark.","Wysokość ustala kontener: odznaka, licznik koszyka, znak marki.")}</td></tr>
+      <tr><td>${dsTok("--nu-line-tight")}</td><td>${L("Display sizes, where a looser line would leave the heading gaping.","Stopnie tytułowe, gdzie luźniejszy wiersz zostawiłby w nagłówku dziurę.")}</td></tr>
+      <tr><td>${dsTok("--nu-line-snug")}</td><td>${L("A title inside a list row, where two lines have to stay one object.","Tytuł w wierszu listy, gdzie dwa wiersze mają zostać jednym przedmiotem.")}</td></tr>
+      <tr><td>${dsTok("--nu-line-normal")}</td><td>${L("Running copy and the text inside controls.","Tekst ciągły i tekst wewnątrz kontrolek.")}</td></tr>
+      <tr><td>${dsTok("--nu-line-relaxed")}</td><td>${L("Prose read at length: the quote, the biography, the legal note.","Proza czytana dłużej: cytat, biogram, nota prawna.")}</td></tr>
+      <tr><td>${dsTok("--nu-line-loose")}</td><td>${L("Code blocks in this documentation.","Bloki kodu w tej dokumentacji.")}</td></tr>
     </tbody></table>
+
+    <h3>${L("Weight","Grubość")}</h3>
+    <table><tbody>
+      <tr><td ${DS_COL_NAME}>${dsTok("--nu-weight-normal")}</td><td>${L("Everything, including every display heading.","Wszystko, łącznie z każdym nagłówkiem tytułowym.")}</td></tr>
+      <tr><td>${dsTok("--nu-weight-medium")}</td><td>${L("Two section headings in checkout, and the <code>strong</code> element.","Dwa nagłówki sekcji w kasie oraz element <code>strong</code>.")}</td></tr>
+    </tbody></table>
+    <p class="note">${L(
+      "The display family ships one weight and the text family two. Nothing heavier is loaded, so asking for a weight the shop does not hold would have the browser synthesise it from 400 and smear the letterforms &ndash; which is why display headings state 400 rather than leaving it to a default.",
+      "Rodzina tytułowa dostarczana jest w jednej grubości, tekstowa w dwóch. Nic cięższego nie jest wczytywane, więc prośba o grubość, której sklep nie posiada, kazałaby przeglądarce wygenerować ją z 400 i rozmyć litery &ndash; dlatego nagłówki tytułowe podają 400 wprost, zamiast zostawiać to domyślnej wartości.")}</p>
+
+    <h3>${L("Letter-spacing","Światło międzyliterowe")}</h3>
+    <p>${L(
+      "Set against size and string length, not against case. Four values cover the shop, all relative, so they follow the type size instead of being restated per breakpoint. This is the one property a style token cannot carry, so a style that needs it declares it beside.",
+      "Dobierane do stopnia i długości ciągu, nie do wielkości liter. Cztery wartości obsługują cały sklep, wszystkie względne, więc idą za stopniem pisma, zamiast być powtarzane przy każdym progu. To jedyna właściwość, której token stylu nie unosi, więc styl, który jej potrzebuje, deklaruje ją obok.")}</p>
+    <table><tbody>
+      <tr><td ${DS_COL_NAME}>${dsTok("--nu-tracking-display")}</td>
+          <td>${L("Negative. Large display type sets loosely by default, so it is drawn in. One application: the wordmark.","Ujemne. Duży krój tytułowy składa się z natury luźno, więc jest ściągany. Jedno zastosowanie: znak marki.")}</td></tr>
+      <tr><td>${dsTok("--nu-tracking-body")}</td>
+          <td>${L("Zero, declared on <code>body</code>. Tracking applied to a paragraph distorts word shapes and slows reading.","Zero, zadeklarowane na <code>body</code>. Światło nałożone na akapit zniekształca kształty słów i spowalnia czytanie.")}</td></tr>
+      <tr><td>${dsTok("--nu-tracking-compact")}</td>
+          <td>${L("Short mixed-case strings that read as objects rather than prose: button labels, quote attributions, the avatar initial.","Krótkie ciągi pisane normalnie, czytające się jako obiekty, a nie proza: napisy przycisków, podpisy pod cytatem, inicjał w awatarze.")}</td></tr>
+      <tr><td>${dsTok("--nu-tracking-caps")}</td>
+          <td>${L("Every uppercase interface string and only those: uppercase letterforms sit tighter than lowercase and need the air put back.","Każdy napis interfejsu pisany wersalikami i tylko one: wersaliki stoją ciaśniej niż małe litery i trzeba im to powietrze oddać.")}</td></tr>
+    </tbody></table>
+
+    <h3>${L("The styles","Style")}</h3>
+    <p>${L(
+      "A text style is four properties that have to travel together: weight, size, line height and family. Changing the size without the line height breaks the rhythm; changing the family without the tracking changes the width of everything. So each style is packed into one token, assembled from the four scales above.",
+      "Styl tekstu to cztery właściwości, które muszą podróżować razem: grubość, stopień, interlinia i rodzina. Zmiana stopnia bez interlinii psuje rytm, zmiana rodziny bez światła zmienia szerokość wszystkiego. Dlatego każdy styl jest spakowany w jeden token, złożony z czterech skal powyżej.")}</p>
+    ${styles.length ? `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Weight","Grubość")}</th><th>${L("Size","Stopień")}</th><th>${L("Line","Interlinia")}</th><th>${L("Family","Rodzina")}</th></tr></thead><tbody>
+      ${styles.map(t => `<tr><td class="spec"><code>${t.name.replace("--nu-type-","")}</code></td><td>${cell(t.weight)}</td><td>${cell(t.size)}</td><td>${cell(t.line)}</td><td><code>${short(t.family)}</code></td></tr>`).join("")}
+    </tbody></table>
+    <table><tbody>
+      ${styles.map(t => `<tr><td ${DS_COL_NAME}><code>${t.name.replace("--nu-type-","")}</code></td><td>${useOf[t.name] || ""}</td></tr>`).join("")}
+    </tbody></table>` : `<p class="note">${L(
+      "The table of styles needs the stylesheet to be readable, which it is not in this way of opening the page. Open the built page, or serve the folder over http.",
+      "Tabela stylów potrzebuje czytelnego arkusza, a przy tym sposobie otwarcia strony arkusz czytelny nie jest. Otwórz stronę zbudowaną albo podaj folder przez http.")}</p>`}
+
+    <h3>${L("How a rule reads them","Jak sięga po nie reguła")}</h3>
+    <p>${L(
+      "A rule says which style it is and stops assembling type by hand:",
+      "Reguła mówi, którym stylem jest, i przestaje składać krój ręcznie:")}</p>
+    <pre class="ds-code">.p-title{ font:var(--nu-type-h1); margin-bottom:var(--nu-space-nano) }</pre>
+    <p class="note">${L(
+      "The shorthand resets every font property it does not mention, font-style and tabular figures among them &ndash; so a rule wanting italics or aligned numerals puts the style first and the exception after it.",
+      "Skrót zeruje każdą właściwość kroju, której nie wymienia, w tym odmianę i cyfry tabelaryczne &ndash; więc reguła chcąca kursywy albo wyrównanych cyfr stawia styl pierwszy, a wyjątek po nim.")}</p>
+
     <h3>${L("Rules","Zasady")}</h3>
     <table><tbody>
-      <tr><td ${DS_COL_NAME}>${L("Weight","Grubość")}</td>
-          <td>${L("The display family ships one weight, 400; the text family ships 400 and 500. Nothing heavier is loaded, so a weight the shop does not hold gets synthesised from 400 and smears. Display headings declare 400 explicitly, because browsers embolden them by default; 500 appears only where the text family needs emphasis &ndash; <code>strong</code> and <code>b</code> are set to it globally for the same reason.",
-                  "Rodzina tytułowa dostarczana jest w jednej grubości, 400; rodzina tekstowa w 400 i 500. Nic cięższego nie jest wczytywane, więc grubość, której sklep nie posiada, zostanie wygenerowana z 400 i rozmyta. Nagłówki kroju tytułowego deklarują 400 jawnie, bo przeglądarki domyślnie je pogrubiają; 500 pojawia się tylko tam, gdzie krój tekstowy wymaga wyróżnienia &ndash; <code>strong</code> i <code>b</code> są z tego samego powodu ustawione na nie globalnie.")}</td></tr>
-      <tr><td>${L("Letter-spacing","Światło międzyliterowe")}</td>
-          <td>${L("Tracking is set against size and string length, not case. Four tokens cover the whole shop; values are relative, so they follow the type size rather than being restated per breakpoint.",
-                  "Światło dobierane jest do rozmiaru i długości ciągu, nie do wielkości liter. Cztery tokeny obsługują cały sklep; wartości są względne, więc idą za stopniem pisma zamiast być powtarzane przy każdym punkcie łamania.")}
-            <table><tbody>
-              <tr><td style="width:240px">${dsTok("--nu-tracking-display")}</td>
-                  <td>${L("Negative. Large display type sets loosely by default, so it is drawn in. One application: the wordmark.","Ujemne. Duży krój tytułowy składa się z natury luźno, więc jest ściągany. Jedno zastosowanie: znak marki.")}</td></tr>
-              <tr><td>${dsTok("--nu-tracking-body")}</td>
-                  <td>${L("Zero, declared on <code>body</code>. Tracking applied to a paragraph distorts word shapes and reduces reading speed.","Zero, zadeklarowane na <code>body</code>. Światło nałożone na akapit zniekształca kształty słów i obniża szybkość czytania.")}</td></tr>
-              <tr><td>${dsTok("--nu-tracking-compact")}</td>
-                  <td>${L("Short mixed-case strings that read as objects rather than prose: button labels, quote attributions, the avatar initial.","Krótkie ciągi pisane normalnie, które czytają się jako obiekty, a nie proza: napisy na przyciskach, podpisy pod cytatami, inicjał awatara.")}</td></tr>
-              <tr><td>${dsTok("--nu-tracking-caps")}</td>
-                  <td>${L("Every uppercase interface string takes this value and only this one: filter and section headings, badges, field labels, drawer labels, table headings. Uppercase letterforms sit tighter than lowercase and need the space opened up, and a single value means the choice is never a judgement call. The one string not covered is the discount field, where uppercase is a transform applied to what the customer types rather than a label the shop sets.","Każdy napis interfejsu składany wersalikami bierze tę wartość i tylko ją: nagłówki filtrów i sekcji, odznaki, etykiety pól, etykiety w szufladzie, nagłówki tabel. Litery wersalikowe stoją ciaśniej niż pismo zwykłe i wymagają rozsunięcia, a jedna wartość sprawia, że wybór nigdy nie jest kwestią wyczucia. Jedyny nieobjęty ciąg to pole kodu rabatowego, gdzie wersaliki są przekształceniem tego, co wpisuje klientka, a nie napisem ustawionym przez sklep.")}</td></tr>
-            </tbody></table></td></tr>
-      <tr><td>${L("Same value, different role","Ta sama wartość, inna rola")}</td>
+      <tr><td ${DS_COL_NAME}>${L("Same value, different role","Ta sama wartość, inna rola")}</td>
           <td>${L("Heading 3 and Body L both stand at 18px today. They stay apart because one is the floor of the display family and the other is emphasis inside running copy; tying them together would block moving either one on its own.",
                   "Heading 3 i Body L mają dziś oba 18px. Zostają osobne, bo jeden jest najniższym stopniem kroju tytułowego, a drugi wyróżnieniem w tekście ciągłym; związanie ich zablokowałoby zmianę jednego bez ruszenia drugiego.")}</td></tr>
       <tr><td>${L("Italic","Kursywa")}</td>
-          <td>${L("A cut of Body M, not a step of its own. Reserved for book quotes; the attribution beneath returns to roman. Nothing else in the shop is set in italic.",
-                  "Odmiana Body M, nie osobny stopień. Zarezerwowana dla cytatów z książek; podpis pod cytatem wraca do odmiany prostej. Nic innego w sklepie nie jest składane kursywą.")}</td></tr>
+          <td>${L("A cut of the prose style, not a step of its own. Reserved for book quotes; the attribution beneath returns to roman. Nothing else in the shop is set in italic.",
+                  "Odmiana stylu prozy, nie osobny stopień. Zarezerwowana dla cytatów z książek; podpis pod cytatem wraca do odmiany prostej. Nic innego w sklepie nie jest składane kursywą.")}</td></tr>
       <tr><td>${L("Numerals","Cyfry")}</td>
           <td>${L("Prices, quantities and totals set in tabular figures, so a column of numbers holds its alignment when a value changes.",
                   "Ceny, ilości i sumy składane są cyframi tabelarycznymi, więc kolumna liczb utrzymuje wyrównanie przy zmianie wartości.")}</td></tr>
@@ -2257,13 +2299,20 @@ const DS_SECTIONS = [
           <td>${L("Below 820px the product title and the wordmark move to Heading 2. Every other application of Heading 1 and the rest of the scale are unchanged.",
                   "Poniżej 820px tytuł produktu i znak marki przechodzą na Heading 2. Pozostałe zastosowania Heading 1 oraz reszta skali zostają bez zmian.")}</td></tr>
     </tbody></table>
-    <h3>${L("Outside the scale","Poza skalą")}</h3>
-    <p>${L("One thing sits outside the seven steps.","Poza siedmioma stopniami stoi jedna rzecz.")}</p>
+
+    <h3>${L("Outside the scales","Poza skalami")}</h3>
     <table><colgroup><col style="width:190px"><col></colgroup><tbody>
+      <tr><td>${L("The wordmark","Znak marki")}</td>
+          <td>${L("The one place that assembles a style by hand. It takes the Heading 1 size with the flat line, because a heading's leading at that size would leave the dot after the name floating away from it.",
+                  "Jedyne miejsce składające styl ręcznie. Bierze stopień Heading 1 z płaskim wierszem, bo interlinia nagłówka przy tym stopniu zostawiłaby kropkę za nazwą w powietrzu.")}</td></tr>
+      <tr><td>${L("The cart counter","Licznik koszyka")}</td>
+          <td>${L("The one line height in pixels rather than a ratio: it equals the height of the circle it sits in, which is what centres the count. A ratio would drift against that height the moment the caption size moved.",
+                  "Jedyna interlinia w pikselach zamiast proporcji: równa wysokości kółka, w którym stoi, i to ona centruje liczbę. Proporcja rozjechałaby się z tą wysokością przy pierwszej zmianie stopnia.")}</td></tr>
       <tr><td>${L("Monospace in these pages","Krój maszynowy na tych stronach")}</td>
-          <td>${L("Token names and code blocks in this documentation are set in a monospace face at 11.5px. It is not a design system family and the shop neither loads nor uses it &ndash; it exists so that hyphens and underscores in a token name stay legible. Treat it as a property of the documentation, not of the system it documents.",
-                  "Nazwy tokenów i bloki kodu w tej dokumentacji składane są krojem maszynowym w 11.5px. Nie jest to rodzina design systemu i sklep ani go nie wczytuje, ani nie używa &ndash; istnieje po to, żeby myślniki i podkreślenia w nazwie tokenu pozostały czytelne. Traktuj go jako właściwość dokumentacji, nie systemu, który ona opisuje.")}</td></tr>
-    </tbody></table>` },
+          <td>${L("Token names and code blocks in this documentation are set in a monospace face at 11.5px. It is not a design system family and the shop neither loads nor uses it &ndash; it exists so that hyphens and underscores in a token name can be read apart.",
+                  "Nazwy tokenów i bloki kodu w tej dokumentacji składane są krojem maszynowym w 11.5px. Nie jest to rodzina design systemu i sklep ani go nie wczytuje, ani nie używa &ndash; istnieje po to, żeby myślniki i podkreślenia w nazwie tokenu dało się odróżnić.")}</td></tr>
+    </tbody></table>`;
+  } },
 
   { group:{en:"Foundations",pl:"Fundamenty"}, id:"spacing", label:{en:"Spacing",pl:"Odstępy"}, body: ()=>`
     <h1>${L("Spacing","Odstępy")}</h1>
