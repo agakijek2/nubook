@@ -2285,7 +2285,8 @@ const DS_SECTIONS = [
       "--nu-type-h3": L("A section that needs a heading but not its weight","Sekcja, która potrzebuje nagłówka, ale nie jego ciężaru"),
       "--nu-type-body-l": L("Emphasis within running copy","Wyróżnienie w tekście ciągłym"),
       "--nu-type-body-m": L("The page's own style, inherited by everything that does not say otherwise","Własny styl strony, dziedziczony przez wszystko, co nie mówi inaczej"),
-      "--nu-type-label": L("Text that names another element rather than being read as content.","Napis, który nazywa inny element, zamiast być treścią do czytania."),
+      "--nu-type-caps": L("A heading over a group of things: a filter group, a specimen, a bar. Set in uppercase, which the rule adds itself, together with the tracking that uppercase needs.","Nagłówek nad grupą rzeczy: grupą filtrów, okazem, belką. Składany wersalikami, które reguła dokłada sama, razem z trackingiem, którego wersaliki wymagają."),
+      "--nu-type-label": L("Text that names another element rather than being read as content. Its box is one line high, which is what separates it from <code>--nu-type-caps</code>.","Napis, który nazywa inny element, zamiast być treścią do czytania. Jego pudełko ma wysokość jednego wiersza i tym różni się od <code>--nu-type-caps</code>."),
       "--nu-type-caption": L("A count bound to a larger element. Never for reading.","Liczba przypięta do większego elementu. Nigdy do czytania."),
     };
     return `

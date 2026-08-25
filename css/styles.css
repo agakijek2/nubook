@@ -105,6 +105,11 @@
     --nu-type-h3:var(--nu-weight-normal) var(--nu-text-size-lg)/var(--nu-line-tight) var(--nu-font-display);
     --nu-type-body-l:var(--nu-weight-normal) var(--nu-text-size-lg)/var(--nu-line-normal) var(--nu-font-text);
     --nu-type-body-m:var(--nu-weight-normal) var(--nu-text-size-md)/var(--nu-line-normal) var(--nu-font-text);
+    /* Mała etykieta wersalikowa: nagłówek grupy, podpis okazu, etykieta w belce.
+       Interlinia normalna, bo ten podpis potrafi złamać się na dwa wiersze -
+       tym różni się od --nu-type-label, którego pudełko jest jednowierszowe.
+       Tracking i wersaliki reguła dokłada osobno: skrót font: ich nie niesie. */
+    --nu-type-caps:var(--nu-weight-normal) var(--nu-text-size-sm)/var(--nu-line-normal) var(--nu-font-text);
     --nu-type-label:var(--nu-weight-normal) var(--nu-text-size-sm)/var(--nu-line-flat) var(--nu-font-text);
     --nu-type-caption:var(--nu-weight-normal) var(--nu-text-size-xs)/var(--nu-line-flat) var(--nu-font-text);
 
@@ -491,7 +496,7 @@
   .shop.filters-hidden .filters{opacity:0;pointer-events:none}
   .filters-ghost{pointer-events:none;z-index:5}
   .filter-row{display:flex;flex-direction:column;gap:var(--nu-space-micro)}
-  .filter-label{color:var(--nu-fg-secondary);font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase}
+  .filter-label{color:var(--nu-fg-secondary);font:var(--nu-type-caps);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase}
   .chip-row{display:flex;flex-wrap:wrap;gap:var(--nu-space-nano) var(--nu-space-small);align-items:baseline}
   .chip{position:relative;color:var(--nu-fg-primary)}
   /* The underline belongs to the label, not to the whole button: the count is a
@@ -1041,7 +1046,7 @@
     border-right:1px solid var(--nu-border-neutral);padding-right:var(--nu-space-medium);
   }
   .ds-nav-group{
-    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    font:var(--nu-type-caps);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
     color:var(--nu-fg-secondary);margin:var(--nu-space-medium) 0 var(--nu-space-micro);
   }
   .ds-nav-group:first-child{margin-top:0}
@@ -1106,7 +1111,7 @@
      would push the parent row's rule further down than every other row's. */
   .ds td table{margin:var(--nu-space-micro) 0 0}
   .ds td table tr:last-child > td{border-bottom:0}
-  .ds th{color:var(--nu-fg-secondary);font-weight:var(--nu-weight-normal);font-size:var(--nu-text-size-sm);
+  .ds th{color:var(--nu-fg-secondary);font:var(--nu-type-caps);
     letter-spacing:var(--nu-tracking-caps);text-transform:uppercase}
   /* typography scale table: style + token columns never wrap */
   .ds .type-table{table-layout:fixed}
@@ -1156,7 +1161,7 @@
   }
   .ds .ds-play-lbl{
     flex:none;min-width:64px;
-    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
+    font:var(--nu-type-caps);letter-spacing:var(--nu-tracking-caps);
     text-transform:uppercase;color:var(--nu-fg-secondary);
   }
   .ds .ds-play-stage{margin-top:var(--nu-space-small);justify-content:center;min-height:88px}
@@ -1281,7 +1286,7 @@
   }
   .ds .ds-tiles .tile{width:140px}
   .ds .ds-specimens figcaption{
-    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
+    font:var(--nu-type-caps);letter-spacing:var(--nu-tracking-caps);
     text-transform:uppercase;color:var(--nu-fg-secondary);margin-top:var(--nu-space-micro);
   }
   .ds .note{color:var(--nu-fg-secondary);font-size:var(--nu-text-size-md);margin-bottom:var(--nu-space-medium)}
@@ -1308,7 +1313,7 @@
     margin:var(--nu-space-milli) 0 var(--nu-space-medium);
   }
   .ds .sp-cap{
-    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
+    font:var(--nu-type-caps);letter-spacing:var(--nu-tracking-caps);
     text-transform:uppercase;color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-micro);
   }
   .ds .sp-note{font-size:var(--nu-text-size-md);color:var(--nu-fg-secondary);margin-top:var(--nu-space-micro)}
@@ -1323,7 +1328,7 @@
   .ds .sp-groups{display:flex;flex-direction:column;background:var(--nu-bg-measure)}
   .ds .sp-groups > div{background:var(--nu-bg-primary)}
   .ds .sp-groups .lb{
-    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
+    font:var(--nu-type-caps);letter-spacing:var(--nu-tracking-caps);
     text-transform:uppercase;color:var(--nu-fg-tertiary);margin-bottom:var(--nu-space-nano);
   }
   .ds .sp-groups .ln{height:10px;background:var(--nu-bg-secondary)}
@@ -1453,7 +1458,7 @@
     }
     body.fsheet .fsheet-head{
       display:flex;align-items:center;justify-content:space-between;
-      font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
+      font:var(--nu-type-caps);letter-spacing:var(--nu-tracking-caps);
       text-transform:uppercase;color:var(--nu-fg-secondary);
     }
     /* colour, hover and focus come from .btn-tertiary, as on both drawers */
@@ -1469,7 +1474,7 @@
       box-shadow:0 -6px 18px color-mix(in srgb, var(--nu-bg-inverse) 5%, transparent);
     }
     .co-bar .cb-lbl{
-      display:block;font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
+      display:block;font:var(--nu-type-caps);letter-spacing:var(--nu-tracking-caps);
       text-transform:uppercase;color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-nano);
     }
     .co-bar .cb-val{font-size:var(--nu-text-size-lg);font-variant-numeric:tabular-nums}
