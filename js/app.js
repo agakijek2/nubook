@@ -2256,8 +2256,8 @@ const DS_SECTIONS = [
     </tbody></table>
 
     <h3>${L("Size","Rozmiar")}</h3>
-    <p>${L("A step says how big. What for is the business of a style, which points at one of them.",
-           "Stopień mówi, jak duży. Do czego służy, jest sprawą stylu, który na niego wskazuje.")}</p>
+    <p>${L("A size token sets the size and nothing else. What that size is for is decided by the style that reaches for it.",
+           "Token rozmiaru ustala tylko wielkość pisma. O tym, do czego ta wielkość służy, decyduje styl, który po nią sięga.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Example","Przykład")}</th></tr></thead><tbody>
       ${dsTypeSteps().map(([token, sample]) =>
         `<tr><td class="spec"><code>${token}</code></td><td>${dsVal(token)}</td><td>${sample}</td></tr>`).join("")}
