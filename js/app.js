@@ -2101,15 +2101,10 @@ const DS_SECTIONS = [
     return `
     <h1>${L("Tokens","Tokeny")}</h1>
     <p class="ds-lede">${L(
-      `Every value in the shop is declared once, under a name, in one place.${total ? ` There are ${total} of those names and this tab lists all of them.` : ""}`,
-      `Każda wartość w sklepie jest zadeklarowana raz, pod nazwą, w jednym miejscu.${total ? ` Tych nazw jest ${total} i ta zakładka wymienia je wszystkie.` : ""}`)}</p>
+      `<strong>Design tokens</strong> are the named values every element of the interface is built from: colours, distances, text sizes, durations. Each one is declared once and read from that one place.${total ? ` There are ${total} of those names and this tab lists all of them.` : ""}`,
+      `<strong>Tokeny projektowe</strong> (design tokens) to nazwane wartości, z których zbudowany jest każdy element interfejsu: kolory, odległości, rozmiary pisma, czasy. Każda jest zadeklarowana raz i czytana z tego jednego miejsca.${total ? ` Tych nazw jest ${total} i ta zakładka wymienia je wszystkie.` : ""}`)}</p>
 
-    <h3>${L("What they are","Czym są")}</h3>
-    <p>${L(
-      "<strong>Design tokens</strong> is the settled name for this: named entities that store a design decision &ndash; a colour, a distance, a duration &ndash; so the decision can be referred to instead of repeated. Here they are CSS custom properties declared in <code>:root</code>, which is what lets this documentation read them back and print the values below rather than have somebody type them into a table.",
-      "<strong>Design tokens</strong>, po polsku tokeny projektowe, to przyjęta nazwa tej rzeczy: nazwane byty przechowujące decyzję projektową &ndash; kolor, odległość, czas &ndash; żeby dało się do niej odwołać, zamiast ją powtarzać. Tutaj są to własne właściwości CSS zadeklarowane w <code>:root</code> i dlatego ta dokumentacja potrafi je odczytać i wypisać wartości niżej, zamiast polegać na kimś, kto wpisze je do tabeli.")}</p>
-
-    <h3>${L("Why","Po co")}</h3>
+    <h3>${L("Purpose","Cel")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("One place to change","Jedno miejsce zmiany")}</td><td>${L(
         "A colour used in forty rules is one declaration, so changing it is one edit and there is no fortieth that gets missed.",
@@ -2117,15 +2112,15 @@ const DS_SECTIONS = [
       <tr><td>${L("A name says the intent","Nazwa mówi o zamiarze")}</td><td>${L(
         "<code>--nu-fg-secondary</code> says what the colour is for; <code>#727272</code> says only what it is.",
         "<code>--nu-fg-secondary</code> mówi, do czego kolor służy; <code>#727272</code> mówi tylko, jaki jest.")}</td></tr>
-      <tr><td>${L("Drift becomes visible","Rozjazd staje się widoczny")}</td><td>${L(
-        "A value written by hand has nowhere to hide once every value is supposed to come from a token, so a script can check that nothing stands off the scale &ndash; including the values in this documentation, which are read from the same sheet.",
-        "Wartość wpisana ręcznie nie ma się gdzie schować, kiedy każda wartość ma pochodzić z tokenu, więc skrypt sprawdzi, że nic nie stoi poza skalą &ndash; łącznie z wartościami w tej dokumentacji, bo czyta je z tego samego arkusza.")}</td></tr>
+      <tr><td>${L("A deviation can be found","Odstępstwo da się wykryć")}</td><td>${L(
+        "Once every value is meant to come from a token, one written by hand is the only value matching none of them, so a script finds it. This documentation reads its values from the same sheet as the shop, so it cannot part ways with it either.",
+        "Kiedy każda wartość ma pochodzić z tokenu, ta wpisana ręcznie jako jedyna nie pasuje do żadnego, więc skrypt ją znajdzie. Ta dokumentacja czyta wartości z tego samego arkusza co sklep, więc też nie może się z nim rozminąć.")}</td></tr>
     </tbody></table>
 
     <h3>${L("How they are built","Jak są budowane")}</h3>
     <p>${L(
-      "Three levels, and a name whose parts say which one it belongs to.",
-      "Trzy poziomy, a nazwa swoimi częściami mówi, do którego z nich token należy.")}</p>
+      "In the stylesheet a token is a CSS custom property declared in <code>:root</code>. They stand on three levels, and a name says by its parts which level it belongs to.",
+      "W arkuszu token jest własną właściwością CSS zadeklarowaną w <code>:root</code>. Stoją na trzech poziomach, a nazwa swoimi częściami mówi, na którym.")}</p>
 
     <h4>${L("Primitive","Prymityw")}</h4>
     ${dsNamePattern(["--nu-", L("area","obszar"), L("step","stopień")])}
