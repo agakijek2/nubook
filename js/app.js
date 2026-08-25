@@ -2235,8 +2235,8 @@ const DS_SECTIONS = [
     return `
     <h1>${L("Typography","Typografia")}</h1>
     <p class="ds-lede">${L(
-      "Two families, four scales, and nine styles assembled from them. A style is named by level &ndash; Heading 1, Body, Label &ndash; not by the view it appears in, so one style serves every context that calls for it.",
-      "Dwie rodziny, cztery skale i dziewięć stylów z nich złożonych. Styl nazwany jest przez poziom &ndash; Heading 1, Body, Label &ndash; a nie przez widok, w którym występuje, więc jeden styl obsługuje każdy kontekst, który go wymaga.")}</p>
+      "Two families, four scales, and the styles assembled from them. A style is named by level &ndash; Heading 1, Body, Label &ndash; not by the view it appears in, so one style serves every context that calls for it.",
+      "Dwie rodziny, cztery skale i złożone z nich style. Styl nazwany jest przez poziom &ndash; Heading 1, Body, Label &ndash; a nie przez widok, w którym występuje, więc jeden styl obsługuje każdy kontekst, który go wymaga.")}</p>
 
     <h3>${L("Families","Rodziny")}</h3>
     <div class="ds-faces">
@@ -2251,8 +2251,8 @@ const DS_SECTIONS = [
       <tr><td class="spec"><code>--nu-font-display</code></td><td>${dsVal("--nu-font-display")}</td>
           <td>${L("Identity and headings.","Identyfikacja i nagłówki.")}</td></tr>
       <tr><td class="spec"><code>--nu-font-text</code></td><td>${dsVal("--nu-font-text")}</td>
-          <td>${L("All functional text: copy, labels, prices, controls, forms.",
-                  "Cały tekst użytkowy: treść, etykiety, ceny, kontrolki, formularze.")}</td></tr>
+          <td>${L("Everything that is read or operated.",
+                  "Wszystko, co się czyta albo czym się operuje.")}</td></tr>
     </tbody></table>
 
     <h3>${L("Size","Rozmiar")}</h3>
@@ -2282,13 +2282,13 @@ const DS_SECTIONS = [
       <tr><td class="spec"><code>--nu-weight-medium</code></td><td>${dsVal("--nu-weight-medium")}</td><td>${L("Emphasis where size is not enough: a section heading too small to stand out by size alone, and a word inside a sentence.","Wyróżnienie tam, gdzie nie wystarcza rozmiar: nagłówek sekcji za mały, żeby odciąć się samą wielkością, i pojedyncze słowo w zdaniu.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
-      "The display family ships one weight and the text family two. Nothing heavier is loaded, so asking for a weight the shop does not hold would have the browser synthesise it from 400 and smear the letterforms &ndash; which is why display headings state 400 rather than leaving it to a default.",
-      "Rodzina tytułowa dostarczana jest w jednej grubości, tekstowa w dwóch. Nic cięższego nie jest wczytywane, więc prośba o grubość, której sklep nie posiada, kazałaby przeglądarce wygenerować ją z 400 i rozmyć litery &ndash; dlatego nagłówki tytułowe podają 400 wprost, zamiast zostawiać to domyślnej wartości.")}</p>
+      "The display family ships one weight and the text family two. Nothing heavier is loaded, so asking for a weight the shop does not hold would have the browser synthesise it from 400 and smear the letterforms &ndash; which is why the weight is stated by the style token rather than left to a default.",
+      "Rodzina tytułowa dostarczana jest w jednej grubości, tekstowa w dwóch. Nic cięższego nie jest wczytywane, więc prośba o grubość, której sklep nie posiada, kazałaby przeglądarce wygenerować ją z 400 i rozmyć litery &ndash; dlatego grubość wnosi token stylu, zamiast zostawiać ją wartości domyślnej.")}</p>
 
     <h3>${L("Letter-spacing","Światło międzyliterowe")}</h3>
     <p>${L(
-      "Set against size and string length, not against case. Four values cover the shop, all relative, so they follow the type size instead of being restated per breakpoint. This is the one property a style token cannot carry, so a style that needs it declares it beside.",
-      "Dobierane do stopnia i długości ciągu, nie do wielkości liter. Cztery wartości obsługują cały sklep, wszystkie względne, więc idą za stopniem pisma, zamiast być powtarzane przy każdym progu. To jedyna właściwość, której token stylu nie unosi, więc styl, który jej potrzebuje, deklaruje ją obok.")}</p>
+      "Set against size and string length, not against case. Four values cover the shop, all relative, so they follow the type size instead of being restated per breakpoint. A style token carries four properties and this is not one of them, so a rule that needs tracking declares it beside the style.",
+      "Dobierane do stopnia i długości ciągu, nie do wielkości liter. Cztery wartości obsługują cały sklep, wszystkie względne, więc idą za stopniem pisma, zamiast być powtarzane przy każdym progu. Token stylu unosi cztery właściwości i światła wśród nich nie ma, więc reguła, która go potrzebuje, deklaruje je obok stylu.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-tracking-display</code></td><td>${dsVal("--nu-tracking-display")}</td>
           <td>${L("Negative. Large display type sets loosely by default, so it is drawn in.","Ujemne. Duży krój tytułowy składa się z natury luźno, więc jest ściągany.")}</td></tr>
@@ -2333,8 +2333,8 @@ const DS_SECTIONS = [
           <td>${L("Heading 3 and Body L both take <code>lg</code> today. They are separate styles, not one style used twice: the first is the floor of the display family and the second is emphasis inside running copy. Either can be moved by pointing it at a different step, which is what keeps them independent without the scale holding two values of the same size.",
                   "Heading 3 i Body L biorą dziś stopień <code>lg</code>. Są osobnymi stylami, a nie jednym użytym dwa razy: pierwszy jest najniższym stopniem kroju tytułowego, drugi wyróżnieniem w tekście ciągłym. Każdy da się przesunąć, wskazując mu inny stopień, i to trzyma je niezależnie, bez trzymania w skali dwóch wartości tej samej wielkości.")}</td></tr>
       <tr><td>${L("Italic","Kursywa")}</td>
-          <td>${L("A cut of the prose style, not a step of its own. Reserved for book quotes; the attribution beneath returns to roman. Nothing else in the shop is set in italic.",
-                  "Odmiana stylu prozy, nie osobny stopień. Zarezerwowana dla cytatów z książek; podpis pod cytatem wraca do odmiany prostej. Nic innego w sklepie nie jest składane kursywą.")}</td></tr>
+          <td>${L("A cut of <code>--nu-type-body-m</code>, declared beside the style because the shorthand does not carry it. Reserved for book quotes; the attribution beneath returns to roman. Nothing else in the shop is set in italic.",
+                  "Odmiana <code>--nu-type-body-m</code>, deklarowana obok stylu, bo skrót jej nie unosi. Zarezerwowana dla cytatów z książek; podpis pod cytatem wraca do odmiany prostej. Nic innego w sklepie nie jest składane kursywą.")}</td></tr>
       <tr><td>${L("Numerals","Cyfry")}</td>
           <td>${L("Prices, quantities and totals set in tabular figures, so a column of numbers holds its alignment when a value changes.",
                   "Ceny, ilości i sumy składane są cyframi tabelarycznymi, więc kolumna liczb utrzymuje wyrównanie przy zmianie wartości.")}</td></tr>
@@ -2349,11 +2349,11 @@ const DS_SECTIONS = [
           <td>${L("The one place that assembles a style by hand. It takes the Heading 1 size with the flat line, because a heading's leading at that size would leave the dot after the name floating away from it.",
                   "Jedyne miejsce składające styl ręcznie. Bierze stopień Heading 1 z płaskim wierszem, bo interlinia nagłówka przy tym stopniu zostawiłaby kropkę za nazwą w powietrzu.")}</td></tr>
       <tr><td>${L("The cart counter","Licznik koszyka")}</td>
-          <td>${L("The one line height in pixels rather than a ratio: it equals the height of the circle it sits in, which is what centres the count. A ratio would drift against that height the moment the caption size moved.",
-                  "Jedyna interlinia w pikselach zamiast proporcji: równa wysokości kółka, w którym stoi, i to ona centruje liczbę. Proporcja rozjechałaby się z tą wysokością przy pierwszej zmianie stopnia.")}</td></tr>
+          <td>${L("The one line height given as a length rather than a ratio: it equals the height of the circle the count sits in, which is what centres it. Both are in <code>rem</code>, so the circle and the digit grow together.",
+                  "Jedyna interlinia podana jako długość, a nie proporcja: równa wysokości kółka, w którym stoi liczba, i to ona ją centruje. Oba są w <code>rem</code>, więc kółko i cyfra rosną razem.")}</td></tr>
       <tr><td>${L("Monospace in these pages","Krój maszynowy na tych stronach")}</td>
-          <td>${L("Token names and code blocks in this documentation are set in a monospace face at 11.5px. It is not a design system family and the shop neither loads nor uses it &ndash; it exists so that hyphens and underscores in a token name can be read apart.",
-                  "Nazwy tokenów i bloki kodu w tej dokumentacji składane są krojem maszynowym w 11.5px. Nie jest to rodzina design systemu i sklep ani go nie wczytuje, ani nie używa &ndash; istnieje po to, żeby myślniki i podkreślenia w nazwie tokenu dało się odróżnić.")}</td></tr>
+          <td>${L("Token names and code blocks in this documentation are set in a monospace face, sized against the text around them rather than from the scale. It is not a design system family and the shop neither loads nor uses it &ndash; it exists so that hyphens and underscores in a token name can be read apart.",
+                  "Nazwy tokenów i bloki kodu w tej dokumentacji składane są krojem maszynowym, w rozmiarze liczonym od otaczającego tekstu, a nie ze skali. Nie jest to rodzina design systemu i sklep ani go nie wczytuje, ani nie używa &ndash; istnieje po to, żeby myślniki i podkreślenia w nazwie tokenu dało się odróżnić.")}</td></tr>
     </tbody></table>`;
   } },
 
