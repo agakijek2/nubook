@@ -106,7 +106,6 @@
     --nu-type-body-l:var(--nu-weight-normal) var(--nu-text-size-lg)/var(--nu-line-normal) var(--nu-font-text);
     --nu-type-body-m:var(--nu-weight-normal) var(--nu-text-size-md)/var(--nu-line-normal) var(--nu-font-text);
     --nu-type-label:var(--nu-weight-normal) var(--nu-text-size-sm)/var(--nu-line-flat) var(--nu-font-text);
-    --nu-type-label-strong:var(--nu-weight-medium) var(--nu-text-size-sm)/var(--nu-line-flat) var(--nu-font-text);
     --nu-type-caption:var(--nu-weight-normal) var(--nu-text-size-xs)/var(--nu-line-flat) var(--nu-font-text);
 
     /* letter-spacing — scales against size and length, not case */
@@ -905,7 +904,7 @@
   .co-h{font:var(--nu-type-h2);margin:var(--nu-space-micro) 0 var(--nu-space-medium)}
   .co-sec{margin-bottom:var(--nu-space-large)}
   .co-sec h3{
-    font:var(--nu-type-label-strong);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    font:var(--nu-type-label);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
     color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-small);
   }
   .f-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--nu-space-milli)}
@@ -1004,7 +1003,7 @@
   .consent input{accent-color:var(--nu-fg-primary);margin-top:var(--nu-space-nano);flex-shrink:0}
   .legal{font:var(--nu-type-body-m);color:var(--nu-fg-secondary);margin-top:var(--nu-space-medium);max-width:60ch}
   .co-side{position:sticky;top:var(--nu-space-medium);background:var(--nu-bg-secondary);padding:var(--nu-space-medium)}
-  .co-side h3{font:var(--nu-type-label-strong);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-small)}
+  .co-side h3{font:var(--nu-type-label);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-small)}
   .co-item{display:flex;justify-content:space-between;gap:var(--nu-space-small);font-size:var(--nu-text-size-md);padding:var(--nu-space-nano) 0}
   .co-item .q{color:var(--nu-fg-secondary)}
   .order-btn{display:block;width:100%;margin-top:var(--nu-space-medium);padding:var(--nu-space-small) 0;text-align:center}

@@ -1923,7 +1923,6 @@ function dsTypeSpecimens(){
     ["--nu-type-body-l", "59,90 z&#322;", ""],
     ["--nu-type-body-m", L("Novels about women and gender.","Powieści o kobietach i płci."), ""],
     ["--nu-type-label", L("Sort by","Sortuj"), caps],
-    ["--nu-type-label-strong", L("Contact details","Dane kontaktowe"), caps],
     ["--nu-type-caption", "12", ""],
   ];
 }
@@ -2231,7 +2230,6 @@ const DS_SECTIONS = [
       "--nu-type-body-l": L("Emphasis within running copy","Wyróżnienie w tekście ciągłym"),
       "--nu-type-body-m": L("The page's own style, inherited by everything that does not say otherwise","Własny styl strony, dziedziczony przez wszystko, co nie mówi inaczej"),
       "--nu-type-label": L("An uppercase interface string","Napis interfejsu pisany wersalikami"),
-      "--nu-type-label-strong": L("The same, where the heading has to hold a column against what stands under it","To samo, gdy nagłówek musi utrzymać kolumnę nad tym, co pod nim stoi"),
       "--nu-type-caption": L("A count bound to a larger element. Never for reading.","Liczba przypięta do większego elementu. Nigdy do czytania."),
     };
     return `
