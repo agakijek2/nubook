@@ -485,7 +485,12 @@
      would draw the ring outside the stepper's outline and outside the menu panel. */
   .qty button:focus-visible,
   .sort-menu button:focus-visible{outline:1.5px solid var(--nu-border-primary);outline-offset:-2px}
-  .sort-menu button[aria-checked="true"]{text-decoration:underline;text-underline-offset:3px}
+  /* The mark on the option in force is the underline the chip, the link and the
+     ghost button all draw: a border under the label with 1px of air, so every
+     underlined thing in the shop sits the same distance from its word. It rides
+     on the label rather than the row, which is the full width of the panel. */
+  .sort-menu .lbl{border-bottom:1px solid transparent;padding-bottom:1px}
+  .sort-menu button[aria-checked="true"] .lbl{border-bottom-color:var(--nu-border-primary)}
 
   /* ---------- grid ---------- */
   .grid{

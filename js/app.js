@@ -1444,7 +1444,7 @@ function applyLang(){
   document.getElementById("lblFilterSheet").textContent = t.filter;
   document.getElementById("lblSort").textContent = t.sort;
   document.getElementById("sortLbl").textContent = t.sorts[state.sort];
-  sortItems().forEach(b=>{ b.textContent = t.sorts[b.dataset.sort]; });
+  sortItems().forEach(b=>{ b.querySelector(".lbl").textContent = t.sorts[b.dataset.sort]; });
   document.getElementById("btnFav").setAttribute("aria-label", t.aria.fav);
   document.getElementById("btnAccount").setAttribute("aria-label", t.aria.account);
   document.getElementById("btnSearch").setAttribute("aria-label", t.aria.search);
@@ -2642,9 +2642,9 @@ const DS_SECTIONS = [
         <div class="demo on-page ds-sort">
           <div class="sort">
             <div class="sort-menu">
-              <button type="button" aria-checked="true">${L("Our recommendations","Nasze rekomendacje")}</button>
-              <button type="button" aria-checked="false">${L("Newest first","Od najnowszych")}</button>
-              <button type="button" aria-checked="false">${L("Price, low to high","Cena: od najniższej")}</button>
+              <button type="button" aria-checked="true"><span class="lbl">${L("Our recommendations","Nasze rekomendacje")}</span></button>
+              <button type="button" aria-checked="false"><span class="lbl">${L("Newest first","Od najnowszych")}</span></button>
+              <button type="button" aria-checked="false"><span class="lbl">${L("Price, low to high","Cena: od najniższej")}</span></button>
             </div>
           </div>
         </div>
@@ -2653,14 +2653,14 @@ const DS_SECTIONS = [
     </div>
     <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Closed","Zamknięte")}</td>
-        <td>${L("The button carries the label and the order in force, so the current sort is readable without opening anything.","Przycisk niesie podpis i obowiązującą kolejność, więc bieżące sortowanie da się odczytać bez rozwijania.")}</td>
+        <td>${L("The button shows the label and the order in force, so the current sort can be read without opening anything.","Przycisk pokazuje podpis i obowiązującą kolejność, więc bieżące sortowanie da się odczytać bez rozwijania.")}</td>
         <td><code>--nu-fg-primary</code></td></tr>
       <tr><td>${L("Open","Rozwinięte")}<br><code>[aria-expanded="true"]</code></td>
         <td>${L("The panel appears under the button and the plus turns 45&deg; into a cross. The attribute sits on the trigger and the panel is its next sibling, so one attribute drives both.","Panel pojawia się pod przyciskiem, a plus obraca się o 45&deg; w krzyżyk. Atrybut stoi na przycisku, a panel jest jego następnym sąsiadem, więc jeden atrybut prowadzi oba.")}</td>
         <td><code>--nu-bg-primary</code>, <code>--nu-border-neutral</code></td></tr>
       <tr><td>${L("Option in force","Opcja obowiązująca")}<br><code>[aria-checked="true"]</code></td>
-        <td>${L("Underlined, 3px below the type. One option carries it at any time; the same attribute tells a screen reader which one is chosen.","Podkreślona, 3px pod tekstem. W danej chwili niesie to jedna opcja; ten sam atrybut mówi czytnikowi ekranu, która jest wybrana.")}</td>
-        <td>&ndash;</td></tr>
+        <td>${L("Underlined, on the same terms as a pressed chip and a hovered link. One option carries it at any time; the same attribute tells a screen reader which one is chosen.","Podkreślona, na tych samych zasadach co wciśnięty chip i link pod kursorem. W danej chwili ma je jedna opcja; ten sam atrybut mówi czytnikowi ekranu, która jest wybrana.")}</td>
+        <td><code>--nu-border-primary</code></td></tr>
       <tr><td>Hover<br><code>:hover</code></td>
         <td>${L("The row fills across the whole width of the panel, so the target is the row and not the words.","Wiersz wypełnia się na całą szerokość panelu, więc celem jest wiersz, a nie same słowa.")}</td>
         <td><code>--nu-bg-secondary</code></td></tr>
@@ -2668,23 +2668,23 @@ const DS_SECTIONS = [
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Element","Element")}</td><td>${L(
-        "A menu button: the trigger declares <code>aria-haspopup=&quot;menu&quot;</code>, the panel is a <code>menu</code> and each option is a <code>menuitemradio</code> &ndash; one choice out of a set. That is what makes <code>aria-checked</code> the right attribute here; on a list option it would be the wrong one.",
-        "Przycisk menu: przycisk deklaruje <code>aria-haspopup=&quot;menu&quot;</code>, panel jest elementem <code>menu</code>, a każda opcja to <code>menuitemradio</code> &ndash; jeden wybór ze zbioru. Dlatego <code>aria-checked</code> jest tu atrybutem właściwym; przy opcji listy byłby niewłaściwy.")}</td></tr>
+        "A menu button: the trigger declares <code>aria-haspopup=&quot;menu&quot;</code>, the panel is a <code>menu</code> and each option is a <code>menuitemradio</code> &ndash; one choice out of a set, the way radio buttons work. <code>aria-checked</code> belongs to a role of that kind and says which one is in force.",
+        "Przycisk menu: przycisk deklaruje <code>aria-haspopup=&quot;menu&quot;</code>, panel jest elementem <code>menu</code>, a każda opcja to <code>menuitemradio</code> &ndash; jeden wybór ze zbioru, tak jak działają przyciski radiowe. <code>aria-checked</code> należy do roli tego rodzaju i mówi, która opcja obowiązuje.")}</td></tr>
       <tr><td>${L("Trigger","Przycisk")}</td><td>${L(
-        `A tertiary button on the terms set out under Button, with ${dsTok("--nu-space-nano")} above and below and none at the sides &ndash; it stands at the edge of the grid and any side padding would push it out of line with the column beneath.`,
-        `Przycisk trzeciorzędny na zasadach opisanych w Przycisku, z odstępem ${dsTok("--nu-space-nano")} u góry i u dołu, a bez bocznego &ndash; stoi przy krawędzi siatki i boczne wypełnienie wypchnęłoby go z linii kolumny pod nim.`)}</td></tr>
+        `The tertiary button, the component described under Button, carrying <code>.btn-tertiary</code> and nothing of its own but <code>.sort-btn</code>. That class adds one thing: ${dsTok("--nu-space-nano")} above and below and none at the sides, because the button stands at the edge of the grid and side padding would push it out of line with the column beneath it.`,
+        `Przycisk trzeciorzędny, czyli komponent opisany w Przycisku, z klasą <code>.btn-tertiary</code> i niczym własnym poza <code>.sort-btn</code>. Ta klasa dokłada jedno: odstęp ${dsTok("--nu-space-nano")} u góry i u dołu, a żadnego z boków, bo przycisk stoi przy krawędzi siatki i boczne wypełnienie wypchnęłoby go z linii kolumny pod nim.`)}</td></tr>
       <tr><td>${L("Panel","Panel")}</td><td>${L(
         `1px <code>--nu-border-neutral</code> on <code>--nu-bg-primary</code>, ${dsTok("--nu-space-micro")} of air above and below the options and ${dsTok("--nu-space-micro")} between the panel and the button. It is as wide as its longest option and re-measures itself when the labels change language.`,
         `1px <code>--nu-border-neutral</code> na <code>--nu-bg-primary</code>, ${dsTok("--nu-space-micro")} powietrza nad opcjami i pod nimi oraz ${dsTok("--nu-space-micro")} między panelem a przyciskiem. Jest szeroki na najdłuższą swoją opcję i przemierza się sam, gdy podpisy zmieniają język.`)}</td></tr>
       <tr><td>${L("Option","Opcja")}</td><td>${L(
-        `Full width of the panel, text to the left, ${dsTok("--nu-space-micro")} of padding vertically and ${dsTok("--nu-space-small")} horizontally. Labels do not wrap: a two-line option would read as two.`,
-        `Cała szerokość panelu, tekst do lewej, wypełnienie ${dsTok("--nu-space-micro")} w pionie i ${dsTok("--nu-space-small")} w poziomie. Podpisy się nie łamią: opcja w dwóch wierszach czytałaby się jak dwie.`)}</td></tr>
+        `Full width of the panel, text to the left, ${dsTok("--nu-space-micro")} of padding vertically and ${dsTok("--nu-space-small")} horizontally. Labels do not wrap: a two-line option would read as two. The underline marking the option in force rides on the label, not on the row, and keeps the 1px of air every underline in the shop keeps.`,
+        `Cała szerokość panelu, tekst do lewej, wypełnienie ${dsTok("--nu-space-micro")} w pionie i ${dsTok("--nu-space-small")} w poziomie. Podpisy się nie łamią: opcja w dwóch wierszach czytałaby się jak dwie. Podkreślenie opcji obowiązującej biegnie pod podpisem, a nie pod wierszem, i trzyma ten sam 1px powietrza co każde podkreślenie w sklepie.`)}</td></tr>
       <tr><td>${L("Icon","Ikona")}</td><td>${L(
         "The plus at the smaller of the two sizes, on the terms set out under Iconography, turning 45&deg; into the cross while the panel is open. The same drawing the stepper uses.",
         "Plus w mniejszym z dwóch rozmiarów, na zasadach opisanych w Ikonografii, obracający się o 45&deg; w krzyżyk przy rozwiniętym panelu. Ten sam rysunek, którego używa stepper.")}</td></tr>
       <tr><td>${L("Keyboard","Klawiatura")}</td><td>${L(
-        "The role promises keyboard behaviour, so the keyboard delivers it: the down arrow opens the menu and lands on the option in force, the arrows walk the options and wrap at the ends, Home and End reach the first and the last, Escape closes and hands focus back to the trigger, Tab closes and lets focus travel on. Escape stops at the menu instead of travelling on to close a drawer.",
-        "Rola obiecuje obsługę klawiatury, więc klawiatura ją zapewnia: strzałka w dół rozwija menu i staje na obowiązującej opcji, strzałki przechodzą między opcjami i zawijają na krańcach, Home i End sięgają pierwszej i ostatniej, Escape zamyka i oddaje fokus przyciskowi, a Tab zamyka i puszcza fokus dalej. Escape zatrzymuje się na menu, zamiast lecieć dalej i zamykać szufladę.")}</td></tr>
+        "<code>role=&quot;menu&quot;</code> tells a screen reader that this control answers the arrows, Home, End and Escape, so it has to answer them. The down arrow opens the menu and lands on the option in force, the arrows walk the options and wrap at the ends, Home and End reach the first and the last, Escape closes and hands focus back to the trigger, Tab closes and lets focus travel on. Escape stops at the menu instead of travelling on to close a drawer.",
+        "<code>role=&quot;menu&quot;</code> mówi czytnikowi ekranu, że ta kontrolka odpowiada na strzałki, Home, End i Escape &ndash; więc musi na nie odpowiadać. Strzałka w dół rozwija menu i staje na obowiązującej opcji, strzałki przechodzą między opcjami i zawijają na krańcach, Home i End sięgają pierwszej i ostatniej, Escape zamyka i oddaje fokus przyciskowi, a Tab zamyka i puszcza fokus dalej. Escape zatrzymuje się na menu, zamiast lecieć dalej i zamykać szufladę.")}</td></tr>
       <tr><td>${L("Focus","Fokus")}</td><td>${L(
         "An option draws its focus ring inside its own edge, so the ring does not run along the panel's border.",
         "Opcja rysuje obwódkę fokusu wewnątrz własnej krawędzi, więc obwódka nie biegnie po obramowaniu panelu.")}</td></tr>
@@ -2756,7 +2756,7 @@ const DS_SECTIONS = [
         "Dziedziczona z otoczenia, interlinia 1.45. Pole nie ustawia własnego kroju ani stopnia.")}</td></tr>
       <tr><td>${L("Placeholder","Podpowiedź")}</td><td>${L(
         "<code>--nu-fg-tertiary</code>, lighter than an answer so the two do not read alike. It shows the shape of the answer &ndash; <code>00-000</code> for a postal code &ndash; and never carries the name of the field: a label that disappears once typing starts leaves the reader with a filled field and nothing saying what is in it.",
-        "<code>--nu-fg-tertiary</code>, jaśniejsza niż odpowiedź, żeby jedno nie czytało się jak drugie. Pokazuje kształt odpowiedzi &ndash; <code>00-000</code> przy kodzie pocztowym &ndash; i nigdy nie niesie nazwy pola: etykieta znikająca po pierwszym znaku zostawia czytelniczkę z wypełnionym polem i bez informacji, co w nim jest.")}</td></tr>
+        "<code>--nu-fg-tertiary</code>, jaśniejsza niż odpowiedź, żeby jedno nie czytało się jak drugie. Pokazuje kształt odpowiedzi &ndash; <code>00-000</code> przy kodzie pocztowym &ndash; i nigdy nie podaje nazwy pola: etykieta znikająca po pierwszym znaku zostawia czytelniczkę z wypełnionym polem i bez informacji, co w nim jest.")}</td></tr>
       <tr><td>${L("Width","Szerokość")}</td><td>${L(
         "The full width of the place it stands in, borders counted in. That place decides how wide it is, not the field.",
         "Cała szerokość miejsca, w którym stoi, wraz z ramką. Szerokość ustala to miejsce, a nie pole.")}</td></tr>
