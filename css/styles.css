@@ -153,35 +153,35 @@
     /* Relative width of a cover inside its tile. One decision per breakpoint:
        opening a book zooms one and the same box from the grid to the product
        page, so the two have to agree at every width or the transition snaps. */
-    --nu-cover-w:62%;
+    --nu-cover-width:62%;
     /* A cover standing on its own, outside a tile. Two sizes of one thing:
        the cart drawer is narrower than the cart page. */
-    --nu-thumb-sm:44px;  --nu-thumb-md:64px;
+    --nu-thumb-size-sm:44px;  --nu-thumb-size-md:64px;
     /* Smallest touch target in the shop. WCAG asks for 24x24 CSS px; this keeps
        a margin over it and sets the width of the value between the two buttons,
        so the control does not resize between 9 and 10. */
-    --nu-control-sm:26px;
+    --nu-control-size-sm:26px;
     /* A field holding up to four characters: a building number, a flat number,
        a dialling code. One value for all three, so fields that stand in a row
        line up. The width is set by the widest case, a select - it holds the four
        characters, the gap and the chevron - and the plain fields follow it. */
-    --nu-field-short:104px;
+    --nu-field-width-short:104px;
 
     --nu-icon-lg:24px;   --nu-icon-lg-inset:2px; --nu-icon-lg-stroke:1.5;
     --nu-icon-sm:16px;   --nu-icon-sm-inset:1px; --nu-icon-sm-stroke:1.25;
 
-    --nu-measure-form:1440px;      /* cart & checkout: grows, then stops and centres */
+    --nu-form-max-width:1440px;      /* cart & checkout: grows, then stops and centres */
     /* One gutter for every side-by-side layout: shop, product, checkout, docs.
        Named rather than repeated, because "how far apart do two columns sit" is
        a single decision — four copies of it could drift without anyone noticing. */
-    --nu-gutter-col:var(--nu-space-huge);
+    --nu-gutter-column:var(--nu-space-huge);
 
     /* Height of the mobile sticky bars. Fallbacks only — the real values are
        measured and written back by the script, so the page clearance is always
        exactly the bar, whatever the label length or the device safe area. */
-    --nu-mobar-h:var(--nu-space-max);  /* shop bar: filters + sort */
-    --nu-cobar-h:var(--nu-space-max);  /* checkout bar: total + submit */
-    --nu-mobar-pad:var(--nu-space-milli); /* shop bar inner padding, top and sides */
+    --nu-mobar-height:var(--nu-space-max);  /* shop bar: filters + sort */
+    --nu-cobar-height:var(--nu-space-max);  /* checkout bar: total + submit */
+    --nu-mobar-padding:var(--nu-space-milli); /* shop bar inner padding, top and sides */
     --nu-mobar-gap:var(--nu-space-milli); /* air between the bar and the menu above it */
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -439,7 +439,7 @@
   .shop{
     display:grid;
     grid-template-columns:230px 1fr;
-    gap:var(--nu-gutter-col);
+    gap:var(--nu-gutter-column);
     padding:0 var(--nu-space-small) var(--nu-space-max);
     align-items:start;
   }
@@ -545,7 +545,7 @@
 
   /* ---------- covers (pure CSS book jackets) ---------- */
   .cover{
-    width:var(--nu-cover-w);max-width:none;aspect-ratio:7/10;
+    width:var(--nu-cover-width);max-width:none;aspect-ratio:7/10;
     position:relative;overflow:hidden;
     box-shadow:0 14px 22px -10px color-mix(in srgb, var(--nu-bg-inverse) 35%, transparent), 0 2px 4px color-mix(in srgb, var(--nu-bg-inverse) 12%, transparent);
     transition:transform var(--nu-motion-slow) ease;
@@ -573,7 +573,7 @@
   /* ---------- product page ---------- */
   .product{padding:0 var(--nu-space-small) var(--nu-space-max)}
   .back{margin:var(--nu-space-nano) 0 var(--nu-space-medium)}
-  .p-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:var(--nu-gutter-col);align-items:start}
+  .p-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:var(--nu-gutter-column);align-items:start}
   /* the product packshot is the same kind of box as the grid tile, just bigger */
   .p-tile{
     background:var(--nu-bg-secondary);
@@ -801,7 +801,7 @@
   @media (prefers-reduced-motion:reduce){
     .ci{transition:none}
   }
-  .ci-cover{width:var(--nu-thumb-sm);flex-shrink:0}
+  .ci-cover{width:var(--nu-thumb-size-sm);flex-shrink:0}
   .ci-cover .cover{width:100%;max-width:none;box-shadow:0 2px 8px color-mix(in srgb, var(--nu-bg-inverse) 18%, transparent)}
   .ci-main{flex:1;min-width:0}
   .ci-title{display:block;line-height:1.35;margin-bottom:var(--nu-space-nano)}
@@ -809,7 +809,7 @@
   .ci-row{display:flex;align-items:center;justify-content:space-between;gap:var(--nu-space-milli)}
   .qty{display:inline-flex;align-items:center;border:1px solid var(--nu-border-neutral)}
   .qty button{
-    width:var(--nu-control-sm);height:var(--nu-control-sm);
+    width:var(--nu-control-size-sm);height:var(--nu-control-size-sm);
     display:inline-flex;align-items:center;justify-content:center;
     color:var(--nu-fg-primary);transition:background var(--nu-motion-quick) ease;
   }
@@ -818,7 +818,7 @@
      Remove button is for, and doing it silently from here would be a different
      action wearing the same face. */
   .qty button:disabled{color:var(--nu-fg-tertiary);pointer-events:none}
-  .qty span{min-width:var(--nu-control-sm);text-align:center;font-variant-numeric:tabular-nums}
+  .qty span{min-width:var(--nu-control-size-sm);text-align:center;font-variant-numeric:tabular-nums}
   .ci-line{font-variant-numeric:tabular-nums}
   .ci-remove{margin-top:var(--nu-space-micro);align-self:flex-start}
   .cart-empty{color:var(--nu-fg-secondary);padding:var(--nu-space-large) 0}
@@ -834,7 +834,7 @@
   .sum-row.muted{color:var(--nu-fg-secondary);font-size:var(--nu-text-body-m)}
   .sum-row.total{font-size:var(--nu-text-body-l);padding-top:var(--nu-space-milli);margin-top:var(--nu-space-micro);border-top:1px solid var(--nu-border-neutral)}
   .cart-cta{display:block;width:100%;text-align:center;margin-top:var(--nu-space-medium);padding:var(--nu-space-milli) 0}
-  .cart-page-list .ci-cover{width:var(--nu-thumb-md)}
+  .cart-page-list .ci-cover{width:var(--nu-thumb-size-md)}
   .cart-page-list .ci{padding:var(--nu-space-medium) 0}
   .disc-row{display:flex;gap:var(--nu-space-micro);margin-bottom:var(--nu-space-milli)}
   /* The discount code is a text field with two things of its own: it grows into
@@ -855,7 +855,7 @@
      same left edge as the columns below them. */
   .checkout{
     padding:0 var(--nu-space-small) var(--nu-space-max);animation:fadeUp var(--nu-motion-slow) ease;
-    max-width:var(--nu-measure-form);margin-inline:auto;
+    max-width:var(--nu-form-max-width);margin-inline:auto;
   }
   .done-view{padding:var(--nu-space-max) var(--nu-space-small);text-align:center;animation:fadeUp var(--nu-motion-slow) ease}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -866,7 +866,7 @@
   /* Cart and checkout are reading-and-deciding views, not a gallery: they scale
      with the window up to a comfortable measure, then stop and stay centred
      instead of stretching a shopping row across a very wide screen. */
-  .co-grid{display:grid;grid-template-columns:1.9fr 1fr;gap:var(--nu-gutter-col);align-items:start}
+  .co-grid{display:grid;grid-template-columns:1.9fr 1fr;gap:var(--nu-gutter-column);align-items:start}
   .co-h{font-family:var(--nu-font-display);font-weight:400;font-size:var(--nu-text-h2);margin:var(--nu-space-micro) 0 var(--nu-space-medium)}
   .co-sec{margin-bottom:var(--nu-space-large)}
   .co-sec h3{
@@ -884,7 +884,7 @@
      width they need. */
   .f-addr{
     grid-column:1/-1;display:grid;align-content:start;
-    grid-template-columns:1fr var(--nu-field-short) var(--nu-field-short);
+    grid-template-columns:1fr var(--nu-field-width-short) var(--nu-field-width-short);
     grid-template-rows:auto auto auto;gap:0 var(--nu-space-milli);
   }
   .f-addr .field{display:grid;grid-template-rows:subgrid;grid-row:span 3}
@@ -936,7 +936,7 @@
      one gives up its right border, so the seam between them is a single line.
      Focus and error take the whole group, otherwise the outline would change
      colour halfway along its top edge. */
-  .f-group{display:grid;grid-template-columns:var(--nu-field-short) 1fr}
+  .f-group{display:grid;grid-template-columns:var(--nu-field-width-short) 1fr}
   .f-group .select{border-right:0}
   .f-group:focus-within .select,
   .f-group:focus-within .input{border-color:var(--nu-border-primary)}
@@ -993,7 +993,7 @@
   /* ---------- design system docs ---------- */
   .ds{padding:0 var(--nu-space-small) var(--nu-space-max)}
   .ds-head{margin:var(--nu-space-micro) 0 var(--nu-space-medium)}
-  .ds-layout{display:grid;grid-template-columns:210px 1fr;gap:var(--nu-gutter-col);align-items:start}
+  .ds-layout{display:grid;grid-template-columns:210px 1fr;gap:var(--nu-gutter-column);align-items:start}
   .ds-nav{
     position:sticky;top:var(--nu-space-medium);display:flex;flex-direction:column;gap:var(--nu-space-nano);
     border-right:1px solid var(--nu-border-neutral);padding-right:var(--nu-space-medium);
@@ -1229,7 +1229,7 @@
      is set from a live token, so a figure cannot disagree with the scale. */
   .ds .sp-figs{
     display:grid;grid-template-columns:1fr 1fr;
-    gap:var(--nu-space-medium) var(--nu-gutter-col);
+    gap:var(--nu-space-medium) var(--nu-gutter-column);
     margin:var(--nu-space-milli) 0 var(--nu-space-medium);
   }
   .ds .sp-cap{
@@ -1272,7 +1272,7 @@
     /* One value per breakpoint: the cover's relative width is a single decision,
        and the open transition zooms one and the same box, so grid and product
        page have to agree at every width. */
-    :root{--nu-cover-w:72%}
+    :root{--nu-cover-width:72%}
     .grid{grid-template-columns:repeat(2,1fr);gap:var(--nu-space-nano)}
     .product{padding:0 var(--nu-space-milli) var(--nu-space-max)}
     .p-grid{grid-template-columns:1fr;gap:var(--nu-space-medium)}
@@ -1329,7 +1329,7 @@
          the sheet, so dimming them would be dimming the way out. Still below
          the drawers (90/100), which are meant to cover it. */
       position:fixed;left:0;right:0;bottom:0;z-index:85;
-      padding:var(--nu-mobar-pad) var(--nu-space-small) calc(var(--nu-mobar-pad) + env(safe-area-inset-bottom));
+      padding:var(--nu-mobar-padding) var(--nu-space-small) calc(var(--nu-mobar-padding) + env(safe-area-inset-bottom));
       gap:var(--nu-space-small);
       background:var(--nu-bg-primary);
       border-top:1px solid var(--nu-border-neutral);
@@ -1337,12 +1337,12 @@
     }
     /* clearance for whichever bar this view actually shows, so the footer and
        the last form field are never trapped underneath it */
-    body.has-mobar{padding-bottom:var(--nu-mobar-h)}
-    body.has-cobar{padding-bottom:var(--nu-cobar-h)}
+    body.has-mobar{padding-bottom:var(--nu-mobar-height)}
+    body.has-cobar{padding-bottom:var(--nu-cobar-height)}
     /* The menu has nowhere to go but up now. It is anchored to the sort button,
        so clear the bar's own padding as well to land on the same gap above the
        bar as the filter sheet. */
-    .sort-menu{top:auto;bottom:calc(100% + var(--nu-mobar-pad) + var(--nu-mobar-gap))}
+    .sort-menu{top:auto;bottom:calc(100% + var(--nu-mobar-padding) + var(--nu-mobar-gap))}
     /* a long sort label must not push the bar into two lines */
     .sort-btn{max-width:62vw}
     .sort-btn #sortLbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1356,7 +1356,7 @@
          desktop column, and leaving it set here would over-constrain the box
          and stretch the sheet from the top of the screen instead. */
       /* sits flush on the bar: the two read as one block of controls */
-      position:fixed;left:0;right:0;top:auto;bottom:var(--nu-mobar-h);z-index:80;
+      position:fixed;left:0;right:0;top:auto;bottom:var(--nu-mobar-height);z-index:80;
       max-height:min(62vh,460px);overflow-y:auto;
       /* filters-hidden is set while the sheet is up (it collapses the inline
          copy), and that rule also parks pointer-events — hand them back, or the
@@ -1373,7 +1373,7 @@
     /* closing: drop it past the bar before it goes back into the flow */
     body.fsheet.fsheet-out .shop .filters{
       animation:none;
-      transform:translateY(calc(100% + var(--nu-mobar-h)));
+      transform:translateY(calc(100% + var(--nu-mobar-height)));
       transition:transform var(--nu-motion-base) ease;
     }
     body.fsheet .fsheet-head{
@@ -1410,7 +1410,7 @@
     .sheet-backdrop{transition:none}
   }
   @media (max-width:380px){
-    :root{--nu-cover-w:58%}
+    :root{--nu-cover-width:58%}
     .grid{grid-template-columns:1fr}
 
   }

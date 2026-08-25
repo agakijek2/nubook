@@ -599,8 +599,8 @@ function measureBars(){
      off-grid value into a clearance the spacing scale is supposed to govern.
      Up, never down, so the bar can never crop the content beneath it. */
   const grid = px => Math.ceil(px / 4) * 4 + "px";
-  if (!bar.hidden) root.setProperty("--nu-mobar-h", grid(bar.offsetHeight));
-  if (!co.hidden)  root.setProperty("--nu-cobar-h", grid(co.offsetHeight));
+  if (!bar.hidden) root.setProperty("--nu-mobar-height", grid(bar.offsetHeight));
+  if (!co.hidden)  root.setProperty("--nu-cobar-height", grid(co.offsetHeight));
 }
 window.addEventListener("resize", ()=>{
   if (!isMobile()) closeFilterSheet();
@@ -1664,8 +1664,9 @@ const DS_TOKEN_GROUPS = [
   ["primitive", ["--nu-white","--nu-grey","--nu-red","--nu-burgundy","--nu-gold"]],
   ["colour",    ["--nu-bg","--nu-fg","--nu-border"]],
   ["type",      ["--nu-font","--nu-text","--nu-tracking"]],
-  ["space",     ["--nu-space","--nu-gutter"]],
-  ["size",      ["--nu-cover","--nu-thumb","--nu-control","--nu-field","--nu-mobar","--nu-cobar","--nu-measure"]],
+  ["space",     ["--nu-space"]],
+  ["layout",    ["--nu-gutter","--nu-form-max"]],
+  ["component", ["--nu-cover","--nu-thumb","--nu-control","--nu-field","--nu-mobar","--nu-cobar"]],
   ["icon",      ["--nu-icon"]],
   ["motion",    ["--nu-motion","--nu-ease"]],
   ["focus",     ["--nu-focus"]],
@@ -1801,7 +1802,7 @@ function dsSpaceSteps(){
     ["xlarge", [L("The sides of the committing action","Boki akcji wiążącej"),
                 L("The two halves of a bar or a header","Dwie połowy paska albo nagłówka")]],
     ["huge",   [L("The shop's bottom edge on mobile","Dolna krawędź sklepu na mobile"),
-                L("Columns of a layout, through --nu-gutter-col; above a documentation chapter","Kolumny układu, przez --nu-gutter-col; nad rozdziałem dokumentacji")]],
+                L("Columns of a layout, through --nu-gutter-column; above a documentation chapter","Kolumny układu, przez --nu-gutter-column; nad rozdziałem dokumentacji")]],
     ["max",    [L("The page's bottom edge, and the empty state","Dolna krawędź strony i stan pusty"), null]],
   ]);
   const P = "--nu-space-";
@@ -2014,7 +2015,7 @@ const DS_SECTIONS = [
     const names = {
       primitive: L("Primitives","Prymitywy"), colour: L("Colour","Kolor"),
       type: L("Typography","Typografia"), space: L("Spacing","Odstępy"),
-      size: L("Sizes","Rozmiary"), icon: L("Icons","Ikony"),
+      layout: L("Layout","Układ"), component: L("Component","Komponentowe"), icon: L("Icons","Ikony"),
       motion: L("Motion","Ruch"), focus: L("Focus","Fokus"),
       other: L("Not sorted yet","Jeszcze nieprzypisane"),
     };
@@ -2063,14 +2064,20 @@ const DS_SECTIONS = [
         "Każda tabela w tej dokumentacji czyta wartości z arkusza. Token zmieniony w kodzie zmienia się tutaj w tej samej sekundzie i dlatego żadna zakładka nie może się rozjechać z tym, co sklep naprawdę robi.")}</td></tr>
     </tbody></table>
 
-    <h3>${L("Two layers","Dwie warstwy")}</h3>
+    <h3>${L("Three levels","Trzy poziomy")}</h3>
     <p>${L(
-      "A <strong>primitive</strong> names a value and nothing else: <code>--nu-grey-600</code> is a grey, and primitives are the only place a hex appears in the whole sheet. A <strong>semantic</strong> token names a role and points at a primitive: <code>--nu-fg-secondary</code> is supporting text, which today happens to be that grey. Components reference the second layer only. That is what lets the grey move without every rule that uses it having to be found, and what lets two roles holding the same value part company later without anything breaking.",
-      "<strong>Prymityw</strong> nazywa wartość i nic poza tym: <code>--nu-grey-600</code> to szarość, a prymitywy są jedynym miejscem w całym arkuszu, gdzie pojawia się zapis heks. Token <strong>semantyczny</strong> nazywa rolę i wskazuje na prymityw: <code>--nu-fg-secondary</code> to tekst pomocniczy, który dziś akurat jest tą szarością. Komponenty odwołują się wyłącznie do drugiej warstwy. Dzięki temu szarość może się zmienić bez szukania wszystkich reguł, które jej używają, a dwie role o tej samej wartości mogą się później rozejść, nic nie psując.")}</p>
+      "A <strong>primitive</strong> names a value and nothing else: <code>--nu-grey-600</code> is a grey, and primitives are the only place a hex appears in the whole sheet. A <strong>semantic</strong> token names a role and points at a primitive: <code>--nu-fg-secondary</code> is supporting text, which today happens to be that grey. A rule in the sheet reaches for the second level, never the first. That is what lets the grey move without every rule that uses it having to be found, and what lets two roles holding the same value part company later without anything breaking.",
+      "<strong>Prymityw</strong> nazywa wartość i nic poza tym: <code>--nu-grey-600</code> to szarość, a prymitywy są jedynym miejscem w całym arkuszu, gdzie pojawia się zapis heks. Token <strong>semantyczny</strong> nazywa rolę i wskazuje na prymityw: <code>--nu-fg-secondary</code> to tekst pomocniczy, który dziś akurat jest tą szarością. Reguła w arkuszu sięga po drugi poziom, nigdy po pierwszy. Dzięki temu szarość może się zmienić bez szukania wszystkich reguł, które jej używają, a dwie role o tej samej wartości mogą się później rozejść, nic nie psując.")}</p>
 
     <p>${L(
-      "The two layers are not a colour arrangement, although colour is where they show most. Four tokens name a role over the spacing scale: <code>--nu-gutter-col</code>, <code>--nu-mobar-h</code>, <code>--nu-mobar-pad</code> and <code>--nu-mobar-gap</code>. The last two hold the same value today and stay apart precisely so they can move apart later.",
-      "Dwie warstwy nie są układem kolorystycznym, choć przy kolorze widać je najmocniej. Cztery tokeny nazywają rolę nad skalą odstępów: <code>--nu-gutter-col</code>, <code>--nu-mobar-h</code>, <code>--nu-mobar-pad</code> i <code>--nu-mobar-gap</code>. Dwa ostatnie mają dziś tę samą wartość i są osobno właśnie po to, żeby móc się później rozejść.")}</p>
+      "This is not a colour arrangement, although colour is where it shows most. Five tokens name a role over the spacing scale: <code>--nu-gutter-column</code>, <code>--nu-mobar-height</code>, <code>--nu-cobar-height</code>, <code>--nu-mobar-padding</code> and <code>--nu-mobar-gap</code>. The two bar heights point at one step because the bars are meant to be the same height; the last two hold the same value and stay apart precisely so they can move apart later.",
+      "To nie jest układ kolorystyczny, choć przy kolorze widać go najmocniej. Pięć tokenów nazywa rolę nad skalą odstępów: <code>--nu-gutter-column</code>, <code>--nu-mobar-height</code>, <code>--nu-cobar-height</code>, <code>--nu-mobar-padding</code> i <code>--nu-mobar-gap</code>. Wysokości obu belek wskazują na jeden stopień, bo belki mają być tej samej wysokości; dwa ostatnie mają tę samą wartość i są osobno właśnie po to, żeby móc się później rozejść.")}</p>
+    <p>${L(
+      "A <strong>component</strong> token is the third level: a value belonging to one component and read nowhere else &ndash; the height of the mobile bar, the size of a cart thumbnail, the width of a four-character field. It is named that way in <a class=\"link\" href=\"https://primer.style/product/primitives/token-names/\" target=\"_blank\" rel=\"noopener\">Primer</a>, GitHub's design system, which keeps the same three levels and allows a component token only in that component's own CSS.",
+      "Token <strong>komponentowy</strong> to trzeci poziom: wartość należąca do jednego komponentu i nieczytana nigdzie indziej &ndash; wysokość belki na telefonie, rozmiar miniatury w koszyku, szerokość pola na cztery znaki. Tak nazywa go <a class=\"link\" href=\"https://primer.style/product/primitives/token-names/\" target=\"_blank\" rel=\"noopener\">Primer</a>, system projektowy GitHuba, który trzyma te same trzy poziomy i dopuszcza token komponentowy wyłącznie w CSS swojego komponentu.")}</p>
+    <p>${L(
+      "The levels hold in the code: not one primitive is read outside <code>:root</code> &ndash; every rule in the sheet reaches for a semantic or a component token instead. What the shop does not have is a dimension ramp under the scales, of the kind Primer writes as <code>base-size-4</code>. A base level of that sort earns its place by being referenced from a functional level above it, and here the scales are that level already: a step is named after the job it does, so a second name beneath it would say the number and nothing more.",
+      "Poziomy trzymają się w kodzie: ani jeden prymityw nie jest czytany poza <code>:root</code> &ndash; każda reguła w arkuszu sięga po token semantyczny albo komponentowy. Czego sklep nie ma, to rampy wymiarów pod skalami, takiej jak <code>base-size-4</code> w Primerze. Taki poziom bazowy zarabia na siebie tym, że odwołuje się do niego poziom funkcjonalny nad nim &ndash; a u nas skale są już tym poziomem: stopień nazwany jest od zadania, które wykonuje, więc druga nazwa pod nim mówiłaby liczbę i nic poza tym.")}</p>
     <p>${L(
       "A second name is written when one value carries roles that have to be able to part company &ndash; not for symmetry. Common practice states the rule more strictly: a component should never point at a primitive at all. The spacing scale here is read directly by components and holds up under that, because its steps are named after the job they do rather than after a number, and the Spacing tab gives each of them its two roles. A grey called <code>--nu-grey-900</code> says nothing about its job, and one grey serves three unrelated ones &ndash; which is the whole reason that layer exists.",
       "Druga nazwa powstaje wtedy, gdy jedna wartość obsługuje role, które muszą móc się rozjechać &ndash; a nie dla symetrii. Praktyka branżowa ujmuje tę zasadę ostrzej: komponent nie powinien wskazywać na prymityw w ogóle. Skala odstępów jest tu czytana przez komponenty wprost i broni się tym, że jej stopnie nazwane są od zadania, które wykonują, a nie od liczby &ndash; zakładka Odstępy przypisuje każdemu dwie role. Szarość o nazwie <code>--nu-grey-900</code> nie mówi nic o swoim zadaniu, a jedna szarość obsługuje trzy niepowiązane &ndash; i to jest cały powód, dla którego ta warstwa istnieje.")}</p>
@@ -2314,11 +2321,11 @@ const DS_SECTIONS = [
     <colgroup><col class="c-token"><col class="c-source"><col></colgroup>
     <thead><tr><th>Token</th><th>${L("Built from","Zbudowany z")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead>
     <tbody>
-      <tr><td class="spec"><code>--nu-gutter-col</code></td><td>${dsDecl("--nu-gutter-col")} &middot; ${dsVal("--nu-gutter-col")}</td>
+      <tr><td class="spec"><code>--nu-gutter-column</code></td><td>${dsDecl("--nu-gutter-column")} &middot; ${dsVal("--nu-gutter-column")}</td>
           <td>${L("The gap between columns in every side-by-side layout: shop, product, checkout, these docs. One name, because how far apart two columns sit is a single decision.","Odstęp między kolumnami w każdym układzie dwukolumnowym: sklep, produkt, zamówienie, ta dokumentacja. Jedna nazwa, bo to, jak daleko od siebie stoją dwie kolumny, jest jedną decyzją.")}</td></tr>
-      <tr><td class="spec"><code>--nu-mobar-h</code><br><code>--nu-cobar-h</code></td><td>${dsDecl("--nu-mobar-h")} &middot; ${dsVal("--nu-mobar-h")}</td>
+      <tr><td class="spec"><code>--nu-mobar-height</code><br><code>--nu-cobar-height</code></td><td>${dsDecl("--nu-mobar-height")} &middot; ${dsVal("--nu-mobar-height")}</td>
           <td>${L("The height of each mobile bar: filters and sorting on the product list, the total and the submit in checkout. The page reserves exactly this much room at its foot, and the filter sheet sits on top of it. The step is a starting value: once the bar is rendered, the script replaces it with the measured height rounded up to the 4px rhythm, so a longer sort label in another language, or the safe area on a phone with a gesture bar, is never cropped.","Wysokość każdej mobilnej belki: filtry i sortowanie na liście produktów, suma i złożenie zamówienia w kasie. Strona rezerwuje dokładnie tyle miejsca u dołu, a arkusz filtrów siada na belce. Stopień jest wartością wyjściową: po wyrenderowaniu belki skrypt zastępuje go zmierzoną wysokością, zaokrągloną w górę do rytmu 4px, więc dłuższa etykieta sortowania w innym języku ani pasek gestu na telefonie nie zostaną przycięte.")}</td></tr>
-      <tr><td class="spec"><code>--nu-mobar-pad</code><br><code>--nu-mobar-gap</code></td><td>${dsDecl("--nu-mobar-pad")} &middot; ${dsVal("--nu-mobar-pad")}</td>
+      <tr><td class="spec"><code>--nu-mobar-padding</code><br><code>--nu-mobar-gap</code></td><td>${dsDecl("--nu-mobar-padding")} &middot; ${dsVal("--nu-mobar-padding")}</td>
           <td>${L("The bar's inner padding, and the air between the bar and the sort menu opening above it. One value for both, so the menu clears the bar by exactly as much as the bar holds inside itself.","Wypełnienie wewnątrz belki oraz powietrze między belką a menu sortowania otwierającym się nad nią. Jedna wartość na oba, więc menu odsuwa się od belki dokładnie o tyle, ile belka trzyma w środku.")}</td></tr>
     </tbody></table>
     <h3>${L("Worked example","Przykład")}</h3>
@@ -2662,10 +2669,10 @@ const DS_SECTIONS = [
     <table id="tileVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Tile","Kafel")}<br><code>.tile</code></td>
         <td>${L("A field with a cover centred in it, and room for one badge. The grid and the product page carry the same tile at two scales, which is what lets opening a book be one uninterrupted zoom.","Pole z wyśrodkowaną okładką i miejscem na jedną odznakę. Siatka i karta produktu mają ten sam kafel w dwóch skalach i to właśnie pozwala, by otwarcie książki było jednym nieprzerwanym powiększeniem.")}</td>
-        <td><code>--nu-bg-secondary</code>, ${dsTok("--nu-cover-w")}</td></tr>
+        <td><code>--nu-bg-secondary</code>, ${dsTok("--nu-cover-width")}</td></tr>
       <tr><td>${L("Thumbnail","Miniatura")}<br><code>.ci-cover</code></td>
         <td>${L("The cover alone: no field, no badge, and a width of its own. Used in the cart drawer and on the cart page, where a title only has to be recognisable in a list.","Sama okładka: bez pola, bez odznaki, z własną szerokością. Używana w szufladzie koszyka i na stronie koszyka, gdzie tytuł ma być tylko rozpoznawalny na liście.")}</td>
-        <td>${dsTok("--nu-thumb-sm")}, ${dsTok("--nu-thumb-md")}</td></tr>
+        <td>${dsTok("--nu-thumb-size-sm")}, ${dsTok("--nu-thumb-size-md")}</td></tr>
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
@@ -2676,8 +2683,8 @@ const DS_SECTIONS = [
         "7:10, held by the box rather than by the image, so a cover of any proportion is cropped to one shape across the whole shop.",
         "7:10, trzymane przez pole, a nie przez obrazek, więc okładka o dowolnych proporcjach jest kadrowana do jednego kształtu w całym sklepie.")}</td></tr>
       <tr><td>${L("Cover width","Szerokość okładki")}</td><td>${L(
-        `Inside a tile: ${dsTok("--nu-cover-w")} of it, one value per breakpoint. Standing alone, the cover fills its thumbnail instead, and the thumbnail carries the width: ${dsTok("--nu-thumb-sm")} in the cart drawer, ${dsTok("--nu-thumb-md")} on the cart page.`,
-        `W kaflu: ${dsTok("--nu-cover-w")} jego szerokości, jedna wartość na próg. Stojąc sama, okładka wypełnia miniaturę, a szerokość ma miniatura: ${dsTok("--nu-thumb-sm")} w szufladzie koszyka, ${dsTok("--nu-thumb-md")} na stronie koszyka.`)}</td></tr>
+        `Inside a tile: ${dsTok("--nu-cover-width")} of it, one value per breakpoint. Standing alone, the cover fills its thumbnail instead, and the thumbnail carries the width: ${dsTok("--nu-thumb-size-sm")} in the cart drawer, ${dsTok("--nu-thumb-size-md")} on the cart page.`,
+        `W kaflu: ${dsTok("--nu-cover-width")} jego szerokości, jedna wartość na próg. Stojąc sama, okładka wypełnia miniaturę, a szerokość ma miniatura: ${dsTok("--nu-thumb-size-sm")} w szufladzie koszyka, ${dsTok("--nu-thumb-size-md")} na stronie koszyka.`)}</td></tr>
       <tr><td>${L("Shadow","Cień")}</td><td>${L(
         "The cover casts a shadow, the tile does not &ndash; that is what separates the two. A thumbnail casts a shallower one, because it stands in a list rather than on a surface.",
         "Cień rzuca okładka, nie kafel &ndash; dzięki temu odcina się od pola. Miniatura rzuca płytszy, bo stoi na liście, a nie na powierzchni.")}</td></tr>
@@ -2728,8 +2735,8 @@ const DS_SECTIONS = [
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Button size","Rozmiar przycisku")}</td><td>${L(
-        `${dsTok("--nu-control-sm")} square, the smallest touch target in the shop. WCAG asks for 24&times;24 CSS px, which this exceeds with a margin.`,
-        `Kwadrat ${dsTok("--nu-control-sm")}, najmniejsze pole dotyku w sklepie. WCAG wymaga 24&times;24 px CSS, co ta wartość przekracza z zapasem.`)}</td></tr>
+        `${dsTok("--nu-control-size-sm")} square, the smallest touch target in the shop. WCAG asks for 24&times;24 CSS px, which this exceeds with a margin.`,
+        `Kwadrat ${dsTok("--nu-control-size-sm")}, najmniejsze pole dotyku w sklepie. WCAG wymaga 24&times;24 px CSS, co ta wartość przekracza z zapasem.`)}</td></tr>
       <tr><td>${L("Value column","Kolumna wartości")}</td><td>${L(
         `The same value as a minimum width, in tabular figures &ndash; that is what keeps the control from resizing between 9 and 10.`,
         `Ta sama wartość jako szerokość minimalna, cyfry tabelaryczne &ndash; dzięki temu kontrolka nie zmienia szerokości między 9 a 10.`)}</td></tr>
@@ -2982,8 +2989,8 @@ const DS_SECTIONS = [
         "Street, building number and flat number are one address, so they share a row. Each field hands its three rows &ndash; label, control, message &ndash; up to the row through subgrid. A label that wraps to two lines, or a message appearing under one field, then moves that row for the whole group instead of shifting one field against its neighbours. Labels sit at the bottom of their row, so each one keeps the same distance from the control it names.",
         "Ulica, numer domu i numer lokalu to jeden adres, więc dzielą wiersz. Każde pole oddaje wierszowi swoje trzy rzędy &ndash; etykietę, kontrolkę i komunikat &ndash; przez subgrid. Etykieta łamiąca się na dwie linie albo komunikat pojawiający się pod jednym polem przesuwa wtedy cały rząd, a nie jedno pole względem sąsiadów. Etykiety siedzą przy dolnej krawędzi swojego rzędu, więc każda stoi w tej samej odległości od kontrolki, którą nazywa.")}</td></tr>
       <tr><td>${L("Field width","Szerokość pola")}</td><td>${L(
-        `A control takes the full width of the place it stands in, and the place is either a grid column sharing the row evenly or a track of its own. A building number, a flat number and a dialling code are sized for four characters, so all three take one width: ${dsTok("--nu-field-short")}. It is set by the widest case, the dialling code, because a select holds the four characters, the gap and the chevron; the plain fields follow it and the row lines up. Four characters is the size, not a limit &ndash; a longer number scrolls inside the field, because refusing an address would cost more than a tight box.`,
-        `Kontrolka zajmuje całą szerokość miejsca, w którym stoi, a miejsce jest albo kolumną siatki dzielącą wiersz po równo, albo własnym torem. Numer domu, numer lokalu i prefiks są zwymiarowane pod cztery znaki, więc wszystkie trzy mają jedną szerokość: ${dsTok("--nu-field-short")}. Ustala ją przypadek najszerszy, czyli prefiks, bo select mieści cztery znaki, odstęp i chevron; pozostałe pola idą za nim i wiersz się wyrównuje. Cztery znaki to rozmiar, a nie granica &ndash; dłuższy numer przewija się w polu, bo odmówienie przyjęcia adresu kosztowałoby więcej niż ciasne pole.`)}</td></tr>
+        `A control takes the full width of the place it stands in, and the place is either a grid column sharing the row evenly or a track of its own. A building number, a flat number and a dialling code are sized for four characters, so all three take one width: ${dsTok("--nu-field-width-short")}. It is set by the widest case, the dialling code, because a select holds the four characters, the gap and the chevron; the plain fields follow it and the row lines up. Four characters is the size, not a limit &ndash; a longer number scrolls inside the field, because refusing an address would cost more than a tight box.`,
+        `Kontrolka zajmuje całą szerokość miejsca, w którym stoi, a miejsce jest albo kolumną siatki dzielącą wiersz po równo, albo własnym torem. Numer domu, numer lokalu i prefiks są zwymiarowane pod cztery znaki, więc wszystkie trzy mają jedną szerokość: ${dsTok("--nu-field-width-short")}. Ustala ją przypadek najszerszy, czyli prefiks, bo select mieści cztery znaki, odstęp i chevron; pozostałe pola idą za nim i wiersz się wyrównuje. Cztery znaki to rozmiar, a nie granica &ndash; dłuższy numer przewija się w polu, bo odmówienie przyjęcia adresu kosztowałoby więcej niż ciasne pole.`)}</td></tr>
     </tbody></table>
 
     <h3>${L("Two controls, one answer","Dwie kontrolki, jedna odpowiedź")}</h3>
