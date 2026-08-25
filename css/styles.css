@@ -185,13 +185,18 @@
        opening a book zooms one and the same box from the grid to the product
        page, so the two have to agree at every width or the transition snaps. */
     --nu-cover-width:62%;
-    /* A cover standing on its own, outside a tile. Two sizes of one thing:
-       the cart drawer is narrower than the cart page. */
-    --nu-thumb-size-sm:44px;  --nu-thumb-size-md:64px;
-    /* Smallest touch target in the shop. WCAG asks for 24x24 CSS px; this keeps
-       a margin over it and sets the width of the value between the two buttons,
-       so the control does not resize between 9 and 10. */
-    --nu-control-size-sm:26px;
+    /* A cover standing on its own, outside a tile. Two sizes of one thing: the
+       cart drawer is narrower than the cart page. In rem because the thumbnail
+       shares its row with a title and a price, and a row where only the text grows
+       stops belonging to the cover at all. */
+    --nu-thumb-size-sm:2.75rem;  --nu-thumb-size-md:4rem;
+    /* The stepper's button, sized by the icon it holds rather than by a finger:
+       the icon is in rem, so the button has to be too, or the two drift apart the
+       moment a reader enlarges text. WCAG asks for 24x24 CSS px, which this clears
+       at the default root size and only exceeds above it. It also sets the width of
+       the value between the two buttons, so the control does not resize between
+       9 and 10. */
+    --nu-control-size-sm:1.625rem;
     /* A field holding up to four characters: a building number, a flat number,
        a dialling code. One value for all three, so fields that stand in a row
        line up. The width is set by the widest case, a select - it holds the four

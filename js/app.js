@@ -2128,11 +2128,11 @@ const DS_SECTIONS = [
       "Czytelniczka, która ustawia w przeglądarce większy domyślny rozmiar tekstu, mówi każdej stronie, czego potrzebuje. Wartość zapisana w <code>px</code> to ignoruje, wartość w <code>rem</code> za tym idzie. Co jest właściwe, rozstrzyga jedno pytanie: czy ta wartość istnieje przez tekst, czy mimo tekstu?")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>${L("Unit","Jednostka")}</th><th>${L("What is written in it","Co jest w niej zapisane")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>rem</code></td><td>${L(
-        "Text sizes, the whole spacing scale, icon containers, and a field sized for four characters. All of these exist because of the text, so all of them grow with it: padding keeps its proportion to the words it surrounds, and an icon standing beside a word stays the size of that word.",
-        "Rozmiary tekstu, cała skala odstępów, kontenery ikon i pole zwymiarowane pod cztery znaki. Wszystkie istnieją przez tekst, więc wszystkie razem z nim rosną: wypełnienie zachowuje proporcję do słów, które obejmuje, a ikona stojąca przy słowie zostaje wielkości tego słowa.")}</td></tr>
+        "Text sizes, the whole spacing scale, icon containers, the thumbnails and the stepper button, and a field sized for four characters. All of these exist because of the text, so all of them grow with it: padding keeps its proportion to the words it surrounds, an icon beside a word stays the size of that word, and a control stays the size of the icon it holds.",
+        "Rozmiary tekstu, cała skala odstępów, kontenery ikon, miniatury i przycisk steppera oraz pole zwymiarowane pod cztery znaki. Wszystkie istnieją przez tekst, więc wszystkie razem z nim rosną: wypełnienie zachowuje proporcję do słów, które obejmuje, ikona przy słowie zostaje wielkości tego słowa, a kontrolka zostaje wielkości ikony, którą trzyma.")}</td></tr>
       <tr><td class="spec"><code>px</code></td><td>${L(
-        "The focus ring and its offsets &ndash; a hairline is meant to stay a hairline. Touch targets and the smallest control, which are measured against a finger and against the WCAG minimum, not against a letter. The view's maximum width, which is a limit on the window. And the figures inside an icon's own drawing grid.",
-        "Obwódka fokusu i jej odsunięcia &ndash; włos ma zostać włosem. Pola dotyku i najmniejsza kontrolka, mierzone palcem i minimum WCAG, a nie literą. Maksymalna szerokość widoku, która jest granicą okna. Oraz liczby wewnątrz własnej siatki rysunku ikony.")}</td></tr>
+        "The focus ring and its offsets &ndash; a hairline is meant to stay a hairline. The view's maximum width, which is a limit on the window rather than on the text. And the figures inside an icon's own drawing grid.",
+        "Obwódka fokusu i jej odsunięcia &ndash; włos ma zostać włosem. Maksymalna szerokość widoku, która jest granicą okna, a nie tekstu. Oraz liczby wewnątrz własnej siatki rysunku ikony.")}</td></tr>
     </tbody></table>
 
     <h3>${L("How they are named","Jak są nazywane")}</h3>
