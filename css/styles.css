@@ -69,13 +69,16 @@
     --nu-font-display:"DM Serif Display",Georgia,serif;   /* identity & headings */
     --nu-font-text:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
 
-    --nu-text-h1:30px;      /* the subject of a view */
-    --nu-text-h2:24px;      /* a section within a view */
-    --nu-text-h3:18px;      /* smallest display step: footer mark, doc subheads */
-    --nu-text-body-l:18px;  /* emphasis in running copy: price, avatar initial */
-    --nu-text-body-m:13px;  /* running copy, controls, legal text */
-    --nu-text-label:11px;   /* uppercase labels and badges */
-    --nu-text-caption:10px; /* counts and annotations attached to another element */
+    /* Size on its own, named by size. A step says how big, never what for —
+       what for is the business of a style, which points at one of these. Two
+       styles sharing a step today part company by pointing at different ones,
+       not by the scale growing a second value of the same size. */
+    --nu-text-size-xs:10px;
+    --nu-text-size-sm:11px;
+    --nu-text-size-md:13px;
+    --nu-text-size-lg:18px;
+    --nu-text-size-xl:24px;
+    --nu-text-size-2xl:30px;
 
     /* line height — six steps, named after how much air the line needs rather
        than after the number. A step is a ratio, so it holds at every size. */
@@ -99,15 +102,15 @@
        every font property it does not mention — font-style and
        font-variant-numeric among them — so where a rule wants italics or
        tabular figures, the shorthand goes first and the exception after it. */
-    --nu-type-h1:var(--nu-weight-normal) var(--nu-text-h1)/var(--nu-line-tight) var(--nu-font-display);
-    --nu-type-h2:var(--nu-weight-normal) var(--nu-text-h2)/var(--nu-line-tight) var(--nu-font-display);
-    --nu-type-h3:var(--nu-weight-normal) var(--nu-text-h3)/var(--nu-line-tight) var(--nu-font-display);
-    --nu-type-body-l:var(--nu-weight-normal) var(--nu-text-body-l)/var(--nu-line-normal) var(--nu-font-text);
-    --nu-type-body-m:var(--nu-weight-normal) var(--nu-text-body-m)/var(--nu-line-normal) var(--nu-font-text);
-    --nu-type-prose:var(--nu-weight-normal) var(--nu-text-body-m)/var(--nu-line-relaxed) var(--nu-font-text);
-    --nu-type-label:var(--nu-weight-normal) var(--nu-text-label)/var(--nu-line-flat) var(--nu-font-text);
-    --nu-type-label-strong:var(--nu-weight-medium) var(--nu-text-label)/var(--nu-line-flat) var(--nu-font-text);
-    --nu-type-caption:var(--nu-weight-normal) var(--nu-text-caption)/var(--nu-line-flat) var(--nu-font-text);
+    --nu-type-h1:var(--nu-weight-normal) var(--nu-text-size-2xl)/var(--nu-line-tight) var(--nu-font-display);
+    --nu-type-h2:var(--nu-weight-normal) var(--nu-text-size-xl)/var(--nu-line-tight) var(--nu-font-display);
+    --nu-type-h3:var(--nu-weight-normal) var(--nu-text-size-lg)/var(--nu-line-tight) var(--nu-font-display);
+    --nu-type-body-l:var(--nu-weight-normal) var(--nu-text-size-lg)/var(--nu-line-normal) var(--nu-font-text);
+    --nu-type-body-m:var(--nu-weight-normal) var(--nu-text-size-md)/var(--nu-line-normal) var(--nu-font-text);
+    --nu-type-prose:var(--nu-weight-normal) var(--nu-text-size-md)/var(--nu-line-relaxed) var(--nu-font-text);
+    --nu-type-label:var(--nu-weight-normal) var(--nu-text-size-sm)/var(--nu-line-flat) var(--nu-font-text);
+    --nu-type-label-strong:var(--nu-weight-medium) var(--nu-text-size-sm)/var(--nu-line-flat) var(--nu-font-text);
+    --nu-type-caption:var(--nu-weight-normal) var(--nu-text-size-xs)/var(--nu-line-flat) var(--nu-font-text);
 
     /* letter-spacing — scales against size and length, not case */
     --nu-tracking-display:-.017em; /* large display type: the wordmark */
@@ -243,7 +246,7 @@
   .promo{
     background:var(--nu-bg-inverse);color:var(--nu-fg-inverse);
     padding:var(--nu-space-micro) var(--nu-space-small);
-    text-align:center;font-size:var(--nu-text-body-m);
+    text-align:center;font-size:var(--nu-text-size-md);
   }
   .promo p{margin:0}
   .promo .btn-ghost{
@@ -270,7 +273,7 @@
        leading would leave the dot floating, so the line is set flat and the style
        is assembled here rather than taken from --nu-type-h1. */
     font-family:var(--nu-font-display);font-weight:var(--nu-weight-normal);
-    font-size:var(--nu-text-h1);line-height:var(--nu-line-flat);letter-spacing:var(--nu-tracking-display);
+    font-size:var(--nu-text-size-2xl);line-height:var(--nu-line-flat);letter-spacing:var(--nu-tracking-display);
     display:inline-flex;align-items:baseline;
     position:relative;
   }
@@ -334,10 +337,10 @@
     .logo .mark::after{animation:none;background:var(--nu-fg-primary);filter:none;transform:none}
   }
   .logo .strap{
-    font-size:var(--nu-text-label);color:var(--nu-fg-secondary);
+    font-size:var(--nu-text-size-sm);color:var(--nu-fg-secondary);
   }
   .head-right{display:flex;align-items:center;gap:var(--nu-space-xlarge)}
-  .switchers{display:flex;align-items:center;gap:var(--nu-space-small);font-size:var(--nu-text-body-m)}
+  .switchers{display:flex;align-items:center;gap:var(--nu-space-small);font-size:var(--nu-text-size-md)}
   /* Layout only. The two options inside are chips: a pair of mutually exclusive
      facets reporting through aria-pressed, which is the chip's definition. Only
      the separator between them keeps the group's own colour. */
@@ -487,14 +490,14 @@
   .shop.filters-hidden .filters{opacity:0;pointer-events:none}
   .filters-ghost{pointer-events:none;z-index:5}
   .filter-row{display:flex;flex-direction:column;gap:var(--nu-space-micro)}
-  .filter-label{color:var(--nu-fg-secondary);font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase}
+  .filter-label{color:var(--nu-fg-secondary);font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase}
   .chip-row{display:flex;flex-wrap:wrap;gap:var(--nu-space-nano) var(--nu-space-small);align-items:baseline}
   .chip{position:relative;color:var(--nu-fg-primary)}
   /* The underline belongs to the label, not to the whole button: the count is a
      separate piece of information, and running under it would read as part of the
      name. Hence the inner span - a border cannot stop halfway across an element. */
   .chip .chip-t{border-bottom:1px solid transparent;padding-bottom:1px}
-  .chip sup{font-size:var(--nu-text-caption);color:var(--nu-fg-tertiary);margin-left:var(--nu-space-nano)}
+  .chip sup{font-size:var(--nu-text-size-xs);color:var(--nu-fg-tertiary);margin-left:var(--nu-space-nano)}
   .chip[aria-pressed="true"] .chip-t{border-bottom-color:var(--nu-border-primary)}
   .chip:hover .chip-t{border-bottom-color:var(--nu-fg-secondary)}
   .chip:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
@@ -560,7 +563,7 @@
   }
   .badge{
     position:absolute;top:var(--nu-space-milli);left:var(--nu-space-milli);z-index:2;
-    font-size:var(--nu-text-label);line-height:var(--nu-line-flat);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    font-size:var(--nu-text-size-sm);line-height:var(--nu-line-flat);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
     padding:var(--nu-space-nano) var(--nu-space-micro);background:var(--nu-bg-primary);border:1px solid var(--nu-border-primary);
   }
   .badge.soon{background:var(--nu-bg-inverse);color:var(--nu-fg-inverse)}
@@ -630,7 +633,7 @@
   .p-info{max-width:480px;padding-top:var(--nu-space-micro)}
   .p-title{font:var(--nu-type-h1);margin-bottom:var(--nu-space-nano)}
   .p-author{color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-medium)}
-  .p-price{font-size:var(--nu-text-body-l);font-variant-numeric:tabular-nums;margin-bottom:var(--nu-space-medium)}
+  .p-price{font-size:var(--nu-text-size-lg);font-variant-numeric:tabular-nums;margin-bottom:var(--nu-space-medium)}
   .p-price.is-out{color:var(--nu-fg-secondary);text-decoration:line-through}
   .p-desc{margin-bottom:var(--nu-space-small);max-width:42ch}
   .p-quote{
@@ -643,7 +646,7 @@
   }
   .p-quote .q-by{
     display:block;margin-top:var(--nu-space-micro);font-style:normal;
-    font-size:var(--nu-text-body-m);letter-spacing:var(--nu-tracking-compact);color:var(--nu-fg-secondary);
+    font-size:var(--nu-text-size-md);letter-spacing:var(--nu-tracking-compact);color:var(--nu-fg-secondary);
   }
   /* a solid em dash reads heavier than letterforms at the same colour,
      so lighten it slightly to match the text optically */
@@ -677,11 +680,11 @@
     width:96px;height:96px;border-radius:50%;
     background:var(--nu-bg-secondary);border:1px solid var(--nu-border-neutral);
     display:inline-flex;align-items:center;justify-content:center;
-    font-size:var(--nu-text-body-l);letter-spacing:var(--nu-tracking-compact);color:var(--nu-fg-primary);
+    font-size:var(--nu-text-size-lg);letter-spacing:var(--nu-tracking-compact);color:var(--nu-fg-primary);
     object-fit:cover;overflow:hidden;margin:var(--nu-space-medium) 0 var(--nu-space-medium);
   }
   .d-label{
-    font-size:var(--nu-text-caption);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    font-size:var(--nu-text-size-xs);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
     color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-micro);
   }
   .d-name{
@@ -796,7 +799,7 @@
     position:absolute;
     top:calc(var(--nu-space-micro) * -1);right:calc(var(--nu-space-micro) * -1);
     min-width:15px;height:15px;border-radius:50%;
-    background:var(--nu-bg-inverse);color:var(--nu-fg-inverse);font-size:var(--nu-text-caption);
+    background:var(--nu-bg-inverse);color:var(--nu-fg-inverse);font-size:var(--nu-text-size-xs);
     /* The one line height in pixels rather than a ratio: it equals the circle's
        own height, which is what centres the count in it. A ratio would drift
        against that height the moment the caption size moved. */
@@ -840,7 +843,7 @@
   .ci-cover .cover{width:100%;max-width:none;box-shadow:0 2px 8px color-mix(in srgb, var(--nu-bg-inverse) 18%, transparent)}
   .ci-main{flex:1;min-width:0}
   .ci-title{display:block;line-height:var(--nu-line-snug);margin-bottom:var(--nu-space-nano)}
-  .ci-price{color:var(--nu-fg-secondary);font-size:var(--nu-text-body-m);margin-bottom:var(--nu-space-micro)}
+  .ci-price{color:var(--nu-fg-secondary);font-size:var(--nu-text-size-md);margin-bottom:var(--nu-space-micro)}
   .ci-row{display:flex;align-items:center;justify-content:space-between;gap:var(--nu-space-milli)}
   .qty{display:inline-flex;align-items:center;border:1px solid var(--nu-border-neutral)}
   .qty button{
@@ -866,8 +869,8 @@
     .fs-fill{transition:none}
   }
   .sum-row{display:flex;justify-content:space-between;padding:var(--nu-space-nano) 0;font-variant-numeric:tabular-nums}
-  .sum-row.muted{color:var(--nu-fg-secondary);font-size:var(--nu-text-body-m)}
-  .sum-row.total{font-size:var(--nu-text-body-l);padding-top:var(--nu-space-milli);margin-top:var(--nu-space-micro);border-top:1px solid var(--nu-border-neutral)}
+  .sum-row.muted{color:var(--nu-fg-secondary);font-size:var(--nu-text-size-md)}
+  .sum-row.total{font-size:var(--nu-text-size-lg);padding-top:var(--nu-space-milli);margin-top:var(--nu-space-micro);border-top:1px solid var(--nu-border-neutral)}
   .cart-cta{display:block;width:100%;text-align:center;margin-top:var(--nu-space-medium);padding:var(--nu-space-milli) 0}
   .cart-page-list .ci-cover{width:var(--nu-thumb-size-md)}
   .cart-page-list .ci{padding:var(--nu-space-medium) 0}
@@ -880,7 +883,7 @@
   .disc-row .input::placeholder{
     text-transform:none;letter-spacing:var(--nu-tracking-body);
   }
-  .disc-applied{font-size:var(--nu-text-body-m);margin-bottom:var(--nu-space-milli)}
+  .disc-applied{font-size:var(--nu-text-size-md);margin-bottom:var(--nu-space-milli)}
   .disc-applied .btn-ghost{margin-left:var(--nu-space-micro)}
 
   /* Cart and checkout are reading-and-deciding views, not a gallery: the whole
@@ -977,13 +980,13 @@
   .f-group:focus-within .input{border-color:var(--nu-border-primary)}
   .f-group:has(.is-error) .select{border-color:var(--nu-border-alert)}
 
-  .field label{display:block;font-size:var(--nu-text-label);color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-nano)}
+  .field label{display:block;font-size:var(--nu-text-size-sm);color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-nano)}
   .f-hint{text-transform:none;letter-spacing:var(--nu-tracking-body);color:var(--nu-fg-tertiary)}
   /* A line that stays empty until something is wrong. It pushes the fields below
      it rather than reserving space in every one: eight fields holding a blank
      line each would cost more than the shift costs when one is wrong. */
   .field-msg{
-    font-size:var(--nu-text-label);color:var(--nu-fg-alert);
+    font-size:var(--nu-text-size-sm);color:var(--nu-fg-alert);
     margin-top:var(--nu-space-nano);
   }
   .field-msg:empty{display:none}
@@ -998,14 +1001,14 @@
   .opt:has(input:checked){border-color:var(--nu-border-primary)}
   .opt input{accent-color:var(--nu-fg-primary);margin:0}
   .opt .o-main{flex:1}
-  .opt .o-sub{font-size:var(--nu-text-label);color:var(--nu-fg-secondary)}
+  .opt .o-sub{font-size:var(--nu-text-size-sm);color:var(--nu-fg-secondary)}
   .opt .o-price{font-variant-numeric:tabular-nums}
-  .consent{display:flex;gap:var(--nu-space-milli);align-items:flex-start;font-size:var(--nu-text-body-m);margin-bottom:var(--nu-space-milli);cursor:pointer}
+  .consent{display:flex;gap:var(--nu-space-milli);align-items:flex-start;font-size:var(--nu-text-size-md);margin-bottom:var(--nu-space-milli);cursor:pointer}
   .consent input{accent-color:var(--nu-fg-primary);margin-top:var(--nu-space-nano);flex-shrink:0}
   .legal{font:var(--nu-type-prose);color:var(--nu-fg-secondary);margin-top:var(--nu-space-medium);max-width:60ch}
   .co-side{position:sticky;top:var(--nu-space-medium);background:var(--nu-bg-secondary);padding:var(--nu-space-medium)}
   .co-side h3{font:var(--nu-type-label-strong);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-small)}
-  .co-item{display:flex;justify-content:space-between;gap:var(--nu-space-small);font-size:var(--nu-text-body-m);padding:var(--nu-space-nano) 0}
+  .co-item{display:flex;justify-content:space-between;gap:var(--nu-space-small);font-size:var(--nu-text-size-md);padding:var(--nu-space-nano) 0}
   .co-item .q{color:var(--nu-fg-secondary)}
   .order-btn{display:block;width:100%;margin-top:var(--nu-space-medium);padding:var(--nu-space-small) 0;text-align:center}
   .done-no{font:var(--nu-type-h1);margin:var(--nu-space-small) 0 var(--nu-space-medium)}
@@ -1017,7 +1020,7 @@
     display:flex;align-items:center;justify-content:space-between;gap:var(--nu-space-medium);
     padding:var(--nu-space-medium) var(--nu-space-small) var(--nu-space-large);margin-top:var(--nu-space-milli);
     border-top:1px solid var(--nu-border-neutral);
-    font-size:var(--nu-text-body-m);color:var(--nu-fg-secondary);
+    font-size:var(--nu-text-size-md);color:var(--nu-fg-secondary);
   }
   .foot-left{display:flex;align-items:baseline;gap:var(--nu-space-small);flex-wrap:wrap}
   .foot-mark{font:var(--nu-type-h3);color:var(--nu-fg-primary)}
@@ -1034,12 +1037,12 @@
     border-right:1px solid var(--nu-border-neutral);padding-right:var(--nu-space-medium);
   }
   .ds-nav-group{
-    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
     color:var(--nu-fg-secondary);margin:var(--nu-space-medium) 0 var(--nu-space-micro);
   }
   .ds-nav-group:first-child{margin-top:0}
   .ds-nav-item{
-    text-align:left;font:inherit;font-size:var(--nu-text-body-m);padding:var(--nu-space-nano) 0;
+    text-align:left;font:inherit;font-size:var(--nu-text-size-md);padding:var(--nu-space-nano) 0;
     color:var(--nu-fg-secondary);border-left:2px solid transparent;padding-left:var(--nu-space-milli);
     margin-left:calc(var(--nu-space-milli) * -1);
   }
@@ -1073,11 +1076,11 @@
   /* The opening paragraph of every page runs a step above the body, so the eye
      lands on the summary before it reaches the tables. */
   .ds .ds-lede{
-    font-size:var(--nu-text-body-l);line-height:var(--nu-line-normal);
+    font-size:var(--nu-text-size-lg);line-height:var(--nu-line-normal);
     color:var(--nu-fg-secondary);max-width:60ch;margin-bottom:var(--nu-space-medium);
   }
   .ds h2{
-    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
     color:var(--nu-fg-secondary);
     border-top:1px solid var(--nu-border-neutral);padding-top:var(--nu-space-small);margin:var(--nu-space-huge) 0 var(--nu-space-medium);
   }
@@ -1087,7 +1090,7 @@
      render here with different spacing than it has in the shop, which is the one
      thing a worked example must never do. */
   .ds p:not([class]){max-width:62ch;margin-bottom:var(--nu-space-milli)}
-  .ds table{width:100%;border-collapse:collapse;margin:var(--nu-space-milli) 0 var(--nu-space-medium);font-size:var(--nu-text-body-m)}
+  .ds table{width:100%;border-collapse:collapse;margin:var(--nu-space-milli) 0 var(--nu-space-medium);font-size:var(--nu-text-size-md)}
   .ds th,.ds td{
     /* Equal air above and below: the rule underneath a row reads as the end of
        that row, not as an underline stuck to its last line of text. */
@@ -1102,7 +1105,7 @@
      would push the parent row's rule further down than every other row's. */
   .ds td table{margin:var(--nu-space-micro) 0 0}
   .ds td table tr:last-child > td{border-bottom:0}
-  .ds th{color:var(--nu-fg-secondary);font-weight:var(--nu-weight-normal);font-size:var(--nu-text-label);
+  .ds th{color:var(--nu-fg-secondary);font-weight:var(--nu-weight-normal);font-size:var(--nu-text-size-sm);
     letter-spacing:var(--nu-tracking-caps);text-transform:uppercase}
   /* typography scale table: style + token columns never wrap */
   .ds .type-table{table-layout:fixed}
@@ -1146,7 +1149,7 @@
   }
   .ds .ds-play-lbl{
     flex:none;min-width:64px;
-    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
     text-transform:uppercase;color:var(--nu-fg-secondary);
   }
   .ds .ds-play-stage{margin-top:var(--nu-space-small);justify-content:center;min-height:88px}
@@ -1168,7 +1171,7 @@
      comes from the list rather than from somebody remembering to update it. */
   .ds .ds-tok-h{display:flex;align-items:baseline;gap:var(--nu-space-micro)}
   .ds .ds-tok-n{
-    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
     color:var(--nu-fg-secondary);font-weight:var(--nu-weight-normal);
   }
   .ds .demo{
@@ -1236,10 +1239,10 @@
   }
   .ds .ds-tiles .tile{width:140px}
   .ds .ds-specimens figcaption{
-    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
     text-transform:uppercase;color:var(--nu-fg-secondary);margin-top:var(--nu-space-micro);
   }
-  .ds .note{color:var(--nu-fg-secondary);font-size:var(--nu-text-body-m);margin-bottom:var(--nu-space-medium)}
+  .ds .note{color:var(--nu-fg-secondary);font-size:var(--nu-text-size-md);margin-bottom:var(--nu-space-medium)}
   /* same tint as the figures: a bar in this table is a measured distance too,
      and one reading for that across the whole tab */
   .ds .space-bar{background:var(--nu-bg-measure);height:12px;display:inline-block}
@@ -1263,10 +1266,10 @@
     margin:var(--nu-space-milli) 0 var(--nu-space-medium);
   }
   .ds .sp-cap{
-    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
     text-transform:uppercase;color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-micro);
   }
-  .ds .sp-note{font-size:var(--nu-text-body-m);color:var(--nu-fg-secondary);margin-top:var(--nu-space-micro)}
+  .ds .sp-note{font-size:var(--nu-text-size-md);color:var(--nu-fg-secondary);margin-top:var(--nu-space-micro)}
   .ds .sp-flex{display:flex;align-items:stretch}
   .ds .sp-thing{flex:1;height:48px;border:1px solid var(--nu-border-primary);background:var(--nu-bg-primary)}
   .ds .sp-gap{background:var(--nu-bg-measure);flex:none}
@@ -1278,7 +1281,7 @@
   .ds .sp-groups{display:flex;flex-direction:column;background:var(--nu-bg-measure)}
   .ds .sp-groups > div{background:var(--nu-bg-primary)}
   .ds .sp-groups .lb{
-    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
     text-transform:uppercase;color:var(--nu-fg-tertiary);margin-bottom:var(--nu-space-nano);
   }
   .ds .sp-groups .ln{height:10px;background:var(--nu-bg-secondary)}
@@ -1308,7 +1311,7 @@
     .p-grid{grid-template-columns:1fr;gap:var(--nu-space-medium)}
     .p-tile{max-width:none}
     .p-info{max-width:none}
-    .p-title{font-size:var(--nu-text-h2)}
+    .p-title{font-size:var(--nu-text-size-xl)}
     .p-cta{display:block;width:100%;text-align:center}
     .co-grid{grid-template-columns:1fr;gap:var(--nu-space-large)}
     .co-side{position:static}
@@ -1325,7 +1328,7 @@
       flex-wrap:wrap;align-items:center;row-gap:var(--nu-space-milli);
     }
     .logo{order:1}
-    .logo .mark{font-size:var(--nu-text-h2)}
+    .logo .mark{font-size:var(--nu-text-size-xl)}
     .logo .strap{display:none}
     .head-right{display:contents}
     .head-icons{order:2;gap:var(--nu-space-medium);margin-left:auto}
@@ -1408,7 +1411,7 @@
     }
     body.fsheet .fsheet-head{
       display:flex;align-items:center;justify-content:space-between;
-      font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+      font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
       text-transform:uppercase;color:var(--nu-fg-secondary);
     }
     /* colour, hover and focus come from .btn-tertiary, as on both drawers */
@@ -1424,10 +1427,10 @@
       box-shadow:0 -6px 18px color-mix(in srgb, var(--nu-bg-inverse) 5%, transparent);
     }
     .co-bar .cb-lbl{
-      display:block;font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+      display:block;font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);
       text-transform:uppercase;color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-nano);
     }
-    .co-bar .cb-val{font-size:var(--nu-text-body-l);font-variant-numeric:tabular-nums}
+    .co-bar .cb-val{font-size:var(--nu-text-size-lg);font-variant-numeric:tabular-nums}
     .co-bar .order-btn{width:auto;margin-top:0;padding:var(--nu-space-small) var(--nu-space-medium);flex-shrink:0}
     /* the summary's button would be a second, redundant submit */
     .co-side .order-btn{display:none}

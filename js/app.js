@@ -1895,20 +1895,18 @@ function dsTypeStyles(){
 function dsTypeSteps(){
   const disp = "font-family:var(--nu-font-display)";
   return [
-    ["Heading 1","--nu-text-h1",
-     `<span style="${disp};font-size:var(--nu-text-h1)">${L("The Handmaid&rsquo;s Tale","Opowieść podręcznej")}</span>`],
-    ["Heading 2","--nu-text-h2",
-     `<span style="${disp};font-size:var(--nu-text-h2)">${L("Your cart","Twój koszyk")}</span>`],
-    ["Heading 3","--nu-text-h3",
-     `<span style="${disp};font-size:var(--nu-text-h3)">nubook.</span>`],
-    ["Body L","--nu-text-body-l",
-     `<span style="font-size:var(--nu-text-body-l)">59,90 z&#322;</span>`],
-    ["Body M","--nu-text-body-m",
-     `<span style="font-size:var(--nu-text-body-m)">${L("Novels about women and gender.","Powieści o kobietach i płci.")}</span>`],
-    ["Label","--nu-text-label",
-     `<span style="font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-compact);text-transform:uppercase;color:var(--nu-fg-secondary)">${L("Genre","Gatunek")}</span>`],
-    ["Caption","--nu-text-caption",
-     `<span style="font-size:var(--nu-text-body-m);color:var(--nu-fg-secondary)">${L("Classic","Klasyka")}<sup style="font-size:var(--nu-text-caption);color:var(--nu-fg-tertiary)">6</sup></span>`],
+    ["2xl","--nu-text-size-2xl",
+     `<span style="${disp};font-size:var(--nu-text-size-2xl)">${L("The Handmaid&rsquo;s Tale","Opowieść podręcznej")}</span>`],
+    ["xl","--nu-text-size-xl",
+     `<span style="${disp};font-size:var(--nu-text-size-xl)">${L("Your cart","Twój koszyk")}</span>`],
+    ["lg","--nu-text-size-lg",
+     `<span style="${disp};font-size:var(--nu-text-size-lg)">nubook.</span>`],
+    ["md","--nu-text-size-md",
+     `<span style="font-size:var(--nu-text-size-md)">${L("Novels about women and gender.","Powieści o kobietach i płci.")}</span>`],
+    ["sm","--nu-text-size-sm",
+     `<span style="font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-compact);text-transform:uppercase;color:var(--nu-fg-secondary)">${L("Genre","Gatunek")}</span>`],
+    ["xs","--nu-text-size-xs",
+     `<span style="font-size:var(--nu-text-size-md);color:var(--nu-fg-secondary)">${L("Classic","Klasyka")}<sup style="font-size:var(--nu-text-size-xs);color:var(--nu-fg-tertiary)">6</sup></span>`],
   ];
 }
 function dsColorRows(rows){
@@ -2218,18 +2216,20 @@ const DS_SECTIONS = [
                   "Cały tekst użytkowy: treść, etykiety, ceny, kontrolki, formularze.")}</td></tr>
     </tbody></table>
 
-    <h3>${L("Size","Stopień")}</h3>
+    <h3>${L("Size","Rozmiar")}</h3>
+    <p>${L(
+      "Six steps, named by size rather than by what they are for. A step says how big; what for is the business of a style, which points at one of them. Two styles sharing a step part company by pointing at different ones, not by the scale growing a second value of the same size.",
+      "Sześć stopni, nazwanych rozmiarem, a nie przeznaczeniem. Stopień mówi, jak duży; do czego służy, jest sprawą stylu, który na niego wskazuje. Dwa style dzielące stopień rozejdą się przez wskazanie innych, a nie przez dołożenie do skali drugiej wartości tej samej wielkości.")}</p>
     ${(() => {
       const role = {
-        "--nu-text-h1": L("The subject of a view","Temat widoku"),
-        "--nu-text-h2": L("A section within a view","Sekcja w widoku"),
-        "--nu-text-h3": L("The smallest display step","Najmniejszy stopień tytułowy"),
-        "--nu-text-body-l": L("Emphasis in running copy","Wyróżnienie w tekście ciągłym"),
-        "--nu-text-body-m": L("The base size of the page","Bazowy stopień strony"),
-        "--nu-text-label": L("Uppercase interface strings","Napisy interfejsu wersalikami"),
-        "--nu-text-caption": L("Counts bound to a larger element","Liczniki przypięte do większego elementu"),
+        "--nu-text-size-2xl": L("Taken by Heading 1","Bierze go Heading 1"),
+        "--nu-text-size-xl": L("Taken by Heading 2","Bierze go Heading 2"),
+        "--nu-text-size-lg": L("Taken by Heading 3 and Body L","Biorą go Heading 3 i Body L"),
+        "--nu-text-size-md": L("Taken by Body M and the prose style; the page's own size","Biorą go Body M i styl prozy; własny rozmiar strony"),
+        "--nu-text-size-sm": L("Taken by both label styles","Biorą go oba style etykiety"),
+        "--nu-text-size-xs": L("Taken by Caption","Bierze go Caption"),
       };
-      return `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Specimen","Okaz")}</th><th>${L("Role","Rola")}</th></tr></thead><tbody>
+      return `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Specimen","Okaz")}</th><th>${L("Taken by","Kto go bierze")}</th></tr></thead><tbody>
       ${dsTypeSteps().map(([, token, sample]) =>
         `<tr><td class="spec"><code>${token.replace("--nu-text-","")}</code></td><td>${dsVal(token)}</td><td>${sample}</td><td>${role[token] || ""}</td></tr>`).join("")}
     </tbody></table>`;
@@ -2297,8 +2297,8 @@ const DS_SECTIONS = [
     <h3>${L("Rules","Zasady")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Same value, different role","Ta sama wartość, inna rola")}</td>
-          <td>${L("Heading 3 and Body L both stand at 18px today. They stay apart because one is the floor of the display family and the other is emphasis inside running copy; tying them together would block moving either one on its own.",
-                  "Heading 3 i Body L mają dziś oba 18px. Zostają osobne, bo jeden jest najniższym stopniem kroju tytułowego, a drugi wyróżnieniem w tekście ciągłym; związanie ich zablokowałoby zmianę jednego bez ruszenia drugiego.")}</td></tr>
+          <td>${L("Heading 3 and Body L both take <code>lg</code> today. They are separate styles, not one style used twice: the first is the floor of the display family and the second is emphasis inside running copy. Either can be moved by pointing it at a different step, which is what keeps them independent without the scale holding two values of the same size.",
+                  "Heading 3 i Body L biorą dziś stopień <code>lg</code>. Są osobnymi stylami, a nie jednym użytym dwa razy: pierwszy jest najniższym stopniem kroju tytułowego, drugi wyróżnieniem w tekście ciągłym. Każdy da się przesunąć, wskazując mu inny stopień, i to trzyma je niezależnie, bez trzymania w skali dwóch wartości tej samej wielkości.")}</td></tr>
       <tr><td>${L("Italic","Kursywa")}</td>
           <td>${L("A cut of the prose style, not a step of its own. Reserved for book quotes; the attribution beneath returns to roman. Nothing else in the shop is set in italic.",
                   "Odmiana stylu prozy, nie osobny stopień. Zarezerwowana dla cytatów z książek; podpis pod cytatem wraca do odmiany prostej. Nic innego w sklepie nie jest składane kursywą.")}</td></tr>
@@ -2516,8 +2516,8 @@ const DS_SECTIONS = [
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Type","Typografia")}</td><td>${L(
-        `Label, ${dsTok("--nu-text-label")}, uppercase, tracking ${dsTok("--nu-tracking-caps")}, line-height 1`,
-        `Label, ${dsTok("--nu-text-label")}, wersaliki, światło ${dsTok("--nu-tracking-caps")}, interlinia 1`)}</td></tr>
+        `Label, ${dsTok("--nu-text-size-sm")}, uppercase, tracking ${dsTok("--nu-tracking-caps")}, line-height 1`,
+        `Label, ${dsTok("--nu-text-size-sm")}, wersaliki, światło ${dsTok("--nu-tracking-caps")}, interlinia 1`)}</td></tr>
       <tr><td>${L("Padding","Wypełnienie")}</td><td>${L(
         `${dsTok("--nu-space-nano")} vertical, ${dsTok("--nu-space-micro")} horizontal.`,
         `${dsTok("--nu-space-nano")} w pionie, ${dsTok("--nu-space-micro")} w poziomie.`)}</td></tr>
