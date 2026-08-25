@@ -1669,21 +1669,26 @@ function dsRootDecls(){
    and one whose prefix matches nothing lands in a group of its own rather than
    disappearing, because a silently dropped token is exactly what this table
    exists to prevent. */
-/* A category splits into sections where its tokens stand on more than one level:
-   colour into the palette and the roles above it, typography into the scales and
-   the styles above them. The rest hold one level and get one unnamed section,
-   which renders as the table alone. */
+/* A category is found by the prefix a token carries. Inside it, a section is
+   found by the declaration itself: a token either holds a value or points at
+   another token, and nothing else can be true. Reading that from the sheet
+   rather than listing it here means a section cannot describe a token the code
+   stopped agreeing with, and the column heading above each table follows from
+   the same fact instead of being written down a second time. A category whose
+   tokens all sit on one side gets one unnamed section, which renders as the
+   table alone. */
+const dsIsBuilt = name => /--nu-/.test(dsRootDecls()[name] || "");
 const DS_TOKEN_GROUPS = [
-  ["colour", [["primitive", ["--nu-white","--nu-grey","--nu-red","--nu-burgundy","--nu-gold"]],
-              ["semantic",  ["--nu-bg","--nu-fg","--nu-border"]]]],
-  ["type",   [["primitive", ["--nu-font","--nu-text","--nu-tracking","--nu-line","--nu-weight"]],
-              ["style",     ["--nu-type"]]]],
-  ["space",     [["", ["--nu-space"]]]],
-  ["layout",    [["", ["--nu-gutter","--nu-form-max"]]]],
-  ["component", [["", ["--nu-cover","--nu-thumb","--nu-control","--nu-field","--nu-mobar","--nu-cobar"]]]],
-  ["icon",      [["", ["--nu-icon"]]]],
-  ["motion",    [["", ["--nu-motion","--nu-ease"]]]],
-  ["focus",     [["", ["--nu-focus"]]]],
+  ["colour", ["--nu-white","--nu-grey","--nu-red","--nu-burgundy","--nu-gold","--nu-bg","--nu-fg","--nu-border"],
+             [["primitive", false], ["semantic", true]]],
+  ["type",   ["--nu-font","--nu-text","--nu-tracking","--nu-line","--nu-weight","--nu-type"],
+             [["primitive", false], ["style", true]]],
+  ["space",  ["--nu-space"]],
+  ["layout", ["--nu-gutter","--nu-form-max","--nu-cover","--nu-thumb","--nu-control","--nu-field","--nu-mobar","--nu-cobar"],
+             [["scale", true], ["own", false]]],
+  ["icon",   ["--nu-icon"]],
+  ["motion", ["--nu-motion","--nu-ease"]],
+  ["focus",  ["--nu-focus"]],
 ];
 /* Names of every token, from whichever source can be reached. A value is easy:
    the computed style hands it back for any name you ask about, which is why the
@@ -1720,18 +1725,14 @@ function dsTokenExamples(list, primitive){
   </tbody></table>`;
 }
 function dsTokenGroups(){
-  const groups = DS_TOKEN_GROUPS.map(([key, sections]) =>
-    ({ key, sections: sections.map(([sub]) => ({ key: sub, list: [] })) }));
-  groups.push({ key:"other", sections:[{ key:"", list:[] }] });
-  const place = name => {
-    for (let g = 0; g < DS_TOKEN_GROUPS.length; g++){
-      const sections = DS_TOKEN_GROUPS[g][1];
-      for (let s = 0; s < sections.length; s++)
-        if (sections[s][1].some(p => name.startsWith(p))) return groups[g].sections[s].list;
-    }
-    return groups[groups.length - 1].sections[0].list;
-  };
-  dsTokenNames().forEach(n => place(n).push(n));
+  const shape = g => (g[2] || [["", null]]).map(([sub, built]) => ({ key: sub, built, list: [] }));
+  const groups = DS_TOKEN_GROUPS.map(g => ({ key: g[0], sections: shape(g) }));
+  groups.push({ key:"other", sections:[{ key:"", built:null, list:[] }] });
+  dsTokenNames().forEach(name => {
+    const i = DS_TOKEN_GROUPS.findIndex(([, prefixes]) => prefixes.some(p => name.startsWith(p)));
+    const g = i < 0 ? groups[groups.length - 1] : groups[i];
+    (g.sections.find(sec => sec.built === null || sec.built === dsIsBuilt(name))).list.push(name);
+  });
   groups.forEach(g => {
     g.sections = g.sections.filter(sec => sec.list.length);
     g.count = g.sections.reduce((n, sec) => n + sec.list.length, 0);
@@ -2075,12 +2076,12 @@ const DS_SECTIONS = [
     const G = dsTokenGroups();
     const names = {
       colour: L("Colour","Kolor"), type: L("Typography","Typografia"),
-      space: L("Spacing","Odstępy"), layout: L("Layout","Układ"),
-      component: L("Component","Komponentowe"), icon: L("Icons","Ikony"),
-      motion: L("Motion","Ruch"), focus: L("Focus","Fokus"),
+      space: L("Spacing","Odstępy"), layout: L("Layout and components","Układ i komponenty"),
+      icon: L("Icons","Ikony"), motion: L("Motion","Ruch"), focus: L("Focus","Fokus"),
       other: L("Not sorted yet","Jeszcze nieprzypisane"),
       primitive: L("Primitives","Prymitywy"), semantic: L("Semantic","Semantyczne"),
       style: L("Styles","Style"),
+      scale: L("From the scale","Ze skali"), own: L("A value of its own","Własna wartość"),
     };
     const total = G.reduce((n, g) => n + g.count, 0);
     const unreadable = `<p class="note">${L(
@@ -2092,11 +2093,14 @@ const DS_SECTIONS = [
        the token is made of: its value where it holds one, the token it points at
        where it points. A primitive always holds one, which is why its table
        calls the column by that name. */
-    const table = (list, primitive) => `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${
-      primitive ? L("Value","Wartość") : L("Built from","Zbudowany z")}</th></tr></thead><tbody>
-      ${list.map(n => `<tr><td class="spec"><code>${n}</code></td><td>${
-        primitive ? dsVal(n) : dsDecl(n)}</td></tr>`).join("")}
-    </tbody></table>`;
+    const table = list => {
+      const built = list.every(dsIsBuilt);
+      return `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${
+        built ? L("Built from","Zbudowany z") : L("Value","Wartość")}</th></tr></thead><tbody>
+        ${list.map(n => `<tr><td class="spec"><code>${n}</code></td><td>${
+          built ? dsDecl(n) : dsVal(n)}</td></tr>`).join("")}
+      </tbody></table>`;
+    };
     return `
     <h1>${L("Tokens","Tokeny")}</h1>
     <p class="ds-lede">${L(
@@ -2143,10 +2147,10 @@ const DS_SECTIONS = [
       "Belongs to one component and is read by that component alone.",
       "Należy do jednego komponentu i czyta go tylko ten komponent.")}</p>
     ${dsNamePattern([L("prefix","prefiks"), L("component","komponent"), L("property","właściwość")])}
-    ${dsTokenExamples(["--nu-mobar-height","--nu-cover-width","--nu-form-max-width"], false)}
+    ${dsTokenExamples(["--nu-mobar-height","--nu-cobar-height","--nu-gutter-column"], false)}
     <p class="note">${L(
-      "Common practice puts the rule more strictly: a component should never point at a primitive at all. <a class=\"link\" href=\"https://primer.style/product/primitives/token-names/\" target=\"_blank\" rel=\"noopener\">Primer</a>, GitHub's design system, keeps the same three levels and allows a component token only in that component's own CSS.",
-      "Praktyka branżowa ujmuje tę zasadę ostrzej: komponent nie powinien wskazywać na prymityw w ogóle. <a class=\"link\" href=\"https://primer.style/product/primitives/token-names/\" target=\"_blank\" rel=\"noopener\">Primer</a>, system projektowy GitHuba, trzyma te same trzy poziomy i dopuszcza token komponentowy wyłącznie w CSS swojego komponentu.")}</p>
+      "Common practice puts the rule more strictly: a component should never point at a primitive at all. <a class=\"link\" href=\"https://primer.style/product/primitives/token-names/\" target=\"_blank\" rel=\"noopener\">Primer</a>, GitHub's design system, keeps the same three levels and allows a component token only in that component's own CSS. Here a component token points straight at the spacing scale, which has no semantic layer above it and needs none: a step is already named after the job it does, so a name on top of it would say the same thing twice. That rule is written for a system serving many products and many themes, where the middle layer is what keeps them apart. One shop has nothing to keep apart.",
+      "Praktyka branżowa ujmuje tę zasadę ostrzej: komponent nie powinien wskazywać na prymityw w ogóle. <a class=\"link\" href=\"https://primer.style/product/primitives/token-names/\" target=\"_blank\" rel=\"noopener\">Primer</a>, system projektowy GitHuba, trzyma te same trzy poziomy i dopuszcza token komponentowy wyłącznie w CSS swojego komponentu. Tutaj token komponentowy wskazuje wprost na skalę odstępów, nad którą nie ma warstwy semantycznej i nie jest ona potrzebna: stopień jest już nazwany zadaniem, które wykonuje, więc nazwa nad nim powtarzałaby to samo. Tamta reguła pisana jest pod system obsługujący wiele produktów i wiele motywów, gdzie warstwa pośrednia jest tym, co je od siebie oddziela. W jednym sklepie nie ma czego oddzielać.")}</p>
 
     <h3>${L("Pixels and rem","Piksele i rem")}</h3>
     <p>${L(
@@ -2161,14 +2165,14 @@ const DS_SECTIONS = [
         "To, co istnieje mimo tekstu: włos ma zostać włosem, granica okna jest granicą okna, a liczby wewnątrz siatki rysunku ikony należą do rysunku.")}</td></tr>
     </tbody></table>
 
-    <h3>${L("Every token","Wszystkie tokeny")}</h3>
+    <h2>${L("Every token","Wszystkie tokeny")}</h2>
     <p>${L(
-      "Read back from the shop's own stylesheet and grouped by the prefix each one carries. What a token is for is described by the tab of its layer; this list is the inventory.",
-      "Odczytane z arkusza, na którym działa sklep, i pogrupowane po przedrostku. O tym, do czego dany token służy, mówi zakładka jego warstwy; ta lista jest spisem.")}</p>
+      "Read back from the shop's own stylesheet: a category by the prefix a token carries, a section by whether the token holds a value or points at another token. What a token is for is described by the tab of its layer; this list is the inventory.",
+      "Odczytane z arkusza, na którym działa sklep: kategoria po przedrostku, który token nosi, sekcja po tym, czy token trzyma wartość, czy wskazuje na inny token. O tym, do czego dany token służy, mówi zakładka jego warstwy; ta lista jest spisem.")}</p>
     ${total ? G.map(g =>
       `<h3>${names[g.key]}</h3>${
         g.sections.map(sec => (sec.key ? `<h4>${names[sec.key]}</h4>` : "")
-          + table(sec.list, sec.key === "primitive")).join("")}`).join("") : unreadable}
+          + table(sec.list)).join("")}`).join("") : unreadable}
 
     <p class="note">${L("The W3C Design Tokens Community Group publishes a format for exchanging tokens between tools; its first stable version came out in October 2025. That specification is about the exchange format, not about how a stylesheet declares them.","Grupa robocza W3C Design Tokens Community Group publikuje format wymiany tokenów między narzędziami; pierwsza stabilna wersja ukazała się w październiku 2025. Ta specyfikacja dotyczy formatu wymiany, a nie tego, jak arkusz stylów deklaruje tokeny.")} ${L("Sources","Źródła")}: <a class="link" href="https://www.designtokens.org/" target="_blank" rel="noopener">Design Tokens Community Group</a>, <a class="link" href="https://www.w3.org/community/design-tokens/2025/10/28/design-tokens-specification-reaches-first-stable-version/" target="_blank" rel="noopener">W3C</a> ${L("(checked August 2026)","(sprawdzone w sierpniu 2026)")}.</p>`;
   } },
