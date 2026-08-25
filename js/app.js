@@ -2022,13 +2022,16 @@ const DS_SECTIONS = [
     const unreadable = `<p class="note">${L(
       "The list of names cannot be read in this way of opening the page: the stylesheet arrives through a <code>link</code> from a local file and the browser will not hand its text back. Open the built page, or serve the folder over http, and the inventory fills itself in. Everything else on this tab holds either way.",
       "Spisu nazw nie da się odczytać przy tym sposobie otwarcia strony: arkusz przychodzi przez <code>link</code> z pliku lokalnego, a przeglądarka nie oddaje jego treści. Otwórz stronę zbudowaną albo podaj folder przez http, a spis wypełni się sam. Wszystko pozostałe na tej zakładce obowiązuje tak czy inaczej.")}</p>`;
-    // the source column only appears when the declarations can be read; otherwise
-    // it would repeat the value column, the browser having already substituted it
+    /* A primitive is its own value and has nothing to be built from, so its table
+       drops that column: the shape of the two tables says the same thing as the
+       paragraph about the two layers. The column also goes when the declarations
+       cannot be read, because it would then repeat the value the browser has
+       already substituted. */
     const haveDecls = Object.keys(dsRootDecls()).length > 0;
-    const table = list => `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th>${
-      haveDecls ? `<th>${L("Built from","Zbudowany z")}</th>` : ""}</tr></thead><tbody>
+    const table = (list, source) => `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th>${
+      source ? `<th>${L("Built from","Zbudowany z")}</th>` : ""}</tr></thead><tbody>
       ${list.map(n => `<tr><td class="spec"><code>${n}</code></td><td>${dsVal(n)}</td>${
-        haveDecls ? `<td>${dsDecl(n)}</td>` : ""}</tr>`).join("")}
+        source ? `<td>${dsDecl(n)}</td>` : ""}</tr>`).join("")}
     </tbody></table>`;
     return `
     <h1>${L("Tokens","Tokeny")}</h1>
@@ -2065,6 +2068,13 @@ const DS_SECTIONS = [
       "A <strong>primitive</strong> names a value and nothing else: <code>--nu-grey-600</code> is a grey, and primitives are the only place a hex appears in the whole sheet. A <strong>semantic</strong> token names a role and points at a primitive: <code>--nu-fg-secondary</code> is supporting text, which today happens to be that grey. Components reference the second layer only. That is what lets the grey move without every rule that uses it having to be found, and what lets two roles holding the same value part company later without anything breaking.",
       "<strong>Prymityw</strong> nazywa wartość i nic poza tym: <code>--nu-grey-600</code> to szarość, a prymitywy są jedynym miejscem w całym arkuszu, gdzie pojawia się zapis heks. Token <strong>semantyczny</strong> nazywa rolę i wskazuje na prymityw: <code>--nu-fg-secondary</code> to tekst pomocniczy, który dziś akurat jest tą szarością. Komponenty odwołują się wyłącznie do drugiej warstwy. Dzięki temu szarość może się zmienić bez szukania wszystkich reguł, które jej używają, a dwie role o tej samej wartości mogą się później rozejść, nic nie psując.")}</p>
 
+    <p>${L(
+      "The two layers are not a colour arrangement, although colour is where they show most. Four tokens name a role over the spacing scale: <code>--nu-gutter-col</code>, <code>--nu-mobar-h</code>, <code>--nu-mobar-pad</code> and <code>--nu-mobar-gap</code>. The last two hold the same value today and stay apart precisely so they can move apart later.",
+      "Dwie warstwy nie są układem kolorystycznym, choć przy kolorze widać je najmocniej. Cztery tokeny nazywają rolę nad skalą odstępów: <code>--nu-gutter-col</code>, <code>--nu-mobar-h</code>, <code>--nu-mobar-pad</code> i <code>--nu-mobar-gap</code>. Dwa ostatnie mają dziś tę samą wartość i są osobno właśnie po to, żeby móc się później rozejść.")}</p>
+    <p>${L(
+      "A second name is written when one value carries roles that have to be able to part company &ndash; not for symmetry. Common practice states the rule more strictly: a component should never point at a primitive at all. The spacing scale here is read directly by components and holds up under that, because its steps are named after the job they do rather than after a number, and the Spacing tab gives each of them its two roles. A grey called <code>--nu-grey-900</code> says nothing about its job, and one grey serves three unrelated ones &ndash; which is the whole reason that layer exists.",
+      "Druga nazwa powstaje wtedy, gdy jedna wartość obsługuje role, które muszą móc się rozjechać &ndash; a nie dla symetrii. Praktyka branżowa ujmuje tę zasadę ostrzej: komponent nie powinien wskazywać na prymityw w ogóle. Skala odstępów jest tu czytana przez komponenty wprost i broni się tym, że jej stopnie nazwane są od zadania, które wykonują, a nie od liczby &ndash; zakładka Odstępy przypisuje każdemu dwie role. Szarość o nazwie <code>--nu-grey-900</code> nie mówi nic o swoim zadaniu, a jedna szarość obsługuje trzy niepowiązane &ndash; i to jest cały powód, dla którego ta warstwa istnieje.")}</p>
+
     <h3>${L("How they are named","Jak są nazywane")}</h3>
     <p>${L(
       "<code>--nu-</code> for the shop, then the area, then the role: <code>--nu-fg-secondary</code>, <code>--nu-space-milli</code>, <code>--nu-motion-slow</code>. Scales are named by the job a step does rather than by its number, so a value can move between steps without every rule being renamed &ndash; and a step can be added in the middle without renumbering the ones around it.",
@@ -2075,7 +2085,8 @@ const DS_SECTIONS = [
       "Read back from the shop's own stylesheet and grouped by the prefix each one carries. What a token is for is described by the tab of its layer; this list is the inventory.",
       "Odczytane z arkusza, na którym działa sklep, i pogrupowane po przedrostku. O tym, do czego dany token służy, mówi zakładka jego warstwy; ta lista jest spisem.")}</p>
     ${total ? [...G.entries()].filter(([, list]) => list.length).map(([key, list]) =>
-      `<h3 class="ds-tok-h">${names[key]} <span class="ds-tok-n">${list.length}</span></h3>${table(list)}`).join("") : unreadable}
+      `<h3 class="ds-tok-h">${names[key]} <span class="ds-tok-n">${list.length}</span></h3>${
+        table(list, haveDecls && key !== "primitive")}`).join("") : unreadable}
 
     <p class="note">${L("Sources","Źródła")}: <a class="link" href="https://www.designtokens.org/" target="_blank" rel="noopener">Design Tokens Community Group</a>, <a class="link" href="https://www.w3.org/community/design-tokens/2025/10/28/design-tokens-specification-reaches-first-stable-version/" target="_blank" rel="noopener">W3C</a> ${L("(checked August 2026)","(sprawdzone w sierpniu 2026)")}.</p>`;
   } },
