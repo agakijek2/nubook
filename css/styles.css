@@ -1177,6 +1177,12 @@
   /* A group heading in the token inventory carries its own count, so the number
      comes from the list rather than from somebody remembering to update it. */
   .ds .ds-tok-h{display:flex;align-items:baseline;gap:var(--nu-space-micro)}
+  /* One level below that: a category standing on two levels names each of them.
+     The weight comes after the shorthand, which resets it. */
+  .ds h4{
+    font:var(--nu-type-body-m);font-weight:var(--nu-weight-medium);
+    margin:var(--nu-space-small) 0 var(--nu-space-micro);
+  }
   .ds .ds-tok-n{
     font-size:var(--nu-text-size-sm);
     color:var(--nu-fg-secondary);font-weight:var(--nu-weight-normal);
@@ -1209,9 +1215,8 @@
      Polish diacritics, which is where a face either holds up or does not. Two
      cards side by side where there is room; auto-fit rather than a breakpoint,
      so the card decides from the space it has rather than from the viewport. */
-  /* A token name taken apart: each segment underlined, its part named beneath.
-     The shape of the name is the thing being explained, so it is shown rather
-     than described. */
+  /* A token name taken apart: each segment underlined. The shape of the name is
+     the thing being explained, so it is shown rather than described. */
   .ds .ds-name{
     display:flex;flex-wrap:wrap;justify-content:center;
     gap:var(--nu-space-micro);margin:var(--nu-space-medium) 0;
