@@ -562,11 +562,14 @@
     display:flex;align-items:center;justify-content:center;
     position:relative;overflow:hidden;
   }
+  /* The badge carries its own look and nothing about where it sits: a corner of
+     a packshot is one place it appears, not part of what it is. The tile holding
+     it does the positioning, which is what lets a badge also stand in a row. */
   .badge{
-    position:absolute;top:var(--nu-space-milli);left:var(--nu-space-milli);z-index:2;
     font-size:var(--nu-text-size-sm);line-height:var(--nu-line-flat);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
     padding:var(--nu-space-nano) var(--nu-space-micro);background:var(--nu-bg-primary);border:1px solid var(--nu-border-primary);
   }
+  .tile .badge{position:absolute;top:var(--nu-space-milli);left:var(--nu-space-milli);z-index:2}
   .badge.soon{background:var(--nu-bg-inverse);color:var(--nu-fg-inverse)}
   .badge.last{border-color:var(--nu-border-warning);color:var(--nu-fg-warning)}
   .badge.out{border-color:var(--nu-border-muted);color:var(--nu-fg-secondary);background:transparent}
@@ -1080,11 +1083,8 @@
     font-size:var(--nu-text-size-lg);line-height:var(--nu-line-normal);
     color:var(--nu-fg-secondary);max-width:60ch;margin-bottom:var(--nu-space-medium);
   }
-  .ds h2{
-    font-size:var(--nu-text-size-sm);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
-    color:var(--nu-fg-secondary);
-    border-top:1px solid var(--nu-border-neutral);padding-top:var(--nu-space-small);margin:var(--nu-space-huge) 0 var(--nu-space-medium);
-  }
+  /* The heading of a part gathering several sections under it. */
+  .ds h2{font:var(--nu-type-h2);margin:var(--nu-space-huge) 0 var(--nu-space-milli)}
   .ds h3{font:var(--nu-type-h3);margin:var(--nu-space-medium) 0 var(--nu-space-milli)}
   /* Documentation prose only. A specimen embedded in these pages carries the
      shop's own class, and this rule outranks the component's — so a quote would
@@ -1174,24 +1174,21 @@
     display:inline-block;vertical-align:-4px;margin-right:var(--nu-space-micro);
   }
   .ds td.spec, .ds .spec{display:table-cell;white-space:nowrap}
-  /* A group heading in the token inventory carries its own count, so the number
-     comes from the list rather than from somebody remembering to update it. */
-  .ds .ds-tok-h{display:flex;align-items:baseline;gap:var(--nu-space-micro)}
-  /* One level below that: a category standing on two levels names each of them.
+  /* A section inside a category of the inventory: colour splits into the palette
+     and the roles above it, typography into the scales and the styles.
      The weight comes after the shorthand, which resets it. */
   .ds h4{
     font:var(--nu-type-body-m);font-weight:var(--nu-weight-medium);
     margin:var(--nu-space-small) 0 var(--nu-space-micro);
-  }
-  .ds .ds-tok-n{
-    font-size:var(--nu-text-size-sm);
-    color:var(--nu-fg-secondary);font-weight:var(--nu-weight-normal);
   }
   .ds .demo{
     background:var(--nu-bg-secondary);padding:var(--nu-space-medium);margin:var(--nu-space-milli) 0 var(--nu-space-micro);
     display:flex;flex-wrap:wrap;gap:var(--nu-space-small);align-items:center;
   }
   .ds .demo.on-page{background:var(--nu-bg-primary);border:1px solid var(--nu-border-neutral)}
+  /* The name pattern is the whole content of its box, so it sits in the middle
+     of it rather than starting from the left edge like a row of specimens. */
+  .ds .demo.ds-pattern{justify-content:center}
   /* A badge is absolutely positioned against a packshot, so a row of them laid
      out inline stacks in one corner. Each specimen gets its own tile, which is
      also where the reader will actually meet it. */
@@ -1215,22 +1212,6 @@
      Polish diacritics, which is where a face either holds up or does not. Two
      cards side by side where there is room; auto-fit rather than a breakpoint,
      so the card decides from the space it has rather than from the viewport. */
-  /* A token name taken apart: each segment underlined. The shape of the name is
-     the thing being explained, so it is shown rather than described. */
-  .ds .ds-name{
-    display:flex;flex-wrap:wrap;justify-content:center;
-    gap:var(--nu-space-micro);margin:var(--nu-space-medium) 0;
-  }
-  .ds .ds-name-part{display:flex;flex-direction:column;align-items:center}
-  .ds .ds-name-part .seg{
-    font-family:var(--ds-font-mono);font-size:var(--nu-text-size-lg);
-    padding-bottom:var(--nu-space-micro);border-bottom:1px solid var(--nu-border-muted);
-  }
-  .ds .ds-name-part .tag{
-    margin-top:var(--nu-space-micro);
-    font:var(--nu-type-label);text-transform:uppercase;letter-spacing:var(--nu-tracking-caps);
-    color:var(--nu-fg-secondary);
-  }
   .ds .ds-faces{
     display:grid;gap:var(--nu-space-small);
     grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
