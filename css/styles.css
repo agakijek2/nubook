@@ -1129,6 +1129,13 @@
     display:inline-block;vertical-align:-4px;margin-right:var(--nu-space-micro);
   }
   .ds td.spec, .ds .spec{display:table-cell;white-space:nowrap}
+  /* A group heading in the token inventory carries its own count, so the number
+     comes from the list rather than from somebody remembering to update it. */
+  .ds .ds-tok-h{display:flex;align-items:baseline;gap:var(--nu-space-micro)}
+  .ds .ds-tok-n{
+    font-size:var(--nu-text-label);letter-spacing:var(--nu-tracking-caps);
+    color:var(--nu-fg-secondary);font-weight:400;
+  }
   .ds .demo{
     background:var(--nu-bg-secondary);padding:var(--nu-space-medium);margin:var(--nu-space-milli) 0 var(--nu-space-micro);
     display:flex;flex-wrap:wrap;gap:var(--nu-space-small);align-items:center;

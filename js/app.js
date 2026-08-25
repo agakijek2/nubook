@@ -1655,6 +1655,32 @@ function dsRootDecls(){
   });
   return DS_DECLS;
 }
+/* Every token in :root, sorted into groups by the prefix it carries. Names and
+   order come from the sheet, so a token added there shows up here on its own —
+   and one whose prefix matches nothing lands in a group of its own rather than
+   disappearing, because a silently dropped token is exactly what this table
+   exists to prevent. */
+const DS_TOKEN_GROUPS = [
+  ["primitive", ["--nu-white","--nu-grey","--nu-red","--nu-burgundy","--nu-gold"]],
+  ["colour",    ["--nu-bg","--nu-fg","--nu-border"]],
+  ["type",      ["--nu-font","--nu-text","--nu-tracking"]],
+  ["space",     ["--nu-space","--nu-gutter"]],
+  ["size",      ["--nu-cover","--nu-thumb","--nu-control","--nu-field","--nu-mobar","--nu-cobar","--nu-measure"]],
+  ["icon",      ["--nu-icon"]],
+  ["motion",    ["--nu-motion","--nu-ease"]],
+  ["focus",     ["--nu-focus"]],
+];
+function dsTokenGroups(){
+  const names = Object.keys(dsRootDecls()).filter(n => n.startsWith("--nu-"));
+  const out = new Map(DS_TOKEN_GROUPS.map(([k]) => [k, []]));
+  out.set("other", []);
+  names.forEach(n => {
+    const hit = DS_TOKEN_GROUPS.find(([, prefixes]) => prefixes.some(p => n.startsWith(p)));
+    out.get(hit ? hit[0] : "other").push(n);
+  });
+  return out;
+}
+
 function dsDecl(token){
   const declared = dsRootDecls()[token];
   if (declared){
@@ -1965,6 +1991,69 @@ const DS_SECTIONS = [
           <td>${L("There is none. A keyboard reader passes the header on every view before reaching the content.",
                   "Nie ma go. Osoba korzystająca z klawiatury na każdym widoku przechodzi przez nagłówek, zanim dotrze do treści.")}</td></tr>
     </tbody></table>` },
+
+  { group:{en:"",pl:""}, id:"tokens", label:{en:"Tokens",pl:"Tokeny"}, body: ()=>{
+    const G = dsTokenGroups();
+    const names = {
+      primitive: L("Primitives","Prymitywy"), colour: L("Colour","Kolor"),
+      type: L("Typography","Typografia"), space: L("Spacing","Odstępy"),
+      size: L("Sizes","Rozmiary"), icon: L("Icons","Ikony"),
+      motion: L("Motion","Ruch"), focus: L("Focus","Fokus"),
+      other: L("Not sorted yet","Jeszcze nieprzypisane"),
+    };
+    const total = [...G.values()].reduce((n, list) => n + list.length, 0);
+    const table = list => `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Built from","Zbudowany z")}</th></tr></thead><tbody>
+      ${list.map(n => `<tr><td class="spec"><code>${n}</code></td><td>${dsVal(n)}</td><td>${dsDecl(n)}</td></tr>`).join("")}
+    </tbody></table>`;
+    return `
+    <h1>${L("Tokens","Tokeny")}</h1>
+    <p class="ds-lede">${L(
+      `Every value in the shop is declared once, under a name, in one place. There are ${total} of those names and this tab lists all of them.`,
+      `Każda wartość w sklepie jest zadeklarowana raz, pod nazwą, w jednym miejscu. Tych nazw jest ${total} i ta zakładka wymienia je wszystkie.`)}</p>
+
+    <h3>${L("What they are","Czym są")}</h3>
+    <p>${L(
+      "<strong>Design tokens</strong> is the settled name for this: named entities that store a design decision &ndash; a colour, a distance, a duration &ndash; so the decision can be referred to instead of repeated. The W3C Design Tokens Community Group publishes a format for exchanging them between tools; its first stable version came out in October 2025 and is backed by Figma, Adobe, Google and others. That specification is about the exchange format, not about how a stylesheet declares them.",
+      "<strong>Design tokens</strong>, po polsku tokeny projektowe, to przyjęta nazwa tej rzeczy: nazwane byty przechowujące decyzję projektową &ndash; kolor, odległość, czas &ndash; żeby dało się do niej odwołać, zamiast ją powtarzać. Grupa robocza W3C Design Tokens Community Group publikuje format ich wymiany między narzędziami; pierwsza stabilna wersja ukazała się w październiku 2025 i stoją za nią między innymi Figma, Adobe i Google. Ta specyfikacja dotyczy formatu wymiany, a nie tego, jak arkusz stylów je deklaruje.")}</p>
+    <p>${L(
+      "Here they are CSS custom properties declared in <code>:root</code>. That is what lets this documentation read them back and print the values you see below, instead of somebody typing them in a table where they would quietly stop being true.",
+      "Tutaj są to własne właściwości CSS zadeklarowane w <code>:root</code>. To dzięki temu ta dokumentacja potrafi je odczytać i wypisać wartości, które widzisz niżej, zamiast polegać na kimś, kto wpisze je do tabeli, gdzie po cichu przestaną być prawdziwe.")}</p>
+
+    <h3>${L("Why","Po co")}</h3>
+    <table><tbody>
+      <tr><td ${DS_COL_NAME}>${L("One place to change","Jedno miejsce zmiany")}</td><td>${L(
+        "A colour used in forty rules is one declaration. Changing it is one edit rather than forty, and there is no fortieth that gets missed.",
+        "Kolor użyty w czterdziestu regułach to jedna deklaracja. Zmiana to jedna poprawka zamiast czterdziestu i nie ma czterdziestej, o której ktoś zapomni.")}</td></tr>
+      <tr><td>${L("A name says the intent","Nazwa mówi o zamiarze")}</td><td>${L(
+        "<code>--nu-fg-secondary</code> says what the colour is for; <code>#727272</code> says only what it is. A rule written with the name can be read without opening a colour picker.",
+        "<code>--nu-fg-secondary</code> mówi, do czego kolor służy; <code>#727272</code> mówi tylko, jaki jest. Regułę napisaną nazwą da się przeczytać bez otwierania próbnika.")}</td></tr>
+      <tr><td>${L("Drift becomes visible","Rozjazd staje się widoczny")}</td><td>${L(
+        "A value written by hand sits outside every token and no audit can see it. A value that has to come from a token has nowhere to hide, so a script can check that nothing in the sheet stands off the scale.",
+        "Wartość wpisana ręcznie leży poza wszystkimi tokenami i żaden audyt jej nie zobaczy. Wartość, która musi pochodzić z tokenu, nie ma się gdzie schować, więc skrypt sprawdzi, że nic w arkuszu nie stoi poza skalą.")}</td></tr>
+      <tr><td>${L("The documentation stays true","Dokumentacja zostaje prawdziwa")}</td><td>${L(
+        "Every table in this documentation reads its values from the sheet. A token changed in the code changes here in the same second, which is why no tab can drift away from what the shop actually does.",
+        "Każda tabela w tej dokumentacji czyta wartości z arkusza. Token zmieniony w kodzie zmienia się tutaj w tej samej sekundzie i dlatego żadna zakładka nie może się rozjechać z tym, co sklep naprawdę robi.")}</td></tr>
+    </tbody></table>
+
+    <h3>${L("Two layers","Dwie warstwy")}</h3>
+    <p>${L(
+      "A <strong>primitive</strong> names a value and nothing else: <code>--nu-grey-600</code> is a grey, and primitives are the only place a hex appears in the whole sheet. A <strong>semantic</strong> token names a role and points at a primitive: <code>--nu-fg-secondary</code> is supporting text, which today happens to be that grey. Components reference the second layer only. That is what lets the grey move without every rule that uses it having to be found, and what lets two roles holding the same value part company later without anything breaking.",
+      "<strong>Prymityw</strong> nazywa wartość i nic poza tym: <code>--nu-grey-600</code> to szarość, a prymitywy są jedynym miejscem w całym arkuszu, gdzie pojawia się zapis heks. Token <strong>semantyczny</strong> nazywa rolę i wskazuje na prymityw: <code>--nu-fg-secondary</code> to tekst pomocniczy, który dziś akurat jest tą szarością. Komponenty odwołują się wyłącznie do drugiej warstwy. Dzięki temu szarość może się zmienić bez szukania wszystkich reguł, które jej używają, a dwie role o tej samej wartości mogą się później rozejść, nic nie psując.")}</p>
+
+    <h3>${L("How they are named","Jak są nazywane")}</h3>
+    <p>${L(
+      "<code>--nu-</code> for the shop, then the area, then the role: <code>--nu-fg-secondary</code>, <code>--nu-space-milli</code>, <code>--nu-motion-slow</code>. Scales are named by the job a step does rather than by its number, so a value can move between steps without every rule being renamed &ndash; and a step can be added in the middle without renumbering the ones around it.",
+      "<code>--nu-</code> od sklepu, dalej obszar, na końcu rola: <code>--nu-fg-secondary</code>, <code>--nu-space-milli</code>, <code>--nu-motion-slow</code>. Skale nazywane są od zadania, które dany stopień wykonuje, a nie od jego numeru &ndash; dzięki temu wartość może przejść między stopniami bez przemianowywania reguł, a nowy stopień da się wstawić w środek bez przenumerowywania sąsiadów.")}</p>
+
+    <h3>${L("Every token","Wszystkie tokeny")}</h3>
+    <p>${L(
+      "Read from <code>:root</code> in the order it declares them, grouped by the prefix each one carries. What a token is for is described by the tab of its layer; this list is the inventory.",
+      "Odczytane z <code>:root</code> w kolejności, w jakiej są tam zadeklarowane, pogrupowane po przedrostku. O tym, do czego dany token służy, mówi zakładka jego warstwy; ta lista jest spisem.")}</p>
+    ${[...G.entries()].filter(([, list]) => list.length).map(([key, list]) =>
+      `<h3 class="ds-tok-h">${names[key]} <span class="ds-tok-n">${list.length}</span></h3>${table(list)}`).join("")}
+
+    <p class="note">${L("Sources","Źródła")}: <a class="link" href="https://www.designtokens.org/" target="_blank" rel="noopener">Design Tokens Community Group</a>, <a class="link" href="https://www.w3.org/community/design-tokens/2025/10/28/design-tokens-specification-reaches-first-stable-version/" target="_blank" rel="noopener">W3C</a> ${L("(checked August 2026)","(sprawdzone w sierpniu 2026)")}.</p>`;
+  } },
 
   { group:{en:"Foundations",pl:"Fundamenty"}, id:"colour", label:{en:"Colour",pl:"Kolor"}, body: ()=>`
     <h1>${L("Colour","Kolor")}</h1>
