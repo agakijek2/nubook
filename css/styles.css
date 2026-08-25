@@ -1163,9 +1163,10 @@
   /* The panel is positioned against the trigger and hidden until asked for. In a
      specimen it has to stand still and stay open, so the docs put it back in the
      flow by name rather than imposing it on every panel in a frame. */
-  .ds .ds-sort{display:flex;justify-content:center}
+  .ds .ds-sorts{grid-template-columns:repeat(2,1fr)}
+  .ds .ds-sorts .demo{margin:0;display:flex;justify-content:center}
   .ds .ds-sort .sort{text-align:left}
-  .ds .ds-sort .sort-menu{position:static;display:block;min-width:0;box-shadow:none}
+  .ds .ds-sort .sort-menu{position:static;display:block;box-shadow:none}
   /* A curve drawn from the same numbers that drive the dot: the shape is the
      path, the movement is the timing function, and both read the token. Time
      runs left to right, distance covered runs bottom to top, and the dashed
