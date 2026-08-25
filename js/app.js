@@ -2022,16 +2022,16 @@ const DS_SECTIONS = [
     const unreadable = `<p class="note">${L(
       "The list of names cannot be read in this way of opening the page: the stylesheet arrives through a <code>link</code> from a local file and the browser will not hand its text back. Open the built page, or serve the folder over http, and the inventory fills itself in. Everything else on this tab holds either way.",
       "Spisu nazw nie da się odczytać przy tym sposobie otwarcia strony: arkusz przychodzi przez <code>link</code> z pliku lokalnego, a przeglądarka nie oddaje jego treści. Otwórz stronę zbudowaną albo podaj folder przez http, a spis wypełni się sam. Wszystko pozostałe na tej zakładce obowiązuje tak czy inaczej.")}</p>`;
-    /* A primitive is its own value and has nothing to be built from, so its table
-       drops that column: the shape of the two tables says the same thing as the
-       paragraph about the two layers. The column also goes when the declarations
-       cannot be read, because it would then repeat the value the browser has
-       already substituted. */
-    const haveDecls = Object.keys(dsRootDecls()).length > 0;
-    const table = (list, source) => `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th>${
-      source ? `<th>${L("Built from","Zbudowany z")}</th>` : ""}</tr></thead><tbody>
-      ${list.map(n => `<tr><td class="spec"><code>${n}</code></td><td>${dsVal(n)}</td>${
-        source ? `<td>${dsDecl(n)}</td>` : ""}</tr>`).join("")}
+    /* Two columns, because a third would repeat the second. A browser hands back
+       a custom property as it was declared rather than resolving it, so asking
+       for the value of an aliased token returns the alias. One column says what
+       the token is made of: its value where it holds one, the token it points at
+       where it points. A primitive always holds one, which is why its table
+       calls the column by that name. */
+    const table = (list, primitive) => `<table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${
+      primitive ? L("Value","Wartość") : L("Built from","Zbudowany z")}</th></tr></thead><tbody>
+      ${list.map(n => `<tr><td class="spec"><code>${n}</code></td><td>${
+        primitive ? dsVal(n) : dsDecl(n)}</td></tr>`).join("")}
     </tbody></table>`;
     return `
     <h1>${L("Tokens","Tokeny")}</h1>
@@ -2086,7 +2086,7 @@ const DS_SECTIONS = [
       "Odczytane z arkusza, na którym działa sklep, i pogrupowane po przedrostku. O tym, do czego dany token służy, mówi zakładka jego warstwy; ta lista jest spisem.")}</p>
     ${total ? [...G.entries()].filter(([, list]) => list.length).map(([key, list]) =>
       `<h3 class="ds-tok-h">${names[key]} <span class="ds-tok-n">${list.length}</span></h3>${
-        table(list, haveDecls && key !== "primitive")}`).join("") : unreadable}
+        table(list, key === "primitive")}`).join("") : unreadable}
 
     <p class="note">${L("Sources","Źródła")}: <a class="link" href="https://www.designtokens.org/" target="_blank" rel="noopener">Design Tokens Community Group</a>, <a class="link" href="https://www.w3.org/community/design-tokens/2025/10/28/design-tokens-specification-reaches-first-stable-version/" target="_blank" rel="noopener">W3C</a> ${L("(checked August 2026)","(sprawdzone w sierpniu 2026)")}.</p>`;
   } },
