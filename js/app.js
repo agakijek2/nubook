@@ -1663,7 +1663,7 @@ function dsRootDecls(){
 const DS_TOKEN_GROUPS = [
   ["primitive", ["--nu-white","--nu-grey","--nu-red","--nu-burgundy","--nu-gold"]],
   ["colour",    ["--nu-bg","--nu-fg","--nu-border"]],
-  ["type",      ["--nu-font","--nu-text","--nu-tracking"]],
+  ["type",      ["--nu-font","--nu-text","--nu-tracking","--nu-line","--nu-weight","--nu-type"]],
   ["space",     ["--nu-space"]],
   ["layout",    ["--nu-gutter","--nu-form-max"]],
   ["component", ["--nu-cover","--nu-thumb","--nu-control","--nu-field","--nu-mobar","--nu-cobar"]],
@@ -2181,6 +2181,18 @@ const DS_SECTIONS = [
     <p class="ds-lede">${L(
       "Two families and seven steps. Styles are named by level &ndash; Heading 1, Body, Label &ndash; not by the view they appear in, so one style serves every context that calls for it.",
       "Dwie rodziny i siedem stopni. Style nazwane są przez poziom &ndash; Heading 1, Body, Label &ndash; nie przez widok, w którym występują, więc jeden styl obsługuje każdy kontekst, który go wymaga.")}</p>
+    <h3>${L("A style is one token","Styl to jeden token")}</h3>
+    <p>${L(
+      "A text style is four properties that have to travel together: weight, size, line height and family. Changing the size without the line height breaks the rhythm; changing the family without the tracking changes the width of everything. So each style is packed into one token and a rule says which style it is:",
+      "Styl tekstu to cztery właściwości, które muszą podróżować razem: grubość, stopień, interlinia i rodzina. Zmiana stopnia bez interlinii psuje rytm, zmiana rodziny bez światła zmienia szerokość wszystkiego. Dlatego każdy styl jest spakowany w jeden token, a reguła mówi tylko, którym stylem jest:")}</p>
+    <pre class="ds-code">.p-title{ font:var(--nu-type-h1); margin-bottom:var(--nu-space-nano) }</pre>
+    <p>${L(
+      "Underneath, the token points at the scales: <code>--nu-type-body-m</code> is the normal weight, the medium body size, the normal line height and the text family. Nine styles are declared this way and fourteen rules read them; the rest of the shop inherits from the page, which is set to the medium body style.",
+      "Pod spodem token wskazuje na skale: <code>--nu-type-body-m</code> to zwykła grubość, średni stopień tekstu, zwykła interlinia i rodzina tekstowa. Dziewięć stylów jest tak zadeklarowanych, a czternaście reguł po nie sięga; reszta sklepu dziedziczy po stronie, ustawionej na średni stopień tekstu.")}</p>
+    <p class="note">${L(
+      "Two things the shorthand cannot carry, both stated where they are needed rather than hidden: letter-spacing is not part of it, and it resets every font property it does not mention &ndash; so a rule wanting italics or tabular figures puts the style first and the exception after it.",
+      "Dwie rzeczy, których skrót nie unosi, obie zapisane tam, gdzie są potrzebne, a nie ukryte: światła w nim nie ma, a sam skrót zeruje każdą właściwość kroju, której nie wymienia &ndash; więc reguła chcąca kursywy albo cyfr tabelarycznych stawia styl pierwszy, a wyjątek po nim.")}</p>
+
     <h3>${L("Families","Rodziny")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}><code>--nu-font-display</code></td>
