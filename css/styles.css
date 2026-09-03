@@ -105,11 +105,15 @@
     --nu-type-h3:var(--nu-weight-normal) var(--nu-text-size-lg)/var(--nu-line-tight) var(--nu-font-display);
     --nu-type-body-l:var(--nu-weight-normal) var(--nu-text-size-lg)/var(--nu-line-normal) var(--nu-font-text);
     --nu-type-body-m:var(--nu-weight-normal) var(--nu-text-size-md)/var(--nu-line-normal) var(--nu-font-text);
-    /* Mała etykieta wersalikowa: nagłówek grupy, podpis okazu, etykieta w belce.
-       Interlinia normalna, bo ten podpis potrafi złamać się na dwa wiersze -
-       tym różni się od --nu-type-label, którego pudełko jest jednowierszowe.
-       Tracking i wersaliki reguła dokłada osobno: skrót font: ich nie niesie. */
-    --nu-type-caps:var(--nu-weight-normal) var(--nu-text-size-sm)/var(--nu-line-normal) var(--nu-font-text);
+    /* Small running text: a field's label, its message, the strapline. Normal
+       leading, because any of them can break onto a second line. */
+    --nu-type-body-s:var(--nu-weight-normal) var(--nu-text-size-sm)/var(--nu-line-normal) var(--nu-font-text);
+    /* The same four properties, under a name that says uppercase: a group
+       heading, a specimen caption, a label in a bar. It points at the style
+       above rather than repeating it, and the two stay apart so one can change
+       without the other. The tracking and the capitals are added by the rule,
+       because the font: shorthand carries neither. */
+    --nu-type-caps:var(--nu-type-body-s);
     --nu-type-label:var(--nu-weight-normal) var(--nu-text-size-sm)/var(--nu-line-flat) var(--nu-font-text);
     --nu-type-caption:var(--nu-weight-normal) var(--nu-text-size-xs)/var(--nu-line-flat) var(--nu-font-text);
 
@@ -356,7 +360,7 @@
     .logo .mark::after{animation:none;background:var(--nu-fg-primary);filter:none;transform:none}
   }
   .logo .strap{
-    font-size:var(--nu-text-size-sm);color:var(--nu-fg-secondary);
+    font:var(--nu-type-body-s);color:var(--nu-fg-secondary);
   }
   .head-right{display:flex;align-items:center;gap:var(--nu-space-xlarge)}
   .switchers{display:flex;align-items:center;gap:var(--nu-space-small)}
@@ -1023,13 +1027,13 @@
   .f-group:focus-within .input{border-color:var(--nu-border-primary)}
   .f-group:has(.is-error) .select{border-color:var(--nu-border-alert)}
 
-  .field label{display:block;font-size:var(--nu-text-size-sm);color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-nano)}
+  .field label{display:block;font:var(--nu-type-body-s);color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-nano)}
   .f-hint{text-transform:none;letter-spacing:var(--nu-tracking-body);color:var(--nu-fg-tertiary)}
   /* A line that stays empty until something is wrong. It pushes the fields below
      it rather than reserving space in every one: eight fields holding a blank
      line each would cost more than the shift costs when one is wrong. */
   .field-msg{
-    font-size:var(--nu-text-size-sm);color:var(--nu-fg-alert);
+    font:var(--nu-type-body-s);color:var(--nu-fg-alert);
     margin-top:var(--nu-space-nano);
   }
   .field-msg:empty{display:none}
@@ -1044,7 +1048,7 @@
   .opt:has(input:checked){border-color:var(--nu-border-primary)}
   .opt input{accent-color:var(--nu-fg-primary);margin:0}
   .opt .o-main{flex:1}
-  .opt .o-sub{font-size:var(--nu-text-size-sm);color:var(--nu-fg-secondary)}
+  .opt .o-sub{font:var(--nu-type-body-s);color:var(--nu-fg-secondary)}
   .opt .o-price{font-variant-numeric:tabular-nums}
   .consent{display:flex;gap:var(--nu-space-milli);align-items:flex-start;margin-bottom:var(--nu-space-milli);cursor:pointer}
   .consent input{accent-color:var(--nu-fg-primary);margin-top:var(--nu-space-nano);flex-shrink:0}
