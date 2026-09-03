@@ -300,6 +300,37 @@ const state = {
   sort: "featured",
 };
 
+/* Everything the reader chose about how the shop is shown, kept together: the
+   language and the currency, which nobody wants to set on every visit, and the
+   filters and the sort, which are a question already answered once. Same
+   treatment as the cart - the store may be missing, refused, or written by
+   another version of the shop, so every value is checked against what the shop
+   actually offers and anything else falls back to the default.
+
+   Saved from render(), because render is what every one of these changes ends
+   in: one call instead of eight, and no way to add a ninth that forgets. */
+const PREFS_KEY = "nubook.prefs.v1";
+const SORTS = ["featured","newest","price-asc","pub-asc"];
+function savePrefs(){
+  try {
+    localStorage.setItem(PREFS_KEY, JSON.stringify({
+      lang: LANG, cur: CUR, edition: state.lang, sort: state.sort,
+      genre: [...state.genre], status: [...state.status],
+    }));
+  } catch {}
+}
+(function restorePrefs(){
+  let p; try { p = JSON.parse(localStorage.getItem(PREFS_KEY) || "{}"); } catch { return; }
+  if (!p || typeof p !== "object") return;
+  const known = (field, value) => BOOKS.some(b => b[field] === value);
+  if (p.lang === "en" || p.lang === "pl") LANG = p.lang;
+  if (p.cur === "eur" || p.cur === "pln") CUR = p.cur;
+  if (p.edition === "en" || p.edition === "pl") state.lang = p.edition;
+  if (SORTS.includes(p.sort)) state.sort = p.sort;
+  if (Array.isArray(p.genre))  p.genre .filter(k => known("g", k)).forEach(k => state.genre.add(k));
+  if (Array.isArray(p.status)) p.status.filter(k => known("s", k)).forEach(k => state.status.add(k));
+})();
+
 /* ------------------------------------------------------ filter chips */
 function buildChips(rowId, items, set){
   const row = document.getElementById(rowId);
@@ -657,6 +688,7 @@ function visibleBooks(){
 }
 
 function render(rebuildChips = true){
+  savePrefs();
   if (rebuildChips) chipData();
   const grid = document.getElementById("grid");
   const list = visibleBooks();
@@ -1497,7 +1529,13 @@ function applyLang(){
   document.getElementById("lblFilterSheet").textContent = t.filter;
   document.getElementById("lblSort").textContent = t.sort;
   document.getElementById("sortLbl").textContent = t.sorts[state.sort];
-  sortItems().forEach(b=>{ b.querySelector(".lbl").textContent = t.sorts[b.dataset.sort]; });
+  /* The mark travels with the label: the sort in force comes from state, which a
+     previous visit may have set, so the menu cannot rely on the one written into
+     the markup. */
+  sortItems().forEach(b=>{
+    b.querySelector(".lbl").textContent = t.sorts[b.dataset.sort];
+    b.setAttribute("aria-checked", String(b.dataset.sort === state.sort));
+  });
   document.getElementById("btnFav").setAttribute("aria-label", t.aria.fav);
   document.getElementById("btnAccount").setAttribute("aria-label", t.aria.account);
   document.getElementById("btnSearch").setAttribute("aria-label", t.aria.search);
