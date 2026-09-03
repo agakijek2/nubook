@@ -1,4 +1,8 @@
 :root{
+    /* Both schemes are supported, so the browser paints what it draws itself -
+       scrollbars, the open list of a select, autofill - to match. */
+    color-scheme:light dark;
+
     /* Tokens are named after their ROLE, not their colour, so a re-skin
        only touches these values. */
 
@@ -259,6 +263,57 @@
     --nu-mobar-padding:var(--nu-space-milli); /* shop bar inner padding, top and sides */
     --nu-mobar-gap:var(--nu-space-milli); /* air between the bar and the menu above it */
   }
+
+/* ------------------------------------------------------------------ dark
+   The scheme is the reader's, not a switch in the shop: it follows the setting
+   of their system. Only the semantic layer is redeclared - twenty-six names,
+   not one rule - because no rule in the sheet reads a primitive. That is what
+   the three levels were for.
+
+   It is not an inversion. The greys fold over onto themselves, but the two
+   accents that carry meaning need their lighter steps: a dark red on a dark
+   page is unreadable. The award badge keeps its pale ground and needs nothing.
+
+   Marked provisional: the glass of the two buttons and the burgundy glow under
+   it were tuned for a dark button on a light page. They are turned over here so
+   nothing disappears, but the values are a starting point to be judged by eye,
+   not a decision. */
+@media (prefers-color-scheme: dark){
+  :root{
+    /* background */
+    --nu-bg-primary:var(--nu-grey-900);
+    --nu-bg-secondary:var(--nu-grey-800);
+    --nu-bg-tertiary:var(--nu-grey-400);
+    --nu-bg-inverse:var(--nu-grey-100);
+    /* a shadow stays dark; over a dark page it simply stops doing much, which is
+       why the surface step above carries the separation instead */
+    --nu-bg-shadow:var(--nu-grey-900);
+    --nu-bg-highlight:var(--nu-gold-100);
+    /* the dim has to be far heavier: 28% of black over a dark page is nothing */
+    --nu-bg-scrim:color-mix(in srgb, var(--nu-grey-900) 65%, transparent);
+    --nu-bg-measure:color-mix(in srgb, var(--nu-red-300) 22%, transparent);
+    --nu-bg-action:color-mix(in srgb, var(--nu-grey-100) 92%, transparent);      /* provisional */
+    --nu-bg-action-secondary:var(--nu-grey-800);                                  /* provisional */
+    --nu-bg-action-glow:var(--nu-burgundy-500);                                   /* provisional */
+    --nu-bg-action-glow-deep:var(--nu-burgundy-700);                              /* provisional */
+    /* foreground */
+    --nu-fg-primary:var(--nu-grey-100);
+    --nu-fg-secondary:var(--nu-grey-400);
+    --nu-fg-tertiary:var(--nu-grey-600);
+    --nu-fg-inverse:var(--nu-grey-900);
+    --nu-fg-highlight:var(--nu-gold-800);
+    --nu-fg-warning:var(--nu-burgundy-300);
+    --nu-fg-alert:var(--nu-red-300);
+    /* border */
+    --nu-border-neutral:var(--nu-grey-700);
+    --nu-border-primary:var(--nu-grey-100);
+    --nu-border-muted:var(--nu-grey-600);
+    --nu-border-hover:var(--nu-grey-600);
+    --nu-border-highlight:var(--nu-gold-600);
+    --nu-border-warning:var(--nu-burgundy-300);
+    --nu-border-alert:var(--nu-red-300);
+  }
+}
   *{box-sizing:border-box;margin:0;padding:0}
   [hidden]{display:none !important}
   html{ -webkit-text-size-adjust:100%; }
