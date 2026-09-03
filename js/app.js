@@ -545,6 +545,7 @@ function openFilterSheet(){
     document.body.classList.add("fsheet");
   });
   fsheetBg.classList.add("open");
+  setPageInert(document.getElementById("filters"));
   filterToggle.setAttribute("aria-expanded","true");
 }
 function closeFilterSheet(){
@@ -552,6 +553,7 @@ function closeFilterSheet(){
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   fsheetBg.classList.remove("open");
   document.body.classList.add("fsheet-out");
+  setPageInert(null);
   filterToggle.setAttribute("aria-expanded","false");
   // let it slide out before it drops back into the flow
   const settle = ()=>keepListStill(()=>{
@@ -795,12 +797,34 @@ function fillDrawer(){
     <h2 class="d-name">${b.a}</h2>
     <p class="d-bio">${LANG === "pl" ? b.abp : b.ab}</p>`;
 }
+/* aria-modal tells assistive technology to ignore everything outside an open
+   dialog. inert makes the same thing true for the pointer and for the Tab key,
+   which aria-modal does not touch: without it the promise holds for a screen
+   reader and breaks for a keyboard, which walks out of the open drawer onto the
+   page behind and clicks things nobody can see.
+
+   Everything that is not on the dialog's own ancestry is marked, level by level,
+   because the two drawers sit under the body while the filter sheet sits inside
+   the shop - one rule reaches both. The backdrops are left alone: they carry the
+   click that closes the dialog, and having no tabindex they are not reachable by
+   keyboard anyway. */
+function setPageInert(live){
+  document.querySelectorAll("[inert]").forEach(el => el.removeAttribute("inert"));
+  if (!live) return;
+  for (let el = live; el && el.parentElement && el !== document.body; el = el.parentElement)
+    [...el.parentElement.children].forEach(sib => {
+      if (sib === el) return;
+      if (sib.classList.contains("drawer-backdrop") || sib.classList.contains("sheet-backdrop")) return;
+      sib.setAttribute("inert", "");
+    });
+}
 function openAuthor(id){
   drawerBook = BOOKS[id];
   fillDrawer();
   drawerEl.classList.add("open");
   drawerBg.classList.add("open");
   drawerEl.setAttribute("aria-hidden", "false");
+  setPageInert(drawerEl);
   document.getElementById("drawerClose").focus();
 }
 function closeAuthor(){
@@ -808,6 +832,7 @@ function closeAuthor(){
   drawerEl.classList.remove("open");
   drawerBg.classList.remove("open");
   drawerEl.setAttribute("aria-hidden", "true");
+  setPageInert(null);
 }
 document.getElementById("drawerClose").onclick = closeAuthor;
 drawerBg.onclick = closeAuthor;
@@ -1005,6 +1030,7 @@ function openCart(){
   cartDrawerEl.classList.add("open");
   cartBgEl.classList.add("open");
   cartDrawerEl.setAttribute("aria-hidden", "false");
+  setPageInert(cartDrawerEl);
   document.getElementById("cartClose").focus();
 }
 function closeCart(){
@@ -1012,6 +1038,7 @@ function closeCart(){
   cartDrawerEl.classList.remove("open");
   cartBgEl.classList.remove("open");
   cartDrawerEl.setAttribute("aria-hidden", "true");
+  setPageInert(null);
 }
 document.getElementById("cartClose").onclick = closeCart;
 cartBgEl.onclick = closeCart;
@@ -2046,11 +2073,11 @@ const DS_SECTIONS = [
           <td>${L("Every interactive element draws a <code>:focus-visible</code> ring in <code>--nu-border-primary</code>, one thickness throughout and one distance out. A control sitting flush inside another one's outline &ndash; a stepper button, an option in the sort menu &ndash; draws the ring inward instead, because outside there is no room for it to stand. Form fields drop the ring and darken their border instead, so the focused field is still marked without a ring sitting inside a box.",
                   "Każdy element interaktywny rysuje obwódkę <code>:focus-visible</code> w kolorze <code>--nu-border-primary</code>, o jednej grubości i jednym odsunięciu na zewnątrz. Kontrolka siedząca ciasno w cudzym obrysie &ndash; przycisk steppera, opcja w menu sortowania &ndash; rysuje obwódkę do środka, bo na zewnątrz nie ma dla niej miejsca. Pola formularza rezygnują z obwódki na rzecz przyciemnienia własnej ramki, więc pole w fokusie nadal jest oznaczone, bez obwódki wewnątrz ramki.")}</td></tr>
       <tr><td>${L("Keyboard","Klawiatura")}</td>
-          <td>${L("Escape closes, in order: the sort menu, the filter sheet, the cart, the author drawer, the product view. Opening a drawer moves focus to its close button; opening the sort menu moves focus to the option in force, and closing it hands focus back to the button that opened it.",
-                  "Escape zamyka kolejno: menu sortowania, panel filtrów, koszyk, szufladę autorki, widok produktu. Otwarcie szuflady przenosi fokus na jej przycisk zamknięcia, a otwarcie menu sortowania &ndash; na obowiązującą opcję; zamknięcie oddaje fokus przyciskowi, który je otworzył.")}</td></tr>
+          <td>${L("Escape closes, in order: the sort menu, the filter sheet, the cart, the author drawer, the product view. Opening a drawer moves focus to its close button and marks everything outside it <code>inert</code>, so the page behind is out of reach of the Tab key, the pointer and assistive technology alike until it closes; opening the sort menu moves focus to the option in force, and closing it hands focus back to the button that opened it.",
+                  "Escape zamyka kolejno: menu sortowania, panel filtrów, koszyk, szufladę autorki, widok produktu. Otwarcie szuflady przenosi fokus na jej przycisk zamknięcia i oznacza wszystko poza nią atrybutem <code>inert</code>, więc do strony pod spodem nie sięga ani tabulator, ani wskaźnik, ani technologia wspomagająca &ndash; aż do zamknięcia; a otwarcie menu sortowania &ndash; na obowiązującą opcję; zamknięcie oddaje fokus przyciskowi, który je otworzył.")}</td></tr>
       <tr><td>${L("Announced state","Ogłaszany stan")}</td>
-          <td>${L("<code>aria-expanded</code> on the filter and sort controls, <code>aria-pressed</code> on the language, currency and filter toggles, <code>role=&quot;menu&quot;</code> with <code>aria-checked</code> on the sort options, <code>role=&quot;dialog&quot;</code> with <code>aria-modal</code> on both drawers, <code>aria-invalid</code> with <code>aria-describedby</code> on a field whose value did not pass. The product grid is an <code>aria-live</code> region, so a filter change is announced rather than happening silently.",
-                  "<code>aria-expanded</code> na filtrach i sortowaniu, <code>aria-pressed</code> na przełącznikach języka, waluty i filtrów, <code>role=&quot;menu&quot;</code> z <code>aria-checked</code> na pozycjach sortowania, <code>role=&quot;dialog&quot;</code> z <code>aria-modal</code> w obu szufladach, <code>aria-invalid</code> wraz z <code>aria-describedby</code> na polu, którego wartość nie przeszła. Siatka produktów jest obszarem <code>aria-live</code>, więc zmiana filtra jest ogłaszana, a nie zachodzi bezgłośnie.")}</td></tr>
+          <td>${L("<code>aria-expanded</code> on the filter and sort controls, <code>aria-pressed</code> on the language, currency and filter toggles, <code>role=&quot;menu&quot;</code> with <code>aria-checked</code> on the sort options, <code>role=&quot;dialog&quot;</code> with <code>aria-modal</code> on both drawers, backed by <code>inert</code> on everything outside them so the attribute describes what actually happens, <code>aria-invalid</code> with <code>aria-describedby</code> on a field whose value did not pass. The product grid is an <code>aria-live</code> region, so a filter change is announced rather than happening silently.",
+                  "<code>aria-expanded</code> na filtrach i sortowaniu, <code>aria-pressed</code> na przełącznikach języka, waluty i filtrów, <code>role=&quot;menu&quot;</code> z <code>aria-checked</code> na pozycjach sortowania, <code>role=&quot;dialog&quot;</code> z <code>aria-modal</code> w obu szufladach, poparte atrybutem <code>inert</code> na wszystkim poza nimi, więc atrybut opisuje to, co faktycznie się dzieje, <code>aria-invalid</code> wraz z <code>aria-describedby</code> na polu, którego wartość nie przeszła. Siatka produktów jest obszarem <code>aria-live</code>, więc zmiana filtra jest ogłaszana, a nie zachodzi bezgłośnie.")}</td></tr>
       <tr><td>${L("Grouping","Grupowanie")}</td>
           <td>${L("Each row of filters is a <code>role=&quot;group&quot;</code> labelled by the heading standing above it, and the language and currency pairs in the header are groups of their own. A sighted reader takes that grouping from the layout; without the label tied to the row, a screen reader would read a run of toggles with nothing saying what they narrow down.",
                   "Każdy rząd filtrów jest grupą <code>role=&quot;group&quot;</code>, opisaną nagłówkiem stojącym nad nim, a pary języka i waluty w nagłówku są osobnymi grupami. Osoba widząca odczytuje to grupowanie z układu; bez etykiety powiązanej z rzędem czytnik ekranu odczytałby serię przełączników, nie mówiąc, czego dotyczą.")}</td></tr>
@@ -2093,9 +2120,6 @@ const DS_SECTIONS = [
       <tr><td>${L("Two contrast pairs","Dwie pary kontrastu")}</td>
           <td>${L("Marked above. Both are fixed by darkening a grey primitive, which moves every token built from it &ndash; a decision for the palette, not for a single component.",
                   "Oznaczone powyżej. Obie naprawia przyciemnienie prymitywu szarości, co porusza każdy token z niego zbudowany &ndash; to decyzja dla palety, nie dla pojedynczego komponentu.")}</td></tr>
-      <tr><td>${L("Focus containment","Utrzymanie fokusa")}</td>
-          <td>${L("Focus enters a drawer on its close button but is not held inside it; tabbing leaves the open dialog and reaches the page behind.",
-                  "Fokus wchodzi do szuflady na przycisk zamknięcia, ale nie jest w niej utrzymywany; tabulatorem można wyjść z otwartego okna na stronę pod spodem.")}</td></tr>
       <tr><td>${L("Skip link","Link pomijający")}</td>
           <td>${L("There is none. A keyboard reader passes the header on every view before reaching the content.",
                   "Nie ma go. Osoba korzystająca z klawiatury na każdym widoku przechodzi przez nagłówek, zanim dotrze do treści.")}</td></tr>
