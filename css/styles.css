@@ -677,6 +677,10 @@
   .p-info{max-width:480px;padding-top:var(--nu-space-micro)}
   .p-title{font:var(--nu-type-h1);margin-bottom:var(--nu-space-nano)}
   .p-author{color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-medium)}
+  /* Size only, not a style: the font: shorthand resets font-variant-numeric,
+     so reaching for --nu-type-body-l here would take the tabular figures away.
+     Everything else is inherited and already right. The same holds for the
+     order total and for the total in the checkout bar. */
   .p-price{font-size:var(--nu-text-size-lg);font-variant-numeric:tabular-nums;margin-bottom:var(--nu-space-medium)}
   .p-price.is-out{color:var(--nu-fg-secondary);text-decoration:line-through}
   .p-desc{margin-bottom:var(--nu-space-small);max-width:42ch}
@@ -914,6 +918,7 @@
   }
   .sum-row{display:flex;justify-content:space-between;padding:var(--nu-space-nano) 0;font-variant-numeric:tabular-nums}
   .sum-row.muted{color:var(--nu-fg-secondary)}
+  /* size only: a style here would reset the tabular figures set by .sum-row */
   .sum-row.total{font-size:var(--nu-text-size-lg);padding-top:var(--nu-space-milli);margin-top:var(--nu-space-micro);border-top:1px solid var(--nu-border-neutral)}
   .cart-cta{display:block;width:100%;text-align:center;margin-top:var(--nu-space-medium);padding:var(--nu-space-milli) 0}
   .cart-page-list .ci-cover{width:var(--nu-thumb-size-md)}
@@ -1512,7 +1517,7 @@
       display:block;font:var(--nu-type-body-s);letter-spacing:var(--nu-tracking-caps);
       text-transform:uppercase;color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-nano);
     }
-    .co-bar .cb-val{font-size:var(--nu-text-size-lg);font-variant-numeric:tabular-nums}
+    .co-bar .cb-val{font-size:var(--nu-text-size-lg);font-variant-numeric:tabular-nums} /* size only: see .p-price */
     .co-bar .order-btn{width:auto;margin-top:0;padding:var(--nu-space-small) var(--nu-space-medium);flex-shrink:0}
     /* the summary's button would be a second, redundant submit */
     .co-side .order-btn{display:none}
