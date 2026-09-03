@@ -18,6 +18,13 @@
     --nu-grey-100:#F1F1F1;
     --nu-grey-400:#A6A6A6;
     --nu-grey-600:#727272;
+    /* Two steps that exist for the dark scheme. 800 is the surface raised over
+       the page there, at the same quiet distance a tile keeps from white in the
+       light one - 1.16:1 against 1.13:1. 700 is the hairline, deliberately a
+       shade stronger than its light counterpart, because a rule that quiet
+       disappears on a dark ground. */
+    --nu-grey-700:#383838;
+    --nu-grey-800:#232323;
     --nu-grey-900:#151515;
     --nu-red-600:#b3261e;
     --nu-burgundy-500:#8f2b45;
@@ -32,6 +39,11 @@
     --nu-bg-secondary:var(--nu-grey-100);       /* raised panels: tiles, thumbnails */
     --nu-bg-tertiary:var(--nu-grey-600);        /* third surface step: glass outline and shading */
     --nu-bg-inverse:var(--nu-grey-900);         /* filled actions */
+    /* What a shadow is made of. The same value as the inverse ground while the
+       page is light, and a separate name because the two roles part company the
+       moment it is dark: the opposite of a dark page is light, but a shadow
+       stays dark or stops being a shadow. */
+    --nu-bg-shadow:var(--nu-grey-900);
     --nu-bg-highlight:var(--nu-gold-100);       /* award badge */
     /* the dim laid over the page behind anything modal: author drawer, cart
        drawer, filter sheet. One name, so the scrims cannot drift apart. */
@@ -576,7 +588,7 @@
        itself when the labels swap between EN and PL, where they differ. */
     width:max-content;
     padding:var(--nu-space-micro) 0;display:none;text-align:left;
-    box-shadow:0 8px 24px color-mix(in srgb, var(--nu-bg-inverse) 6%, transparent);
+    box-shadow:0 8px 24px color-mix(in srgb, var(--nu-bg-shadow) 6%, transparent);
   }
   .sort-btn[aria-expanded="true"] + .sort-menu{display:block}
   .sort-menu button{
@@ -645,7 +657,7 @@
   .cover{
     width:var(--nu-cover-width);max-width:none;aspect-ratio:7/10;
     position:relative;overflow:hidden;
-    box-shadow:0 14px 22px -10px color-mix(in srgb, var(--nu-bg-inverse) 35%, transparent), 0 2px 4px color-mix(in srgb, var(--nu-bg-inverse) 12%, transparent);
+    box-shadow:0 14px 22px -10px color-mix(in srgb, var(--nu-bg-shadow) 35%, transparent), 0 2px 4px color-mix(in srgb, var(--nu-bg-shadow) 12%, transparent);
     transition:transform var(--nu-motion-slow) ease;
     flex-shrink:0;
   }
@@ -731,7 +743,7 @@
     position:fixed;top:0;right:0;bottom:0;z-index:100;
     width:min(400px, 92vw);
     background:var(--nu-bg-primary);border-left:1px solid var(--nu-border-neutral);
-    box-shadow:-18px 0 50px color-mix(in srgb, var(--nu-bg-inverse) 8%, transparent);
+    box-shadow:-18px 0 50px color-mix(in srgb, var(--nu-bg-shadow) 8%, transparent);
     transform:translateX(102%);visibility:hidden;
     transition:transform var(--nu-motion-slow) var(--nu-ease-slide), visibility var(--nu-motion-slow);
     padding:var(--nu-space-medium) var(--nu-space-large) var(--nu-space-xlarge);overflow-y:auto;
@@ -780,7 +792,7 @@
       inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 22%, transparent),
       inset 0 -14px 24px -12px color-mix(in srgb, var(--nu-bg-action-glow) 85%, transparent),
       0 7px 16px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 60%, transparent),
-      0 1px 3px color-mix(in srgb, var(--nu-bg-inverse) 18%, transparent);
+      0 1px 3px color-mix(in srgb, var(--nu-bg-shadow) 18%, transparent);
     transform-origin:center;
     transition:box-shadow var(--nu-motion-quick) ease, transform var(--nu-motion-quick) ease, background var(--nu-motion-base) ease;
   }
@@ -789,7 +801,7 @@
       inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 28%, transparent),
       inset 0 -16px 26px -12px color-mix(in srgb, var(--nu-bg-action-glow) 95%, transparent),
       0 9px 20px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 75%, transparent),
-      0 1px 3px color-mix(in srgb, var(--nu-bg-inverse) 20%, transparent);
+      0 1px 3px color-mix(in srgb, var(--nu-bg-shadow) 20%, transparent);
   }
   /* press: the button shrinks slightly into the page and its aura tightens,
      so a full-width bar reads the same as a content-width one */
@@ -799,7 +811,7 @@
       inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 18%, transparent),
       inset 0 -12px 20px -12px color-mix(in srgb, var(--nu-bg-action-glow) 80%, transparent),
       0 4px 10px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 55%, transparent),
-      0 1px 2px color-mix(in srgb, var(--nu-bg-inverse) 14%, transparent);
+      0 1px 2px color-mix(in srgb, var(--nu-bg-shadow) 14%, transparent);
   }
   /* secondary button: the same glass, uncoloured — grey body, dark label */
   .btn-secondary{
@@ -820,7 +832,7 @@
     box-shadow:
       inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 60%, transparent),
       inset 0 -10px 18px -12px color-mix(in srgb, var(--nu-bg-tertiary) 40%, transparent),
-      0 2px 5px -2px color-mix(in srgb, var(--nu-bg-inverse) 14%, transparent);
+      0 2px 5px -2px color-mix(in srgb, var(--nu-bg-shadow) 14%, transparent);
     transform-origin:center;
     transition:box-shadow var(--nu-motion-quick) ease, background var(--nu-motion-base) ease, transform var(--nu-motion-quick) ease;
   }
@@ -838,14 +850,14 @@
     box-shadow:
       inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 68%, transparent),
       inset 0 -12px 20px -12px color-mix(in srgb, var(--nu-bg-tertiary) 50%, transparent),
-      0 3px 7px -2px color-mix(in srgb, var(--nu-bg-inverse) 18%, transparent);
+      0 3px 7px -2px color-mix(in srgb, var(--nu-bg-shadow) 18%, transparent);
   }
   .btn-secondary:active{
     transform:translateY(1px) scale(.985);
     box-shadow:
       inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 50%, transparent),
       inset 0 -8px 14px -12px color-mix(in srgb, var(--nu-bg-tertiary) 45%, transparent),
-      0 1px 3px -2px color-mix(in srgb, var(--nu-bg-inverse) 12%, transparent);
+      0 1px 3px -2px color-mix(in srgb, var(--nu-bg-shadow) 12%, transparent);
   }
   .btn-secondary:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   .p-cta.is-adding{
@@ -905,7 +917,7 @@
     .ci{transition:none}
   }
   .ci-cover{width:var(--nu-thumb-size-sm);flex-shrink:0}
-  .ci-cover .cover{width:100%;max-width:none;box-shadow:0 2px 8px color-mix(in srgb, var(--nu-bg-inverse) 18%, transparent)}
+  .ci-cover .cover{width:100%;max-width:none;box-shadow:0 2px 8px color-mix(in srgb, var(--nu-bg-shadow) 18%, transparent)}
   .ci-main{flex:1;min-width:0}
   .ci-title{display:block;line-height:var(--nu-line-snug);margin-bottom:var(--nu-space-nano)}
   .ci-price{color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-micro)}
@@ -1470,7 +1482,7 @@
       gap:var(--nu-space-small);
       background:var(--nu-bg-primary);
       border-top:1px solid var(--nu-border-neutral);
-      box-shadow:0 -6px 18px color-mix(in srgb, var(--nu-bg-inverse) 5%, transparent);
+      box-shadow:0 -6px 18px color-mix(in srgb, var(--nu-bg-shadow) 5%, transparent);
     }
     /* clearance for whichever bar this view actually shows, so the footer and
        the last form field are never trapped underneath it */
@@ -1504,7 +1516,7 @@
       transition:none;
       background:var(--nu-bg-primary);
       border-top:1px solid var(--nu-border-neutral);
-      box-shadow:0 -14px 40px color-mix(in srgb, var(--nu-bg-inverse) 10%, transparent);
+      box-shadow:0 -14px 40px color-mix(in srgb, var(--nu-bg-shadow) 10%, transparent);
       animation:sheetUp var(--nu-motion-slow) var(--nu-ease-slide);
     }
     /* closing: drop it past the bar before it goes back into the flow */
@@ -1528,7 +1540,7 @@
       padding:var(--nu-space-milli) var(--nu-space-small) calc(var(--nu-space-milli) + env(safe-area-inset-bottom));
       background:var(--nu-bg-primary);
       border-top:1px solid var(--nu-border-neutral);
-      box-shadow:0 -6px 18px color-mix(in srgb, var(--nu-bg-inverse) 5%, transparent);
+      box-shadow:0 -6px 18px color-mix(in srgb, var(--nu-bg-shadow) 5%, transparent);
     }
     .co-bar .cb-lbl{
       display:block;font:var(--nu-type-body-s);letter-spacing:var(--nu-tracking-caps);

@@ -2322,11 +2322,12 @@ const DS_SECTIONS = [
       ["--nu-bg-action-secondary",L("Secondary action, glass body","Akcja drugorzędna, korpus szkła")],
       ["--nu-bg-highlight",L("Distinction","Wyróżnienie")],
       ["--nu-bg-scrim",L("Dim behind a modal layer","Przyciemnienie pod warstwą modalną")],
+      ["--nu-bg-shadow",L("What a shadow is made of","Barwa, z której zrobiony jest cień")],
       ["--nu-bg-measure",L("A measured distance","Mierzona odległość")],
     ])}</tbody></table>
     <p class="note">${L(
-      "Both glow tokens belong to the primary button. The secondary button carries neither; the absence is what separates the two.",
-      "Oba tokeny łuny należą do przycisku głównego. Przycisk drugorzędny nie ma żadnego z nich i ten brak jest tym, co odróżnia oba przyciski.")}</p>
+      "Both glow tokens belong to the primary button. The secondary button carries neither; the absence is what separates the two. <code>--nu-bg-shadow</code> holds the same value as the inverse surface and stands apart from it because the two answer different questions &ndash; what is the opposite of the page, and what colour is a shadow. On a light page one answer serves both; the moment a page is dark they part.",
+      "Oba tokeny łuny należą do przycisku głównego. Przycisk drugorzędny nie ma żadnego z nich i ten brak jest tym, co odróżnia oba przyciski. <code>--nu-bg-shadow</code> ma tę samą wartość co powierzchnia odwrócona i stoi osobno, bo odpowiadają na różne pytania &ndash; co jest przeciwieństwem strony, a z czego zrobiony jest cień. Na jasnej stronie jedna odpowiedź obsługuje oba; z chwilą, gdy strona jest ciemna, rozchodzą się.")}</p>
     <h3>Foreground</h3>
     <table class="tok-table">
     <colgroup><col class="c-token"><col class="c-source"><col><col></colgroup>
