@@ -44,6 +44,12 @@
       <div class="sw-group" role="group" aria-label="Currency">
         <button type="button" class="chip" id="swEUR" aria-pressed="false"><span class="chip-t">EUR</span></button><span>/</span><button type="button" class="chip" id="swPLN" aria-pressed="true"><span class="chip-t">PLN</span></button>
       </div>
+      <!-- A third pair on the same terms as the two before it. Neither chip is
+           pressed until somebody chooses: until then the shop follows the
+           reader's system, which is a setting they already made. -->
+      <div class="sw-group" role="group" aria-label="Motyw">
+        <button type="button" class="chip" id="swLight" aria-pressed="false"><span class="chip-t">Jasny</span></button><span>/</span><button type="button" class="chip" id="swDark" aria-pressed="false"><span class="chip-t">Ciemny</span></button>
+      </div>
     </div>
     <div class="head-icons">
       <button type="button" class="btn-tertiary" id="btnSearch" aria-label="Szukaj"><svg class="ico-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg></button>

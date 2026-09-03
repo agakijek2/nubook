@@ -172,7 +172,7 @@ const I18N = {
   en: {
     docTitle:"nubook. — novels on women & gender",
     coverAlt:"Cover of", qtyLess:"Decrease quantity", qtyMore:"Increase quantity",
-    strap:"novels on women & gender", skip:"Skip to content",
+    strap:"novels on women & gender", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
     all:"All",
     sorts:{featured:"Our recommendations",newest:"Newest first","price-asc":"Price, low to high","pub-asc":"First published: oldest"},
@@ -219,13 +219,13 @@ const I18N = {
     dGenre:"Genre", dLang:"Edition language", dStatus:"Status",
     aboutAuthor:{f:"About the author", m:"About the author", nb:"About the author"},
     aria:{fav:"Favourites",account:"Account",search:"Search",cart:"Cart",
-          close:"Close",langGroup:"Language",curGroup:"Currency"},
+          close:"Close",langGroup:"Language",curGroup:"Currency",schemeGroup:"Theme"},
     designSystem:"Design system",
   },
   pl: {
     docTitle:"nubook. — powieści o kobietach i płci",
     coverAlt:"Okładka:", qtyLess:"Zmniejsz ilość", qtyMore:"Zwiększ ilość",
-    strap:"powieści o kobietach i płci", skip:"Przejdź do treści",
+    strap:"powieści o kobietach i płci", skip:"Przejdź do treści", schemeLight:"Jasny", schemeDark:"Ciemny",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
     all:"Wszystkie",
     sorts:{featured:"Nasze rekomendacje",newest:"Od najnowszych","price-asc":"Cena: od najniższej","pub-asc":"Pierwsze wydanie: rosnąco"},
@@ -272,12 +272,14 @@ const I18N = {
     dGenre:"Gatunek", dLang:"Język wydania", dStatus:"Status",
     aboutAuthor:{f:"O autorce", m:"O autorze", nb:"O osobie autorskiej"},
     aria:{fav:"Ulubione",account:"Konto",search:"Szukaj",cart:"Koszyk",
-          close:"Zamknij",langGroup:"Język",curGroup:"Waluta"},
+          close:"Zamknij",langGroup:"Język",curGroup:"Waluta",schemeGroup:"Motyw"},
     designSystem:"System projektowy",
   },
 };
 let LANG = "pl";
 let CUR = "pln";
+/* "auto" until somebody chooses: the shop then follows the reader's system. */
+let SCHEME = "auto";
 
 /* Preview sandboxes (like the Claude artifact viewer) intercept clicks on <a>.
    When embedded in a frame we render cards as JS-driven elements instead;
@@ -314,7 +316,7 @@ const SORTS = ["featured","newest","price-asc","pub-asc"];
 function savePrefs(){
   try {
     localStorage.setItem(PREFS_KEY, JSON.stringify({
-      lang: LANG, cur: CUR, edition: state.lang, sort: state.sort,
+      lang: LANG, cur: CUR, scheme: SCHEME, edition: state.lang, sort: state.sort,
       genre: [...state.genre], status: [...state.status],
     }));
   } catch {}
@@ -325,6 +327,7 @@ function savePrefs(){
   const known = (field, value) => BOOKS.some(b => b[field] === value);
   if (p.lang === "en" || p.lang === "pl") LANG = p.lang;
   if (p.cur === "eur" || p.cur === "pln") CUR = p.cur;
+  if (p.scheme === "light" || p.scheme === "dark") SCHEME = p.scheme;
   if (p.edition === "en" || p.edition === "pl") state.lang = p.edition;
   if (SORTS.includes(p.sort)) state.sort = p.sort;
   if (Array.isArray(p.genre))  p.genre .filter(k => known("g", k)).forEach(k => state.genre.add(k));
@@ -1517,6 +1520,9 @@ function applyLang(){
   document.title = t.docTitle;
   document.getElementById("strap").textContent = t.strap;
   document.getElementById("skipLink").textContent = t.skip;
+  document.querySelector("#swLight").closest(".sw-group").setAttribute("aria-label", t.aria.schemeGroup);
+  document.getElementById("swLight").querySelector(".chip-t").textContent = t.schemeLight;
+  document.getElementById("swDark").querySelector(".chip-t").textContent = t.schemeDark;
   document.getElementById("promoCopy").textContent = t.promoCopy;
   const pc = document.getElementById("promoCode");
   document.getElementById("promoCodeLabel").textContent = PROMO_CODE;
@@ -1554,6 +1560,20 @@ function applyLang(){
   document.getElementById("swEN").setAttribute("aria-pressed", LANG==="en");
   document.getElementById("swPL").setAttribute("aria-pressed", LANG==="pl");
   measureBars();   // a longer sort label can make the mobile bar taller
+}
+/* The scheme is one attribute on the root: light-dark() reads it through
+   color-scheme and every colour follows. "auto" means no attribute at all, so
+   the media query built into color-scheme keeps the reader's own setting.
+   The documentation is redrawn because its contrast table reads the values that
+   are in force, and those have just changed. */
+function applyScheme(){
+  const root = document.documentElement;
+  if (SCHEME === "auto") root.removeAttribute("data-scheme");
+  else root.setAttribute("data-scheme", SCHEME);
+  document.getElementById("swLight").setAttribute("aria-pressed", SCHEME === "light");
+  document.getElementById("swDark").setAttribute("aria-pressed", SCHEME === "dark");
+  savePrefs();
+  if (!dsEl.hidden) renderDesignSystem();
 }
 function applyCur(){
   document.getElementById("swEUR").setAttribute("aria-pressed", CUR==="eur");
@@ -1598,6 +1618,10 @@ document.getElementById("swEN").onclick = ()=>{ if(LANG!=="en"){LANG="en"; apply
 document.getElementById("swPL").onclick = ()=>{ if(LANG!=="pl"){LANG="pl"; applyLang(); render();} };
 document.getElementById("swEUR").onclick = ()=>{ if(CUR!=="eur"){CUR="eur"; applyCur(); render(false);} };
 document.getElementById("swPLN").onclick = ()=>{ if(CUR!=="pln"){CUR="pln"; applyCur(); render(false);} };
+/* Clicking the chip already in force hands the choice back to the system, so a
+   reader who set it by accident is not stuck with it. */
+document.getElementById("swLight").onclick = ()=>{ SCHEME = SCHEME==="light" ? "auto" : "light"; applyScheme(); };
+document.getElementById("swDark").onclick  = ()=>{ SCHEME = SCHEME==="dark"  ? "auto" : "dark";  applyScheme(); };
 
 const _applyLang = applyLang;
 applyLang = function(){ _applyLang(); const b = currentProduct(); if (b) renderProduct(b); fillDrawer(); if (cartOpen) renderCart(); if (!cartPageEl.hidden) renderCartPage(); if (!checkoutEl.hidden) renderCheckout(); if (!doneEl.hidden) renderDone(); };
@@ -3606,6 +3630,7 @@ applyCur();
 render();
 /* The badge counted only what happened in this visit; with a cart that outlives
    a reload it has to start from what was restored. */
+applyScheme();
 updateBadge(false);
 route();
 syncFilterToggle();
