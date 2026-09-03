@@ -437,6 +437,23 @@
      Giving the icon the same overhang makes both boxes hang the same way. */
   .btn-ghost.has-icon svg,
   .link.has-icon svg{margin-bottom:2px}
+  /* Every control that answers the pointer with colour answers over one step,
+     the same one the two solid buttons use: quick is the scale's name for an
+     element answering under the pointer without leaving its place. Underlines
+     sit on the label in the variants that carry an icon and in the chip and the
+     sort item, so those labels are named here rather than their buttons. Not
+     withdrawn under prefers-reduced-motion: nothing here moves, and the sheet
+     only drops transform for a reader who asked for less motion. */
+  .btn-ghost, .btn-ghost .lbl,
+  .link, .link .lbl,
+  .btn-tertiary,
+  .chip .chip-t,
+  .sort-menu .lbl,
+  .ds-nav-item{
+    transition:color var(--nu-motion-quick) ease, border-color var(--nu-motion-quick) ease;
+  }
+  /* The one that answers with its ground rather than its text. */
+  .sort-menu button{transition:background-color var(--nu-motion-quick) ease}
 
   /* ---------- shop bar (filter toggle + sort) ---------- */
   .shopbar{

@@ -1818,10 +1818,10 @@ function dsMotionSteps(){
   const notes = new Map([
     ["instant", L("Short enough that the change does not read as movement, it simply happens. The filter column disappears within it, before the tiles start to spread.",
                   "Tak krótki, że zmiana nie wygląda na ruch, tylko po prostu następuje. Kolumna filtrów znika w tym czasie, zanim kafle zaczną się rozsuwać.")],
-    ["quick",   L("An element answers a click or a hover without leaving its place: a button presses, a stepper cell fills, a label crossfades into the next one.",
-                  "Element odpowiada na kliknięcie albo najechanie, nie zmieniając położenia: przycisk się wciska, komórka steppera wypełnia się tłem, napis przechodzi w kolejny.")],
-    ["base",    L("Colour and a small turn: a field border, a chosen row, an icon rotating, a cart line leaving.",
-                  "Kolor i drobny obrót: ramka pola, wybrany wiersz, obrót ikony, znikająca pozycja koszyka.")],
+    ["quick",   L("An answer that lasts as long as the pointer stays: a button presses, a stepper cell fills, a link and its underline take on their second colour, a label crossfades into the next one. The element does not leave its place.",
+                  "Odpowiedź, która trwa tyle, ile kursor nad elementem: przycisk się wciska, komórka steppera wypełnia się tłem, link i jego podkreślenie przechodzą w drugi kolor, napis przechodzi w kolejny. Element nie zmienia położenia.")],
+    ["base",    L("A change that stays after the pointer leaves: a field keeps the border it took on being entered, an icon keeps its turn, a cart line goes for good.",
+                  "Zmiana, która zostaje po zdjęciu kursora: pole trzyma ramkę, którą przyjęło po wejściu w nie, ikona zostaje obrócona, pozycja koszyka odchodzi na dobre.")],
     ["slow",    L("An element comes onto the screen or leaves it: either drawer, the filter panel, the dimmed backdrop behind them.",
                   "Element wjeżdża na ekran albo z niego znika: każda z dwóch szuflad, panel filtrów, przyciemnione tło pod nimi.")],
     ["slower",  L("The longest transitions, the ones covering a larger area: a tile growing into a packshot, and cards appearing in the grid.",
@@ -2685,7 +2685,7 @@ const DS_SECTIONS = [
       <tr><td>Hover<br><code>:hover</code></td>
         <td>${L("The burgundy strengthens and the aura grows; the hue never changes","Burgund się wzmacnia, aura rośnie; barwa nigdy się nie zmienia")}</td>
         <td>${L("The same move without colour: the body holds, the highlight lifts and the drop shadow lengthens","Ten sam ruch bez koloru: korpus się nie zmienia, odblask się podnosi, a cień rzucany się wydłuża")}</td>
-        <td>${L("Tertiary lightens to <code>--nu-fg-secondary</code>; ghost darkens to <code>--nu-fg-primary</code> and its underline follows","Trzeciorzędny jaśnieje do <code>--nu-fg-secondary</code>; ghost ciemnieje do <code>--nu-fg-primary</code>, a podkreślenie idzie za nim")}</td></tr>
+        <td>${L(`Tertiary lightens to <code>--nu-fg-secondary</code>; ghost darkens to <code>--nu-fg-primary</code> and its underline follows. Both fade over ${dsTok("--nu-motion-quick")}, the step the two solid types answer over`,`Trzeciorzędny jaśnieje do <code>--nu-fg-secondary</code>; ghost ciemnieje do <code>--nu-fg-primary</code>, a podkreślenie idzie za nim. Oba przechodzą w ${dsTok("--nu-motion-quick")}, tym samym stopniu, w którym odpowiadają dwa pełne typy`)}</td></tr>
       <tr><td>${L("Press","Wciśnięcie")}<br><code>:active</code></td>
         <td>${L("1px down and scaled to 98.5% while the aura tightens","1px w dół i skala 98,5%, a aura się zacieśnia")}</td>
         <td>${L("The same movement in its grey register","Ten sam ruch w szarym rejestrze")}</td>
@@ -2708,8 +2708,8 @@ const DS_SECTIONS = [
       "One extra state, and it belongs to the primary button alone. While the &ldquo;Added&rdquo; sequence runs, the glass stays fully active and only the outer aura lifts (<code>.is-adding</code>); the button stops accepting clicks through <code>pointer-events</code> rather than through the disabled treatment.",
       "Jeden dodatkowy stan i należy wyłącznie do przycisku głównego. Podczas sekwencji „Dodano” szkło pozostaje w pełni aktywne, znika jedynie zewnętrzna aura (<code>.is-adding</code>); przycisk przestaje przyjmować kliknięcia przez <code>pointer-events</code>, a nie przez wygląd nieaktywny.")}</p>
     <p class="note">${L(
-      "Transition timings: transform 120ms, shadow 180ms, background 250ms.",
-      "Czasy przejść: przekształcenie 120ms, cień 180ms, tło 250ms.")}</p>
+      `Timings: the press and the shadow run over ${dsTok("--nu-motion-quick")}, the ground over ${dsTok("--nu-motion-base")}.`,
+      `Czasy: wciśnięcie i cień idą w ${dsTok("--nu-motion-quick")}, tło w ${dsTok("--nu-motion-base")}.`)}</p>
 
     <h3>${L("Live preview","Podgląd na żywo")}</h3>
     <p>${L(
@@ -2737,7 +2737,7 @@ const DS_SECTIONS = [
         <td><code>--nu-fg-primary</code></td></tr>
       <tr><td>${L("Selected","Zaznaczony")}<br><code>[aria-pressed="true"]</code></td><td>${L("The state lives in the attribute, not in a class, so assistive technology reads it without help","Stan zapisany jest w atrybucie, nie w klasie, więc technologie wspomagające odczytują go bez dodatkowej pomocy")}</td>
         <td><code>--nu-border-primary</code> ${L("underline","podkreślenie")}</td></tr>
-      <tr><td>Hover<br><code>:hover</code></td><td>${L("The underline appears in a lighter tone, one step short of selection","Podkreślenie pojawia się w jaśniejszym tonie, o stopień przed zaznaczeniem")}</td>
+      <tr><td>Hover<br><code>:hover</code></td><td>${L(`The underline appears in a lighter tone, one step short of selection, over ${dsTok("--nu-motion-quick")}`,`Podkreślenie pojawia się w jaśniejszym tonie, o stopień przed zaznaczeniem, w ${dsTok("--nu-motion-quick")}`)}</td>
         <td><code>--nu-fg-secondary</code> ${L("underline","podkreślenie")}</td></tr>
       <tr><td>${L("Disabled","Wyłączony")}<br><code>:disabled</code></td><td>${L("The facet would return nothing in the current combination. Set automatically when the count reaches zero, and skipped for a chip that is already selected &ndash; a filter can always be switched off","Kryterium nie dałoby nic w bieżącej kombinacji. Ustawiane automatycznie, gdy licznik osiąga zero, i pomijane dla chipa już zaznaczonego &ndash; filtr zawsze da się wyłączyć")}</td>
         <td><code>--nu-fg-tertiary</code></td></tr>
@@ -2794,8 +2794,8 @@ const DS_SECTIONS = [
         "<code>--nu-fg-primary</code> at rest, <code>--nu-fg-secondary</code> on hover &ndash; full strength first, lightening under the pointer. That is the tertiary button's register, and a link borrows it: both take the reader out of where they are, so they read as the same kind of offer. A link carries no fill and no box.",
         "<code>--nu-fg-primary</code> w spoczynku, <code>--nu-fg-secondary</code> przy najechaniu &ndash; najpierw pełna siła, potem rozjaśnienie pod kursorem. To rejestr przycisku trzeciorzędnego, a link go pożycza: oba wyprowadzają czytelniczkę z miejsca, w którym jest, więc czytają się jako ta sama propozycja. Link nie nosi ani wypełnienia, ani kontenera.")}</td></tr>
       <tr><td>${L("Underline","Podkreślenie")}</td><td>${L(
-        "1px, transparent at rest, and on hover it takes <code>currentColor</code> &ndash; the same tone the text has just moved to, so the rule never ends up darker than the words above it. This is what separates it from the ghost button, which wears its underline permanently because it is a control rather than a way out. Declaring it transparent rather than absent means colouring it moves no text.",
-        "1px, przezroczyste w spoczynku, a przy najechaniu przyjmuje <code>currentColor</code> &ndash; ten sam ton, do którego przeszedł właśnie tekst, więc kreska nigdy nie wychodzi ciemniejsza niż słowa nad nią. To właśnie odróżnia go od przycisku ghost, który nosi podkreślenie stale, bo jest kontrolką, a nie wyjściem. Zadeklarowanie go jako przezroczystego, a nie nieobecnego, sprawia, że pokolorowanie niczego nie przesuwa.")}</td></tr>
+        `1px, transparent at rest, and on hover it takes <code>currentColor</code> over ${dsTok("--nu-motion-quick")} &ndash; the same tone the text has just moved to, so the rule never ends up darker than the words above it. This is what separates it from the ghost button, which wears its underline permanently because it is a control rather than a way out. Declaring it transparent rather than absent means colouring it moves no text.`,
+        `1px, przezroczyste w spoczynku, a przy najechaniu przyjmuje <code>currentColor</code> w ${dsTok("--nu-motion-quick")} &ndash; ten sam ton, do którego przeszedł właśnie tekst, więc kreska nigdy nie wychodzi ciemniejsza niż słowa nad nią. To właśnie odróżnia go od przycisku ghost, który nosi podkreślenie stale, bo jest kontrolką, a nie wyjściem. Zadeklarowanie go jako przezroczystego, a nie nieobecnego, sprawia, że pokolorowanie niczego nie przesuwa.`)}</td></tr>
       <tr><td>${L("Icon","Ikona")}</td><td>${L(
         `Optional, and a 16&times;16 icon on the terms set out under Iconography. <code>.has-icon</code> lays the control out as a row with ${dsTok("--nu-space-micro")} between glyph and word, and moves the underline onto the label so it does not run beneath the arrow &ndash; the same construction the ghost button uses. The glyph carries the same 2px of overhang the underlined label does, so the two are centred on their marks rather than on their boxes.`,
         `Opcjonalna, ikona 16&times;16 na zasadach opisanych w Ikonografii. <code>.has-icon</code> układa kontrolkę w rząd z odstępem ${dsTok("--nu-space-micro")} między znakiem a słowem i przenosi podkreślenie na etykietę, żeby nie biegło pod strzałką &ndash; ta sama konstrukcja, której używa przycisk ghost. Znak dostaje ten sam zwis 2px co podkreślona etykieta, więc oba wyrównują się na swoich śladach, a nie na kontenerach.`)}</td></tr>
@@ -2960,7 +2960,7 @@ const DS_SECTIONS = [
         <td>${L("Underlined, on the same terms as a pressed chip and a hovered link. One option carries it at any time; the same attribute tells a screen reader which one is chosen.","Podkreślona, na tych samych zasadach co wciśnięty chip i link pod kursorem. W danej chwili ma je jedna opcja; ten sam atrybut mówi czytnikowi ekranu, która jest wybrana.")}</td>
         <td><code>--nu-border-primary</code></td></tr>
       <tr><td>Hover<br><code>:hover</code></td>
-        <td>${L("The row fills across the whole width of the panel, so the target is the row and not the words.","Wiersz wypełnia się na całą szerokość panelu, więc celem jest wiersz, a nie same słowa.")}</td>
+        <td>${L(`The row fills across the whole width of the panel, so the target is the row and not the words. The ground fades over ${dsTok("--nu-motion-quick")}.`,`Wiersz wypełnia się na całą szerokość panelu, więc celem jest wiersz, a nie same słowa. Tło przechodzi w ${dsTok("--nu-motion-quick")}.`)}</td>
         <td><code>--nu-bg-secondary</code></td></tr>
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
