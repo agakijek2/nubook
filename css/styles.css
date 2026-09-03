@@ -430,7 +430,11 @@
     font:var(--nu-type-body-s);color:var(--nu-fg-secondary);
   }
   .head-right{display:flex;align-items:center;gap:var(--nu-space-xlarge)}
-  .switchers{display:flex;align-items:center;gap:var(--nu-space-small)}
+  /* Two blocks, not three controls in a row: the pair that decides what the
+     shop says stands together, and the one that decides how it looks stands a
+     step away - the same step the switchers keep from the header's icons. */
+  .switchers{display:flex;align-items:center;gap:var(--nu-space-xlarge)}
+  .sw-content{display:flex;align-items:center;gap:var(--nu-space-small)}
   /* Layout only. The two options inside are chips: a pair of mutually exclusive
      facets reporting through aria-pressed, which is the chip's definition. Only
      the separator between them keeps the group's own colour. */
@@ -1489,8 +1493,12 @@
     .logo .strap{display:none}
     .head-right{display:contents}
     .head-icons{order:2;gap:var(--nu-space-medium);margin-left:auto}
-    .switchers{order:3;width:100%;justify-content:flex-start;gap:var(--nu-space-small);
+    /* The two blocks stay apart on their own row as well, one step narrower:
+       at this width the header's own distance would push the scheme off the
+       edge, and the row already has a rule above it doing part of the work. */
+    .switchers{order:3;width:100%;justify-content:flex-start;gap:var(--nu-space-medium);
       border-top:1px solid var(--nu-border-neutral);padding-top:var(--nu-space-milli)}
+    .sw-content{gap:var(--nu-space-small)}
     /* on mobile the filters collapse into a stacked panel above the grid */
     .shop{grid-template-columns:1fr;gap:0;padding:0 var(--nu-space-micro) var(--nu-space-huge)}
     .shop.filters-hidden{grid-template-columns:1fr}

@@ -38,11 +38,15 @@
   </div>
   <div class="head-right">
     <div class="switchers">
+      <!-- Language and currency answer questions about the content; the scheme
+           answers one about the surface. Two blocks, a step apart. -->
+      <div class="sw-content">
       <div class="sw-group" role="group" aria-label="Language">
         <button type="button" class="chip" id="swEN" aria-pressed="false"><span class="chip-t">EN</span></button><span>/</span><button type="button" class="chip" id="swPL" aria-pressed="true"><span class="chip-t">PL</span></button>
       </div>
       <div class="sw-group" role="group" aria-label="Currency">
         <button type="button" class="chip" id="swEUR" aria-pressed="false"><span class="chip-t">EUR</span></button><span>/</span><button type="button" class="chip" id="swPLN" aria-pressed="true"><span class="chip-t">PLN</span></button>
+      </div>
       </div>
       <!-- A third pair on the same terms as the two before it. Neither chip is
            pressed until somebody chooses: until then the shop follows the
