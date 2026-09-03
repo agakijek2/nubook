@@ -2157,10 +2157,10 @@ const DS_SECTIONS = [
 
     <h3>${L("Semantic","Semantyczny")}</h3>
     <p>${L(
-      "Names a role and points at the level below. This is the level a rule in the sheet reads. Two roles holding one value get two names, so that one of them can be changed later without the other: <code>--nu-border-muted</code> and <code>--nu-border-hover</code> point at the same grey today.",
-      "Nazywa rolę i wskazuje na poziom niżej. Po ten poziom sięgają reguły w arkuszu. Dwie role o tej samej wartości dostają dwie nazwy, żeby dało się później zmienić jedną, nie ruszając drugiej: <code>--nu-border-muted</code> i <code>--nu-border-hover</code> wskazują dziś na tę samą szarość.")}</p>
+      "Names a role and points at the level below. This is the level a rule in the sheet reads. The typographic styles stand here too, laid out property by property in the Typography tab. Two roles holding one value get two names, so that one of them can be changed later without the other: <code>--nu-border-muted</code> and <code>--nu-border-hover</code> point at the same grey today.",
+      "Nazywa rolę i wskazuje na poziom niżej. Po ten poziom sięgają reguły w arkuszu. Stoją tu również style typograficzne, rozłożone na osobne właściwości w zakładce Typografia. Dwie role o tej samej wartości dostają dwie nazwy, żeby dało się później zmienić jedną, nie ruszając drugiej: <code>--nu-border-muted</code> i <code>--nu-border-hover</code> wskazują dziś na tę samą szarość.")}</p>
     ${dsNamePattern([L("prefix","prefiks"), L("area","obszar"), L("role","rola")])}
-    ${dsTokenExamples(["--nu-fg-secondary","--nu-border-alert","--nu-type-body-m"], false)}
+    ${dsTokenExamples(["--nu-fg-secondary","--nu-border-alert","--nu-bg-scrim"], false)}
 
     <h3>${L("Component","Komponentowy")}</h3>
     <p>${L(
