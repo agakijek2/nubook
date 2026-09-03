@@ -217,6 +217,14 @@
     --nu-icon-lg:1.5rem;   --nu-icon-lg-inset:2px; --nu-icon-lg-stroke:1.5;
     --nu-icon-sm:1rem;   --nu-icon-sm-inset:1px; --nu-icon-sm-stroke:1.25;
 
+    /* An icon set beside a word is centred against the word's box, and that box
+       is taller than the marks inside it: the leading and the descender space
+       sit under the letters, so its middle falls below the middle of the word.
+       The icon is lifted back by this much. Judged by eye, which is what an
+       optical correction is, and in px because it corrects a mark against a
+       mark rather than a length against the text. */
+    --nu-icon-lift:2px;
+
     --nu-form-max-width:1440px;      /* cart & checkout: grows, then stops and centres */
     /* One gutter for every side-by-side layout: shop, product, checkout, docs.
        Named rather than repeated, because "how far apart do two columns sit" is
@@ -443,11 +451,10 @@
   /* The ghost keeps its underline in every arrangement, so with an icon the rule
      moves off the control and onto the label, where it stops before the glyph. */
   .btn-ghost.has-icon{border-bottom:0;padding-bottom:0}
-  /* The label hangs one rule plus one offset below its own text.
-     align-items:center lines up the two boxes, not the two marks, so without a
-     matching 2px under the glyph the icon lands one pixel low against the word.
-     Giving the icon the same overhang makes both boxes hang the same way. */
-  .btn-ghost.has-icon svg{margin-bottom:calc(var(--nu-underline-offset) + 1px)}
+  /* Wherever an icon stands beside a word - and .has-icon is the name of that
+     arrangement, whichever control carries it - the icon is lifted off the
+     centre of the text's box onto the centre of the word itself. */
+  .has-icon svg{margin-bottom:var(--nu-icon-lift)}
   /* Every control that answers the pointer with colour answers over one step,
      the same one the two solid buttons use: quick is the scale's name for an
      element answering under the pointer without leaving its place. Underlines

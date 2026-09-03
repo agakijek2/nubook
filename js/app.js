@@ -2553,6 +2553,14 @@ const DS_SECTIONS = [
       `An icon drawn at the larger size moves to the smaller one by scaling the drawing by ${dsIconRatio()}, which turns one safe area into the other. The stroke is set separately, so it keeps a visible weight rather than thinning with the drawing.`,
       `Ikonę narysowaną w większym rozmiarze przenosi się na mniejszy przez przeskalowanie rysunku o ${dsIconRatio()} &ndash; jedno pole bezpieczne przechodzi wtedy w drugie. Obrys ustawiany jest osobno, żeby zachował widoczną grubość, zamiast cienieć razem z rysunkiem.`)}</p>
 
+    <h3>${L("An icon beside a word","Ikona przy słowie")}</h3>
+    <p>${L(
+      `A control that pairs an icon with a word carries <code>.has-icon</code>, whichever component it is: a ghost button, a link, a tertiary button. The two stand in a row with ${dsTok("--nu-space-micro")} between them, centred on each other.`,
+      `Kontrolka, która łączy ikonę ze słowem, nosi klasę <code>.has-icon</code>, niezależnie od tego, jakim jest komponentem: przycisk ghost, link, przycisk trzeciorzędny. Oba stoją w rzędzie z odstępem ${dsTok("--nu-space-micro")}, wyśrodkowane względem siebie.`)}</p>
+    <p>${L(
+      `Centring lines up the two boxes, and a word's box is taller than the word: the leading and the space for descenders sit under the letters, so the middle of the box falls below the middle of the word. The icon is lifted back onto it by ${dsTok("--nu-icon-lift")}. That value is judged by eye rather than derived, which is what an optical correction is, and it is in <code>px</code> because it corrects one mark against another rather than a length against the text.`,
+      `Wyśrodkowanie zestawia dwa pudełka, a pudełko słowa jest wyższe niż samo słowo: interlinia i miejsce na ogonki leżą pod literami, więc środek pudełka wypada poniżej środka słowa. Ikonę podnosi z powrotem na jego wysokość ${dsTok("--nu-icon-lift")}. Ta wartość jest dobrana okiem, a nie wyliczona &ndash; tym właśnie jest korekta optyczna &ndash; i zapisana w <code>px</code>, bo poprawia jeden ślad względem drugiego, a nie długość względem tekstu.`)}</p>
+
     <h3>${L("The set","Zestaw")}</h3>
     <table><thead><tr><th>${L("Icon","Ikona")}</th><th>${L("Name","Nazwa")}</th></tr></thead><tbody>
       <tr><td class="ico-cell"><svg class="ico-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg></td>
@@ -2651,8 +2659,8 @@ const DS_SECTIONS = [
       <figure><div class="demo on-page"><span class="btn-secondary">${L("Apply","Zastosuj")}</span></div>
         <figcaption>${L("Secondary","Drugorzędny")}</figcaption></figure>
       <figure><div class="demo on-page">
-          <span class="filter-toggle btn-tertiary"><svg class="ico-sm ico-filter" viewBox="0 0 16 16" aria-hidden="true"><path class="bar-top" d="M2 5h12"/><path class="bar-bot" d="M2 11h12"/></svg>${L("Filter","Filtry")}</span>
-          <span class="sort-btn btn-tertiary">${L("Sort by:","Sortuj:")} <svg class="ico-sm ico-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></span>
+          <span class="filter-toggle btn-tertiary has-icon"><svg class="ico-sm ico-filter" viewBox="0 0 16 16" aria-hidden="true"><path class="bar-top" d="M2 5h12"/><path class="bar-bot" d="M2 11h12"/></svg>${L("Filter","Filtry")}</span>
+          <span class="sort-btn btn-tertiary has-icon">${L("Sort by:","Sortuj:")} <svg class="ico-sm ico-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></span>
           <span class="btn-tertiary"><svg class="ico-sm ico-close" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></span>
         </div>
         <figcaption>${L("Tertiary","Trzeciorzędny")}</figcaption></figure>
@@ -2811,8 +2819,8 @@ const DS_SECTIONS = [
         "Belongs to the in-text variant and stands there permanently, 1px in <code>currentColor</code>. A standalone link has none in any state. What decides is whether the reader has to find the link: among words, colour is the only other cue, and a colour on its own is what WCAG 1.4.1 rules out. The rule follows the text through <code>currentColor</code> rather than naming a border token, so it never ends up darker than the words above it.",
         "Należy do wariantu w tekście i stoi tam stale, 1px w <code>currentColor</code>. Link samodzielny nie ma go w żadnym stanie. Rozstrzyga to, czy czytelniczka musi link znaleźć: między słowami jedyną inną wskazówką jest kolor, a sam kolor jest tym, czego WCAG 1.4.1 nie dopuszcza. Kreska idzie za tekstem przez <code>currentColor</code>, a nie przez nazwany token obramowania, więc nigdy nie wychodzi ciemniejsza niż słowa nad nią.")}</td></tr>
       <tr><td>${L("Icon","Ikona")}</td><td>${L(
-        `Optional on a standalone link, and a 16&times;16 icon on the terms set out under Iconography. <code>.has-icon</code> lays the control out as a row with ${dsTok("--nu-space-micro")} between glyph and word. A link standing in text does not take one: a glyph among words reads as punctuation, and the rule would have to run under it or stop short of it, neither of which looks like an underlined word. So the two additions never meet, and no arrangement of a link puts a rule beneath an icon.`,
-        `Opcjonalna przy linku samodzielnym, ikona 16&times;16 na zasadach opisanych w Ikonografii. <code>.has-icon</code> układa kontrolkę w rząd z odstępem ${dsTok("--nu-space-micro")} między znakiem a słowem. Link stojący w tekście jej nie przyjmuje: znak między słowami czyta się jak znak interpunkcyjny, a kreska musiałaby albo biec pod nim, albo urwać się przed nim &ndash; żadne z tego nie wygląda jak podkreślone słowo. Oba dodatki nigdy więc się nie spotykają i w żadnym układzie linku kreska nie biegnie pod ikoną.`)}</td></tr>
+        `Optional on a standalone link, and a 16&times;16 icon on the terms set out under Iconography. <code>.has-icon</code> lays the control out as a row with ${dsTok("--nu-space-micro")} between glyph and word. The glyph is lifted by ${dsTok("--nu-icon-lift")}, the optical correction set out under Iconography, so it sits on the middle of the word rather than on the middle of its box. A link standing in text does not take an icon: a glyph among words reads as punctuation, and the rule would have to run under it or stop short of it, neither of which looks like an underlined word.`,
+        `Opcjonalna przy linku samodzielnym, ikona 16&times;16 na zasadach opisanych w Ikonografii. <code>.has-icon</code> układa kontrolkę w rząd z odstępem ${dsTok("--nu-space-micro")} między znakiem a słowem. Znak podnosi ${dsTok("--nu-icon-lift")}, korekta optyczna opisana w Ikonografii, żeby siedział na środku słowa, a nie na środku jego pudełka. Link stojący w tekście ikony nie przyjmuje: znak między słowami czyta się jak znak interpunkcyjny, a kreska musiałaby albo biec pod nim, albo urwać się przed nim &ndash; żadne z tego nie wygląda jak podkreślone słowo.`)}</td></tr>
       <tr><td>${L("Type","Typografia")}</td><td>${L(
         "Inherited from its surroundings, so a link in the footer sits at the footer's size without being told.",
         "Dziedziczona z otoczenia, więc link w stopce siedzi w rozmiarze stopki, nie będąc o tym informowany.")}</td></tr>
@@ -2944,7 +2952,7 @@ const DS_SECTIONS = [
       <figure>
         <div class="demo on-page ds-sort">
           <div class="sort">
-            <span class="sort-btn btn-tertiary">${L("Sort by:","Sortuj:")} ${L("Our recommendations","Nasze rekomendacje")}
+            <span class="sort-btn btn-tertiary has-icon">${L("Sort by:","Sortuj:")} ${L("Our recommendations","Nasze rekomendacje")}
               <svg class="ico-sm ico-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></span>
           </div>
         </div>
