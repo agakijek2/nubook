@@ -12,6 +12,11 @@
 </head>
 <body>
 
+<!-- The first thing the Tab key finds on every view: a way past the promotion
+     and the header, straight to the content. It has to be the first focusable
+     element in the document, so it stands above the promotion bar. -->
+<a class="skip-link" id="skipLink" href="#content">Przejdź do treści</a>
+
 <!-- Shop-wide promotion. Sits above the header so it is the first thing read,
      and it is the one place in the shop that runs on an inverse ground. -->
 <div class="promo" id="promo">
@@ -48,6 +53,11 @@
     </div>
   </div>
 </header>
+
+<!-- Where the skip link lands. It sits right after the header, so it works on
+     every view without knowing which one is showing: everything below is the
+     content of whatever the reader is looking at. -->
+<div id="content" tabindex="-1"></div>
 
 <div class="shopbar" id="shopbar">
   <button class="filter-toggle btn-tertiary has-icon" id="filterToggle" aria-expanded="true" aria-controls="filters">

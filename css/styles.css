@@ -264,6 +264,23 @@
   /* The one inverse surface in the shop. The code inside is a ghost button -
      an action taken in place, woven into the sentence - so it keeps the ghost
      construction and only swaps the two colours for their inverse counterparts. */
+  /* Hidden until the Tab key reaches it, then a plain box in the top corner.
+     Not visually-hidden-forever: a link nobody can see is a link nobody uses,
+     and the point of this one is that it announces itself on the first Tab. */
+  .skip-link{
+    position:absolute;left:var(--nu-space-small);top:var(--nu-space-small);z-index:100;
+    width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;
+  }
+  .skip-link:focus{
+    width:auto;height:auto;clip-path:none;
+    padding:var(--nu-space-micro) var(--nu-space-small);
+    background:var(--nu-bg-primary);color:var(--nu-fg-primary);
+    border:1px solid var(--nu-border-primary);
+    outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset);
+  }
+  /* The landing spot takes focus from the link and gives it straight back to the
+     page: it is a position, not a control, so it never draws a ring. */
+  #content:focus{outline:none}
   .promo{
     background:var(--nu-bg-inverse);color:var(--nu-fg-inverse);
     padding:var(--nu-space-micro) var(--nu-space-small);
