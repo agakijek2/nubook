@@ -26,7 +26,14 @@
     --nu-grey-700:#383838;
     --nu-grey-800:#232323;
     --nu-grey-900:#151515;
+    /* The two accents that carry meaning on the page ground - an error and a
+       warning - exist twice, because they were chosen against white and a dark
+       red on a dark page is unreadable. The lighter steps keep the hue and give
+       up eight points of saturation, so raising the lightness does not turn them
+       garish. Both clear AA on the dark page and on the surface above it. */
+    --nu-red-300:#de736d;
     --nu-red-600:#b3261e;
+    --nu-burgundy-300:#cf7d92;
     --nu-burgundy-500:#8f2b45;
     --nu-burgundy-700:#5c1228;
     --nu-gold-100:#f7e9b8;
