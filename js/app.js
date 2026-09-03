@@ -838,7 +838,29 @@ document.getElementById("drawerClose").onclick = closeAuthor;
 drawerBg.onclick = closeAuthor;
 
 /* ---------------- cart state ---------------- */
-const CART = new Map();           // book id -> qty
+/* The cart outlives a reload. A shop that empties the basket because somebody
+   refreshed the page punishes them for it, and localStorage rather than
+   sessionStorage because a cart is expected to survive closing the browser too.
+
+   Reading it back is treated like reading anything from outside the shop: the
+   store can be missing, refused outright - Safari does that on a file:// page -
+   or hold something another version wrote. Every entry is checked against the
+   catalogue and anything that does not fit is dropped rather than trusted. */
+const CART_KEY = "nubook.cart.v1";
+function loadCart(){
+  try {
+    const raw = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+    if (!Array.isArray(raw)) return new Map();
+    return new Map(raw.filter(e =>
+      Array.isArray(e) && e.length === 2 &&
+      Number.isInteger(e[0]) && BOOKS[e[0]] && BOOKS[e[0]].id === e[0] &&
+      Number.isInteger(e[1]) && e[1] > 0));
+  } catch { return new Map(); }
+}
+function saveCart(){
+  try { localStorage.setItem(CART_KEY, JSON.stringify([...CART])); } catch {}
+}
+const CART = loadCart();          // book id -> qty
 const SHIPPING = [
   {id:"inpost",  pln:12.99, eur:2.99},
   {id:"courier", pln:16.99, eur:3.99},
@@ -933,6 +955,7 @@ function updateBadge(mode){
 function addToCart(id, btn){
   const wasEmpty = cartCount() === 0;
   CART.set(id, (CART.get(id) || 0) + 1);
+  saveCart();
   updateBadge(wasEmpty ? "in" : "bump");
   setTimeout(openCart, motionMs("--nu-motion-slow"));
   if (btn){
@@ -970,12 +993,13 @@ function refreshCartViews(){
 function setQty(id, q){
   if (q <= 0){ removeItem(id); return; }
   CART.set(id, q);
+  saveCart();
   updateBadge(false);
   refreshCartViews();
 }
 function removeItem(id){
   const rows = [document.getElementById("ci"+id), document.getElementById("cp"+id)].filter(Boolean);
-  const finish = ()=>{ CART.delete(id); updateBadge(false); refreshCartViews(); };
+  const finish = ()=>{ CART.delete(id); saveCart(); updateBadge(false); refreshCartViews(); };
   if (rows.length){ rows.forEach(r=>r.classList.add("removing")); setTimeout(finish, motionMs("--nu-motion-base")); } else finish();
 }
 
@@ -1358,6 +1382,7 @@ function submitOrder(e){
       email: form.elements.email.value,
     };
     CART.clear();
+    saveCart();
     updateBadge(false);
     location.hash = "done";
   }, 1100);
@@ -3540,5 +3565,8 @@ renderFooter();
 applyLang();
 applyCur();
 render();
+/* The badge counted only what happened in this visit; with a cart that outlives
+   a reload it has to start from what was restored. */
+updateBadge(false);
 route();
 syncFilterToggle();
