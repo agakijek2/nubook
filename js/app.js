@@ -1412,13 +1412,13 @@ function renderProduct(b){
 function route(){
   const b = currentProduct();
   const view = b ? "product"
-    : location.hash === "#design" ? "design"
+    : /^#design(\/|$)/.test(location.hash) ? "design"
     : location.hash === "#cart" && CART.size > 0 ? "cart"
     : location.hash === "#checkout" && CART.size > 0 ? "checkout"
     : location.hash === "#done" && lastOrder ? "done"
     : "grid";
   dsEl.hidden = view !== "design";
-  if (view === "design") renderDesignSystem();
+  if (view === "design"){ dsCurrent = dsFromHash(); renderDesignSystem(); }
   document.getElementById("siteFoot").hidden = view === "design";
   document.getElementById("promo").hidden = view === "design";
   shopbarEl.hidden  = view !== "grid";
@@ -3359,6 +3359,18 @@ const DS_SECTIONS = [
 ];
 
 let dsCurrent = "overview";
+/* The open tab is part of the address rather than a variable of its own: a
+   reload keeps the reader where they were, Back steps between tabs, and a single
+   tab can be linked to on its own - which is the point of documentation somebody
+   else is meant to read. The id in the address is the section's own, so the same
+   link holds in both languages. An address naming a tab that does not exist falls
+   back to the first one instead of rewriting itself, which would put a step
+   nobody took into the history. */
+function dsFromHash(){
+  const m = location.hash.match(/^#design\/(.+)$/);
+  const id = m && decodeURIComponent(m[1]);
+  return DS_SECTIONS.some(s => s.id === id) ? id : DS_SECTIONS[0].id;
+}
 
 /* Live preview, one implementation for every component that has one. Each
    section declares on the .ds-play element which table lists its options and
@@ -3511,11 +3523,8 @@ function renderDesignSystem(){
     c.onclick = () => c.setAttribute("aria-pressed", String(c.getAttribute("aria-pressed") !== "true"));
   });
   dsEl.querySelectorAll(".ds-nav-item").forEach(btn=>{
-    btn.onclick = ()=>{
-      dsCurrent = btn.dataset.ds;
-      renderDesignSystem();
-      window.scrollTo({top:0, behavior:"instant"});
-    };
+    /* The address does the work: route() reads it, sets the tab and scrolls. */
+    btn.onclick = ()=>{ location.hash = "design/" + btn.dataset.ds; };
   });
 }
 
