@@ -405,13 +405,17 @@
   .btn-ghost.is-copied .ico-check{display:block}
   /* Full strength at rest and lightening under the pointer, the same register as
      the tertiary button: both are ways out of where you are, so they read alike.
-     The underline follows the text through currentColor rather than naming a
-     border token, which would leave a dark rule under lightened type. */
-  .link{
-    color:var(--nu-fg-primary);
-    border-bottom:1px solid transparent;padding-bottom:1px;
-  }
-  .link:hover{color:var(--nu-fg-secondary);border-bottom-color:currentColor}
+     Two variants, and the difference is where the link stands. Standing on its
+     own - a footer, a way back - it is found by its place, so colour is the whole
+     treatment. Standing inside a sentence it has to be found among words, and
+     colour alone is what WCAG 1.4.1 does not allow, so there the underline is
+     permanent rather than waiting for a pointer that a reader may never move.
+     It follows the text through currentColor rather than naming a border token,
+     which would leave a dark rule under lightened type. */
+  .link{color:var(--nu-fg-primary)}
+  .link:hover{color:var(--nu-fg-secondary)}
+  .link.in-text,
+  .link.in-text.has-icon .lbl{border-bottom:1px solid currentColor;padding-bottom:1px}
   .link:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   /* A link with an icon is built exactly as a ghost with one: the underline moves
      onto the label so it does not run under the glyph, and the icon is a drawn
@@ -429,14 +433,12 @@
        so the two arrangements - icon first, icon last - behave alike. */
     vertical-align:middle;
   }
-  .link.has-icon .lbl{border-bottom:1px solid transparent;padding-bottom:1px}
-  .link.has-icon:hover .lbl{border-bottom-color:currentColor}
   /* The label hangs 2px below its own text: 1px of padding, then the 1px rule.
      align-items:center lines up the two boxes, not the two marks, so without a
      matching 2px under the glyph the icon lands one pixel low against the word.
      Giving the icon the same overhang makes both boxes hang the same way. */
   .btn-ghost.has-icon svg,
-  .link.has-icon svg{margin-bottom:2px}
+  .link.in-text.has-icon svg{margin-bottom:2px}
   /* Every control that answers the pointer with colour answers over one step,
      the same one the two solid buttons use: quick is the scale's name for an
      element answering under the pointer without leaving its place. Underlines
@@ -445,7 +447,7 @@
      withdrawn under prefers-reduced-motion: nothing here moves, and the sheet
      only drops transform for a reader who asked for less motion. */
   .btn-ghost, .btn-ghost .lbl,
-  .link, .link .lbl,
+  .link,
   .btn-tertiary,
   .chip .chip-t,
   .sort-menu .lbl,
