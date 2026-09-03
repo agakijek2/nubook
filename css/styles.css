@@ -119,6 +119,12 @@
     --nu-tracking-compact:.04em;   /* short strings of any case: buttons, labels, badges */
     --nu-tracking-caps:.1em;       /* the smallest uppercase: section heads, group heads */
 
+    /* The gap between a word and the rule under it. In px, and deliberately: a
+       hairline's distance from a hairline is not measured against the text, so
+       it does not grow with it. Below the spacing scale, which starts four
+       times higher. */
+    --nu-underline-offset:1px;
+
     /* ---- spacing ----
        One rhythm, no exceptions: every gap, padding, margin and inset is a
        multiple of 4px.
@@ -391,13 +397,13 @@
      at full strength and lightens, the way the tertiary button does. */
   .btn-ghost{
     color:var(--nu-fg-secondary);
-    border-bottom:1px solid var(--nu-border-neutral);padding-bottom:1px;
+    border-bottom:1px solid var(--nu-border-neutral);padding-bottom:var(--nu-underline-offset);
   }
   .btn-ghost:hover{color:var(--nu-fg-primary);border-bottom-color:var(--nu-border-primary)}
   .btn-ghost:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   /* A ghost that carries an icon moves its underline onto the label, for the same
      reason the chip does: the mark belongs to the words, not to the glyph. */
-  .btn-ghost.has-icon .lbl{border-bottom:1px solid var(--nu-border-neutral);padding-bottom:1px}
+  .btn-ghost.has-icon .lbl{border-bottom:1px solid var(--nu-border-neutral);padding-bottom:var(--nu-underline-offset)}
   .btn-ghost.has-icon:hover .lbl{border-bottom-color:var(--nu-border-primary)}
   /* one glyph at a time: the check replaces the sheets once the copy succeeded */
   .btn-ghost .ico-check{display:none}
@@ -415,7 +421,7 @@
   .link{color:var(--nu-fg-primary)}
   .link:hover{color:var(--nu-fg-secondary)}
   .link.in-text,
-  .link.in-text.has-icon .lbl{border-bottom:1px solid currentColor;padding-bottom:1px}
+  .link.in-text.has-icon .lbl{border-bottom:1px solid currentColor;padding-bottom:var(--nu-underline-offset)}
   .link:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   /* A link with an icon is built exactly as a ghost with one: the underline moves
      onto the label so it does not run under the glyph, and the icon is a drawn
@@ -438,7 +444,7 @@
      matching 2px under the glyph the icon lands one pixel low against the word.
      Giving the icon the same overhang makes both boxes hang the same way. */
   .btn-ghost.has-icon svg,
-  .link.in-text.has-icon svg{margin-bottom:2px}
+  .link.in-text.has-icon svg{margin-bottom:calc(var(--nu-underline-offset) + 1px)}
   /* Every control that answers the pointer with colour answers over one step,
      the same one the two solid buttons use: quick is the scale's name for an
      element answering under the pointer without leaving its place. Underlines
@@ -521,7 +527,7 @@
   /* The underline belongs to the label, not to the whole button: the count is a
      separate piece of information, and running under it would read as part of the
      name. Hence the inner span - a border cannot stop halfway across an element. */
-  .chip .chip-t{border-bottom:1px solid transparent;padding-bottom:1px}
+  .chip .chip-t{border-bottom:1px solid transparent;padding-bottom:var(--nu-underline-offset)}
   .chip sup{font-size:var(--nu-text-size-xs);color:var(--nu-fg-tertiary);margin-left:var(--nu-space-nano)}
   .chip[aria-pressed="true"] .chip-t{border-bottom-color:var(--nu-border-primary)}
   .chip:hover .chip-t{border-bottom-color:var(--nu-fg-secondary)}
@@ -559,7 +565,7 @@
      ghost button all draw: a border under the label with 1px of air, so every
      underlined thing in the shop sits the same distance from its word. It rides
      on the label rather than the row, which is the full width of the panel. */
-  .sort-menu .lbl{border-bottom:1px solid transparent;padding-bottom:1px}
+  .sort-menu .lbl{border-bottom:1px solid transparent;padding-bottom:var(--nu-underline-offset)}
   .sort-menu button[aria-checked="true"] .lbl{border-bottom-color:var(--nu-border-primary)}
 
   /* ---------- grid ---------- */
