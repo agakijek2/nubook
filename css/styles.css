@@ -417,11 +417,13 @@
      colour alone is what WCAG 1.4.1 does not allow, so there the underline is
      permanent rather than waiting for a pointer that a reader may never move.
      It follows the text through currentColor rather than naming a border token,
-     which would leave a dark rule under lightened type. */
+     which would leave a dark rule under lightened type. The in-text variant does
+     not take an icon: a glyph inside a sentence reads as punctuation, and the
+     rule would have to run under it or stop short of it, neither of which looks
+     like an underlined word. */
   .link{color:var(--nu-fg-primary)}
   .link:hover{color:var(--nu-fg-secondary)}
-  .link.in-text,
-  .link.in-text.has-icon .lbl{border-bottom:1px solid currentColor;padding-bottom:var(--nu-underline-offset)}
+  .link.in-text{border-bottom:1px solid currentColor;padding-bottom:var(--nu-underline-offset)}
   .link:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   /* A link with an icon is built exactly as a ghost with one: the underline moves
      onto the label so it does not run under the glyph, and the icon is a drawn
@@ -431,7 +433,6 @@
   .btn-ghost.has-icon,
   .link.has-icon{
     display:inline-flex;align-items:center;gap:var(--nu-space-micro);
-    border-bottom:0;padding-bottom:0;
     /* An inline-flex box takes its baseline from its first child, and an SVG has
        none - so with a leading icon the browser invents one at the glyph's bottom
        edge and reserves descender space beneath it, making the line taller than
@@ -439,12 +440,14 @@
        so the two arrangements - icon first, icon last - behave alike. */
     vertical-align:middle;
   }
-  /* The label hangs 2px below its own text: 1px of padding, then the 1px rule.
+  /* The ghost keeps its underline in every arrangement, so with an icon the rule
+     moves off the control and onto the label, where it stops before the glyph. */
+  .btn-ghost.has-icon{border-bottom:0;padding-bottom:0}
+  /* The label hangs one rule plus one offset below its own text.
      align-items:center lines up the two boxes, not the two marks, so without a
      matching 2px under the glyph the icon lands one pixel low against the word.
      Giving the icon the same overhang makes both boxes hang the same way. */
-  .btn-ghost.has-icon svg,
-  .link.in-text.has-icon svg{margin-bottom:calc(var(--nu-underline-offset) + 1px)}
+  .btn-ghost.has-icon svg{margin-bottom:calc(var(--nu-underline-offset) + 1px)}
   /* Every control that answers the pointer with colour answers over one step,
      the same one the two solid buttons use: quick is the scale's name for an
      element answering under the pointer without leaving its place. Underlines
