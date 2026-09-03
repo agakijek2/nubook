@@ -274,10 +274,12 @@
    accents that carry meaning need their lighter steps: a dark red on a dark
    page is unreadable. The award badge keeps its pale ground and needs nothing.
 
-   Marked provisional: the glass of the two buttons and the burgundy glow under
-   it were tuned for a dark button on a light page. They are turned over here so
-   nothing disappears, but the values are a starting point to be judged by eye,
-   not a decision. */
+   The two solid buttons stay out of it. Their glass was drawn once and reads the
+   same on either page, so instead of a second set of values they are given the
+   light scheme locally: a handful of properties redeclared on the element, which
+   every var() inside it then resolves against. The focus ring is deliberately
+   left out, because it is drawn outside the button, on the page, and a dark ring
+   on a dark page cannot be seen. */
 @media (prefers-color-scheme: dark){
   :root{
     /* background */
@@ -292,10 +294,6 @@
     /* the dim has to be far heavier: 28% of black over a dark page is nothing */
     --nu-bg-scrim:color-mix(in srgb, var(--nu-grey-900) 65%, transparent);
     --nu-bg-measure:color-mix(in srgb, var(--nu-red-300) 22%, transparent);
-    --nu-bg-action:color-mix(in srgb, var(--nu-grey-100) 92%, transparent);      /* provisional */
-    --nu-bg-action-secondary:var(--nu-grey-800);                                  /* provisional */
-    --nu-bg-action-glow:var(--nu-burgundy-500);                                   /* provisional */
-    --nu-bg-action-glow-deep:var(--nu-burgundy-700);                              /* provisional */
     /* foreground */
     --nu-fg-primary:var(--nu-grey-100);
     --nu-fg-secondary:var(--nu-grey-400);
@@ -312,6 +310,17 @@
     --nu-border-highlight:var(--nu-gold-600);
     --nu-border-warning:var(--nu-burgundy-300);
     --nu-border-alert:var(--nu-red-300);
+  }
+  /* An island of the light scheme. Not --nu-border-primary: that one draws the
+     focus ring outside the button and has to stay legible against the page. */
+  .btn-primary,
+  .btn-secondary{
+    --nu-bg-primary:var(--nu-white);
+    --nu-bg-secondary:var(--nu-grey-100);
+    --nu-bg-tertiary:var(--nu-grey-600);
+    --nu-fg-primary:var(--nu-grey-900);
+    --nu-fg-secondary:var(--nu-grey-600);
+    --nu-fg-inverse:var(--nu-white);
   }
 }
   *{box-sizing:border-box;margin:0;padding:0}
