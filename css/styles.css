@@ -269,14 +269,13 @@
     text-align:center;font-size:var(--nu-text-size-md);
   }
   .promo p{margin:0}
-  .promo .btn-ghost{
-    color:var(--nu-fg-inverse);
-    border-bottom-color:color-mix(in srgb, var(--nu-fg-inverse) 45%, transparent);
-  }
-  .promo .btn-ghost:hover{color:var(--nu-fg-inverse);border-bottom-color:var(--nu-fg-inverse)}
-  .promo .btn-ghost.has-icon .lbl{border-bottom-color:color-mix(in srgb, var(--nu-fg-inverse) 45%, transparent)}
-  .promo .btn-ghost.has-icon:hover .lbl{border-bottom-color:var(--nu-fg-inverse)}
-  .promo .btn-ghost:focus-visible{outline-color:var(--nu-fg-inverse)}
+  /* The one control in the shop standing on an inverse ground, so the tertiary
+     button's two colours are swapped for their opposites: full strength is the
+     inverse foreground, and lightening under the pointer is that same colour
+     thinned rather than a lighter grey, which would disappear into the bar. */
+  .promo .btn-tertiary{color:var(--nu-fg-inverse)}
+  .promo .btn-tertiary:hover{color:color-mix(in srgb, var(--nu-fg-inverse) 70%, transparent)}
+  .promo .btn-tertiary:focus-visible{outline-color:var(--nu-fg-inverse)}
   .promo-done{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
   .promo-done.is-visible{
     position:static;width:auto;height:auto;clip-path:none;
@@ -414,9 +413,9 @@
   .btn-ghost.has-icon .lbl{border-bottom:1px solid var(--nu-border-neutral);padding-bottom:var(--nu-underline-offset)}
   .btn-ghost.has-icon:hover .lbl{border-bottom-color:var(--nu-border-primary)}
   /* one glyph at a time: the check replaces the sheets once the copy succeeded */
-  .btn-ghost .ico-check{display:none}
-  .btn-ghost.is-copied .ico-copy{display:none}
-  .btn-ghost.is-copied .ico-check{display:block}
+  .ico-check{display:none}
+  .is-copied .ico-copy{display:none}
+  .is-copied .ico-check{display:block}
   /* Full strength at rest and lightening under the pointer, the same register as
      the tertiary button: both are ways out of where you are, so they read alike.
      Two variants, and the difference is where the link stands. Standing on its
