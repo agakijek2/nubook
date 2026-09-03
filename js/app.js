@@ -2174,15 +2174,15 @@ const DS_SECTIONS = [
 
     <h3>${L("Pixels and rem","Piksele i rem")}</h3>
     <p>${L(
-      "A reader who sets a larger default text size in the browser is telling every site what they need. A value in <code>px</code> ignores that; a value in <code>rem</code> follows it. Which is right depends on one question: does the value exist because of the text, or in spite of it?",
-      "Czytelniczka, która ustawia w przeglądarce większy domyślny rozmiar tekstu, mówi każdej stronie, czego potrzebuje. Wartość w <code>px</code> to ignoruje, wartość w <code>rem</code> za tym idzie. Co jest właściwe, rozstrzyga jedno pytanie: czy ta wartość istnieje przez tekst, czy mimo tekstu?")}</p>
+      "A reader who sets a larger default text size in the browser is telling every site what they need. A value in <code>px</code> ignores that; a value in <code>rem</code> follows it. Which is right depends on one question: should this value grow along with the text?",
+      "Czytelniczka, która ustawia w przeglądarce większy domyślny rozmiar tekstu, mówi każdej stronie, czego potrzebuje. Wartość w <code>px</code> to ignoruje, wartość w <code>rem</code> za tym idzie. Co jest właściwe, rozstrzyga jedno pytanie: czy ta wartość ma rosnąć razem z tekstem?")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>${L("Unit","Jednostka")}</th><th>${L("What is written in it","Co jest w niej zapisane")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>rem</code></td><td>${L(
-        "What exists because of the text: padding is meant to keep its proportion to the words it surrounds, an icon beside a word to stay the size of that word, a control to stay the size of the icon it holds.",
-        "To, co istnieje przez tekst: wypełnienie ma zachować proporcję do słów, które obejmuje, ikona przy słowie ma zostać wielkości tego słowa, a kontrolka wielkości ikony, którą trzyma.")}</td></tr>
+        "What should grow along with the text: padding is meant to keep its proportion to the words it surrounds, an icon beside a word to stay the size of that word, a control to stay the size of the icon it holds.",
+        "Co ma rosnąć razem z tekstem: wypełnienie ma zachować proporcję do słów, które obejmuje, ikona przy słowie ma zostać wielkości tego słowa, a kontrolka wielkości ikony, którą trzyma.")}</td></tr>
       <tr><td class="spec"><code>px</code></td><td>${L(
-        "What exists in spite of it: a hairline is meant to stay a hairline, a limit on the window is a limit on the window, and the figures inside an icon's drawing grid belong to the drawing.",
-        "To, co istnieje mimo tekstu: włos ma zostać włosem, granica okna jest granicą okna, a liczby wewnątrz siatki rysunku ikony należą do rysunku.")}</td></tr>
+        "What should stay as it is: the focus ring is equally thin at every text size, the maximum width of a view is measured against the window, and the figures inside an icon's drawing grid belong to the drawing.",
+        "Co ma zostać takie samo: obwódka fokusu jest tak samo cienka przy każdym rozmiarze pisma, maksymalna szerokość widoku mierzy się względem okna, a liczby wewnątrz siatki rysunku ikony należą do rysunku.")}</td></tr>
     </tbody></table>
 
     <h2>${L("Every token","Wszystkie tokeny")}</h2>
