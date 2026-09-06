@@ -3,3 +3,5 @@ Thumbs.db
 node_modules/
 *.log
 preview.html
+# pliki robocze do oglądania usterek: budowane na chwilę, kasowane po sprawdzeniu
+_*.html
