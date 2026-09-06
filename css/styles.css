@@ -55,6 +55,13 @@
        moment it is dark: the opposite of a dark page is light, but a shadow
        stays dark or stops being a shadow. */
     --nu-bg-shadow:light-dark(var(--nu-grey-900), var(--nu-grey-900));
+    /* The logotype accent, and the two names exist because of where they are
+       used: inside @keyframes. A keyframe resolves light-dark() once, against a
+       scheme that is not the one in force, so the dot came out at its dark value
+       on a light page. These carry a plain colour instead and are swapped by the
+       scheme rules below - a change of value, which does reach an animation. */
+    --nu-bg-dot:var(--nu-grey-900);          /* the dot at rest */
+    --nu-bg-dot-bloom:var(--nu-white);       /* the dot while the accent blooms */
     --nu-bg-highlight:light-dark(var(--nu-gold-100), var(--nu-gold-100));       /* award badge */
     /* the dim laid over the page behind anything modal: author drawer, cart
        drawer, filter sheet. One name, so the scrims cannot drift apart. */
@@ -281,8 +288,17 @@
    It is not an inversion. The greys fold over onto themselves, but the two
    accents that carry meaning need their lighter steps, because a dark red on a
    dark page is unreadable. The award badge keeps its pale ground either way. */
-:root[data-scheme="light"]{color-scheme:light}
-:root[data-scheme="dark"]{color-scheme:dark}
+@media (prefers-color-scheme:dark){
+  :root{--nu-bg-dot:var(--nu-grey-100);--nu-bg-dot-bloom:var(--nu-grey-900)}
+}
+:root[data-scheme="light"]{
+  color-scheme:light;
+  --nu-bg-dot:var(--nu-grey-900);--nu-bg-dot-bloom:var(--nu-white);
+}
+:root[data-scheme="dark"]{
+  color-scheme:dark;
+  --nu-bg-dot:var(--nu-grey-100);--nu-bg-dot-bloom:var(--nu-grey-900);
+}
 
 /* The two solid buttons stay out of the scheme: their glass was drawn once and
    reads the same on either page. Six names pinned to their light values, which
@@ -380,13 +396,13 @@
     margin-left:.06em;
     position:relative;left:1px;z-index:-1;
     transform-origin:center;
-    background:var(--nu-fg-primary);
+    background:var(--nu-bg-dot);
     animation:dotBloom var(--nu-motion-loop) ease-in-out infinite;
   }
   @keyframes dotBloom{
     /* resting: plain black dot, no glow — most of the cycle */
     0%, 74% {
-      background:var(--nu-fg-primary);transform:scale(1);
+      background:var(--nu-bg-dot);transform:scale(1);
       filter:
         drop-shadow(0 0 4px rgba(226,59,59,0))
         drop-shadow(0 0 8px rgba(232,210,45,0))
@@ -397,7 +413,7 @@
     }
     /* accent blooms in */
     81% {
-      background:var(--nu-bg-primary);transform:scale(1);
+      background:var(--nu-bg-dot-bloom);transform:scale(1);
       filter:
         drop-shadow(0 0 4px rgba(226,59,59,.85))
         drop-shadow(0 0 8px rgba(232,210,45,.8))
@@ -408,7 +424,7 @@
     }
     /* held a little while, hues drifting */
     91% {
-      background:var(--nu-bg-primary);transform:scale(1);
+      background:var(--nu-bg-dot-bloom);transform:scale(1);
       filter:
         drop-shadow(0 0 4px rgba(226,59,59,.85))
         drop-shadow(0 0 8px rgba(232,210,45,.8))
@@ -419,7 +435,7 @@
     }
     /* recede back to the black dot */
     97%, 100% {
-      background:var(--nu-fg-primary);transform:scale(1);
+      background:var(--nu-bg-dot);transform:scale(1);
       filter:
         drop-shadow(0 0 4px rgba(226,59,59,0))
         drop-shadow(0 0 8px rgba(232,210,45,0))
@@ -430,7 +446,14 @@
     }
   }
   @media (prefers-reduced-motion:reduce){
-    .logo .mark::after{animation:none;background:var(--nu-fg-primary);filter:none;transform:none}
+    .logo .mark::after{animation:none;background:var(--nu-bg-dot);filter:none;transform:none}
+  }
+  /* The wordmark links home and needs the ring every other control keeps. It
+     takes nothing else from .link: the accent's colour comes from the keyframes,
+     so dimming the word under the pointer would leave the dot behind. */
+  .logo .mark:focus-visible{
+    outline:var(--nu-focus-ring) solid var(--nu-border-primary);
+    outline-offset:var(--nu-focus-offset);
   }
   .logo .strap{
     font:var(--nu-type-body-s);color:var(--nu-fg-secondary);

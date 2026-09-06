@@ -172,7 +172,7 @@ const I18N = {
   en: {
     docTitle:"nubook. — novels on women & gender",
     coverAlt:"Cover of", qtyLess:"Decrease quantity", qtyMore:"Increase quantity",
-    strap:"novels on women & gender", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
+    strap:"novels on women & gender", logoHome:"nubook \u2014 home", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
     searchPh:"Search by title or author", searchClear:"Clear",
     /* The one-time introduction. Each entry replaces the one before it, and the
@@ -229,7 +229,7 @@ const I18N = {
   pl: {
     docTitle:"nubook. — powieści o kobietach i płci",
     coverAlt:"Okładka:", qtyLess:"Zmniejsz ilość", qtyMore:"Zwiększ ilość",
-    strap:"powieści o kobietach i płci", skip:"Przejdź do treści", schemeLight:"Jasny", schemeDark:"Ciemny",
+    strap:"powieści o kobietach i płci", logoHome:"nubook \u2014 strona główna", skip:"Przejdź do treści", schemeLight:"Jasny", schemeDark:"Ciemny",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
     searchPh:"Szukaj tytułu lub autorki", searchClear:"Wyczyść",
     searchIntro:["Szukaj tytułu","Szukaj autorki","Szukaj tytułu lub autorki"],
@@ -1639,6 +1639,7 @@ function applyLang(){
   document.documentElement.lang = LANG;
   document.title = t.docTitle;
   document.getElementById("strap").textContent = t.strap;
+  document.getElementById("logoLink").setAttribute("aria-label", t.logoHome);
   document.getElementById("skipLink").textContent = t.skip;
   document.querySelector("#swLight").closest(".sw-group").setAttribute("aria-label", t.aria.schemeGroup);
   document.getElementById("swLight").querySelector(".chip-t").textContent = t.schemeLight;
@@ -2475,6 +2476,8 @@ const DS_SECTIONS = [
       ["--nu-bg-highlight",L("Distinction","Wyróżnienie")],
       ["--nu-bg-scrim",L("Dim behind a modal layer","Przyciemnienie pod warstwą modalną")],
       ["--nu-bg-shadow",L("What a shadow is made of","Barwa, z której zrobiony jest cień")],
+      ["--nu-bg-dot",L("The logotype accent at rest","Akcent logotypu w spoczynku")],
+      ["--nu-bg-dot-bloom",L("The logotype accent while it blooms","Akcent logotypu w rozbłysku")],
       ["--nu-bg-measure",L("A measured distance","Mierzona odległość")],
     ])}</tbody></table>
     <p class="note">${L(
