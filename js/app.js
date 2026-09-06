@@ -174,7 +174,10 @@ const I18N = {
     coverAlt:"Cover of", qtyLess:"Decrease quantity", qtyMore:"Increase quantity",
     strap:"novels on women & gender", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
-    searchPh:"Search by title or author",
+    searchPh:"Search by title or author", searchClear:"Clear",
+    /* The one-time introduction. Each entry replaces the one before it, and the
+       last one is what the field settles on - it has to equal searchPh. */
+    searchIntro:["Search by title","Search by author","Search by title or author"],
     all:"All",
     sorts:{featured:"Our recommendations",newest:"Newest first","price-asc":"Price, low to high","pub-asc":"First published: oldest"},
     status:{new:"New",soon:"Coming soon",last:"Last pieces",out:"Not available",pulitzer:"Pulitzer Winner"},
@@ -228,7 +231,8 @@ const I18N = {
     coverAlt:"Okładka:", qtyLess:"Zmniejsz ilość", qtyMore:"Zwiększ ilość",
     strap:"powieści o kobietach i płci", skip:"Przejdź do treści", schemeLight:"Jasny", schemeDark:"Ciemny",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
-    searchPh:"Szukaj tytułu lub autorki",
+    searchPh:"Szukaj tytułu lub autorki", searchClear:"Wyczyść",
+    searchIntro:["Szukaj tytułu","Szukaj autorki","Szukaj tytułu lub autorki"],
     all:"Wszystkie",
     sorts:{featured:"Nasze rekomendacje",newest:"Od najnowszych","price-asc":"Cena: od najniższej","pub-asc":"Pierwsze wydanie: rosnąco"},
     status:{new:"Nowość",soon:"Wkrótce",last:"Ostatnie sztuki",out:"Niedostępna",pulitzer:"Nagroda Pulitzera"},
@@ -282,6 +286,9 @@ let LANG = "pl";
 let CUR = "pln";
 /* "auto" until somebody chooses: the shop then follows the reader's system. */
 let SCHEME = "auto";
+/* The search field introduces itself once and then stops. A demonstration
+   watched a third time has stopped demonstrating and started interrupting. */
+let INTRO_SEEN = false;
 
 /* Preview sandboxes (like the Claude artifact viewer) intercept clicks on <a>.
    When embedded in a frame we render cards as JS-driven elements instead;
@@ -321,7 +328,7 @@ const SORTS = ["featured","newest","price-asc","pub-asc"];
 function savePrefs(){
   try {
     localStorage.setItem(PREFS_KEY, JSON.stringify({
-      lang: LANG, cur: CUR, scheme: SCHEME, edition: state.lang, sort: state.sort,
+      lang: LANG, cur: CUR, scheme: SCHEME, edition: state.lang, sort: state.sort, introSeen: INTRO_SEEN,
       genre: [...state.genre], status: [...state.status],
     }));
   } catch {}
@@ -333,6 +340,7 @@ function savePrefs(){
   if (p.lang === "en" || p.lang === "pl") LANG = p.lang;
   if (p.cur === "eur" || p.cur === "pln") CUR = p.cur;
   if (p.scheme === "light" || p.scheme === "dark") SCHEME = p.scheme;
+  if (p.introSeen === true) INTRO_SEEN = true;
   if (p.edition === "en" || p.edition === "pl") state.lang = p.edition;
   if (SORTS.includes(p.sort)) state.sort = p.sort;
   if (Array.isArray(p.genre))  p.genre .filter(k => known("g", k)).forEach(k => state.genre.add(k));
@@ -479,9 +487,65 @@ sortItems().forEach(b=>{
    they do: change the state and re-render. Live from the second character,
    because at this size there is nothing to wait for. */
 const searchInput = document.getElementById("searchInput");
-searchInput.addEventListener("input", ()=>{
+
+/* The field says what can be typed into it by typing it. A search box with one
+   example teaches one thing; this one swaps the word to show the range, then
+   settles on the sentence that is true and stays there.
+
+   Written on the placeholder alone. The accessible name never moves: it carries
+   the final wording from the first moment, so a screen reader is told the whole
+   truth once instead of being handed a changing label.
+
+   It runs once per reader, stops the moment anyone touches the field, and does
+   not run at all for somebody who asked for less motion - they get the final
+   wording immediately, which is the whole content of the demonstration. */
+let introTimer = null;
+function endIntro(){
+  clearTimeout(introTimer); introTimer = null;
+  searchInput.placeholder = T().searchPh;
+  if (!INTRO_SEEN){ INTRO_SEEN = true; savePrefs(); }
+}
+function playIntro(){
+  const steps = T().searchIntro;
+  if (INTRO_SEEN || !steps || document.activeElement === searchInput || searchInput.value){
+    searchInput.placeholder = T().searchPh; return;
+  }
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches){ endIntro(); return; }
+  const char = motionMs("--nu-motion-instant"), hold = motionMs("--nu-motion-slow");
+  let i = 0, shown = "";
+  const shared = (a, b) => { let n = 0; while (n < a.length && n < b.length && a[n] === b[n]) n++; return n; };
+  const tick = ()=>{
+    const target = steps[i];
+    if (shown === target){
+      if (i === steps.length - 1){ endIntro(); return; }
+      i++; introTimer = setTimeout(tick, hold); return;
+    }
+    const keep = shared(shown, steps[i]);
+    shown = shown.length > keep ? shown.slice(0, -1) : target.slice(0, shown.length + 1);
+    searchInput.placeholder = shown;
+    introTimer = setTimeout(tick, char);
+  };
+  searchInput.placeholder = "";
+  introTimer = setTimeout(tick, hold);
+}
+searchInput.addEventListener("focus", endIntro, {once:false});
+const searchClear = document.getElementById("searchClear");
+/* The way out of a query, and the only thing that says one is running when the
+   field has scrolled out of sight. It appears with something to clear and takes
+   itself out of the tab order the moment there is nothing left, so nobody tabs
+   onto a control with no work to do. */
+function syncSearch(){
   state.q = searchInput.value;
+  searchClear.hidden = !searchInput.value;
   render();
+}
+searchInput.addEventListener("input", ()=>{ endIntro(); syncSearch(); });
+/* Focus goes back to the field, not nowhere: the button it was on is about to
+   disappear, and focus left on a removed control lands on the document. */
+searchClear.addEventListener("click", ()=>{
+  searchInput.value = "";
+  syncSearch();
+  searchInput.focus();
 });
 /* Escape empties the field while it holds the focus, and stops there: the key
    also closes the sort menu, the sheet, the drawers and the product view, and a
@@ -490,8 +554,7 @@ searchInput.addEventListener("keydown", e=>{
   if (e.key !== "Escape" || !searchInput.value) return;
   e.stopPropagation();
   searchInput.value = "";
-  state.q = "";
-  render();
+  syncSearch();
 });
 
 /* --------------------------------------------------- mobile toggle */
@@ -1592,8 +1655,12 @@ function applyLang(){
   document.getElementById("btnFav").setAttribute("aria-label", t.aria.fav);
   document.getElementById("btnAccount").setAttribute("aria-label", t.aria.account);
   const si = document.getElementById("searchInput");
-  si.placeholder = t.searchPh;
   si.setAttribute("aria-label", t.searchPh);
+  document.getElementById("searchClear").setAttribute("aria-label", t.searchClear);
+  /* A language change lands mid-demonstration only if one is running; either way
+     the field ends up saying the new wording. */
+  if (introTimer) { clearTimeout(introTimer); introTimer = null; INTRO_SEEN = false; playIntro(); }
+  else si.placeholder = t.searchPh;
   document.getElementById("btnCart").setAttribute("aria-label", t.aria.cart);
   /* Six strings used to sit in the markup untranslated, so a reader on EN heard
      the Polish close label and a reader on PL heard the English group names. */
@@ -3680,6 +3747,7 @@ render();
 /* The badge counted only what happened in this visit; with a cart that outlives
    a reload it has to start from what was restored. */
 applyScheme();
+playIntro();
 updateBadge(false);
 route();
 syncFilterToggle();
