@@ -1128,7 +1128,7 @@
      outline drawn inside a border reads as a second border; without the border
      that reason is gone, and a rule alone is too quiet to carry focus on its own. */
   .input.in-bar{
-    border:0;border-bottom:1px solid var(--nu-border-muted);
+    border:0;border-bottom:1px solid var(--nu-border-neutral);
     /* The same vertical rhythm the two buttons beside it keep, so the three
        labels sit on one line. The bar centres boxes, not baselines, so boxes of
        different heights would put this text a couple of pixels off the others. */
@@ -1140,10 +1140,15 @@
      than the control it marks. The rule goes to full strength instead - the same
      move the tertiary button and the link make, in the other direction.
 
+     The two values are the ones the ghost button already uses for the one
+     permanent underline in the shop: neutral at rest, primary when acted on. The
+     pressed chip makes the same move from transparent. So the field is not built
+     to resemble those marks, it is built from them.
+
      This is a colour change, and it is allowed to be: 1.4.1 governs telling one
      element from another, focus has its own criterion. The changed area is the
      rule, 1px by the field's width, against a 4px line along its shortest side;
-     the two states stand 7.5:1 apart, where three is asked for. And it is a
+     the two states stand 18:1 apart, where three is asked for. And it is a
      change in lightness, not in hue, so it does not depend on colour vision. */
   .input.in-bar:focus{outline:none}
   .search-wrap:focus-within .input.in-bar{border-bottom-color:var(--nu-border-primary)}
