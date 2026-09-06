@@ -814,7 +814,7 @@ function render(rebuildChips = true){
 
   if (!list.length){
     grid.innerHTML = `<div class="empty">${T().empty}
-      <button type="button" class="btn-ghost" id="resetBtn">${T().clear}</button></div>`;
+      <button type="button" class="btn-ghost" id="resetBtn"><span class="lbl">${T().clear}</span></button></div>`;
     document.getElementById("resetBtn").onclick = ()=>{
       state.genre.clear(); state.status.clear(); state.lang = "en";
       render();
@@ -1182,7 +1182,7 @@ function renderCart(){
             ${qtyHTML(id, q)}
           <span class="ci-line">${fmtMoney(priceOf(b)*q)}</span>
         </div>
-        <button class="ci-remove btn-ghost" onclick="removeItem(${id})">${t.removeItem}</button>
+        <button class="ci-remove btn-ghost" onclick="removeItem(${id})"><span class="lbl">${t.removeItem}</span></button>
       </div>
     </div>`;
   }).join("") + `
@@ -1256,7 +1256,7 @@ function renderCartPage(){
             ${qtyHTML(id, q)}
               <span class="ci-line">${fmtMoney(priceOf(b)*q)}</span>
             </div>
-            <button class="ci-remove btn-ghost" onclick="removeItem(${id})">${t.removeItem}</button>
+            <button class="ci-remove btn-ghost" onclick="removeItem(${id})"><span class="lbl">${t.removeItem}</span></button>
           </div>
         </div>`;
       }).join("")}
@@ -1265,7 +1265,7 @@ function renderCartPage(){
       <h3>${t.discount}</h3>
       ${discount
         ? `<div class="disc-applied">${discount.code} (−${Math.round(discount.pct*100)}%)
-             <button type="button" class="btn-ghost" onclick="removeDiscount()">${t.discountRemove}</button></div>`
+             <button type="button" class="btn-ghost" onclick="removeDiscount()"><span class="lbl">${t.discountRemove}</span></button></div>`
         : `<div class="disc-row">
              <input class="input" id="discInput" aria-label="${t.discount}" placeholder="${t.discountPh}" aria-describedby="discMsg"
                oninput="markField(this,'')"
@@ -1571,7 +1571,7 @@ function renderProduct(b){
     <div class="p-info">
       <h1 class="p-title">${titleOf(b)}</h1>
       <button class="p-author btn-ghost" onclick="openAuthor(${b.id})"
-        aria-haspopup="dialog" aria-label="${b.a} — ${t.aboutAuthor[b.gd]}">${b.a}</button>
+        aria-haspopup="dialog" aria-label="${b.a} — ${t.aboutAuthor[b.gd]}"><span class="lbl">${b.a}</span></button>
       <div class="p-price ${b.s==="out"?"is-out":""}">${fmtMoney(priceOf(b))}</div>
       <p class="p-desc">${LANG === "pl" ? b.dp : b.de}</p>
       ${(LANG === "pl" ? b.qp : b.q) ? `<p class="p-quote">${LANG === "pl" ? b.qp : b.q}<span class="q-by"><span class="q-dash">—</span> ${LANG === "pl" ? b.qbyp : b.qby}</span></p>` : ""}
@@ -2908,7 +2908,7 @@ const DS_SECTIONS = [
           <span class="btn-tertiary"><svg class="ico-sm ico-close" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></span>
         </div>
         <figcaption>${L("Tertiary","Trzeciorzędny")}</figcaption></figure>
-      <figure><div class="demo on-page"><span class="btn-ghost">Margaret Atwood</span></div>
+      <figure><div class="demo on-page"><span class="btn-ghost"><span class="lbl">Margaret Atwood</span></span></div>
         <figcaption>Ghost</figcaption></figure>
     </div>
     <table id="btnTypes"><thead><tr><th>${L("Type","Typ")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>

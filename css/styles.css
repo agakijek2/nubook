@@ -483,16 +483,16 @@
      pointer. Both declare it at rest, so colouring one moves no text. They part
      company on colour as well: the ghost starts quiet and darkens, the link starts
      at full strength and lightens, the way the tertiary button does. */
-  .btn-ghost{
-    color:var(--nu-fg-secondary);
-    border-bottom:1px solid var(--nu-border-neutral);padding-bottom:var(--nu-underline-offset);
-  }
-  .btn-ghost:hover{color:var(--nu-fg-primary);border-bottom-color:var(--nu-border-primary)}
+  /* The mark sits on the word, never on the control. A border on the button
+     itself lands under the whole line box, half-leading included, and the same
+     token then reads three pixels further from the text than it does on a chip.
+     An inline span draws its border around the letters, which is what every
+     other underline in the shop does. */
+  .btn-ghost{color:var(--nu-fg-secondary)}
+  .btn-ghost .lbl{border-bottom:1px solid var(--nu-border-neutral);padding-bottom:var(--nu-underline-offset)}
+  .btn-ghost:hover{color:var(--nu-fg-primary)}
+  .btn-ghost:hover .lbl{border-bottom-color:var(--nu-border-primary)}
   .btn-ghost:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
-  /* A ghost that carries an icon moves its underline onto the label, for the same
-     reason the chip does: the mark belongs to the words, not to the glyph. */
-  .btn-ghost.has-icon .lbl{border-bottom:1px solid var(--nu-border-neutral);padding-bottom:var(--nu-underline-offset)}
-  .btn-ghost.has-icon:hover .lbl{border-bottom-color:var(--nu-border-primary)}
   /* one glyph at a time: the check replaces the sheets once the copy succeeded */
   .ico-check{display:none}
   .is-copied .ico-copy{display:none}
@@ -528,9 +528,6 @@
        so the two arrangements - icon first, icon last - behave alike. */
     vertical-align:middle;
   }
-  /* The ghost keeps its underline in every arrangement, so with an icon the rule
-     moves off the control and onto the label, where it stops before the glyph. */
-  .btn-ghost.has-icon{border-bottom:0;padding-bottom:0}
   /* Wherever an icon stands beside a word - and .has-icon is the name of that
      arrangement, whichever control carries it - the icon is lifted off the
      centre of the text's box onto the centre of the word itself. */
