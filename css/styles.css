@@ -396,10 +396,10 @@
     content:"";
     display:inline-block;
     width:.2em;height:.2em;border-radius:50%;
-    /* The offset is a margin, not a nudge: shifting the drawing with left would
-       take it a pixel outside its own layout box, and the edge of that box is
-       where the overhang gets cut. z-index keeps the bloom under the word. */
-    margin-left:calc(.06em + 1px);
+    /* Relative, so the gap tracks the type size: the same value holds at the
+       header's two sizes, which a fixed pixel added to it did not - it weighed
+       proportionally more on the smaller logo. */
+    margin-left:.09em;
     position:relative;z-index:-1;
     transform-origin:center;
     background:var(--nu-bg-dot);
