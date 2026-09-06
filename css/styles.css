@@ -634,7 +634,11 @@
   /* sort */
   /* The field takes the room the two buttons leave, so the bar keeps its shape
      as their labels change with the language. */
-  .search-wrap{position:relative;display:block;flex:0 0 auto;min-width:0}
+  /* A flex row, not a block: an input is an inline-level box, so in a block
+     wrapper it sits on a text baseline and the wrapper reserves descender space
+     under it that the field never fills. The wrapper then measures taller than
+     its own content and the bar centres the wrong height. */
+  .search-wrap{position:relative;display:flex;align-items:center;flex:0 0 auto;min-width:0}
   /* Same construction as the select: the drawing sits inside the field and the
      field leaves it room, so the text never runs under it. Full strength here,
      not the placeholder's grey: on a field without a box the glyph is what says
