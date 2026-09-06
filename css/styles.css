@@ -211,6 +211,9 @@
     --nu-motion-loop:26s;
     /* The starts of the mosaic are spread over this, not the length of one card. */
     --nu-motion-stagger:900ms;
+    /* Neither is it a duration of movement: this is how long a confirmation
+       stays on screen once the movement has finished. */
+    --nu-motion-hold:1800ms;
     /* Two curves that are decisions rather than defaults: a panel sliding into
        place, and a tile growing into a packshot. Plain ease and linear stay
        keywords. */

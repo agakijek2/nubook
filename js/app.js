@@ -1738,7 +1738,7 @@ document.getElementById("promoCode").addEventListener("click", async ()=>{
   promoTimer = setTimeout(()=>{
     btn.classList.remove("is-copied");
     done.textContent = ""; done.classList.remove("is-visible");
-  }, 1800);
+  }, motionMs("--nu-motion-hold"));
 });
 
 document.getElementById("swEN").onclick = ()=>{ if(LANG!=="en"){LANG="en"; applyLang(); render();} };
@@ -2072,6 +2072,8 @@ function dsMotionSteps(){
                   "Najdłuższe przejścia, te obejmujące większy obszar: kafel powiększający się do packshotu i karty pojawiające się w siatce.")],
     ["loop",    L("The one thing that repeats: the accent in the logo.",
                   "Jedyna rzecz, która się powtarza: akcent w logo.")],
+    ["hold",    L("Nor is this one a duration of movement: it is how long a confirmation stays once the movement has finished &ndash; the word that answers the copy button, in the promotion bar and in this documentation.",
+                  "Ten też nie jest czasem ruchu: mówi, jak długo stoi potwierdzenie, kiedy ruch już się skończył &ndash; napis odpowiadający przyciskowi kopiowania, w belce promocyjnej i w tej dokumentacji.")],
     ["stagger", L("This one does not set how long an animation lasts, but the window its starts are spread over: the mosaic cards begin one after another within it.",
                   "Ten nie ustala, jak długo trwa animacja, tylko w jakim czasie rozkładają się jej starty: karty mozaiki ruszają jedna po drugiej właśnie w nim.")],
   ]);
@@ -3561,17 +3563,17 @@ const DS_SECTIONS = [
       <tr><td class="spec">${dsTok("--nu-ease-zoom")}</td><td>${dsCurveGraph("--nu-ease-zoom")}</td>
         <td>${L("The most decisive of the four: about four fifths of the way is behind it in the first quarter of the time, and the rest settles gently. The tile growing into a packshot.","Najbardziej zdecydowana z czterech: w pierwszej ćwiartce czasu ma za sobą jakieś cztery piąte drogi, a resztę osiada łagodnie. Kafel rosnący do packshotu.")}</td></tr>
       <tr><td class="spec">${dsTok("--nu-ease-slide")}</td><td>${dsCurveGraph("--nu-ease-slide")}</td>
-        <td>${L("The same family, a tone calmer. Both drawers &ndash; the author's and the cart's &ndash; and the filter sheet arrive decisively, without looking fired from somewhere.","Ta sama rodzina, o ton spokojniejsza. Obie szuflady &ndash; z informacją o autorce i koszyka &ndash; oraz panel filtrów przyjeżdżają zdecydowanie, bez wrażenia wystrzelenia.")}</td></tr>
+        <td>${L("The same family, a tone calmer. Both drawers &ndash; the author's and the cart's &ndash; and the filter sheet arrive decisively, without looking fired from somewhere.","Ta sama rodzina, o ton spokojniejsza. Obie szuflady &ndash; z informacją o autorce i koszyka &ndash; oraz panel filtrów przyjeżdżają zdecydowanie, bez wrażenia, że coś je wystrzeliło.")}</td></tr>
       <tr><td class="spec"><code>ease</code></td><td>${dsCurveGraph("ease")}</td>
         <td>${L("The browser's default. Sets off briskly, covers most of the way early, finishes calmly. It fits wherever the movement has nothing to say beyond &ldquo;it happened&rdquo;, which is most of the shop.","Domyślna krzywa przeglądarki. Rusza żwawo, większość drogi ma za sobą wcześnie, końcówkę dojeżdża spokojnie. Pasuje wszędzie tam, gdzie ruch nie ma nic do powiedzenia poza „stało się”, czyli w większości sklepu.")}</td></tr>
       <tr><td class="spec"><code>ease-in-out</code></td><td>${dsCurveGraph("ease-in-out")}</td>
         <td>${L("Symmetrical: slow off the mark, quick through the middle, slow into the end. With no marked start and no marked landing it takes repetition well, which is why it carries the one loop in the shop &ndash; the accent in the logo.","Symetryczna: wolno rusza, przyspiesza w środku, wolno hamuje. Bez wyraźnego startu i bez wyraźnego lądowania dobrze znosi powtarzanie, dlatego prowadzi jedyną pętlę w sklepie &ndash; akcent w logo.")}</td></tr>
       <tr><td class="spec"><code>linear</code></td><td>${dsCurveGraph("linear")}</td>
-        <td>${L("The same speed throughout. The filter toggle uses it because the tiles are being measured from one place to another, and any easing would read as the layout hesitating.","Stała prędkość przez cały czas. Używa jej przełączenie filtrów, bo kafle są przemierzane z jednego miejsca w drugie, a każde wygładzenie czytałoby się jako wahanie układu.")}</td></tr>
+        <td>${L("The same speed throughout. The filter toggle uses it because the tiles are being measured from one place to another, and any easing would read as the layout hesitating.","Stała prędkość przez cały czas. Używa jej przełączenie filtrów, bo kafle są mierzone z jednego położenia do drugiego, a każde wygładzenie czytałoby się jako wahanie układu.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
-      "None of them starts slowly. A curve with a lazy opening makes a click look ignored for the first tenth of a second, which reads as the interface stalling rather than as a style.",
-      "Żadna z nich nie zaczyna się powoli. Krzywa z leniwym startem sprawia, że kliknięcie wygląda na zignorowane przez pierwszą dziesiątą sekundy, a to czyta się jako zacinanie interfejsu, nie jako styl.")}</p>
+      "None of the three that answer an action starts slowly. A curve with a lazy opening makes a click look ignored for the first tenth of a second, which reads as the interface stalling rather than as a style. The last two answer nothing and are free of the rule: <code>ease-in-out</code> carries a loop nobody asked for, and <code>linear</code> carries a move measured from one place to another.",
+      "Żadna z trzech odpowiadających na działanie nie zaczyna się powoli. Krzywa z leniwym startem sprawia, że kliknięcie wygląda na zignorowane przez pierwszą dziesiątą sekundy, a to czyta się jako zacinanie interfejsu, nie jako styl. Dwie ostatnie na nic nie odpowiadają i ta zasada ich nie dotyczy: <code>ease-in-out</code> prowadzi pętlę, o którą nikt nie prosił, a <code>linear</code> ruch mierzony z jednego położenia do drugiego.")}</p>
 
     <h3>${L("Transitions","Przejścia")}</h3>
     <table><thead><tr><th>${L("Transition","Przejście")}</th><th>${L("Duration","Czas")}</th><th>${L("Curve","Krzywa")}</th><th>${L("Why","Po co")}</th></tr></thead><tbody>
@@ -3583,12 +3585,16 @@ const DS_SECTIONS = [
         <td>${L("Cards dissolve in a random order &ndash; a mosaic, shown once per visit","Karty pojawiają się w losowej kolejności &ndash; mozaika, raz na wizytę")}</td></tr>
       <tr><td>${L("Add to cart","Dodanie do koszyka")}</td><td>${L("from","od")} ${dsTok("--nu-motion-quick")} ${L("to","do")} ${dsTok("--nu-motion-slow")}</td><td>${L("ease, the drawer on","ease, szuflada na")} ${dsTok("--nu-ease-slide")}</td>
         <td>${L("Label crossfades, counter fades in, drawer follows","Napis przenika, licznik się pojawia, potem wysuwa się szuflada")}</td></tr>
+      <tr><td>${L("Search","Wyszukiwanie")}</td><td>${L("the field","pole")} ${dsTok("--nu-motion-base")}, ${L("the edge","krawędź")} ${dsTok("--nu-motion-quick")}</td><td>ease</td>
+        <td>${L("The field opens for as long as it holds the focus, because a query is longer than its resting width; the lower edge goes to full strength at the same time, in the step every hover answers over","Pole otwiera się na czas, w którym trzyma fokus, bo zapytanie bywa dłuższe niż jego szerokość spoczynkowa; dolna krawędź nabiera wtedy pełnej siły, w tym stopniu, w którym odpowiada każde najechanie")}</td></tr>
+      <tr><td>${L("Search placeholder","Podpowiedź wyszukiwarki")}</td><td>${dsTok("--nu-motion-instant")} ${L("a character, held for","na znak, przytrzymanie")} ${dsTok("--nu-motion-slow")}</td><td>${L("none","brak")}</td>
+        <td>${L("Three phrases type themselves out one into another, once, on the first visit, and the field settles on the last of them &ndash; it says what can be searched for without spending a line of the bar on saying it","Trzy frazy wystukują się jedna w drugą, raz, przy pierwszej wizycie, a pole zostaje przy ostatniej &ndash; mówi, czego można szukać, nie zajmując na to wiersza w belce")}</td></tr>
       <tr><td>${L("Logo accent","Akcent w logo")}</td><td>${dsTok("--nu-motion-loop")}</td><td>ease-in-out</td>
         <td>${L("The dot blooms into a rainbow glow once per cycle &ndash; a rare accent, not a loop that demands attention","Kropka raz na cykl rozkwita tęczową poświatą &ndash; rzadki akcent, nie pętla domagająca się uwagi")}</td></tr>
     </tbody></table>
     <p class="note">${L(
-      "All of the movement above yields to <code>prefers-reduced-motion: reduce</code>, in two places: the logo, the mosaic, the counter, the drawer and the button label through a rule in the stylesheet, and opening a product and toggling the filters through the script, which checks the setting before it runs.",
-      "Cały powyższy ruch ustępuje przy <code>prefers-reduced-motion: reduce</code>, w dwóch miejscach: logo, mozaika, licznik, szuflada i napis przycisku przez regułę w arkuszu, a otwarcie produktu i przełączenie filtrów przez skrypt, który sprawdza to ustawienie przed uruchomieniem.")}</p>` },
+      "All of the movement above yields to <code>prefers-reduced-motion: reduce</code>, and so does everything this table does not name: anything that travels, scales, changes size or repeats. It is withdrawn in two places, never in a list of its own &ndash; a rule in the stylesheet standing beside the rule that sets the movement, and a check in the script before an animation is started. A new view therefore inherits the setting from whichever of the two it uses, and nothing has to be added anywhere for it to.",
+      "Cały powyższy ruch ustępuje przy <code>prefers-reduced-motion: reduce</code>, a razem z nim wszystko, czego ta tabela nie wymienia: każde przesunięcie, skalowanie, zmiana rozmiaru i powtórzenie. Wycofuje się w dwóch miejscach i nigdy na osobnej liście &ndash; regułą w arkuszu, stojącą obok reguły, która ruch ustawia, oraz sprawdzeniem w skrypcie, zanim animacja ruszy. Nowy widok dziedziczy więc to ustawienie przez to z dwojga, którego użyje, i nie trzeba go nigdzie dopisywać.")}</p>` },
 
   { group:{en:"Patterns",pl:"Wzorce"}, id:"content", label:{en:"Content",pl:"Treść"}, body: ()=>`
     <h1>${L("Content","Treść")}</h1>
@@ -3718,7 +3724,7 @@ function dsPlay(root){
       box.querySelector("[data-copy]").onclick = async function(){
         const ok = await copyText(markup);
         this.classList.toggle("is-copied", ok);
-        setTimeout(() => this.classList.remove("is-copied"), 1800);
+        setTimeout(() => this.classList.remove("is-copied"), motionMs("--nu-motion-hold"));
       };
       chips();
     }
