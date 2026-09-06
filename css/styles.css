@@ -518,7 +518,6 @@
      SVG rather than a typed arrow, so it follows the colour and the size of the
      control instead of the font. The two differ only where they already differ -
      the ghost's underline is standing, the link's is transparent until hover. */
-  .btn-ghost.has-icon,
   .link.has-icon{
     display:inline-flex;align-items:center;gap:var(--nu-space-micro);
     /* An inline-flex box takes its baseline from its first child, and an SVG has
