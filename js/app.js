@@ -540,12 +540,18 @@ function syncSearch(){
   render();
 }
 searchInput.addEventListener("input", ()=>{ endIntro(); syncSearch(); });
-/* Focus goes back to the field, not nowhere: the button it was on is about to
-   disappear, and focus left on a removed control lands on the document. */
+/* Pressing a button takes the focus off whatever held it - onto the button in
+   some browsers, onto the document in others - and either way the field would
+   close under the pointer on its way to being emptied, because its width follows
+   the focus. Refusing the default on mousedown leaves the caret where it is, so
+   nothing moves but the text. */
+searchClear.addEventListener("mousedown", e => e.preventDefault());
 searchClear.addEventListener("click", ()=>{
   searchInput.value = "";
-  syncSearch();
+  /* For a keyboard press, where the focus really is on the button: put it back
+     before the button is hidden, or it lands on the document. */
   searchInput.focus();
+  syncSearch();
 });
 /* Escape empties the field while it holds the focus, and stops there: the key
    also closes the sort menu, the sheet, the drawers and the product view, and a
