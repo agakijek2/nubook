@@ -1127,12 +1127,15 @@
      The focus ring comes back here. It was taken off the boxed field because an
      outline drawn inside a border reads as a second border; without the border
      that reason is gone, and a rule alone is too quiet to carry focus on its own. */
+  /* The rule under this field is not an underline the way the ghost button's is.
+     It is the field's frame, kept on one side and dropped on the other three -
+     so the distance from the value to it is the distance the boxed field keeps
+     from its own border, and comes from the component rather than from whatever
+     stands next to it. The bar centres boxes, and the value sits in the middle
+     of its own, so the three labels land on one line regardless of height. */
   .input.in-bar{
     border:0;border-bottom:1px solid var(--nu-border-neutral);
-    /* The same vertical rhythm the two buttons beside it keep, so the three
-       labels sit on one line. The bar centres boxes, not baselines, so boxes of
-       different heights would put this text a couple of pixels off the others. */
-    padding:var(--nu-space-nano) 0;
+    padding:var(--nu-space-milli) 0;
     background:transparent;
   }
   /* Focus is shown by the field's own rule rather than by the shared ring: an
