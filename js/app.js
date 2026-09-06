@@ -1542,6 +1542,13 @@ function renderProduct(b){
   if (btn) btn.onclick = ()=>addToCart(b.id, btn);
 }
 
+/* The grid is the one view a reader returns to, so it is the one view that keeps
+   its place. Everything else opens at its first line: a product, the cart and the
+   checkout are read from the top, and arriving halfway down one looks like a page
+   that failed to load. The position is taken on the way out rather than on the way
+   back, because hiding the grid collapses the page and the number is gone by then. */
+let gridScroll = 0, lastView = null;
+
 function route(){
   const b = currentProduct();
   const view = b ? "product"
@@ -1550,6 +1557,7 @@ function route(){
     : location.hash === "#checkout" && CART.size > 0 ? "checkout"
     : location.hash === "#done" && lastOrder ? "done"
     : "grid";
+  if (lastView === "grid" && view !== "grid") gridScroll = window.scrollY;
   dsEl.hidden = view !== "design";
   if (view === "design"){ dsCurrent = dsFromHash(); renderDesignSystem(); }
   document.getElementById("siteFoot").hidden = view === "design";
@@ -1571,6 +1579,10 @@ function route(){
   if (view === "done") renderDone();
   if (view === "grid") measureBars();
   if (view !== "grid") window.scrollTo({top:0, behavior:"instant"});
+  /* Not on the first paint: there is nothing to come back to yet, and the reader
+     may have opened the shop on an address that is not the grid. */
+  else if (lastView && lastView !== "grid") window.scrollTo({top:gridScroll, behavior:"instant"});
+  lastView = view;
   if (view === "product") playOpenTransition();   // measure the target after scrolling
 }
 window.addEventListener("hashchange", route);
