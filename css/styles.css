@@ -387,66 +387,73 @@
     font-family:var(--nu-font-display);font-weight:var(--nu-weight-normal);
     font-size:var(--nu-text-size-2xl);line-height:var(--nu-line-flat);letter-spacing:var(--nu-tracking-display);
     display:inline-flex;align-items:baseline;
-    position:relative;
+    /* Its own painting context, so the accent's z-index:-1 puts the dot under
+       the word instead of under the page. It used to borrow one from the filter
+       on the dot; the moment the filter went, so did the dot. */
+    position:relative;isolation:isolate;
   }
   .logo .mark::after{
     content:"";
     display:inline-block;
     width:.2em;height:.2em;border-radius:50%;
-    margin-left:.06em;
-    position:relative;left:1px;z-index:-1;
+    /* The offset is a margin, not a nudge: shifting the drawing with left would
+       take it a pixel outside its own layout box, and the edge of that box is
+       where the overhang gets cut. z-index keeps the bloom under the word. */
+    margin-left:calc(.06em + 1px);
+    position:relative;z-index:-1;
     transform-origin:center;
     background:var(--nu-bg-dot);
     animation:dotBloom var(--nu-motion-loop) ease-in-out infinite;
   }
+  /* The glow is a box-shadow, not a drop-shadow. A filter rasterises the element
+     it runs on: at six pixels across that shows as a ragged edge and a clipped
+     right side. A shadow on a border-radius circle draws the same halo and stays
+     vector. The five hues are the accent's own and appear nowhere else; the
+     second set is the first one reordered, which reads as the hue drifting. */
   @keyframes dotBloom{
-    /* resting: plain black dot, no glow — most of the cycle */
+    /* resting: plain dot, no glow - most of the cycle */
     0%, 74% {
       background:var(--nu-bg-dot);transform:scale(1);
-      filter:
-        drop-shadow(0 0 4px rgba(226,59,59,0))
-        drop-shadow(0 0 8px rgba(232,210,45,0))
-        drop-shadow(0 0 12px rgba(63,180,90,0))
-        drop-shadow(0 0 16px rgba(45,143,232,0))
-        drop-shadow(0 0 20px rgba(123,79,224,0))
-        hue-rotate(0deg);
+      box-shadow:
+        0 0 4px rgba(226,59,59,0),
+        0 0 8px rgba(232,210,45,0),
+        0 0 12px rgba(63,180,90,0),
+        0 0 16px rgba(45,143,232,0),
+        0 0 20px rgba(123,79,224,0);
     }
     /* accent blooms in */
     81% {
       background:var(--nu-bg-dot-bloom);transform:scale(1);
-      filter:
-        drop-shadow(0 0 4px rgba(226,59,59,.85))
-        drop-shadow(0 0 8px rgba(232,210,45,.8))
-        drop-shadow(0 0 12px rgba(63,180,90,.8))
-        drop-shadow(0 0 16px rgba(45,143,232,.8))
-        drop-shadow(0 0 20px rgba(123,79,224,.8))
-        hue-rotate(120deg);
+      box-shadow:
+        0 0 4px rgba(226,59,59,.85),
+        0 0 8px rgba(232,210,45,.8),
+        0 0 12px rgba(63,180,90,.8),
+        0 0 16px rgba(45,143,232,.8),
+        0 0 20px rgba(123,79,224,.8);
     }
     /* held a little while, hues drifting */
     91% {
       background:var(--nu-bg-dot-bloom);transform:scale(1);
-      filter:
-        drop-shadow(0 0 4px rgba(226,59,59,.85))
-        drop-shadow(0 0 8px rgba(232,210,45,.8))
-        drop-shadow(0 0 12px rgba(63,180,90,.8))
-        drop-shadow(0 0 16px rgba(45,143,232,.8))
-        drop-shadow(0 0 20px rgba(123,79,224,.8))
-        hue-rotate(300deg);
+      box-shadow:
+        0 0 4px rgba(123,79,224,.85),
+        0 0 8px rgba(45,143,232,.8),
+        0 0 12px rgba(226,59,59,.8),
+        0 0 16px rgba(232,210,45,.8),
+        0 0 20px rgba(63,180,90,.8);
     }
-    /* recede back to the black dot */
+    /* recede back to the plain dot */
     97%, 100% {
       background:var(--nu-bg-dot);transform:scale(1);
-      filter:
-        drop-shadow(0 0 4px rgba(226,59,59,0))
-        drop-shadow(0 0 8px rgba(232,210,45,0))
-        drop-shadow(0 0 12px rgba(63,180,90,0))
-        drop-shadow(0 0 16px rgba(45,143,232,0))
-        drop-shadow(0 0 20px rgba(123,79,224,0))
-        hue-rotate(420deg);
+      box-shadow:
+        0 0 4px rgba(123,79,224,0),
+        0 0 8px rgba(45,143,232,0),
+        0 0 12px rgba(226,59,59,0),
+        0 0 16px rgba(232,210,45,0),
+        0 0 20px rgba(63,180,90,0);
     }
   }
   @media (prefers-reduced-motion:reduce){
-    .logo .mark::after{animation:none;background:var(--nu-bg-dot);filter:none;transform:none}
+    .logo .mark::after{animation:none;background:var(--nu-bg-dot);box-shadow:none;transform:none}
   }
   /* The wordmark links home and needs the ring every other control keeps. It
      takes nothing else from .link: the accent's colour comes from the keyframes,
