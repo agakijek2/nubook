@@ -3074,7 +3074,7 @@ const DS_SECTIONS = [
         <td>${L("Stands among words, where a reader has to find it, so it carries a permanent underline.","Stoi między słowami, gdzie trzeba go znaleźć, więc nosi stałe podkreślenie.")}</td>
         <td>${L("the same, plus a 1px rule in","to samo, plus kreska 1px w")} <code>currentColor</code></td></tr>
       <tr><td>${L("Outside the two","Poza tymi dwoma")}<br><code>.skip-link</code>, <code>.logo .mark</code></td>
-        <td>${L("Two links that take neither variant. The one past the header, set out under Accessibility, carries neither the colour nor the underline, being invisible until it takes focus. The wordmark, which leads back to the grid from every view, keeps the focus ring and nothing else: the accent beside it draws its colour from the animation, so dimming the word under the pointer would leave the dot at full strength.","Dwa linki, które nie biorą żadnego z wariantów. Ten pomijający nagłówek, opisany w Dostępności, nie nosi ani koloru, ani podkreślenia, bo jest niewidoczny do chwili, gdy przyjmie fokus. Znak marki, prowadzący z każdego widoku z powrotem na siatkę, zatrzymuje sam pierścień fokusu: akcent obok niego bierze kolor z animacji, więc przygaszenie słowa pod kursorem zostawiłoby kropkę w pełnej sile.")}</td>
+        <td>${L("Two links that take neither variant. The one past the header, set out under Accessibility, carries neither the colour nor the underline, being invisible until it takes focus. The wordmark, which leads back to the grid from every view, keeps the focus outline and nothing else: the accent beside it draws its colour from the animation, so dimming the word under the pointer would leave the dot at full strength.","Dwa linki, które nie biorą żadnego z wariantów. Ten pomijający nagłówek, opisany w Dostępności, nie nosi ani koloru, ani podkreślenia, bo jest niewidoczny do chwili, gdy przyjmie fokus. Znak marki, prowadzący z każdego widoku z powrotem na siatkę, zatrzymuje samą obwódkę fokusu: akcent obok niego bierze kolor z animacji, więc przygaszenie słowa pod kursorem zostawiłoby kropkę w pełnej sile.")}</td>
         <td>${L("its own","własne")}</td></tr>
       <tr><td><code>.has-icon</code></td>
         <td>${L("An addition to the standalone variant, and the arrow says which way the link leads: back out of checkout, out of the order confirmation, out of the documentation header. A link standing in text never carries one.","Dodatek do wariantu samodzielnego; strzałka mówi, w którą stronę link prowadzi: z kasy, z potwierdzenia zamówienia, z nagłówka dokumentacji. Link stojący w tekście nigdy jej nie nosi.")}</td>
@@ -3301,8 +3301,8 @@ const DS_SECTIONS = [
   { group:{en:"Components",pl:"Komponenty"}, id:"input", label:{en:"Text field",pl:"Pole tekstowe"}, body: ()=>`
     <h1>${L("Text field","Pole tekstowe")}</h1>
     <p class="ds-lede">${L(
-      "The field the reader types an answer into, class <code>.input</code>. It appears in checkout and at the discount code in the cart.",
-      "Pole, w które czytelniczka wpisuje odpowiedź, klasa <code>.input</code>. Występuje w kasie i przy kodzie rabatowym w koszyku.")}</p>
+      "The field the reader types an answer into, class <code>.input</code>. It comes in two variants, and what separates them is where the field stands: inside a form, or on a bar over the grid.",
+      "Pole, w które czytelniczka wpisuje odpowiedź, klasa <code>.input</code>. Ma dwa warianty, a rozdziela je miejsce, w którym pole stoi: wewnątrz formularza albo na belce nad siatką.")}</p>
     <div class="ds-specimens ds-fields">
       <figure>
         <div class="demo on-page">
@@ -3323,13 +3323,30 @@ const DS_SECTIONS = [
         </div>
         <figcaption>${L("Error","Błąd")}</figcaption>
       </figure>
+      <figure>
+        <div class="demo on-page">
+          <div class="search-wrap">
+            <svg class="ico-search ico-sm" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M13.9 13.9l-3.1-3.1"/></svg>
+            <input class="input in-bar" id="ds-in-c" value="Atwood" aria-label="${L("Search","Szukaj")}" readonly>
+          </div>
+        </div>
+        <figcaption>${L("In a bar","W belce")}</figcaption>
+      </figure>
     </div>
+    <table id="inputVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+      <tr><td>${L("In a box","W ramce")}<br><code>.input</code></td>
+        <td>${L("Stands inside a form or a row of its own, with a label above it and room for a message below. Checkout and the discount code.","Stoi wewnątrz formularza albo we własnym rzędzie, z etykietą nad sobą i miejscem na komunikat pod sobą. Kasa i kod rabatowy.")}</td>
+        <td><code>--nu-border-neutral</code>, <code>--nu-bg-primary</code></td></tr>
+      <tr><td>${L("In a bar","W belce")}<br><code>.in-bar</code></td>
+        <td>${L("The search field over the grid. It keeps the lower edge and drops the other three, so it reads as one more control on the bar rather than as a form set down over the products; the ground goes with them. It is the one place where the field decides its own width.","Pole wyszukiwarki nad siatką. Zatrzymuje dolną krawędź, a pozostałe trzy zdejmuje, więc czyta się jak kolejna kontrolka belki, a nie jak formularz postawiony nad produktami; tło odchodzi razem z nimi. Jedyne miejsce, w którym pole samo decyduje o swojej szerokości.")}</td>
+        <td>${L("the same, plus","to samo, plus")} <code>--nu-field-width-search</code>, <code>--nu-field-width-search-focus</code></td></tr>
+    </tbody></table>
     <table><thead><tr><th>${L("State","Stan")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Default","Domyślny")}</td>
         <td>${L("Empty, or holding a value that passed the check.","Pole puste albo z wartością, która przeszła sprawdzenie.")}</td>
         <td><code>--nu-border-neutral</code>, <code>--nu-bg-primary</code></td></tr>
       <tr><td>${L("Focus","Fokus")}<br><code>:focus</code></td>
-        <td>${L("The border darkens. The system ring is dropped, because a ring drawn inside a box that already has a border reads as a second border. The mark appears on a click too, not only on arriving by keyboard: entering a field is followed by typing.","Ramka ciemnieje. Systemowa obwódka jest zdjęta, bo obwódka rysowana wewnątrz kontenera, który ma już ramkę, czyta się jak druga ramka. Oznaczenie pojawia się także po kliknięciu, nie tylko przy przejściu klawiaturą: po wejściu w pole zaraz zaczyna się pisanie.")}</td>
+        <td>${L("The border goes to full strength. The system outline is dropped, because an outline drawn inside a box that already has a border reads as a second border. The mark appears on a click too, not only on arriving by keyboard: entering a field is followed by typing.","Ramka nabiera pełnej siły. Systemowa obwódka jest zdjęta, bo obwódka rysowana wewnątrz kontenera, który ma już ramkę, czyta się jak druga ramka. Oznaczenie pojawia się także po kliknięciu, nie tylko przy przejściu klawiaturą: po wejściu w pole zaraz zaczyna się pisanie.")}</td>
         <td><code>--nu-border-primary</code></td></tr>
       <tr><td>${L("Error","Błąd")}<br><code>.is-error</code></td>
         <td>${L("The value does not match what the field accepts. The class is put on by the script that checks the value, and the message underneath says what is wrong.","Wartość nie zgadza się z tym, co pole przyjmuje. Klasę nakłada skrypt sprawdzający wartość, a komunikat pod spodem mówi, co jest nie tak.")}</td>
@@ -3338,21 +3355,23 @@ const DS_SECTIONS = [
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Border","Ramka")}</td><td>${L(
-        "1px <code>--nu-border-neutral</code>, square corners. The corners are declared rather than left alone, because iOS rounds a text field by default.",
-        "1px <code>--nu-border-neutral</code>, narożniki ostre. Narożniki są zadeklarowane, a nie zostawione, bo na iOS pole tekstowe jest domyślnie zaokrąglone.")}</td></tr>
-      <tr><td>${L("Padding","Wypełnienie")}</td><td>${dsTok("--nu-space-milli")} ${L("on every side","z każdej strony")}</td></tr>
+        "In a box: 1px <code>--nu-border-neutral</code> on all four sides, square corners. The corners are declared rather than left alone, because iOS rounds a text field by default. In a bar: the lower edge only, the same 1px in the same token, and no ground behind it.",
+        "W ramce: 1px <code>--nu-border-neutral</code> ze wszystkich czterech stron, narożniki ostre. Narożniki są zadeklarowane, a nie zostawione, bo na iOS pole tekstowe jest domyślnie zaokrąglone. W belce: sama dolna krawędź, ten sam 1px w tym samym tokenie, i przezroczyste tło.")}</td></tr>
+      <tr><td>${L("Padding","Wypełnienie")}</td><td>${L(
+        `In a box: ${dsTok("--nu-space-milli")} on every side. In a bar: the same above and below and none at the sides, the bar itself keeping the field away from its neighbours. What the sides do hold is room for the two glyphs standing inside the field &ndash; the width of an icon plus the gap before it &ndash; and the right side holds it only while the clear button is there to hold.`,
+        `W ramce: ${dsTok("--nu-space-milli")} z każdej strony. W belce: ten sam odstęp u góry i u dołu, a z boków żaden, bo od sąsiadów odsuwa pole sama belka. Boki trzymają za to miejsce na dwa znaki stojące wewnątrz pola &ndash; szerokość ikony i odstęp przed nią &ndash; a prawy trzyma je tylko wtedy, gdy stoi tam krzyżyk.`)}</td></tr>
       <tr><td>${L("Type","Typografia")}</td><td>${L(
         `Inherited from its surroundings. The field sets no face and no size of its own, only ${dsTok("--nu-line-normal")} to give the value the same rhythm the text around it has.`,
         `Dziedziczona z otoczenia. Pole nie ustawia własnego kroju ani stopnia, tylko ${dsTok("--nu-line-normal")}, żeby wpisana wartość miała ten sam rytm co tekst wokół niej.`)}</td></tr>
       <tr><td>${L("Placeholder","Podpowiedź")}</td><td>${L(
-        "<code>--nu-fg-tertiary</code>, lighter than an answer so the two do not read alike. It shows the shape of the answer &ndash; <code>00-000</code> for a postal code &ndash; and never carries the name of the field: a label that disappears once typing starts leaves the reader with a filled field and nothing saying what is in it.",
-        "<code>--nu-fg-tertiary</code>, jaśniejsza niż odpowiedź, żeby jedno nie czytało się jak drugie. Pokazuje kształt odpowiedzi &ndash; <code>00-000</code> przy kodzie pocztowym &ndash; i nigdy nie podaje nazwy pola: etykieta znikająca po pierwszym znaku zostawia czytelniczkę z wypełnionym polem i bez informacji, co w nim jest.")}</td></tr>
+        "<code>--nu-fg-tertiary</code>, lighter than an answer so the two do not read alike. Where a field has a label it shows the shape of the answer instead of its name &ndash; <code>00-000</code> for a postal code &ndash; because a name that disappears once typing starts leaves the reader with a filled field and nothing saying what is in it. The two fields with no label, the discount code and the search, are the exception on purpose: there the placeholder is the only visible cue, so it says what the field is for and the same words go into an <code>aria-label</code>, which typing does not take away.",
+        "<code>--nu-fg-tertiary</code>, jaśniejsza niż odpowiedź, żeby jedno nie czytało się jak drugie. Tam, gdzie pole ma etykietę, podpowiedź pokazuje kształt odpowiedzi zamiast jej nazwy &ndash; <code>00-000</code> przy kodzie pocztowym &ndash; bo nazwa znikająca po pierwszym znaku zostawia czytelniczkę z wypełnionym polem i bez informacji, co w nim jest. Dwa pola bez etykiety, kod rabatowy i wyszukiwarka, są wyjątkiem świadomie: tam podpowiedź jest jedyną widoczną wskazówką, więc mówi, do czego pole służy, a te same słowa idą w <code>aria-label</code>, którego pisanie nie zabiera.")}</td></tr>
       <tr><td>${L("Width","Szerokość")}</td><td>${L(
-        "The full width of the place it stands in, borders counted in. That place decides how wide it is, not the field.",
-        "Cała szerokość miejsca, w którym stoi, wraz z ramką. Szerokość ustala to miejsce, a nie pole.")}</td></tr>
+        `In a box: the full width of the place it stands in, borders counted in, and that place decides it. In a bar the field decides instead, because it shares a row with two other controls and cannot take what is left: it rests at ${dsTok("--nu-field-width-search")} and opens to ${dsTok("--nu-field-width-search-focus")} while it holds the focus, which is when the value is longer than the resting width allows. Below the narrow breakpoint it takes the full row and the two widths stop applying.`,
+        `W ramce: cała szerokość miejsca, w którym stoi, wraz z ramką, i to miejsce ją ustala. W belce ustala ją pole, bo dzieli rząd z dwiema innymi kontrolkami i nie może wziąć tego, co zostanie: w spoczynku ma ${dsTok("--nu-field-width-search")}, a na czas fokusu otwiera się do ${dsTok("--nu-field-width-search-focus")}, czyli wtedy, gdy wpisana wartość bywa dłuższa niż szerokość spoczynkowa. Poniżej progu wąskiego ekranu zajmuje cały rząd i obie szerokości przestają obowiązywać.`)}</td></tr>
       <tr><td>${L("Type and keyboard","Typ i klawiatura")}</td><td>${L(
-        "The field sets neither its type nor its keyboard mode &ndash; the place it is used does, and it always does. <code>type</code> and <code>inputmode</code> decide which keyboard a phone offers, and <code>autocomplete</code> lets the browser supply a value it already knows.",
-        "Pole nie ustawia ani typu, ani trybu klawiatury &ndash; robi to miejsce użycia i robi to zawsze. <code>type</code> i <code>inputmode</code> decydują o tym, jaką klawiaturę poda telefon, a <code>autocomplete</code> pozwala przeglądarce podać wartość, którą już zna.")}</td></tr>
+        "The field sets neither its type nor its keyboard mode; the place it is used sets whichever of the three the answer calls for. <code>type</code> and <code>inputmode</code> decide which keyboard a phone offers and go on the fields whose answer is not plain text &ndash; an address, a telephone, a postal code. <code>autocomplete</code> lets the browser supply a value it already knows, and it is on every field that asks for something about the reader; the discount code and the search ask for nothing the browser could know.",
+        "Pole nie ustawia ani typu, ani trybu klawiatury; miejsce użycia ustawia to z trzech, czego wymaga odpowiedź. <code>type</code> i <code>inputmode</code> decydują o tym, jaką klawiaturę poda telefon, i stoją przy polach, w których odpowiedź nie jest zwykłym tekstem &ndash; adres, telefon, kod pocztowy. <code>autocomplete</code> pozwala przeglądarce podać wartość, którą już zna, i stoi przy każdym polu pytającym o coś o czytelniczce; kod rabatowy i wyszukiwarka nie pytają o nic, co przeglądarka mogłaby wiedzieć.")}</td></tr>
       <tr><td>${L("Own declaration","Własna deklaracja")}</td><td>${L(
         "The text field and the select declare the same box separately. Each one then works outside a form field, and a group of two controls has no rule of somebody else's to undo.",
         "Pole tekstowe i select deklarują tę samą ramkę osobno. Dzięki temu każde z nich działa poza polem formularza, a grupa dwóch kontrolek nie ma cudzej reguły do cofania.")}</td></tr>
@@ -3384,14 +3403,14 @@ const DS_SECTIONS = [
         <td>${L("Shows the chosen option.","Pokazuje wybraną opcję.")}</td>
         <td><code>--nu-border-neutral</code>, <code>--nu-bg-primary</code></td></tr>
       <tr><td>${L("Focus","Fokus")}<br><code>:focus</code></td>
-        <td>${L("The border darkens, on the same terms as a text field: the system ring is dropped, and the mark appears on a click as well as on arriving by keyboard.","Ramka ciemnieje, na tych samych zasadach co w polu tekstowym: systemowa obwódka jest zdjęta, a oznaczenie pojawia się zarówno po kliknięciu, jak i przy przejściu klawiaturą.")}</td>
+        <td>${L("The border goes to full strength, on the same terms as a text field in a box: the system outline is dropped, and the mark appears on a click as well as on arriving by keyboard.","Ramka nabiera pełnej siły, na tych samych zasadach co w polu tekstowym w ramce: systemowa obwódka jest zdjęta, a oznaczenie pojawia się zarówno po kliknięciu, jak i przy przejściu klawiaturą.")}</td>
         <td><code>--nu-border-primary</code></td></tr>
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Border","Ramka")}</td><td>${L(
-        `The same box and the same inset as a text field &ndash; 1px <code>--nu-border-neutral</code>, square corners, ${dsTok("--nu-space-milli")} from the border on every side &ndash; declared here rather than borrowed. The chevron stands in that inset on the right, so the value stops earlier than in a text field: by the width of the icon and the gap in front of it. The declared right padding is those three added together.`,
-        `Ta sama ramka i to samo wcięcie co w polu tekstowym &ndash; 1px <code>--nu-border-neutral</code>, narożniki ostre, ${dsTok("--nu-space-milli")} od ramki z każdej strony &ndash; zadeklarowane tutaj, a nie pożyczone. W prawym wcięciu stoi chevron, więc wartość zatrzymuje się wcześniej niż w polu tekstowym: o szerokość ikony i odstęp przed nią. Zadeklarowane prawe wypełnienie to suma tych trzech.`)}</td></tr>
+        `The same box and the same inset as a text field in a box &ndash; 1px <code>--nu-border-neutral</code>, square corners, ${dsTok("--nu-space-milli")} from the border on every side &ndash; declared here rather than borrowed. The chevron stands in that inset on the right, so the value stops earlier than in a text field: by the width of the icon and the gap in front of it. The declared right padding is those three added together.`,
+        `Ta sama ramka i to samo wcięcie co w polu tekstowym w ramce &ndash; 1px <code>--nu-border-neutral</code>, narożniki ostre, ${dsTok("--nu-space-milli")} od ramki z każdej strony &ndash; zadeklarowane tutaj, a nie pożyczone. W prawym wcięciu stoi chevron, więc wartość zatrzymuje się wcześniej niż w polu tekstowym: o szerokość ikony i odstęp przed nią. Zadeklarowane prawe wypełnienie to suma tych trzech.`)}</td></tr>
       <tr><td>${L("Native look","Natywny wygląd")}</td><td>${L(
         "Dropped with <code>appearance:none</code>, along with the system marker on the edge. The box and the chevron are drawn.",
         "Zdjęty przez <code>appearance:none</code>, razem z systemowym znacznikiem na krawędzi. Ramka i chevron są rysowane.")}</td></tr>
