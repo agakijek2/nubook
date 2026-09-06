@@ -174,6 +174,7 @@ const I18N = {
     coverAlt:"Cover of", qtyLess:"Decrease quantity", qtyMore:"Increase quantity",
     strap:"novels on women & gender", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
+    searchPh:"Search by title or author",
     all:"All",
     sorts:{featured:"Our recommendations",newest:"Newest first","price-asc":"Price, low to high","pub-asc":"First published: oldest"},
     status:{new:"New",soon:"Coming soon",last:"Last pieces",out:"Not available",pulitzer:"Pulitzer Winner"},
@@ -218,7 +219,7 @@ const I18N = {
     backHome:"Back to the shop",
     dGenre:"Genre", dLang:"Edition language", dStatus:"Status",
     aboutAuthor:{f:"About the author", m:"About the author", nb:"About the author"},
-    aria:{fav:"Favourites",account:"Account",search:"Search",cart:"Cart",
+    aria:{fav:"Favourites",account:"Account",cart:"Cart",
           close:"Close",langGroup:"Language",curGroup:"Currency",schemeGroup:"Theme"},
     designSystem:"Design system",
   },
@@ -227,6 +228,7 @@ const I18N = {
     coverAlt:"Okładka:", qtyLess:"Zmniejsz ilość", qtyMore:"Zwiększ ilość",
     strap:"powieści o kobietach i płci", skip:"Przejdź do treści", schemeLight:"Jasny", schemeDark:"Ciemny",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
+    searchPh:"Szukaj tytułu lub autorki",
     all:"Wszystkie",
     sorts:{featured:"Nasze rekomendacje",newest:"Od najnowszych","price-asc":"Cena: od najniższej","pub-asc":"Pierwsze wydanie: rosnąco"},
     status:{new:"Nowość",soon:"Wkrótce",last:"Ostatnie sztuki",out:"Niedostępna",pulitzer:"Nagroda Pulitzera"},
@@ -271,7 +273,7 @@ const I18N = {
     backHome:"Wróć do sklepu",
     dGenre:"Gatunek", dLang:"Język wydania", dStatus:"Status",
     aboutAuthor:{f:"O autorce", m:"O autorze", nb:"O osobie autorskiej"},
-    aria:{fav:"Ulubione",account:"Konto",search:"Szukaj",cart:"Koszyk",
+    aria:{fav:"Ulubione",account:"Konto",cart:"Koszyk",
           close:"Zamknij",langGroup:"Język",curGroup:"Waluta",schemeGroup:"Motyw"},
     designSystem:"System projektowy",
   },
@@ -300,6 +302,9 @@ const state = {
   status: new Set(),       // empty = all
   lang:   "en",            // edition language shown; single-select, default English
   sort: "featured",
+  /* What was typed into the search field. A moment, not a setting: it is not
+     saved and not restored, unlike the four above it. */
+  q: "",
 };
 
 /* Everything the reader chose about how the shop is shown, kept together: the
@@ -333,6 +338,25 @@ function savePrefs(){
   if (Array.isArray(p.genre))  p.genre .filter(k => known("g", k)).forEach(k => state.genre.add(k));
   if (Array.isArray(p.status)) p.status.filter(k => known("s", k)).forEach(k => state.status.add(k));
 })();
+
+/* Two strings match when they match after the differences a reader does not
+   think about are taken away: case, and the marks over Polish letters. Somebody
+   typing "umilowana" on a keyboard without them is looking for "Umiłowana", and
+   "ATWOOD" is looking for Atwood. NFD splits a letter from its mark so the mark
+   can be dropped; ł has no mark to split, so it is replaced on its own. */
+const fold = s => (s || "")
+  .toLowerCase()
+  .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/ł/g, "l");
+/* A book answers a query when the query appears in its title, in either
+   language, or in its author. Genre and tag are left out on purpose: the chips
+   above already do that, and two ways to say the same thing disagree sooner or
+   later. */
+const matchesQuery = (b, q) => {
+  const n = fold(q).trim();
+  if (n.length < 2) return true;
+  return [b.t, b.tp, b.a].some(v => fold(v).includes(n));
+};
 
 /* ------------------------------------------------------ filter chips */
 function buildChips(rowId, items, set){
@@ -368,7 +392,9 @@ function countFor(dim, key){
   const genreOK  = b => dim === "genre"  ? b.g === key : (state.genre.size===0  || state.genre.has(b.g));
   const statusOK = b => dim === "status" ? b.s === key : (state.status.size===0 || state.status.has(b.s));
   const langOK   = b => dim === "lang"   ? b.ed === key : b.ed === state.lang;
-  return BOOKS.filter(b => genreOK(b) && statusOK(b) && langOK(b)).length;
+  /* The query narrows the count as much as any chip does: a count that ignored
+     it would promise results the reader cannot reach. */
+  return BOOKS.filter(b => matchesQuery(b, state.q) && genreOK(b) && statusOK(b) && langOK(b)).length;
 }
 
 function chipData(){
@@ -446,6 +472,26 @@ sortItems().forEach(b=>{
     setSortOpen(false);
     render(false);
   };
+});
+
+/* ------------------------------------------------------------ search */
+/* The field narrows the same list the chips narrow, so it does the same thing
+   they do: change the state and re-render. Live from the second character,
+   because at this size there is nothing to wait for. */
+const searchInput = document.getElementById("searchInput");
+searchInput.addEventListener("input", ()=>{
+  state.q = searchInput.value;
+  render();
+});
+/* Escape empties the field while it holds the focus, and stops there: the key
+   also closes the sort menu, the sheet, the drawers and the product view, and a
+   reader clearing a query is not asking for any of that. */
+searchInput.addEventListener("keydown", e=>{
+  if (e.key !== "Escape" || !searchInput.value) return;
+  e.stopPropagation();
+  searchInput.value = "";
+  state.q = "";
+  render();
 });
 
 /* --------------------------------------------------- mobile toggle */
@@ -672,6 +718,7 @@ function coverHTML(b){
 }
 function visibleBooks(){
   let list = BOOKS.filter(b =>
+    matchesQuery(b, state.q) &&
     (state.genre.size===0  || state.genre.has(b.g)) &&
     (state.status.size===0 || state.status.has(b.s)) &&
     b.ed === state.lang
@@ -1544,7 +1591,9 @@ function applyLang(){
   });
   document.getElementById("btnFav").setAttribute("aria-label", t.aria.fav);
   document.getElementById("btnAccount").setAttribute("aria-label", t.aria.account);
-  document.getElementById("btnSearch").setAttribute("aria-label", t.aria.search);
+  const si = document.getElementById("searchInput");
+  si.placeholder = t.searchPh;
+  si.setAttribute("aria-label", t.searchPh);
   document.getElementById("btnCart").setAttribute("aria-label", t.aria.cart);
   /* Six strings used to sit in the markup untranslated, so a reader on EN heard
      the Polish close label and a reader on PL heard the English group names. */
@@ -3197,8 +3246,8 @@ const DS_SECTIONS = [
         "1px <code>--nu-border-neutral</code>, narożniki ostre. Narożniki są zadeklarowane, a nie zostawione, bo na iOS pole tekstowe jest domyślnie zaokrąglone.")}</td></tr>
       <tr><td>${L("Padding","Wypełnienie")}</td><td>${dsTok("--nu-space-milli")} ${L("on every side","z każdej strony")}</td></tr>
       <tr><td>${L("Type","Typografia")}</td><td>${L(
-        "Inherited from its surroundings, line height 1.45. The field sets no face and no size of its own.",
-        "Dziedziczona z otoczenia, interlinia 1.45. Pole nie ustawia własnego kroju ani stopnia.")}</td></tr>
+        `Inherited from its surroundings. The field sets no face and no size of its own, only ${dsTok("--nu-line-normal")} to give the value the same rhythm the text around it has.`,
+        `Dziedziczona z otoczenia. Pole nie ustawia własnego kroju ani stopnia, tylko ${dsTok("--nu-line-normal")}, żeby wpisana wartość miała ten sam rytm co tekst wokół niej.`)}</td></tr>
       <tr><td>${L("Placeholder","Podpowiedź")}</td><td>${L(
         "<code>--nu-fg-tertiary</code>, lighter than an answer so the two do not read alike. It shows the shape of the answer &ndash; <code>00-000</code> for a postal code &ndash; and never carries the name of the field: a label that disappears once typing starts leaves the reader with a filled field and nothing saying what is in it.",
         "<code>--nu-fg-tertiary</code>, jaśniejsza niż odpowiedź, żeby jedno nie czytało się jak drugie. Pokazuje kształt odpowiedzi &ndash; <code>00-000</code> przy kodzie pocztowym &ndash; i nigdy nie podaje nazwy pola: etykieta znikająca po pierwszym znaku zostawia czytelniczkę z wypełnionym polem i bez informacji, co w nim jest.")}</td></tr>
@@ -3254,8 +3303,8 @@ const DS_SECTIONS = [
         `An icon at the smaller of the two sizes, ${dsTok("--nu-icon-sm")}, on the terms set out under Iconography. It stands in the field's right padding, ${dsTok("--nu-space-milli")} from the edge, and the value ends at least ${dsTok("--nu-space-medium")} before it. Pointer events are off, so a click on the chevron opens the list, and the colour comes from the field through <code>currentColor</code>.`,
         `Ikona w mniejszym z dwóch rozmiarów, ${dsTok("--nu-icon-sm")}, na zasadach opisanych w Ikonografii. Stoi w prawym wypełnieniu pola, ${dsTok("--nu-space-milli")} od krawędzi, a wartość kończy się co najmniej ${dsTok("--nu-space-medium")} przed nią. Obsługa wskaźnika jest wyłączona, więc kliknięcie w chevron rozwija listę, a kolor bierze się z pola przez <code>currentColor</code>.`)}</td></tr>
       <tr><td>${L("Type","Typografia")}</td><td>${L(
-        "Inherited from its surroundings, line height 1.45. The select sets no face and no size of its own.",
-        "Dziedziczona z otoczenia, interlinia 1.45. Select nie ustawia własnego kroju ani stopnia.")}</td></tr>
+        `Inherited from its surroundings. The select sets no face and no size of its own, only ${dsTok("--nu-line-normal")}, on the same terms as the text field.`,
+        `Dziedziczona z otoczenia. Select nie ustawia własnego kroju ani stopnia, tylko ${dsTok("--nu-line-normal")}, na tych samych zasadach co pole tekstowe.`)}</td></tr>
       <tr><td>${L("Width","Szerokość")}</td><td>${L(
         "The full width of the place it stands in, borders counted in. That place decides how wide it is, not the select.",
         "Cała szerokość miejsca, w którym stoi, wraz z ramką. Szerokość ustala to miejsce, a nie select.")}</td></tr>

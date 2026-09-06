@@ -237,6 +237,10 @@
        line up. The width is set by the widest case, a select - it holds the four
        characters, the gap and the chevron - and the plain fields follow it. */
     --nu-field-width-short:6.5rem;
+    /* How wide the search field is allowed to grow. A field that stretches the
+       whole bar reads as a form, not as a way of narrowing a list, and nineteen
+       titles do not need that much room to type into. */
+    --nu-field-width-search:26rem;
 
     --nu-icon-lg:1.5rem;   --nu-icon-lg-inset:2px; --nu-icon-lg-stroke:1.5;
     --nu-icon-sm:1rem;   --nu-icon-sm-inset:1px; --nu-icon-sm-stroke:1.25;
@@ -620,6 +624,21 @@
 
 
   /* sort */
+  /* The field takes the room the two buttons leave, so the bar keeps its shape
+     as their labels change with the language. */
+  .search-wrap{position:relative;display:block;flex:1;min-width:0;max-width:var(--nu-field-width-search)}
+  /* Same construction as the select: the drawing sits inside the field and the
+     field leaves it room, so the text never runs under it. */
+  .search-wrap .ico-search{
+    position:absolute;left:var(--nu-space-milli);top:50%;
+    transform:translateY(-50%);pointer-events:none;color:var(--nu-fg-tertiary);
+  }
+  .search-wrap .input{
+    padding-left:calc(var(--nu-space-milli) + var(--nu-icon-sm) + var(--nu-space-micro));
+  }
+  /* A search field draws its own clear button in WebKit, in a shape the shop
+     uses nowhere else. The field is cleared with Escape instead. */
+  .search-wrap .input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
   .sort{position:relative;text-align:right}
   .sort-btn{padding:var(--nu-space-nano) 0}
   /* Both tertiary buttons that open something read their own aria-expanded:
@@ -1523,6 +1542,10 @@
        menu keep their existing handlers and state, so there is no second copy
        of these controls to keep in sync. */
     .shopbar{
+      /* The field takes a row of its own here: three controls across this width
+         would leave it too narrow to read what is in it. measureBars re-reads
+         the height, so the clearance under the grid follows on its own. */
+      flex-wrap:wrap;row-gap:var(--nu-mobar-padding);
       /* above the sheet backdrop (70): the bar holds the controls that opened
          the sheet, so dimming them would be dimming the way out. Still below
          the drawers (90/100), which are meant to cover it. */
@@ -1543,6 +1566,7 @@
     .sort-menu{top:auto;bottom:calc(100% + var(--nu-mobar-padding) + var(--nu-mobar-gap))}
     /* a long sort label must not push the bar into two lines */
     .sort-btn{max-width:62vw}
+    .search-wrap{order:-1;flex:1 0 100%;max-width:none}
     .sort-btn #sortLbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
     /* ---- filters raised as a bottom sheet ----
