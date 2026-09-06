@@ -266,7 +266,7 @@
        exactly the bar, whatever the label length or the device safe area. */
     --nu-mobar-height:var(--nu-space-max);  /* shop bar: filters + sort */
     --nu-cobar-height:var(--nu-space-max);  /* checkout bar: total + submit */
-    --nu-mobar-padding:var(--nu-space-milli); /* shop bar inner padding, top and sides */
+    --nu-mobar-padding:var(--nu-space-milli); /* pinned bar: padding under it, and the gap between its two rows */
     --nu-mobar-gap:var(--nu-space-milli); /* air between the bar and the menu above it */
   }
 
@@ -1624,7 +1624,10 @@
          the sheet, so dimming them would be dimming the way out. Still below
          the drawers (90/100), which are meant to cover it. */
       position:fixed;left:0;right:0;bottom:0;z-index:85;
-      padding:var(--nu-mobar-padding) var(--nu-space-small) calc(var(--nu-mobar-padding) + env(safe-area-inset-bottom));
+      /* No padding at the top: the field's own is already there, and two
+         spacings meaning the same thing add up to one that reads as a mistake.
+         The desktop bar has none either, so the two layouts agree. */
+      padding:0 var(--nu-space-small) calc(var(--nu-mobar-padding) + env(safe-area-inset-bottom));
       gap:var(--nu-space-small);
       background:var(--nu-bg-primary);
       border-top:1px solid var(--nu-border-neutral);
