@@ -55,124 +55,277 @@ const BOOKS = [
    q:"Nolite te bastardes carborundorum - don't let the bastards grind you down.", qby:"Offred",
    dp:"Mrożąca wizja Gileadu, w którym ciała kobiet są własnością państwa - najważniejsza feministyczna dystopia.",
    qp:"Nolite te bastardes carborundorum - nie pozwól, żeby skurwiele cię złamali.", qbyp:"Offred", a:"Margaret Atwood", gd:"f", ab:"Canadian writer, twice winner of the Booker Prize. Her dystopias made women's rights a mainstream literary subject - lines from her books ended up on protest banners worldwide.", abp:"Kanadyjska pisarka, dwukrotna laureatka Nagrody Bookera. Jej dystopie wprowadziły prawa kobiet do głównego nurtu literatury, a cytaty z jej książek trafiły na transparenty protestów na całym świecie.",        g:"Dystopia",     p:14.00, pp:59.90, s:null,
+   m:["gender-norms","childbearing-body","who-is-looking"],
    img:COVER_HMT},
   {t:"Orlando", tp:"Orlando. Biografia", ed:"en", added:"2026-06-05", pub:1928,
    de:"Woolf's playful 'biography' of a poet who lives four centuries and changes sex along the way - a love letter to Vita Sackville-West.",
    q:"As long as she thinks of a man, nobody objects to a woman thinking.", qby:"the narrator",
    dp:"Przewrotna 'biografia' poety, który żyje cztery stulecia i po drodze zmienia płeć - list miłosny Woolf do Vity Sackville-West.",
    qp:"Dopóki kobieta myśli o mężczyźnie, nikomu nie przeszkadza, że myśli.", qbyp:"narrator", a:"Virginia Woolf", gd:"f", ab:"Modernist pioneer and central figure of the Bloomsbury Group. Her essay A Room of One's Own remains a founding text of feminist literary criticism.", abp:"Pionierka modernizmu i centralna postać grupy Bloomsbury. Jej esej Własny pokój pozostaje tekstem założycielskim feministycznej krytyki literackiej.",                     g:"Classic",      p:11.50, pp:48.90, s:"new",
+   m:["own-room","passing","doing-gender"],
    img:COVER_ORL},
   {t:"Girl, Woman, Other", tp:"Dziewczyna, kobieta, inna", ed:"en", added:"2026-03-30", pub:2019,
    de:"Twelve interwoven lives, mostly of Black British women - Evaristo's Booker-winning chorus of voices.",
    q:"Privilege is about context and circumstances.", qby:"Yazz",
    dp:"Dwanaście splecionych losów, głównie czarnych Brytyjek - nagrodzony Bookerem chór głosów Evaristo.",
    qp:"Przywilej zależy od kontekstu i okoliczności.", qbyp:"Yazz", a:"Bernardine Evaristo", gd:"f", ab:"First Black woman to win the Booker Prize (2019). A lifelong champion of Black British women's stories and president of the Royal Society of Literature.", abp:"Pierwsza czarna laureatka Nagrody Bookera (2019). Od lat promuje historie czarnych Brytyjek; przewodniczy Royal Society of Literature.",     g:"Contemporary", p:16.00, pp:67.90, s:null,
+   m:["growing-up","race-class-gender","womens-friendship"],
    img:COVER_GWO},
   {t:"Stone Butch Blues", tp:"Stone Butch Blues", ed:"en", added:"2026-01-19", pub:1993,
    de:"Feinberg's landmark novel of butch life, labour and survival in pre-Stonewall America.",
    q:"I didn't want to be different. I longed to be everything grown-ups wanted, so they would love me.", qby:"Jess Goldberg",
    dp:"Przełomowa powieść Feinberg o życiu butch, pracy i przetrwaniu w Ameryce sprzed Stonewall.",
    qp:"Nie chciałam być inna. Pragnęłam być wszystkim, czego chcieli dorośli, żeby mnie pokochali.", qbyp:"Jess Goldberg", a:"Leslie Feinberg", gd:"nb", ab:"Transgender activist, communist and writer. Stone Butch Blues won the Lambda Literary Award and gave generations of queer readers a mirror.", abp:"Osoba transpłciowa, aktywistyczna i pisarska. Stone Butch Blues zdobyło nagrodę Lambda Literary i stało się lustrem dla pokoleń osób queer.",          g:"Queer",        p:18.50, pp:78.90, s:"last",
+   m:["gender-norms","passing","doing-gender"],
    img:COVER_SBB},
   {t:"Beloved", tp:"Umiłowana", ed:"en", added:"2025-11-03", pub:1987,
    de:"Morrison's Pulitzer-winning masterpiece: a mother haunted by slavery and by the daughter she lost.",
    q:"You your best thing, Sethe. You are.", qby:"Paul D",
    dp:"Arcydzieło Morrison nagrodzone Pulitzerem: matka nawiedzana przez niewolnictwo i utraconą córkę.",
    qp:"To ty jesteś tym, co masz najlepszego, Sethe. Ty.", qbyp:"Paul D", a:"Toni Morrison", gd:"f", ab:"Nobel laureate in Literature (1993) and Pulitzer winner. She centred Black women's interior lives and reshaped the American canon.", abp:"Laureatka literackiego Nobla (1993) i Pulitzera. Umieściła wewnętrzne życie czarnych kobiet w centrum literatury i przebudowała amerykański kanon.",                      g:"Classic",      p:12.50, pp:52.90, s:"pulitzer",
+   m:["mother-daughter","childbearing-body","who-speaks"],
    img:COVER_BEL},
   {t:"Kim Jiyoung, Born 1982", tp:"Kim Dzijong. Urodzona w 1982", ed:"en", added:"2026-05-28", pub:2016,
    de:"An ordinary Korean woman's life told as a quiet indictment of everyday sexism - the novel that sparked a national debate.",
    q:"Why should I give up something I want now for the sake of a future that may or may not come?", qby:"Kim Jiyoung",
    dp:"Życie zwykłej Koreanki jako cichy akt oskarżenia wobec codziennego seksizmu - powieść, która wywołała narodową debatę.",
    qp:"Dlaczego mam rezygnować z czegoś, na co mam teraz ochotę, w imię przyszłości, która może, ale wcale nie musi nadejść?", qbyp:"Kim Dzijong", a:"Cho Nam-joo", gd:"f", ab:"Former TV scriptwriter. Her novel sold over a million copies and galvanised South Korea's #MeToo conversation about everyday sexism.", abp:"Była scenarzystka telewizyjna. Jej powieść sprzedała się w ponadmilionowym nakładzie i stała się katalizatorem koreańskiej debaty #MeToo o codziennym seksizmie.",         g:"Contemporary", p:15.00, pp:63.90, s:"new",
+   m:["mother-daughter","childbearing-body","angel-in-house","social-clock"],
    img:COVER_KJY},
   {t:"The Power", tp:"Siła", ed:"en", added:"2026-03-12", pub:2016,
    de:"Teenage girls develop the power to electrocute at will, and the world's hierarchies flip. What would women do with power?",
    q:"That's the trouble with the kind of power that lets you destroy. It can only be used to break, never to mend.", qby:"the narrator",
    dp:"Nastolatki zyskują zdolność rażenia prądem i światowe hierarchie się odwracają. Co kobiety zrobiłyby z władzą?",
    qp:"Na tym polega kłopot z władzą, która pozwala niszczyć. Można nią tylko łamać, nigdy naprawiać.", qbyp:"narrator", a:"Naomi Alderman", gd:"f", ab:"British novelist and game designer, mentored by Margaret Atwood. The Power won the Women's Prize for Fiction (2017) for its study of gendered power.", abp:"Brytyjska pisarka i projektantka gier, mentorowana przez Margaret Atwood. Siła zdobyła Women's Prize for Fiction (2017) za studium płciowego wymiaru władzy.",                   g:"Dystopia",     p:14.00, pp:59.90, s:null,
+   m:["who-is-looking","woman-as-monster"],
    img:COVER_PWR},
   {t:"The Bell Jar", tp:"Szklany klosz", ed:"en", added:"2025-11-21", pub:1963,
    de:"Plath's only novel: Esther Greenwood's brilliant, suffocating summer in New York and the descent that follows.",
    q:"I took a deep breath and listened to the old brag of my heart. I am, I am, I am.", qby:"Esther Greenwood",
    dp:"Jedyna powieść Plath: błyskotliwe, duszne lato Esther Greenwood w Nowym Jorku i późniejszy upadek.",
    qp:"Wzięłam głęboki oddech i wsłuchałam się w stare przechwałki mojego serca. Jestem, jestem, jestem.", qbyp:"Esther Greenwood", a:"Sylvia Plath", gd:"f", ab:"Confessional poet, posthumous Pulitzer winner (1982). Her work voiced the suffocation of 1950s womanhood like no other.", abp:"Poetka konfesyjna, pośmiertna laureatka Pulitzera (1982). Jak nikt inny wyraziła duszność kobiecości lat 50.",                  g:"Classic",      p:10.50, pp:44.90, s:"last",
+   m:["madwoman","own-room","angel-in-house","social-clock"],
    img:COVER_TBJ},
   {t:"Detransition, Baby", tp:"Detranzycja, kochanie", ed:"en", added:"2026-04-17", pub:2021,
    de:"Three women - trans and cis - and one unplanned pregnancy. A sharp, funny novel about gender, motherhood and modern family.",
    q:"To have anything you have to figure out how to want it, and to want it you have to be able to imagine it.", qby:"Reese",
    dp:"Trzy kobiety - trans i cis - i jedna nieplanowana ciąża. Błyskotliwa powieść o płci, macierzyństwie i współczesnej rodzinie.",
    qp:"Żeby cokolwiek mieć, trzeba najpierw nauczyć się tego pragnąć, a żeby tego pragnąć, trzeba umieć to sobie wyobrazić.", qbyp:"Reese", a:"Torrey Peters", gd:"f", ab:"Trans novelist; Detransition, Baby was longlisted for the Women's Prize, bringing trans women's lives into mainstream literary fiction.", abp:"Pisarka trans; Detranzycja, kochanie trafiła na długą listę Women's Prize, wprowadzając życie kobiet trans do głównego nurtu prozy.",           g:"Queer",        p:17.50, pp:74.90, s:null,
+   m:["childbearing-body","passing","doing-gender","social-clock"],
    img:COVER_DTB},
   {t:"Americanah", tp:"Amerykaana", ed:"en", added:"2026-02-24", pub:2013,
    de:"Ifemelu leaves Nigeria for America and discovers race; years later she returns. A sweeping story of love, hair and belonging.",
    q:"Why must we always talk about race anyway? - That is exactly what white privilege is, that you can say that.", qby:"a dinner guest & Professor Hunk",
    dp:"Ifemelu wyjeżdża z Nigerii do Ameryki i odkrywa, czym jest rasa; po latach wraca. Opowieść o miłości, włosach i przynależności.",
    qp:"Czemu w ogóle ciągle musimy mówić o rasie? - Na tym właśnie polega biały przywilej, że możesz tak powiedzieć.", qbyp:"gość przy stole i Professor Hunk", a:"Chimamanda Ngozi Adichie", gd:"f", ab:"Nigerian writer, winner of the Orange Prize. Her TED talk and essay We Should All Be Feminists made her a global voice of contemporary feminism.", abp:"Nigeryjska pisarka, laureatka Orange Prize. Wystąpienie TED i esej Wszyscy powinniśmy być feministami uczyniły ją globalnym głosem współczesnego feminizmu.",        g:"Contemporary", p:16.00, pp:67.90, s:null,
+   m:["growing-up","passing","race-class-gender"],
    img:COVER_AMR},
   {t:"Wide Sargasso Sea", tp:"Szerokie Morze Sargassowe", ed:"en", added:"2025-09-12", pub:1966,
    de:"The untold story of the 'madwoman in the attic': Rhys gives Brontë's Bertha a voice, a history and a Caribbean home.",
    q:"There is always the other side, always.", qby:"Antoinette",
    dp:"Nieopowiedziana historia 'szalonej z poddasza': Rhys oddaje głos Bercie z powieści Brontë i jej karaibskiemu światu.",
    qp:"Zawsze jest druga strona, zawsze.", qbyp:"Antoinette", a:"Jean Rhys", gd:"f", ab:"Dominica-born novelist. She gave voice to colonised, dismissed women decades before postcolonial feminism named them; honoured with the WH Smith Award.", abp:"Pisarka urodzona na Dominice. Oddała głos skolonizowanym, lekceważonym kobietom na długo przed feminizmem postkolonialnym; uhonorowana nagrodą WH Smith.",                g:"Classic",      p:11.50, pp:48.90, s:"out",
+   m:["madwoman","who-speaks"],
    img:COVER_WSS},
   {t:"My Brilliant Friend", tp:"Genialna przyjaciółka", ed:"en", added:"2026-02-06", pub:2011,
    de:"Lila and Lenù grow up poor and fierce in postwar Naples - the first of Ferrante's Neapolitan novels.",
    q:"You're my brilliant friend, you have to be the best of all, boys and girls.", qby:"Lila",
    dp:"Lila i Lenù dorastają w biednym, gwałtownym powojennym Neapolu - pierwszy tom cyklu neapolitańskiego Ferrante.",
    qp:"Jesteś moją genialną przyjaciółką, musisz być najlepsza ze wszystkich, chłopców i dziewczyn.", qbyp:"Lila", a:"Elena Ferrante", gd:"f", ab:"Anonymous Italian author, Booker International finalist. Her Neapolitan novels map female friendship, ambition and class with rare honesty.", abp:"Anonimowa włoska autorka, finalistka Międzynarodowego Bookera. Cykl neapolitański z rzadką szczerością opisuje kobiecą przyjaźń, ambicję i klasę.",         g:"Contemporary", p:15.00, pp:63.90, s:null,
+   m:["growing-up","own-room","womens-friendship","social-clock"],
    img:COVER_MBF},
   {t:"Nightwood", tp:"Ostępy nocy", ed:"en", added:"2025-09-28", pub:1936,
    de:"Barnes's modernist classic of obsessive love between women in 1920s Paris, with a preface by T. S. Eliot.",
    q:"Have you ever loved someone and it became yourself?", qby:"Nora",
    dp:"Modernistyczny klasyk Barnes o obsesyjnej miłości między kobietami w Paryżu lat 20., z przedmową T. S. Eliota.",
    qp:"Czy kochałaś kiedyś kogoś tak, że stał się tobą?", qbyp:"Nora", a:"Djuna Barnes", gd:"f", ab:"Bohemian modernist of 1920s Paris. She wrote lesbian desire when it was unprintable, paving the way for queer literature.", abp:"Modernistka i bohemka Paryża lat 20. Pisała o lesbijskim pożądaniu, gdy było ono niecenzuralne, torując drogę literaturze queer.",                     g:"Queer",        p:12.50, pp:52.90, s:"out",
+   m:["madwoman","gender-norms","woman-as-monster"],
    img:COVER_NW},
   {t:"The Color Purple", tp:"Kolor purpury", ed:"en", added:"2025-10-16", pub:1982,
    de:"Celie writes letters to God from rural Georgia, surviving abuse and finding love - Walker's Pulitzer-winning classic.",
    q:"I think it pisses God off if you walk by the color purple in a field somewhere and don't notice it.", qby:"Shug Avery",
    dp:"Celie pisze listy do Boga z wiejskiej Georgii - o przemocy, przetrwaniu i miłości. Klasyka nagrodzona Pulitzerem.",
    qp:"Myślę, że Bóg się wkurza, kiedy mijasz kolor purpury na polu i go nie zauważasz.", qbyp:"Shug Avery", a:"Alice Walker", gd:"f", ab:"First Black woman to win the Pulitzer for fiction (1983). She coined the term womanism to centre Black women within feminism.", abp:"Pierwsza czarna laureatka Pulitzera w dziedzinie prozy (1983). Ukuła pojęcie womanizmu, stawiając czarne kobiety w centrum feminizmu.",              g:"Classic",      p:12.50, pp:52.90, s:null,
+   m:["mother-daughter","angel-in-house","womens-friendship"],
    img:COVER_TCP},
   {t:"Jane Eyre", tp:"Dziwne losy Jane Eyre", ed:"en", added:"2025-09-01", pub:1847,
    de:"Plain, poor and unbreakable: Brontë's governess demands love on equal terms - a protofeminist classic.",
    q:"I am no bird; and no net ensnares me: I am a free human being with an independent will.", qby:"Jane Eyre",
    dp:"Skromna, biedna i niezłomna: guwernantka Brontë żąda miłości na równych prawach - protofeministyczny klasyk.",
    qp:"Nie jestem ptakiem i nie schwyta mnie żadna sieć: jestem wolną istotą ludzką o niezależnej woli.", qbyp:"Jane Eyre", a:"Charlotte Brontë", gd:"f", ab:"Published as Currer Bell to bypass prejudice against women writers. Jane Eyre demanded equality in love and work as early as 1847.", abp:"Publikowała jako Currer Bell, by ominąć uprzedzenia wobec piszących kobiet. Jane Eyre już w 1847 roku żądała równości w miłości i pracy.",                 g:"Classic",      p:9.50, pp:40.90, s:null,
+   m:["madwoman","growing-up","angel-in-house"],
    img:COVER_JE},
   {t:"Convenience Store Woman", tp:"Dziewczyna z konbini", ed:"en", added:"2026-05-21", pub:2016,
    de:"Keiko has worked in a konbini for eighteen years and is perfectly happy - it's everyone else who has a problem.",
    q:"My present self is formed almost completely of the people around me.", qby:"Keiko",
    dp:"Keiko od osiemnastu lat pracuje w konbini i jest zupełnie szczęśliwa - to inni mają z tym problem.",
    qp:"Moje obecne ja jest niemal w całości ulepione z ludzi wokół mnie.", qbyp:"Keiko", a:"Sayaka Murata", gd:"f", ab:"Winner of Japan's Akutagawa Prize. She skewers expectations of marriage and motherhood - drawing on her own 18 years behind a konbini counter.", abp:"Laureatka japońskiej Nagrody Akutagawy. Rozprawia się z oczekiwaniami wobec małżeństwa i macierzyństwa, czerpiąc z własnych 18 lat pracy w konbini.",      g:"Contemporary", p:14.00, pp:59.90, s:"new",
+   m:["passing","angel-in-house","social-clock"],
    img:COVER_CSW},
   {t:"Middlesex", tp:"Middlesex", ed:"en", added:"2025-12-10", pub:2002,
    de:"Cal Stephanides, born intersex, traces three generations of a Greek-American family. Pulitzer Prize 2003.",
    q:"I was born twice: first, as a baby girl, and then again, as a teenage boy.", qby:"Cal Stephanides",
    dp:"Cal Stephanides, osoba interpłciowa, opowiada dzieje trzech pokoleń grecko-amerykańskiej rodziny. Pulitzer 2003.",
    qp:"Urodziłem się dwa razy: najpierw jako dziewczynka, a potem ponownie jako nastoletni chłopiec.", qbyp:"Cal Stephanides", a:"Jeffrey Eugenides", gd:"m", ab:"American novelist; Middlesex won the Pulitzer Prize (2003) and brought intersex experience into the literary mainstream.", abp:"Amerykański pisarz; Middlesex zdobył Nagrodę Pulitzera (2003) i wprowadził doświadczenie interpłciowości do literackiego mainstreamu.",                g:"Queer",        p:16.00, pp:67.90, s:"pulitzer",
+   m:["growing-up","passing","doing-gender"],
    img:COVER_MDX},
   {t:"Her Body and Other Parties", tp:"Jej ciało i inne strony", ed:"en", added:"2026-06-01", pub:2017,
    de:"Machado bends horror, fairy tale and SF into stories about women's bodies and the violence done to them.",
    q:"I have heard all of the stories about girls like me, and I am unafraid to make more of them.", qby:"the narrator",
    dp:"Machado łączy horror, baśń i SF w opowiadania o kobiecych ciałach i przemocy wobec nich.",
    qp:"Słyszałam wszystkie opowieści o dziewczynach takich jak ja i nie boję się tworzyć kolejnych.", qbyp:"narratorka", a:"Carmen M. Machado", gd:"f", ab:"Queer essayist and fabulist, National Book Award finalist. In the Dream House reframed how we talk about abuse in queer relationships.", abp:"Queerowa eseistka i bajarka, finalistka National Book Award. W śnionym domu zmieniło sposób mówienia o przemocy w queerowych związkach.", g:"Contemporary", p:17.50, pp:74.90, s:"soon",
+   m:["madwoman","who-is-looking","woman-as-monster"],
    img:COVER_HBP},
   {t:"Women, Race & Class", tp:"Kobiety, rasa, klasa", ed:"en", added:"2026-06-10", pub:1981,
    de:"Davis's classic study of how racism and class shaped the women's movement - essential intersectional history.",
    q:"Birth control - individual choice, safe contraceptive methods, as well as abortions when necessary - is a fundamental prerequisite for the emancipation of women.", qby:"Angela Y. Davis",
    dp:"Klasyczne studium Davis o tym, jak rasizm i klasa kształtowały ruch kobiecy - fundament myśli intersekcjonalnej.",
    qp:"Kontrola urodzeń - wolny wybór, bezpieczne metody antykoncepcji oraz aborcja, gdy jest konieczna - to podstawowy warunek emancypacji kobiet.", qbyp:"Angela Y. Davis", a:"Angela Y. Davis", gd:"f", ab:"Philosopher, civil-rights icon and a founding thinker of intersectional feminism; decades of activism for prison abolition and women's liberation.", abp:"Filozofka, ikona ruchu praw obywatelskich i współtwórczyni feminizmu intersekcjonalnego; od dekad działa na rzecz abolicji więzień i wyzwolenia kobiet.",        g:"Non-fiction",  p:13.50, pp:57.90, s:"new",
+   m:["race-class-gender","who-speaks"],
    img:COVER_WRC},
 ];
 BOOKS.forEach((b,i)=>b.id=i);
+
+/* What a book is about, under the plot. Fifteen motifs, each taken from named
+   literary criticism rather than invented here, and each carrying four strings in
+   both languages: the chip beside the title, the thesis it opens with, the two or
+   three sentences under that, and where the term comes from.
+
+   The text is written for the reader and shown in the drawer word for word. It is
+   also what the recommendation agent will read and paraphrase, which is why no
+   sentence depends on the one before it and why no title from the shelf appears
+   inside it - books come from the data, by motif overlap, never from the prose. */
+const MOTIFS = {
+  "madwoman":{
+    chip:{en:"the madwoman", pl:"wariatka"},
+    lead:{en:"anger renamed illness", pl:"gniew nazwany chorobą"},
+    sign:{en:"Sandra Gilbert and Susan Gubar, 1979", pl:"Sandra Gilbert i Susan Gubar, 1979"},
+    text:{en:"When a woman in a novel does not fit the part written for her, the world rarely calls it refusal. It calls it illness — and the naming does the work, because a sick woman can be moved aside, shut in, waited out. The rage the good heroine cannot show passes to another woman standing beside her like a darker reflection.",
+          pl:"Kiedy kobieta w powieści nie mieści się w roli, którą jej przewidziano, świat rzadko nazywa to sprzeciwem. Nazywa to chorobą — i samo to słowo wystarczy, bo chorą można odsunąć, zamknąć, przeczekać. Wściekłość, której grzeczna bohaterka nie może okazać, przechodzi wtedy na inną kobietę, stojącą obok niej jak ciemniejsze odbicie."},
+    origin:{en:"Sandra Gilbert and Susan Gubar, *The Madwoman in the Attic*, 1979. The title points to Bertha Mason in *Jane Eyre* — Rochester's first wife, shut in the attic at Thornfield.",
+            pl:"Sandra Gilbert i Susan Gubar, „The Madwoman in the Attic”, 1979. Tytuł odsyła do Berthy Mason z „Jane Eyre” — pierwszej żony Rochestera, zamkniętej na strychu Thornfield."}},
+  "gender-norms":{
+    chip:{en:"gender norms", pl:"płciowe normy"},
+    lead:{en:"heterosexuality as duty", pl:"heteroseksualność z obowiązku"},
+    sign:{en:"Adrienne Rich, 1980", pl:"Adrienne Rich, 1980"},
+    text:{en:"Heterosexuality appears in these books not as a preference anyone was asked about, but as an arrangement kept in place by money, law and family. A woman who steps outside it loses more than approval — she loses a living and a place among her own people. The clearest evidence is the price paid by the one who will not or cannot fit.",
+          pl:"Heteroseksualność występuje w tych książkach nie jako upodobanie, o które ktoś zapytał, tylko jako układ utrzymywany pieniędzmi, prawem i rodziną. Kobieta, która się z niego wyłamuje, traci nie tylko akceptację, ale też środki do życia i miejsce wśród swoich. Najlepiej widać to po cenie, jaką płaci ta, która nie chce albo nie potrafi się dopasować."},
+    origin:{en:"Adrienne Rich, in the essay \"Compulsory Heterosexuality and Lesbian Existence\", published in *Signs* in 1980.",
+            pl:"Adrienne Rich, esej „Compulsory Heterosexuality and Lesbian Existence”, ogłoszony w piśmie „Signs” w 1980 roku."}},
+  "mother-daughter":{
+    chip:{en:"mother and daughter", pl:"matka i córka"},
+    lead:{en:"survival handed down", pl:"przetrwanie w spadku"},
+    sign:{en:"Marianne Hirsch, 1989", pl:"Marianne Hirsch, 1989"},
+    text:{en:"What passes down the female line is not property or a name but a way of surviving: what to leave unsaid, what to give up, when to yield. A mother hands it on because it kept her alive, and a daughter receives it together with a bill her mother could not pay. These are stories told from both sides at once, and the mother's side is the one literature had not been listening to.",
+          pl:"Po linii żeńskiej nie przechodzi majątek ani nazwisko, tylko sposób na przetrwanie: co przemilczeć, z czego zrezygnować, kiedy ustąpić. Matka przekazuje go, bo ją samą utrzymał przy życiu, a córka dostaje razem z nim rachunek, którego matka nie umiała zapłacić. To są historie opowiedziane z obu stron naraz, a strona matki bywa tą, której literatura wcześniej nie słuchała."},
+    origin:{en:"Marianne Hirsch, *The Mother/Daughter Plot: Narrative, Psychoanalysis, Feminism*, 1989.",
+            pl:"Marianne Hirsch, „The Mother/Daughter Plot: Narrative, Psychoanalysis, Feminism”, 1989."}},
+  "childbearing-body":{
+    chip:{en:"the childbearing body", pl:"ciało do rodzenia"},
+    lead:{en:"motherhood as institution", pl:"instytucja macierzyństwa"},
+    sign:{en:"Adrienne Rich, 1976", pl:"Adrienne Rich, 1976"},
+    text:{en:"Being a mother is one thing; being subject to an arrangement that decides what a body capable of bearing is for is another. That second order does not ask permission and it arrives in many forms: as law, as property, as an employer's requirement. What this names is the moment when childbearing stops being a woman's own business and becomes someone else's.",
+          pl:"Co innego być matką, a co innego podlegać układowi, który decyduje, do czego służy ciało zdolne rodzić. Ten drugi porządek nie pyta o zgodę i przybiera wiele postaci: jako prawo, jako własność, jako wymóg pracodawcy. Rodzenie przestaje wtedy być czyjąś własną sprawą, a staje się cudzą."},
+    origin:{en:"Adrienne Rich, *Of Woman Born: Motherhood as Experience and Institution*, 1976. The distinction in the subtitle is the whole argument of the book.",
+            pl:"Adrienne Rich, „Of Woman Born: Motherhood as Experience and Institution”, 1976; po polsku „Zrodzone z kobiety”. Rozróżnienie z podtytułu jest całym pomysłem książki."}},
+  "growing-up":{
+    chip:{en:"growing up", pl:"dorastanie"},
+    lead:{en:"the voyage in", pl:"podróż do wewnątrz"},
+    sign:{en:"Elizabeth Abel, Marianne Hirsch and Elizabeth Langland, 1983", pl:"Elizabeth Abel, Marianne Hirsch i Elizabeth Langland, 1983"},
+    text:{en:"The classic novel of growing up sends a young man into a world that forms him and gives him a place in it. To a girl that world is closed, so her development turns inward — delayed, cut short, or ended by marriage rather than by a calling. Growing up is then not the winning of a place but the discovery of how small the allotted one is.",
+          pl:"Klasyczna powieść o dojrzewaniu wysyła młodego mężczyznę w świat, który go formuje i wyznacza mu miejsce. Przed dziewczyną ten świat jest zamknięty, więc jej rozwój kieruje się do wewnątrz — bywa opóźniony, urwany albo zakończony małżeństwem zamiast powołaniem. Dorastanie okazuje się wtedy nie zdobywaniem miejsca, tylko odkryciem, jak małe zostało jej wyznaczone."},
+    origin:{en:"Elizabeth Abel, Marianne Hirsch and Elizabeth Langland, the collection *The Voyage In: Fictions of Female Development*, 1983.",
+            pl:"Elizabeth Abel, Marianne Hirsch i Elizabeth Langland, tom zbiorowy „The Voyage In: Fictions of Female Development”, 1983."}},
+  "own-room":{
+    chip:{en:"a room of one's own", pl:"własny pokój"},
+    lead:{en:"conditions, not talent", pl:"warunki, nie talent"},
+    sign:{en:"Virginia Woolf, 1929", pl:"Virginia Woolf, 1929"},
+    text:{en:"Writing a book takes money and a door that shuts; only after that does ability come into it. A woman as gifted as any man, but without schooling, without an income of her own and without an hour nobody interrupts, writes nothing and no one hears of it. The scarce thing is rarely the talent — it is the conditions in which the talent can be used.",
+          pl:"Do napisania książki potrzeba pieniędzy i drzwi, które da się zamknąć; dopiero potem zaczyna się rozmowa o zdolnościach. Kobieta równie utalentowana jak mężczyzna, ale bez szkoły, bez własnego dochodu i bez godziny, w której nikt jej nie przerywa, nie napisze nic i nikt się o tym nie dowie. Brakuje zwykle nie talentu, tylko warunków, w których da się go użyć."},
+    origin:{en:"Virginia Woolf, *A Room of One's Own*, 1929. The book grew out of lectures given the previous year at two women's colleges in Cambridge.",
+            pl:"Virginia Woolf, „A Room of One's Own”, 1929, po polsku „Własny pokój”. Książka wyrosła z wykładów wygłoszonych rok wcześniej w dwóch kolegiach kobiecych w Cambridge."}},
+  "passing":{
+    chip:{en:"passing", pl:"passing"},
+    lead:{en:"a boundary by convention", pl:"granica z umowy"},
+    sign:{en:"Nella Larsen, 1929; as a critical category Elaine Ginsberg, 1996", pl:"Nella Larsen, 1929; jako kategoria krytyczna Elaine Ginsberg, 1996"},
+    text:{en:"Someone is read as a person they are not, and lives in the gap between the reading and the fact. It costs constant vigilance, and correcting it costs more. What matters most, though, is what the crossing proves: a line that can be passed unnoticed was drawn by agreement, not by nature.",
+          pl:"Bywa, że ktoś zostaje odczytany jako osoba, którą nie jest, i żyje w szczelinie między tym odczytaniem a faktem. Kosztuje to nieustanną czujność, a sprostowanie kosztuje jeszcze więcej. Najważniejsze jest jednak to, co takie przejście udowadnia: granicę, którą da się przekroczyć niezauważenie, ustanowiła umowa, a nie natura."},
+    origin:{en:"The word entered criticism from Nella Larsen's novel *Passing*, 1929. Elaine Ginsberg's collection *Passing and the Fictions of Identity*, 1996, made it a category of its own and extended it beyond race.",
+            pl:"Słowo weszło do krytyki z powieści Nelli Larsen „Passing” z 1929 roku. Osobną kategorią badawczą uczynił je tom Elaine Ginsberg „Passing and the Fictions of Identity” z 1996, który rozciągnął je poza rasę."}},
+  "race-class-gender":{
+    chip:{en:"race, class, gender", pl:"rasa, klasa, płeć"},
+    lead:{en:"harm at the crossing", pl:"krzywda na skrzyżowaniu"},
+    sign:{en:"Kimberlé Crenshaw, 1989", pl:"Kimberlé Crenshaw, 1989"},
+    text:{en:"Race, class and gender are not three separate matters that can be taken one at a time. When an institution recognises only one of them at once, the harm arising where they cross becomes invisible to it — not because it is absent but because there is no column for it. Hence the image of the crossing: it strikes from several directions and no one can say which car did it.",
+          pl:"Rasa, klasa i płeć nie są trzema osobnymi sprawami, które da się rozpatrzyć po kolei. Kiedy instytucja rozpoznaje tylko jedną naraz, krzywda powstająca na ich przecięciu staje się dla niej niewidoczna — nie dlatego, że jej nie ma, tylko dlatego, że nie ma na nią rubryki. Stąd obraz skrzyżowania: uderza z kilku stron i nie sposób wskazać, który samochód to zrobił."},
+    origin:{en:"Kimberlé Crenshaw, in a law article published in the *University of Chicago Legal Forum* in 1989. The concept came out of court cases, not literary theory.",
+            pl:"Kimberlé Crenshaw, artykuł prawniczy ogłoszony w „University of Chicago Legal Forum” w 1989 roku. Pojęcie powstało z analizy spraw sądowych, nie z teorii literatury."}},
+  "angel-in-house":{
+    chip:{en:"the angel in the house", pl:"anioł w domu"},
+    lead:{en:"an ideal to kill", pl:"ideał do zabicia"},
+    sign:{en:"Coventry Patmore, 1854; as a critical term Virginia Woolf, 1931", pl:"Coventry Patmore, 1854; jako termin krytyczny Virginia Woolf, 1931"},
+    text:{en:"The ideal in question is a woman who wants nothing for herself: kind, accommodating, holding no opinion or knowing how to keep it quiet. Held up as a model, it comes for anyone who tries to write, to decide, or simply to want, and it whispers that she should stop. Anyone with work of her own to do has first to be rid of it.",
+          pl:"Ideał, o który tu chodzi, to kobieta niczego dla siebie niechcąca: uprzejma, wyrozumiała, bez własnego zdania albo umiejąca je przemilczeć. Trzymany jako wzór, przychodzi po każdą, która próbuje pisać, decydować albo po prostu chcieć, i podpowiada jej, żeby przestała. Kto chce robić coś swojego, musi się go najpierw pozbyć."},
+    origin:{en:"The phrase comes from Coventry Patmore's poem *The Angel in the House*, 1854, written in praise of his own wife. Virginia Woolf turned it into a critical term in her 1931 talk \"Professions for Women\", describing how she had to kill the Angel.",
+            pl:"Wyrażenie pochodzi z poematu Coventry'ego Patmore'a „The Angel in the House” z 1854 roku, który opiewał w nim własną żonę. Terminem krytycznym uczyniła je Virginia Woolf w odczycie „Professions for Women” z 1931, opisując, jak musiała tego Anioła zabić."}},
+  "who-is-looking":{
+    chip:{en:"who is looking", pl:"kto patrzy"},
+    lead:{en:"looking is power", pl:"władza patrzenia"},
+    sign:{en:"Laura Mulvey, 1975", pl:"Laura Mulvey, 1975"},
+    text:{en:"Looking is not a neutral act here — it is a position from which some judge and others are judged. Whoever looks decides what the thing looked at means; whoever is looked at learns about herself from someone else's face. What matters is not only who is shown but through whose eyes, and what happens when that position changes hands.",
+          pl:"Patrzenie nie jest tu czynnością obojętną — jest pozycją, z której jedni oceniają, a drudzy są oceniani. Kto patrzy, decyduje, co znaczy to, na co patrzy; kto jest oglądany, dowiaduje się o sobie z cudzej miny. Liczy się więc nie tylko, kogo się przedstawia, ale też czyimi oczami — i co się dzieje, kiedy ta pozycja zmienia właściciela."},
+    origin:{en:"Laura Mulvey, in the essay \"Visual Pleasure and Narrative Cinema\", published in *Screen* in 1975. Written about cinema rather than the novel; it was carried into literary criticism later.",
+            pl:"Laura Mulvey, esej „Visual Pleasure and Narrative Cinema”, ogłoszony w piśmie „Screen” w 1975 roku. Napisany o kinie, nie o powieści — do literatury przeniesiono go później."}},
+  "womens-friendship":{
+    chip:{en:"women's friendship", pl:"kobieca przyjaźń"},
+    lead:{en:"the axis, not the backdrop", pl:"oś, a nie tło"},
+    sign:{en:"Sharon Marcus, 2007", pl:"Sharon Marcus, 2007"},
+    text:{en:"The bond between two women can be the thing a novel stands on: it drives the events, presents the bills and settles the outcomes. For a long time it was read as an addition to the love plot, or as a stage before marriage. Taken as the axis instead, it makes the book a story about something other than it seemed.",
+          pl:"Więź między dwiema kobietami bywa w powieści tym, na czym wszystko stoi: to ona napędza zdarzenia, wystawia rachunki i rozstrzyga losy. Przez długi czas czytano ją jako dodatek do wątku miłosnego albo jako etap przed małżeństwem. Kiedy potraktować ją jako oś, książka okazuje się opowieścią o czym innym, niż się wydawało."},
+    origin:{en:"Sharon Marcus, *Between Women: Friendship, Desire, and Marriage in Victorian England*, 2007.",
+            pl:"Sharon Marcus, „Between Women: Friendship, Desire, and Marriage in Victorian England”, 2007."}},
+  "doing-gender":{
+    chip:{en:"doing gender", pl:"odgrywanie płci"},
+    lead:{en:"gesture, clothing, voice", pl:"gest, ubranie, głos"},
+    sign:{en:"Judith Butler, 1990; Candace West and Don Zimmerman, 1987", pl:"Judith Butler, 1990; Candace West i Don Zimmerman, 1987"},
+    text:{en:"Gender shows up here not as something held inside but as something done daily: how one sits, what one puts on, in what tone one speaks. Repeated without end it looks like nature though it is practice, and no true self stands behind the repetition, pretending. It is clearest when the repetition falters or runs differently from what those around expect.",
+          pl:"Płeć pokazuje się tu nie jako coś, co się ma w środku, tylko jako to, co się codziennie robi: jak się siedzi, co się wkłada, jakim tonem się mówi. Powtarzane bez końca, wygląda na naturę, choć jest wyćwiczone — i za tym powtarzaniem nie stoi żadne prawdziwe „ja”, które by udawało. Widać to najlepiej wtedy, gdy powtórzenie się zacina albo idzie inaczej, niż otoczenie zakłada."},
+    origin:{en:"Judith Butler, *Gender Trouble*, 1990. Three years earlier Candace West and Don Zimmerman had described the same thing from sociology in \"Doing Gender\", *Gender & Society*, 1987.",
+            pl:"Judith Butler, „Gender Trouble”, 1990, po polsku „Uwikłani w płeć”. Trzy lata wcześniej to samo opisali od strony socjologii Candace West i Don Zimmerman w artykule „Doing Gender” w piśmie „Gender & Society”, 1987."}},
+  "who-speaks":{
+    chip:{en:"who gets to speak", pl:"kto dostaje głos"},
+    lead:{en:"material for someone else's story", pl:"materiał na cudzą historię"},
+    sign:{en:"Gayatri Chakravorty Spivak, 1985 and 1988", pl:"Gayatri Chakravorty Spivak, 1985 i 1988"},
+    text:{en:"In every story someone speaks and someone is described, and the two roles are rarely handed out fairly. One heroine can become a person at another's expense: the second supplies the background, the contrast and the ruin the first grows on. Even a sympathetic portrayal does not give the voice back, because it speaks for someone instead of letting her speak.",
+          pl:"W każdej opowieści ktoś mówi, a ktoś zostaje opisany, i te dwie role rzadko rozdziela się sprawiedliwie. Bywa, że jedna bohaterka staje się osobą kosztem drugiej: tamta dostarcza tła, kontrastu i klęski, na której ta pierwsza rośnie. Nawet życzliwe przedstawienie nie zwraca głosu, bo mówi w czyimś imieniu, zamiast dopuścić kogoś do słowa."},
+    origin:{en:"Gayatri Chakravorty Spivak, in \"Three Women's Texts and a Critique of Imperialism\", 1985, and \"Can the Subaltern Speak?\", 1988. The first of these is written about *Jane Eyre* and *Wide Sargasso Sea*.",
+            pl:"Gayatri Chakravorty Spivak, esej „Three Women's Texts and a Critique of Imperialism” z 1985 roku i „Can the Subaltern Speak?” z 1988. Pierwszy z nich jest napisany o „Jane Eyre” i „Szerokim Morzu Sargassowym”."}},
+  "woman-as-monster":{
+    chip:{en:"the woman as monster", pl:"kobieta-potwór"},
+    lead:{en:"patriarchy's own fear", pl:"strach patriarchatu"},
+    sign:{en:"Barbara Creed, 1993", pl:"Barbara Creed, 1993"},
+    text:{en:"A woman presented as a monster is not a woman who happened to turn dangerous. She is assembled out of exactly those capacities the surrounding order fears: a body that bears and bleeds, a carer who might withhold or devour. Such a monster says far more about whoever imagined it than about the woman it depicts.",
+          pl:"Kobieta przedstawiona jako potwór nie jest kobietą, która przypadkiem okazała się groźna. Jest złożona dokładnie z tych zdolności, których otaczający ją porządek się boi: z ciała, które rodzi i krwawi, z opiekunki, która mogłaby nie dać albo pochłonąć. Taki potwór mówi więc znacznie więcej o tym, kto go wymyślił, niż o tej, którą przedstawia."},
+    origin:{en:"Barbara Creed, *The Monstrous-Feminine: Film, Feminism, Psychoanalysis*, 1993. The book is about horror cinema; carrying the term into prose is an extension.",
+            pl:"Barbara Creed, „The Monstrous-Feminine: Film, Feminism, Psychoanalysis”, 1993. Książka jest o kinie grozy; przeniesienie terminu na prozę jest rozciągnięciem."}},
+  "social-clock":{
+    chip:{en:"the social clock", pl:"zegar społeczny"},
+    lead:{en:"late through no fault", pl:"spóźniona bez winy"},
+    sign:{en:"Elizabeth Freeman, 2010; Bernice Neugarten, Joan Moore and John Lowe, 1965", pl:"Elizabeth Freeman, 2010; Bernice Neugarten, Joan Moore i John Lowe, 1965"},
+    text:{en:"Society keeps a timetable for a human life: school, work, marriage, a child, each at roughly the appointed hour. A woman who does not fit it breaks no law and harms no one, yet she collects questions, sympathy and shame as though she had done wrong. The charge is not about what she did but about when she failed to do it.",
+          pl:"Społeczeństwo trzyma rozkład jazdy dla ludzkiego życia: szkoła, praca, małżeństwo, dziecko, każde o mniej więcej wyznaczonej porze. Kobieta, która się w nim nie mieści, nie łamie żadnego prawa i nikomu nie szkodzi, a mimo to zbiera pytania, współczucie i wstyd, jakby coś przeskrobała. Zarzut nie dotyczy tego, co zrobiła, tylko tego, kiedy tego nie zrobiła."},
+    origin:{en:"Elizabeth Freeman, *Time Binds: Queer Temporalities, Queer Histories*, 2010, where she calls it chrononormativity. The social clock itself had been described forty-five years earlier by Bernice Neugarten, Joan Moore and John Lowe in the *American Journal of Sociology*, 1965.",
+            pl:"Elizabeth Freeman, „Time Binds: Queer Temporalities, Queer Histories”, 2010, gdzie nazywa to chrononormatywnością. Sam zegar społeczny opisali czterdzieści pięć lat wcześniej Bernice Neugarten, Joan Moore i John Lowe w „American Journal of Sociology”, 1965."}}
+};
+const motifIds = b => b.m || [];
 
 /* ------------------------------------------------------- i18n + currency */
 const I18N = {
   en: {
     docTitle:"nubook. — novels on women & gender",
     coverAlt:"Cover of", qtyLess:"Decrease quantity", qtyMore:"Increase quantity",
-    strap:"novels on women & gender", logoHome:"nubook \u2014 home", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
+    strap:"novels on women & gender", logoHome:"nubook \u2014 home",
+    motifs:"Motifs", motif:"Motif", motifOrigin:"Where the term comes from", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
     searchPh:"Search by title or author", searchClear:"Clear",
     all:"All",
@@ -230,7 +383,8 @@ const I18N = {
   pl: {
     docTitle:"nubook. — powieści o kobietach i płci",
     coverAlt:"Okładka:", qtyLess:"Zmniejsz ilość", qtyMore:"Zwiększ ilość",
-    strap:"powieści o kobietach i płci", logoHome:"nubook \u2014 strona główna", skip:"Przejdź do treści", schemeLight:"Jasny", schemeDark:"Ciemny",
+    strap:"powieści o kobietach i płci", logoHome:"nubook \u2014 strona główna",
+    motifs:"Motywy", motif:"Motyw", motifOrigin:"Skąd to pojęcie", skip:"Przejdź do treści", schemeLight:"Jasny", schemeDark:"Ciemny",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
     searchPh:"Szukaj tytułu lub autorki", searchClear:"Wyczyść",
     all:"Wszystkie",
@@ -922,11 +1076,26 @@ function playOpenTransition(){
 /* ---------------- author drawer ---------------- */
 const drawerEl = document.getElementById("drawer"),
       drawerBg = document.getElementById("drawerBg");
-let drawerBook = null;
+let drawerBook = null, drawerMotif = null;
 
 function fillDrawer(){
+  const t = T();
+  if (drawerMotif){
+    const m = MOTIFS[drawerMotif];
+    drawerEl.setAttribute("aria-label", m.chip[LANG]);
+    document.getElementById("drawerBody").innerHTML = `
+      <div class="d-label">${t.motif}</div>
+      <h2 class="d-name">${m.chip[LANG]}</h2>
+      <p class="d-lead">${m.lead[LANG]}</p>
+      <p class="d-bio">${m.text[LANG]}</p>
+      <div class="d-origin">
+        <div class="d-label">${t.motifOrigin}</div>
+        <p class="d-note">${m.origin[LANG]}</p>
+      </div>`;
+    return;
+  }
   if (!drawerBook) return;
-  const b = drawerBook, t = T();
+  const b = drawerBook;
   drawerEl.setAttribute("aria-label", b.a);
   document.getElementById("drawerBody").innerHTML = `
     ${b.aphoto
@@ -957,8 +1126,7 @@ function setPageInert(live){
       sib.setAttribute("inert", "");
     });
 }
-function openAuthor(id){
-  drawerBook = BOOKS[id];
+function openDrawer(){
   fillDrawer();
   drawerEl.classList.add("open");
   drawerBg.classList.add("open");
@@ -966,15 +1134,17 @@ function openAuthor(id){
   setPageInert(drawerEl);
   document.getElementById("drawerClose").focus();
 }
-function closeAuthor(){
-  drawerBook = null;
+function openAuthor(id){ drawerBook = BOOKS[id]; drawerMotif = null; openDrawer(); }
+function openMotif(id){ drawerMotif = id; drawerBook = null; openDrawer(); }
+function closeDrawer(){
+  drawerBook = null; drawerMotif = null;
   drawerEl.classList.remove("open");
   drawerBg.classList.remove("open");
   drawerEl.setAttribute("aria-hidden", "true");
   setPageInert(null);
 }
-document.getElementById("drawerClose").onclick = closeAuthor;
-drawerBg.onclick = closeAuthor;
+document.getElementById("drawerClose").onclick = closeDrawer;
+drawerBg.onclick = closeDrawer;
 
 /* ---------------- cart state ---------------- */
 /* The cart outlives a reload. A shop that empties the basket because somebody
@@ -1547,6 +1717,19 @@ function currentProduct(){
   return m ? BOOKS[+m[1]] : null;
 }
 
+/* The motifs a book carries, standing as the first row of the same list that
+   holds the genre and the edition - a term and what answers it. The answers here
+   are ghosts opening a drawer, which is what the author's name above already is:
+   the same act, so the same control. */
+function motifRow(b){
+  const ids = motifIds(b);
+  if (!ids.length) return "";
+  return `<div><dt>${T().motifs}</dt><dd><span class="chip-row">${ids.map(id => `
+    <button type="button" class="btn-ghost" aria-haspopup="dialog" onclick="openMotif('${id}')"
+      ><span class="lbl">${MOTIFS[id].chip[LANG]}</span></button>`).join("")}
+    </span></dd></div>`;
+}
+
 function renderProduct(b){
   const t = T();
   document.getElementById("backBtn").innerHTML = ICON_BACK + t.back;
@@ -1564,6 +1747,7 @@ function renderProduct(b){
       <p class="p-desc">${LANG === "pl" ? b.dp : b.de}</p>
       ${(LANG === "pl" ? b.qp : b.q) ? `<p class="p-quote">${LANG === "pl" ? b.qp : b.q}<span class="q-by"><span class="q-dash">—</span> ${LANG === "pl" ? b.qbyp : b.qby}</span></p>` : ""}
       <dl class="p-details">
+        ${motifRow(b)}
         <div><dt>${t.dGenre}</dt><dd>${genreLabel(b.g)}</dd></div>
         <div><dt>${t.dLang}</dt><dd>${t.editions[b.ed]}</dd></div>
       </dl>
@@ -1625,7 +1809,7 @@ document.addEventListener("keydown", e=>{
   if (sortOpen()) { setSortOpen(false); return; }
   if (sheetOpen()) { closeFilterSheet(); return; }
   if (cartOpen) { closeCart(); return; }
-  if (drawerBook) { closeAuthor(); return; }
+  if (drawerBook || drawerMotif) { closeDrawer(); return; }
   if (currentProduct()) location.hash = "";
 });
 
