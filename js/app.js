@@ -384,7 +384,7 @@ const I18N = {
     docTitle:"nubook. — powieści o kobietach i płci",
     coverAlt:"Okładka:", qtyLess:"Zmniejsz ilość", qtyMore:"Zwiększ ilość",
     strap:"powieści o kobietach i płci", logoHome:"nubook \u2014 strona główna",
-    motifs:"Motywy", motif:"Motyw", motifOrigin:"Skąd to pojęcie", skip:"Przejdź do treści", schemeLight:"Jasny", schemeDark:"Ciemny",
+    motifs:"Motywy", motif:"Motyw", motifOrigin:"Geneza motywu", skip:"Przejdź do treści", schemeLight:"Jasny", schemeDark:"Ciemny",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
     searchPh:"Szukaj tytułu lub autorki", searchClear:"Wyczyść",
     all:"Wszystkie",

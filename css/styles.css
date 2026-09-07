@@ -898,15 +898,15 @@
   /* A motif needs two levels the author's drawer does not: the thesis, which
      stands under the name like a subtitle, and the note about where the term
      comes from, which reads as a footnote and is ruled off from the prose. */
-  .d-lead{
-    font:var(--nu-type-body-m);color:var(--nu-fg-secondary);
-    margin-bottom:var(--nu-space-small);max-width:38ch;
-  }
+  /* Both read at the size of the prose they sit with and step back by colour
+     alone: the thesis above it, the note about the term below. One rule, because
+     the only thing that separates them is the space under the thesis. */
+  .d-lead,.d-note{font:var(--nu-type-body-m);color:var(--nu-fg-secondary);max-width:38ch}
+  .d-lead{margin-bottom:var(--nu-space-small)}
   .d-origin{
     margin-top:var(--nu-space-large);padding-top:var(--nu-space-small);
     border-top:1px solid var(--nu-border-neutral);
   }
-  .d-note{font:var(--nu-type-body-s);color:var(--nu-fg-secondary);max-width:38ch}
   /* The motifs are a row of the details list, so the term reads like the genre
      beside it and the answers sit where every other answer sits. The only thing
      the row needs of its own is for the buttons to gather at the right edge and
