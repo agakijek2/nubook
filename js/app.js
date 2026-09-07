@@ -180,7 +180,11 @@ const I18N = {
     status:{new:"New",soon:"Coming soon",last:"Last pieces",out:"Not available",pulitzer:"Pulitzer Winner"},
     genres:{}, /* English genre names are the data keys */
     editions:{en:"English", pl:"Polish"},
-    empty:"No novels match these criteria.", clear:"Clear all",
+    empty:"No novels match these criteria.",
+    emptyNone:"We do not have &ldquo;%s&rdquo;.",
+    emptyFiltered:"We have &ldquo;%s&rdquo;, but not among the filters you have set.",
+    clear:"Show the whole shelf",
+    clearKeep:"Show &ldquo;%s&rdquo; on the whole shelf",
     back:"Back", addToCart:"Add to cart", preorder:"Pre-order", notAvail:"Not available",
     added:"Added",
     cartTitle:"Cart", cartEmpty:"Your cart is empty.", subtotal:"Items", shipping:"Shipping",
@@ -234,7 +238,11 @@ const I18N = {
     status:{new:"Nowość",soon:"Wkrótce",last:"Ostatnie sztuki",out:"Niedostępna",pulitzer:"Nagroda Pulitzera"},
     genres:{"Classic":"Klasyka","Contemporary":"Współczesna","Dystopia":"Dystopia","Queer":"Queer","Non-fiction":"Literatura faktu"},
     editions:{en:"Angielski", pl:"Polski"},
-    empty:"Żadna książka nie pasuje do tych kryteriów.", clear:"Wyczyść",
+    empty:"Żadna książka nie pasuje do tych kryteriów.",
+    emptyNone:"Nie mamy &bdquo;%s&rdquo;.",
+    emptyFiltered:"Mamy &bdquo;%s&rdquo;, ale nie wśród ustawionych filtrów.",
+    clear:"Pokaż całą półkę",
+    clearKeep:"Pokaż &bdquo;%s&rdquo; na całej półce",
     back:"Wróć", addToCart:"Dodaj do koszyka", preorder:"Zamów przedpremierowo", notAvail:"Niedostępna",
     added:"Dodano",
     cartTitle:"Koszyk", cartEmpty:"Twój koszyk jest pusty.", subtotal:"Produkty", shipping:"Dostawa",
@@ -346,6 +354,9 @@ function savePrefs(){
    typing "umilowana" on a keyboard without them is looking for "Umiłowana", and
    "ATWOOD" is looking for Atwood. NFD splits a letter from its mark so the mark
    can be dropped; ł has no mark to split, so it is replaced on its own. */
+/* The query is written into the page, so it stops being text the moment it
+   contains a bracket. One escape for the whole file. */
+const escHTML = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const fold = s => (s || "")
   .toLowerCase()
   .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -766,14 +777,34 @@ function render(rebuildChips = true){
   const list = visibleBooks();
 
   if (!list.length){
-    grid.innerHTML = `<div class="empty">${T().empty}
-      <button type="button" class="btn-ghost" id="resetBtn"><span class="lbl">${T().clear}</span></button></div>`;
+    const t = T(), q = state.q.trim();
+    /* Filters alone cannot empty the grid - a chip that would return nothing
+       disables itself - so an empty grid is a query that found nothing, and the
+       shop can say which nothing it was. The question is whether the query would
+       find something with the genre and status chips off; the edition language
+       stays out of it, because it is what the reader reads in rather than a
+       narrowing of the shelf, and the way out leaves it alone.
+       The third message needs no query and is unreachable today. It is kept
+       because the day a filter can empty the grid is the day nobody will
+       remember this sentence existed. */
+    const short = fold(q).length < 2;
+    const behindFilters = !short && BOOKS.some(b => matchesQuery(b, q) && b.ed === state.lang);
+    /* A query is short by nature; one that is not would set the width of the
+       message and of the button with it. */
+    const echo = q.length > 32 ? q.slice(0, 32) + "\u2026" : q;
+    const put = str => str.replace("%s", () => escHTML(echo));
+    const msg = short ? t.empty : put(behindFilters ? t.emptyFiltered : t.emptyNone);
+    /* Out of a dead end the reader keeps what they asked for and loses what was
+       in its way: the query stands, the chips go. */
+    const label = behindFilters ? put(t.clearKeep) : t.clear;
+    grid.innerHTML = `<div class="empty">${msg}
+      <button type="button" class="btn-ghost" id="resetBtn"><span class="lbl">${label}</span></button></div>`;
     /* Chips with a zero count disable themselves, so filters alone can never
        empty the grid - a query can. The control therefore has to clear the
        query too, or it is a button that visibly does nothing. */
     document.getElementById("resetBtn").onclick = ()=>{
-      state.genre.clear(); state.status.clear(); state.lang = "en";
-      searchInput.value = "";
+      state.genre.clear(); state.status.clear();
+      if (!behindFilters) searchInput.value = "";
       syncSearch();
     };
     return;
@@ -3597,7 +3628,6 @@ function dsFromHash(){
    from the markup - a class, an attribute, or nothing at all. Pointer states
    like :hover are skipped, because there is no code to copy for them. */
 function dsPlay(root){
-  const escHTML = t => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const textOf = td => [...td.childNodes].filter(n => n.nodeType === 3)
     .map(n => n.textContent).join(" ").trim();
   const copyIcons = () => {
