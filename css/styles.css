@@ -492,8 +492,8 @@
   /* ---------- tertiary button ----------
      Reveals or hides a region and says so through aria-expanded. Starts at full
      strength and lightens under the pointer — it has nowhere darker to go, and the
-     link shares that register. Carries a leading icon, a trailing one, both, or an
-     icon on its own; the gap is the only thing an icon adds. */
+     link shares that register. Carries a leading icon, a trailing one, or an icon
+     on its own; the gap is the only thing an icon adds. */
   /* No cursor here, nor on the ghost or the link: the hand comes from the
      element being a button, which every instance in the shop is. Declaring it on
      the class would also hand it to a specimen in these pages, which does
@@ -912,10 +912,10 @@
      the row needs of its own is for the buttons to gather at the right edge and
      wrap there, which is what a details answer does when it runs long. */
   .p-details dd .chip-row{justify-content:flex-end}
-  /* The tier lives in one class. .p-cta, .cart-cta and .order-btn stay on the
+  /* The variant lives in one class. .p-cta, .cart-cta and .order-btn stay on the
      markup beside it, but they carry only what depends on where the button sits -
-     width, margin, the add-to-cart sequence. Adding a fourth primary means
-     writing btn-primary, not extending four selector lists. */
+     width, margin, padding, the add-to-cart sequence. Adding a fourth primary
+     means writing btn-primary, not extending four selector lists. */
   .btn-primary{
     position:relative;display:inline-block;padding:var(--nu-space-milli) var(--nu-space-xlarge);
     color:var(--nu-fg-inverse);letter-spacing:var(--nu-tracking-compact);
