@@ -1366,6 +1366,11 @@
      is closed, the list's own margin while it is open. Both are one step, so the
      button keeps the same air below it either way, which is what made the closed
      and open states read differently before. */
+  /* A button is centred by the browser and a flex child is stretched by default,
+     and the two together put the label in the middle of a panel-wide control.
+     Both ghosts here shrink to their own words and start at the left edge, the
+     way they do everywhere else in the shop. */
+  .bs-more,.bs-why{align-self:flex-start;text-align:left}
   .bs-more{margin:var(--nu-space-micro) 0 0}
   /* The one part that gives way. Everything above it is the offer and the way
      out, and both have to stay where the reader last saw them. */
