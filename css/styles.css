@@ -214,6 +214,11 @@
     /* Neither is it a duration of movement: this is how long a confirmation
        stays on screen once the movement has finished. */
     --nu-motion-hold:1800ms;
+    /* Nor is this one. It is how long a reader is left alone with a view before
+       anything speaks to her unasked - long enough to have looked at the page
+       and decided for herself, short enough that the offer still belongs to what
+       she is reading. */
+    --nu-motion-settle:5000ms;
     /* Two curves that are decisions rather than defaults: a panel sliding into
        place, and a tile growing into a packshot. Plain ease and linear stay
        keywords. */
@@ -1288,10 +1293,10 @@
      spoke without being asked. */
   .bs{
     position:fixed;right:var(--nu-space-medium);bottom:var(--nu-space-medium);z-index:75;
-    display:flex;align-items:flex-end;gap:var(--nu-space-micro);
-    /* The offer is read right to left: the panel arrives beside the mark, not
-       under it, so the mark stays the fixed point in the corner. */
-    flex-direction:row;
+    /* The mark keeps the corner and the offer opens upward from it, the way a
+       speech bubble stands over whoever is speaking. Beside it, the panel pushed
+       the mark off the corner every time it appeared. */
+    display:flex;flex-direction:column;align-items:flex-end;gap:var(--nu-space-micro);
   }
   /* Room for the panel to be as wide as it needs and no wider. A measure, not a
      spacing step: this is how long a line may run before it stops being easy to
@@ -1324,11 +1329,16 @@
      a cart line shows, at the same thumbnail size, because a reader deciding
      between two books wants exactly what she wants when deciding to keep one. */
   .bs-book{
-    display:flex;gap:var(--nu-space-micro);align-items:flex-start;width:100%;text-align:left;
+    display:flex;gap:var(--nu-space-micro);align-items:flex-start;
     padding:var(--nu-space-micro) 0;border-top:1px solid var(--nu-border-neutral);
   }
-  .bs-book:hover .bs-b-title{border-bottom-color:var(--nu-border-primary)}
-  .bs-book:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
+  /* The cover and the title lead to the book, so they are one link: something
+     that goes to an address is an <a>, and the reader gets a target the size of
+     the thumbnail rather than the size of a word. */
+  .bs-b-go{display:flex;gap:var(--nu-space-micro);align-items:flex-start;flex:1;min-width:0}
+  .bs-b-go:hover .bs-b-title{border-bottom-color:var(--nu-border-primary)}
+  .bs-b-go:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
+  .bs-why{margin-top:var(--nu-space-nano)}
   .bs-b-cover{width:var(--nu-thumb-size-sm);flex-shrink:0}
   .bs-b-cover .cover{width:100%;max-width:none}
   .bs-b-main{flex:1;min-width:0}
@@ -1356,11 +1366,18 @@
      so it borrows the shop's own sign rather than inventing a face for someone
      who deliberately has no name. Still, because the one in the header is the
      one that moves and two of them pulsing would compete. */
+  /* The mark stays on the page after the panel is dismissed, and pressing it
+     brings the offer back. Closing an offer is not the same as refusing the
+     bookseller, so the second act needs a way back that the first one does not
+     take away. */
   .bs-ava{
     width:var(--nu-avatar-size-sm);height:var(--nu-avatar-size-sm);flex-shrink:0;
     border-radius:50%;background:var(--nu-bg-secondary);border:1px solid var(--nu-border-neutral);
     display:inline-flex;align-items:center;justify-content:center;
+    transition:border-color var(--nu-motion-quick) ease;
   }
+  .bs-ava:hover{border-color:var(--nu-border-hover)}
+  .bs-ava:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   /* Its own colour, not the wordmark's. The two marks were briefly the same one,
      and a second dot in the corner read as the logo having slipped off the header.
      Sharing a token would also mean a change to the logo reaching the corner

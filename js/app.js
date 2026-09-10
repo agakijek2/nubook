@@ -387,6 +387,7 @@ const I18N = {
     motifs:"Motifs", motif:"Motif", motifOrigin:"Where the term comes from", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
     bsGone:"We do not have “%s” in stock at the moment.", bsOffer:"But if that is the book you came for, there are two here I would put beside it.",
     bsMore:"See both", bsLess:"Hide them", bsClose:"Dismiss",
+    bsAva:"The bookseller", bsWhy:"Why this one",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
     searchPh:"Search by title or author", searchClear:"Clear",
     all:"All",
@@ -452,6 +453,7 @@ const I18N = {
        form of its own name. */
     bsGone:"Niestety, tytułu „%s” nie mamy dziś na stanie.", bsOffer:"Ale skoro interesuje Cię ten tytuł, gorąco polecam dwa inne, o podobnych motywach.",
     bsMore:"Zobacz oba", bsLess:"Schowaj", bsClose:"Zamknij",
+    bsAva:"Księgarka", bsWhy:"Dlaczego akurat ta",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
     searchPh:"Szukaj tytułu lub autorki", searchClear:"Wyczyść",
     all:"Wszystkie",
@@ -1842,9 +1844,11 @@ const bookByTitle = t => BOOKS.find(b => b.t === t);
 /* Once per visit. An assistant that returns with the same offer is not attentive,
    it is stuck. */
 const bsSeen = new Set();
-let bsBook = null;
+let bsBook = null, bsTimer = null;
 
 const bsEl    = document.getElementById("bookseller"),
+      bsPanel = document.getElementById("bsPanel"),
+      bsAvaEl = document.getElementById("bsAva"),
       bsSayEl = document.getElementById("bsSay"),
       bsMoreEl= document.getElementById("bsMore"),
       bsListEl= document.getElementById("bsList");
@@ -1860,12 +1864,26 @@ function bsOffer(b){
   return out.length ? out : null;
 }
 
-function bsHide(){
-  bsBook = null;
-  bsEl.hidden = true;
+/* Two different acts, and conflating them was the defect: dismissing an offer
+   put the bookseller away for good. Closing the panel leaves her on the page;
+   only leaving the view takes her off it. */
+function bsShut(){
+  bsPanel.hidden = true;
+  bsAvaEl.setAttribute("aria-expanded", "false");
   bsMoreEl.setAttribute("aria-expanded", "false");
   bsListEl.hidden = true;
   bsListEl.innerHTML = "";
+}
+function bsHide(){
+  clearTimeout(bsTimer);
+  bsBook = null;
+  bsShut();
+  bsEl.hidden = true;
+}
+function bsShow(){
+  bsFill();
+  bsPanel.hidden = false;
+  bsAvaEl.setAttribute("aria-expanded", "true");
 }
 
 function bsFill(){
@@ -1876,16 +1894,23 @@ function bsFill(){
   document.getElementById("bsMoreLbl").textContent =
     bsMoreEl.getAttribute("aria-expanded") === "true" ? t.bsLess : t.bsMore;
   document.getElementById("bsClose").setAttribute("aria-label", t.bsClose);
+  bsAvaEl.setAttribute("aria-label", t.bsAva);
   bsListEl.innerHTML = offer.map((o, i) => {
     const st = o.book.s ? STATUS[o.book.s] : null;
     /* Price and availability arrive together, as two short clauses rather than
        a sales close: a recommendation that hides a preorder sends the reader to
        a page she cannot buy from today. */
     const meta = fmtMoney(priceOf(o.book)) + (st ? " · " + t.status[o.book.s] : "");
-    return `<button type="button" class="bs-book" aria-expanded="false" onclick="bsPick(${i})">
-        <span class="bs-b-cover">${coverHTML(o.book)}</span>
-        <span class="bs-b-main"><span class="bs-b-title">${titleOf(o.book)}</span><span class="bs-b-meta">${meta}</span></span>
-      </button>
+    /* An offer she cannot act on is half an offer. The cover and the title lead
+       to the book itself; the reason sits under them, behind a control of its
+       own, because going somewhere and reading more are two different acts. */
+    return `<div class="bs-book">
+        <a class="bs-b-go" href="#p${o.book.id}">
+          <span class="bs-b-cover">${coverHTML(o.book)}</span>
+          <span class="bs-b-main"><span class="bs-b-title">${titleOf(o.book)}</span><span class="bs-b-meta">${meta}</span></span>
+        </a>
+      </div>
+      <button type="button" class="bs-why btn-ghost" aria-expanded="false" aria-controls="bsText${i}" onclick="bsPick(${i})"><span class="lbl">${t.bsWhy}</span></button>
       <div class="bs-text" id="bsText${i}" hidden></div>`;
   }).join("");
 }
@@ -1893,7 +1918,7 @@ function bsFill(){
 /* One book at a time: two open texts in a corner panel is a page, not an offer. */
 function bsPick(i){
   const offer = bsOffer(bsBook); if (!offer) return;
-  const rows = [...bsListEl.querySelectorAll(".bs-book")];
+  const rows = [...bsListEl.querySelectorAll(".bs-why")];
   const open = rows[i].getAttribute("aria-expanded") === "true";
   rows.forEach((r, n) => {
     const on = n === i && !open;
@@ -1913,18 +1938,29 @@ function bsToggle(){
 
 /* The one place that decides she appears at all. */
 function bsSync(b){
-  const speaks = b && (BS_ALL || b.s === "out") && bsOffer(b) && !bsSeen.has(b.id);
+  const speaks = b && (BS_ALL || b.s === "out") && bsOffer(b);
   if (!speaks) return bsHide();
   if (bsBook && bsBook.id === b.id) return;
-  bsBook = b; bsSeen.add(b.id);
-  bsMoreEl.setAttribute("aria-expanded", "false");
-  bsListEl.hidden = true;
+  clearTimeout(bsTimer);
+  bsBook = b;
+  bsShut();
   bsFill();
   bsEl.hidden = false;
+  /* The mark arrives with the view; the offer waits. A reader who has just
+     opened a page is reading it, and a shop that speaks into that moment is
+     interrupting rather than helping. Only once per book, so returning to a
+     title she has already been offered leaves her alone. */
+  if (!bsSeen.has(b.id)){
+    const id = b.id;
+    bsTimer = setTimeout(() => { if (bsBook && bsBook.id === id){ bsSeen.add(id); bsShow(); } },
+                         motionMs("--nu-motion-settle"));
+  }
 }
 
 bsMoreEl.onclick = bsToggle;
-document.getElementById("bsClose").onclick = bsHide;
+document.getElementById("bsClose").onclick = bsShut;
+/* Pressing the mark reopens what was dismissed, or puts it away again. */
+bsAvaEl.onclick = () => bsPanel.hidden ? bsShow() : bsShut();
 
 let gridScroll = 0, lastView = null;
 
