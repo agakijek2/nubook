@@ -1999,9 +1999,20 @@ function bsType(box, html){
   })();
 }
 
-function bsDeliver(box, html){
+/* What has already been said this visit. An answer arrives once; opening it a
+   second time is going back to something the reader has already been given, and
+   nothing is being worked out. Keyed by the pair and the language, because the
+   other language is a different answer rather than the same one again.
+
+   In memory only, so it lasts exactly as long as the page does - which is what a
+   visit is. When there is a model behind this it becomes the thing that stops it
+   being asked twice about the same book. */
+const bsSaid = new Set();
+
+function bsDeliver(box, html, key){
   clearTimeout(bsTypeTimer);
-  const wait = bsWait();
+  const wait = bsSaid.has(key) ? 0 : bsWait();
+  bsSaid.add(key);
   if (!wait){ box.removeAttribute("aria-busy"); box.innerHTML = html; return; }
   box.setAttribute("aria-busy", "true");
   box.innerHTML = BS_SKELETON;
@@ -2023,7 +2034,7 @@ function bsPick(i){
     r.setAttribute("aria-expanded", String(on));
     const box = document.getElementById("bsText" + n);
     box.hidden = !on;
-    if (on) bsDeliver(box, offer[n].text[LANG]);
+    if (on) bsDeliver(box, offer[n].text[LANG], bsBook.t + "|" + offer[n].title + "|" + LANG);
     else { box.innerHTML = ""; box.removeAttribute("aria-busy"); }
   });
   if (!open) bsThink();
