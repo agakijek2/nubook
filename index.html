@@ -152,6 +152,26 @@
      reaches the form by id, so it can submit from out here. -->
 <div class="co-bar" id="coBar" hidden></div>
 
+<!-- The bookseller. She speaks on two events and is silent everywhere else, so
+     this element carries no content of its own: the shop fills it at the moment
+     it has something to offer. Not a dialogue and never modal - the reader can
+     go on using the page with it open, which is why there is no scrim, no inert
+     and no focus trap. The panel is announced politely rather than interrupting,
+     because nothing here has to be read before anything else. -->
+<aside class="bs" id="bookseller" hidden>
+  <div class="bs-panel" role="status" aria-live="polite">
+    <button type="button" class="bs-close btn-tertiary" id="bsClose"><svg class="ico-sm ico-close" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></button>
+    <p class="bs-say" id="bsSay"></p>
+    <button type="button" class="bs-more btn-ghost" id="bsMore" aria-expanded="false" aria-controls="bsList">
+      <span class="lbl" id="bsMoreLbl"></span>
+    </button>
+    <div class="bs-list" id="bsList" hidden></div>
+  </div>
+  <!-- The wordmark's accent, larger and at rest. She has no name, so she has no
+       initials; the shop's own mark stands in for a face. -->
+  <span class="bs-ava" aria-hidden="true"><span class="bs-dot"></span></span>
+</aside>
+
 <footer class="site-foot" id="siteFoot">
   <div class="foot-left">
     <span class="foot-mark">nubook<span class="foot-dot">.</span></span>

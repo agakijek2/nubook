@@ -319,6 +319,65 @@ const MOTIFS = {
 };
 const motifIds = b => b.m || [];
 
+/* What the bookseller says when a title cannot be sold today, written in pairs:
+   the text about the book she offers says outright how it stands to the book the
+   reader came for. That does not scale - two titles out of stock is four texts,
+   and every change of stock invalidates some - and it is the deliberate shape of
+   this step. The model takes exactly this work over later.
+
+   Keyed by title rather than by index, so the file reads as what it is and a
+   reordered shelf cannot silently repoint a text at the wrong book. The prose
+   lives in docs/books.md; motif names in it come from the fifteen and from
+   nowhere else. Neither price nor availability is written in - the shop adds
+   those from data, because one changes with the currency and the other with the
+   stockroom. */
+const BOOKSELLER = {
+  "Wide Sargasso Sea": [
+    { title:"Jane Eyre", text:{
+      pl:`<p>Powieść Jean Rhys jest prequelem i odpowiedzią właśnie na tę książkę, więc obie niosą te same dwa motywy.</p>
+        <ul><li><strong>wariatka</strong> – to u Brontë powstała kobieta zamknięta na strychu, od której wzięła nazwę cała figura. Bertha jest tam przeszkodą w cudzym życiorysie: krzyczy, podpala dom, ginie, i powieść ani razu nie pyta, co ją do tego doprowadziło. Rhys napisała sto lat później jej wersję tych samych wydarzeń.</li>
+        <li><strong>kto dostaje głos</strong> – Brontë opowiada o Bercie, nie oddając jej narracji ani na chwilę. Gayatri Spivak napisała o tym w 1985 roku wprost: Bertha jest materiałem, na którym rośnie samodzielność Jane.</li></ul>
+        <p>Poza motywami łączy je jeszcze jedno. Obie bohaterki są sierotami odrzuconymi przez rodzinę i obie szukają miejsca w świecie, który odmawia im prawa do decydowania o sobie – z tym że Jane żąda tego prawa głośno i dostaje je, a Antoinette traci nawet własne imię.</p>
+        <p>To od Jane Eyre zaczyna się cała ta rozmowa. Po stu osiemdziesięciu latach powieść nadal czyta się jako książka o kobiecie, która odmawia bycia czyjąś własnością.</p>`,
+      en:`<p>Jean Rhys wrote her novel as a prequel and an answer to this one, so the two carry the same two motifs.</p>
+        <ul><li><strong>the madwoman</strong> – Brontë is where the woman shut in the attic comes from, and the whole figure is named after her. Bertha stands in someone else's life as an obstacle: she screams, she sets the house on fire, she dies, and the novel never once asks what brought her to it. A century later Rhys wrote her version of the same events.</li>
+        <li><strong>who gets to speak</strong> – Brontë talks about Bertha without handing her the narration for a moment. Gayatri Spivak put it plainly in 1985: Bertha is the material Jane's independence grows on.</li></ul>
+        <p>There is one more thing they share, outside the vocabulary. Both women are orphans their families were glad to be rid of, and both are looking for a place in a world that will not let them decide anything – except that Jane demands that right out loud and gets it, while Antoinette loses even her own name.</p>
+        <p>This is the novel the whole argument started from. A hundred and eighty years on it still reads as a book about a woman refusing to be anyone's property.</p>`}},
+    { title:"The Bell Jar", text:{
+      pl:`<p>Inna epoka, inny kontynent i zupełnie inny język, ale obie powieści opisują to samo: jak kobieta osuwa się w chorobę i ile z tej choroby jest odpowiedzią na warunki.</p>
+        <ul><li><strong>wariatka</strong> – u Rhys Antoinette zostaje uznana za obłąkaną przez męża, który przejął wcześniej jej majątek i zmienił jej imię. U Plath Esther trafia pod tytułowy szklany klosz, odcięta od świata, który jeszcze przed chwilą obiecywał jej wszystko naraz. W obu książkach załamanie nie bierze się znikąd – jest reakcją na otoczenie, które osacza.</li></ul>
+        <p>Poza tym obie bohaterki są niedopasowane do swoich czasów, każda inaczej. Antoinette jest Kreolką, której nie przyjmuje ani strona angielska, ani karaibska. Esther dusi się w oczekiwaniach amerykańskich lat pięćdziesiątych, gdzie kobieta ma odłożyć własne ambicje na rzecz bycia żoną i matką. Obie walczą o to, żeby zostać sobą w świecie, który przypisał im rolę z góry.</p>
+        <p>Szklany klosz jest w połowie autobiograficzny i to tłumaczy dokładność, z jaką opisuje sam mechanizm – nie kryzys widziany z boku, tylko od środka.</p>`,
+      en:`<p>A different century, a different continent and an entirely different way of writing, but the two novels describe the same thing: how a woman slides into illness, and how much of that illness is a response to her conditions.</p>
+        <ul><li><strong>the madwoman</strong> – in Rhys, Antoinette is declared mad by the husband who had already taken her money and changed her name. In Plath, Esther ends up under the bell jar of the title, sealed off from a world that had been promising her everything at once. In both books the breakdown comes from somewhere: it is a reaction to surroundings that close in.</li></ul>
+        <p>Beyond that, both women are out of step with their time, each in her own way. Antoinette is a Creole neither the English nor the Caribbean side will claim. Esther is suffocating inside the expectations of 1950s America, where a woman is to set her own ambition aside and be a wife and a mother. Both are fighting to stay themselves in a world that assigned them a part in advance.</p>
+        <p>The Bell Jar is half autobiography, and that is what explains the precision of the mechanism it describes – not a crisis observed from outside, but from within.</p>`}},
+  ],
+  "Nightwood": [
+    { title:"Her Body and Other Parties", text:{
+      pl:`<p>Osiemdziesiąt lat różnicy i ta sama decyzja pisarska: wziąć kobiece ciało i opowiedzieć je jako coś niepokojącego, zamiast je tłumaczyć.</p>
+        <ul><li><strong>kobieta-potwór</strong> – u Barnes kobiety z nocnego Paryża są opisywane jak zjawiska: bestie, zwierzęta, sny, coś, na co się patrzy z lękiem. Machado bierze tę figurę dosłownie i zamienia w horror – kobiece ciało jest u niej źródłem grozy, a książka pyta, czyja to właściwie groza i kto się tu naprawdę boi.</li>
+        <li><strong>wariatka</strong> – obie autorki pokazują kobietę, której stan nazywa się chorobą albo dziwnością, bo tak jest wygodniej niż przyjąć, że to reakcja. U Barnes robi to doktor O'Connor w swoich nocnych monologach, u Machado kolejni mężowie i lekarze.</li></ul>
+        <p>Łączy je też sposób pisania. Obie odchodzą od realizmu w chwili, w której realizm przestaje wystarczać, i obie opisują pożądanie między kobietami bez tłumaczenia się z niego przed kimkolwiek.</p>
+        <p>Jej ciało i inne strony to osiem opowiadań, z których każde bierze inny gatunek – horror, baśń, kryminał telewizyjny – i sprawdza, co ten gatunek robi z kobietą, kiedy się mu ją odda.</p>`,
+      en:`<p>Eighty years apart, and the same decision on the page: take a woman's body and tell it as something unsettling rather than explain it away.</p>
+        <ul><li><strong>the woman as monster</strong> – Barnes describes the women of night-time Paris as apparitions: beasts, animals, dreams, things looked at with alarm. Machado takes that figure literally and turns it into horror – a woman's body is where the dread comes from, and the book asks whose dread it actually is.</li>
+        <li><strong>the madwoman</strong> – both writers show a woman whose state gets called illness or strangeness because that is easier than accepting it as a response. In Barnes it is Doctor O'Connor doing the naming, in his night-long monologues; in Machado it is a succession of husbands and doctors.</li></ul>
+        <p>They share a way of writing, too. Both leave realism at the point where realism stops being enough, and both write desire between women without explaining themselves to anyone.</p>
+        <p>Her Body and Other Parties is eight stories, each borrowing a different genre – horror, fairy tale, television procedural – and testing what that genre does to a woman once you hand her over to it.</p>`}},
+    { title:"Stone Butch Blues", text:{
+      pl:`<p>Sześćdziesiąt lat różnicy i ta sama sprawa: co się dzieje z osobą, która nie mieści się w tym, jak wolno wyglądać i kogo wolno kochać.</p>
+        <ul><li><strong>płciowe normy</strong> – u Barnes bohaterowie żyją w nocnym Paryżu lat dwudziestych, bo za dnia ich związki po prostu nie istnieją. U Feinberg Jess dostaje za to samo pobicia od policji w Buffalo lat sześćdziesiątych. W obu książkach heteroseksualność nie jest wyborem, który ktoś rozważył – jest warunkiem wstępnym, a jego złamanie ma swoją cenę, tylko wystawianą inaczej.</li></ul>
+        <p>Różni je sposób mówienia i to jest właśnie powód, żeby przeczytać obie. Ostępy nocy są gęste, modernistyczne, prowadzone monologiem. Stone Butch Blues jest bliżej reportażu: praca w fabryce, hormony, kolejne miasta, moment, w którym przestaje się być dla otoczenia czytelną.</p>
+        <p>Feinberg udostępniła później tę powieść za darmo w sieci, w wersji, którą sama zredagowała. To książka napisana po to, żeby ktoś ją znalazł.</p>`,
+      en:`<p>Sixty years apart, and the same question: what happens to a person who does not fit inside the rules about how to look and who to love.</p>
+        <ul><li><strong>gender norms</strong> – Barnes's characters live in the Paris of the 1920s at night, because in daylight their relationships simply do not exist. Feinberg's Jess is beaten by the police in 1960s Buffalo for the same thing. In both books heterosexuality is not a choice anyone weighed up; it is a precondition, and breaking it carries a price, only billed differently.</li></ul>
+        <p>What separates them is how they speak, and that is the reason to read both. Nightwood is dense, modernist, carried by monologue. Stone Butch Blues is closer to reportage: factory work, hormones, one city after another, the point at which you stop being legible to the people around you.</p>
+        <p>Feinberg later put the novel online for nothing, in an edition she prepared herself. It is a book written so that someone would find it.</p>`}},
+  ],
+};
+
 /* ------------------------------------------------------- i18n + currency */
 const I18N = {
   en: {
@@ -326,6 +385,8 @@ const I18N = {
     coverAlt:"Cover of", qtyLess:"Decrease quantity", qtyMore:"Increase quantity",
     strap:"novels on women & gender", logoHome:"nubook \u2014 home",
     motifs:"Motifs", motif:"Motif", motifOrigin:"Where the term comes from", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
+    bsGone:"We do not have “%s” in stock at the moment.", bsOffer:"But if that is the book you came for, there are two here I would put beside it.",
+    bsMore:"See both", bsLess:"Hide them", bsClose:"Dismiss",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
     searchPh:"Search by title or author", searchClear:"Clear",
     all:"All",
@@ -385,6 +446,12 @@ const I18N = {
     coverAlt:"Okładka:", qtyLess:"Zmniejsz ilość", qtyMore:"Zwiększ ilość",
     strap:"powieści o kobietach i płci", logoHome:"nubook \u2014 strona główna",
     motifs:"Motywy", motif:"Motyw", motifOrigin:"Geneza motywu", skip:"Przejdź do treści", schemeLight:"Jasny", schemeDark:"Ciemny",
+    /* Not „%s” nie mamy: after nie mamy Polish wants the genitive, and the shelf
+       holds titles in the nominative. The sentence takes the case itself and
+       leaves the quoted title standing beside it, so no book needs a second
+       form of its own name. */
+    bsGone:"Niestety, tytułu „%s” nie mamy dziś na stanie.", bsOffer:"Ale skoro interesuje Cię ten tytuł, gorąco polecam dwa inne, o podobnych motywach.",
+    bsMore:"Zobacz oba", bsLess:"Schowaj", bsClose:"Zamknij",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
     searchPh:"Szukaj tytułu lub autorki", searchClear:"Wyczyść",
     all:"Wszystkie",
@@ -1762,6 +1829,103 @@ function renderProduct(b){
    checkout are read from the top, and arriving halfway down one looks like a page
    that failed to load. The position is taken on the way out rather than on the way
    back, because hiding the grid collapses the page and the number is gone by then. */
+/* ---------------- the bookseller ----------------
+   She speaks on one event and is silent everywhere else, and the silence is the
+   part that has to be written down: it is decided here, in the shop's own code,
+   never by anything downstream. Two conditions and no others.
+
+   Opening index.html with ?bs=all makes every title behave as though it were out
+   of stock. Two books out of nineteen means the trigger is almost impossible to
+   reach by browsing, and a rule nobody can see is a rule nobody can check. */
+const BS_ALL = /[?&]bs=all\b/.test(location.search);
+const bookByTitle = t => BOOKS.find(b => b.t === t);
+/* Once per visit. An assistant that returns with the same offer is not attentive,
+   it is stuck. */
+const bsSeen = new Set();
+let bsBook = null;
+
+const bsEl    = document.getElementById("bookseller"),
+      bsSayEl = document.getElementById("bsSay"),
+      bsMoreEl= document.getElementById("bsMore"),
+      bsListEl= document.getElementById("bsList");
+
+/* The offer for a title, resolved against the shelf as it stands: a book she
+   cannot sell is never proposed instead of another book she cannot sell. A
+   preorder qualifies, and says so. */
+function bsOffer(b){
+  const set = BOOKSELLER[b.t];
+  if (!set) return null;
+  const out = set.map(o => ({...o, book: bookByTitle(o.title)}))
+                 .filter(o => o.book && o.book.s !== "out");
+  return out.length ? out : null;
+}
+
+function bsHide(){
+  bsBook = null;
+  bsEl.hidden = true;
+  bsMoreEl.setAttribute("aria-expanded", "false");
+  bsListEl.hidden = true;
+  bsListEl.innerHTML = "";
+}
+
+function bsFill(){
+  if (!bsBook) return;
+  const t = T(), offer = bsOffer(bsBook);
+  if (!offer) return;
+  bsSayEl.innerHTML = escHTML(t.bsGone.replace("%s", titleOf(bsBook))) + " " + escHTML(t.bsOffer);
+  document.getElementById("bsMoreLbl").textContent =
+    bsMoreEl.getAttribute("aria-expanded") === "true" ? t.bsLess : t.bsMore;
+  document.getElementById("bsClose").setAttribute("aria-label", t.bsClose);
+  bsListEl.innerHTML = offer.map((o, i) => {
+    const st = o.book.s ? STATUS[o.book.s] : null;
+    /* Price and availability arrive together, as two short clauses rather than
+       a sales close: a recommendation that hides a preorder sends the reader to
+       a page she cannot buy from today. */
+    const meta = fmtMoney(priceOf(o.book)) + (st ? " · " + t.status[o.book.s] : "");
+    return `<button type="button" class="bs-book" aria-expanded="false" onclick="bsPick(${i})">
+        <span class="bs-b-cover">${coverHTML(o.book)}</span>
+        <span class="bs-b-main"><span class="bs-b-title">${titleOf(o.book)}</span><span class="bs-b-meta">${meta}</span></span>
+      </button>
+      <div class="bs-text" id="bsText${i}" hidden></div>`;
+  }).join("");
+}
+
+/* One book at a time: two open texts in a corner panel is a page, not an offer. */
+function bsPick(i){
+  const offer = bsOffer(bsBook); if (!offer) return;
+  const rows = [...bsListEl.querySelectorAll(".bs-book")];
+  const open = rows[i].getAttribute("aria-expanded") === "true";
+  rows.forEach((r, n) => {
+    const on = n === i && !open;
+    r.setAttribute("aria-expanded", String(on));
+    const box = document.getElementById("bsText" + n);
+    box.hidden = !on;
+    box.innerHTML = on ? offer[n].text[LANG] : "";
+  });
+}
+
+function bsToggle(){
+  const open = bsMoreEl.getAttribute("aria-expanded") !== "true";
+  bsMoreEl.setAttribute("aria-expanded", String(open));
+  bsListEl.hidden = !open;
+  document.getElementById("bsMoreLbl").textContent = open ? T().bsLess : T().bsMore;
+}
+
+/* The one place that decides she appears at all. */
+function bsSync(b){
+  const speaks = b && (BS_ALL || b.s === "out") && bsOffer(b) && !bsSeen.has(b.id);
+  if (!speaks) return bsHide();
+  if (bsBook && bsBook.id === b.id) return;
+  bsBook = b; bsSeen.add(b.id);
+  bsMoreEl.setAttribute("aria-expanded", "false");
+  bsListEl.hidden = true;
+  bsFill();
+  bsEl.hidden = false;
+}
+
+bsMoreEl.onclick = bsToggle;
+document.getElementById("bsClose").onclick = bsHide;
+
 let gridScroll = 0, lastView = null;
 
 function route(){
@@ -1773,6 +1937,8 @@ function route(){
     : location.hash === "#done" && lastOrder ? "done"
     : "grid";
   if (lastView === "grid" && view !== "grid") gridScroll = window.scrollY;
+  /* She belongs to one view, so leaving it takes her with it. */
+  bsSync(view === "product" ? b : null);
   dsEl.hidden = view !== "design";
   if (view === "design"){ dsCurrent = dsFromHash(); renderDesignSystem(); }
   document.getElementById("siteFoot").hidden = view === "design";
@@ -1928,7 +2094,7 @@ document.getElementById("swLight").onclick = ()=>{ SCHEME = SCHEME==="light" ? "
 document.getElementById("swDark").onclick  = ()=>{ SCHEME = SCHEME==="dark"  ? "auto" : "dark";  applyScheme(); };
 
 const _applyLang = applyLang;
-applyLang = function(){ _applyLang(); const b = currentProduct(); if (b) renderProduct(b); fillDrawer(); if (cartOpen) renderCart(); if (!cartPageEl.hidden) renderCartPage(); if (!checkoutEl.hidden) renderCheckout(); if (!doneEl.hidden) renderDone(); };
+applyLang = function(){ _applyLang(); const b = currentProduct(); if (b) renderProduct(b); fillDrawer(); if (!bsEl.hidden) bsFill(); if (cartOpen) renderCart(); if (!cartPageEl.hidden) renderCartPage(); if (!checkoutEl.hidden) renderCheckout(); if (!doneEl.hidden) renderDone(); };
 const _applyCur = applyCur;
 applyCur = function(){ _applyCur(); const b = currentProduct(); if (b) renderProduct(b); if (cartOpen) renderCart(); if (!cartPageEl.hidden) renderCartPage(); if (!checkoutEl.hidden) renderCheckout(); };
 
