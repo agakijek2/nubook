@@ -2442,7 +2442,7 @@ const DS_TOKEN_GROUPS = [
   ["type",   ["--nu-font","--nu-text","--nu-tracking","--nu-line","--nu-weight","--nu-type","--nu-underline"],
              [["primitive", false], ["style", true]]],
   ["space",  ["--nu-space"]],
-  ["layout", ["--nu-gutter","--nu-form-max","--nu-cover","--nu-thumb","--nu-control","--nu-field","--nu-mobar","--nu-cobar"],
+  ["layout", ["--nu-gutter","--nu-form-max","--nu-cover","--nu-thumb","--nu-avatar","--nu-control","--nu-field","--nu-mobar","--nu-cobar"],
              [["scale", true], ["own", false]]],
   ["icon",   ["--nu-icon"]],
   ["motion", ["--nu-motion","--nu-ease"]],
@@ -3658,6 +3658,58 @@ const DS_SECTIONS = [
       <div class="demo on-page ds-play-stage"></div>
       <div class="ds-play-code"></div>
     </div>` },
+
+  { group:{en:"Components",pl:"Komponenty"}, id:"avatar", label:{en:"Avatar",pl:"Awatar"}, body: ()=>`
+    <h1>${L("Avatar","Awatar")}</h1>
+    <p class="ds-lede">${L(
+      "A round mark standing for whoever is speaking. Two of them: the author, beside what she wrote, and the bookseller, in the corner of the shop.",
+      "Okrągły znak osoby, która mówi. Są dwa: autorka, przy tym, co napisała, i księgarka, w rogu sklepu.")}</p>
+    <div class="demo on-page ds-avatars">
+      <img class="d-ava" src="${BOOKS[0].aphoto}" alt="${BOOKS[0].a}">
+      <span class="d-ava" aria-hidden="true">${BOOKS[2].a.split(" ").map(w=>w[0]).slice(0,2).join("")}</span>
+      <span class="bs-ava"><span class="bs-dot"></span></span>
+    </div>
+    <table id="avaVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+      <tr><td>${L("Author","Autorka")}<br><code>.d-ava</code></td>
+        <td>${L("A person the shop can name. It carries her photograph where the catalogue holds one, and her initials where it does not &ndash; the mark is never empty, because a blank disc beside a biography reads as a picture that failed to load.","Osoba, którą sklep umie nazwać. Niesie jej zdjęcie tam, gdzie katalog je ma, a inicjały tam, gdzie nie ma &ndash; znak nigdy nie jest pusty, bo pusty krążek przy biografii czyta się jak obrazek, który się nie wczytał.")}</td>
+        <td>${dsTok("--nu-avatar-size-md")}, <code>--nu-bg-secondary</code>, <code>--nu-border-neutral</code></td></tr>
+      <tr><td>${L("Bookseller","Księgarka")}<br><code>.bs-ava</code></td>
+        <td>${L("A voice the shop cannot name, and deliberately: she has no biography, so she has no face and no initials either. A dot stands in for both, and the mark is a control &ndash; pressing it brings back an offer that was dismissed.","Głos, którego sklep nazwać nie umie, i to celowo: nie ma biografii, więc nie ma też twarzy ani inicjałów. Zamiast nich jest kropka, a sam znak jest kontrolką &ndash; naciśnięcie przywraca zamkniętą ofertę.")}</td>
+        <td>${dsTok("--nu-avatar-size-sm")}, <code>--nu-fg-primary</code> ${L("dot","kropka")}</td></tr>
+    </tbody></table>
+    <h3>${L("Specification","Specyfikacja")}</h3>
+    <table><tbody>
+      <tr><td ${DS_COL_NAME}>${L("Shape","Kształt")}</td><td>${L(
+        "A circle, in both variants. It is the one round object in a shop whose every other box has square corners, and that is what makes it read as a person rather than as a picture.",
+        "Koło, w obu wariantach. To jedyny okrągły przedmiot w sklepie, w którym każde inne pole ma ostre narożniki, i właśnie dlatego czyta się jako osoba, a nie jako obrazek.")}</td></tr>
+      <tr><td>${L("Size","Rozmiar")}</td><td>${L(
+        `Two steps of its own, off the spacing scale: ${dsTok("--nu-avatar-size-md")} in the author's drawer, which has a column to fill, and ${dsTok("--nu-avatar-size-sm")} in the corner, which has to stay out of the way. Both in rem, because the mark shares its box with type.`,
+        `Dwa własne stopnie, poza skalą odstępów: ${dsTok("--nu-avatar-size-md")} w szufladzie autorki, która ma kolumnę do wypełnienia, i ${dsTok("--nu-avatar-size-sm")} w rogu, który ma nie przeszkadzać. Oba w rem, bo znak dzieli pole z tekstem.`)}</td></tr>
+      <tr><td>${L("Ground","Tło")}</td><td>${L(
+        "<code>--nu-bg-secondary</code> with a 1px <code>--nu-border-neutral</code> hairline, in both. The photograph covers the ground; the initials and the dot stand on it.",
+        "<code>--nu-bg-secondary</code> z kreską włosową 1px <code>--nu-border-neutral</code>, w obu. Zdjęcie zakrywa tło; inicjały i kropka na nim stoją.")}</td></tr>
+      <tr><td>${L("Type","Typografia")}</td><td>${L(
+        `Initials only, at ${dsTok("--nu-text-size-lg")} with ${dsTok("--nu-tracking-compact")}: two capitals closed inside a container, which is what that tracking is for. Two at most, from the first two words of the name.`,
+        `Tylko inicjały, w stopniu ${dsTok("--nu-text-size-lg")} ze światłem ${dsTok("--nu-tracking-compact")}: dwa wersaliki zamknięte w kontenerze, a to światło jest właśnie do takich przypadków. Najwyżej dwa, wzięte z dwóch pierwszych słów imienia i nazwiska.`)}</td></tr>
+      <tr><td>${L("The dot","Kropka")}</td><td>${L(
+        `${dsTok("--nu-space-micro")} across, in <code>--nu-fg-primary</code>. It carries the same two values as the accent beside the wordmark and its own name, so the logotype and the corner can change apart.`,
+        `${dsTok("--nu-space-micro")} średnicy, w kolorze <code>--nu-fg-primary</code>. Niesie te same dwie wartości co akcent przy znaku marki, ale własną nazwę, więc logotyp i róg ekranu mogą zmieniać się osobno.`)}</td></tr>
+      <tr><td>${L("Element","Element")}</td><td>${L(
+        "Whichever one the content already is: an <code>img</code> for a photograph, a <code>span</code> for initials, a <code>button</code> where the mark opens something. The bookseller's is a control and the author's is not, which is the whole difference between them.",
+        "Ten, którym treść już jest: <code>img</code> przy zdjęciu, <code>span</code> przy inicjałach, <code>button</code> tam, gdzie znak coś otwiera. Znak księgarki jest kontrolką, znak autorki nie, i na tym polega cała różnica między nimi.")}</td></tr>
+      <tr><td>${L("Name","Nazwa")}</td><td>${L(
+        "A photograph carries the author's name in <code>alt</code>. Initials carry <code>aria-hidden</code>, because the name they abbreviate stands beside them as a heading and would otherwise be read twice. The bookseller's carries an <code>aria-label</code>, having nothing beside it to borrow a name from.",
+        "Zdjęcie niesie nazwisko autorki w <code>alt</code>. Inicjały noszą <code>aria-hidden</code>, bo skracane przez nie nazwisko stoi obok jako nagłówek i zostałoby odczytane dwa razy. Znak księgarki ma <code>aria-label</code>, bo nie stoi obok niczego, od czego mógłby nazwę pożyczyć.")}</td></tr>
+      <tr><td>${L("Focus","Fokus")}</td><td>${L(
+        `The bookseller's only: ${dsTok("--nu-focus-ring")} in <code>--nu-border-primary</code> at ${dsTok("--nu-focus-offset")}, as on every other control. The author's takes no focus, because it is a picture rather than a thing to press.`,
+        `Wyłącznie znak księgarki: ${dsTok("--nu-focus-ring")} w kolorze <code>--nu-border-primary</code> z odsunięciem ${dsTok("--nu-focus-offset")}, tak jak na każdej innej kontrolce. Znak autorki fokusu nie przyjmuje, bo jest obrazkiem, a nie rzeczą do naciśnięcia.`)}</td></tr>
+      <tr><td>${L("Movement","Ruch")}</td><td>${L(
+        "The bookseller's dot beats and breathes, on the terms set out under Motion. The author's mark never moves.",
+        "Kropka księgarki bije i oddycha, na zasadach opisanych w Ruchu. Znak autorki nie porusza się nigdy.")}</td></tr>
+    </tbody></table>
+    <p class="note">${L(
+      "This tab has no live preview. The two variants are different elements carrying different content &ndash; a photograph, two letters, a dot &ndash; and a preview that builds one element from a class name would show a mark with nothing in it, which is the one state the component never has.",
+      "Ta zakładka nie ma podglądu na żywo. Oba warianty to różne elementy niosące różną treść &ndash; zdjęcie, dwie litery, kropkę &ndash; a podgląd budujący pojedynczy element z nazwy klasy pokazywałby znak pusty w środku, czyli jedyny stan, którego ten komponent nie ma.")}</p>` },
 
   { group:{en:"Components",pl:"Komponenty"}, id:"stepper", label:{en:"Quantity stepper",pl:"Stepper ilości"}, body: ()=>`
     <h1>${L("Quantity stepper","Stepper ilości")}</h1>

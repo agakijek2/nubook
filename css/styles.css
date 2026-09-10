@@ -1771,6 +1771,11 @@
   .ds .ds-play-stage .tile.ds-crop{aspect-ratio:auto;width:240px;height:88px}
   .ds .ds-tiles,
   .ds .ds-qty{justify-content:center;align-items:flex-end}
+  /* The author's mark carries the drawer's vertical margin, which in a row of
+     specimens spreads the row instead of the column it was meant for. Asked for
+     by name, as the sort panel is, rather than taken off every avatar. */
+  .ds .ds-avatars{justify-content:center}
+  .ds .ds-avatars .d-ava{margin:0}
   .ds .ds-select,
   .ds .ds-group{justify-content:center}
   /* The panel is positioned against the trigger and hidden until asked for. In a
