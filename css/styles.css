@@ -1389,11 +1389,16 @@
   .bs-b-meta{display:block;margin-top:var(--nu-space-nano);color:var(--nu-fg-secondary);font-variant-numeric:tabular-nums}
   /* What she says about one book, once it has been chosen. Its own scroll,
      because this is the one part whose length the shop does not control. */
-  /* No air underneath: the block around it already ends the proposal, and two
+  /* A margin, not padding: padding sits inside the scrolling area and travels
+     with the text, so the first line ended up against the button the moment
+     anything was scrolled. Outside the box the gap stays put, and the text is cut
+     off at it rather than at the control above.
+
+     No air underneath: the block around it already ends the proposal, and two
      spacings meaning the same thing add up to one that reads as a mistake. */
   .bs-text{
     font:var(--nu-type-body-m);color:var(--nu-fg-secondary);
-    padding-top:var(--nu-space-micro);
+    margin-top:var(--nu-space-micro);
     max-height:44vh;overflow-y:auto;
   }
   .bs-text p{margin-bottom:var(--nu-space-micro)}
