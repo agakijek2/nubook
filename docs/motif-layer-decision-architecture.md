@@ -1,4 +1,4 @@
-# Step 03 — The motif layer
+# Step 03 – The motif layer
 
 Decision architecture, written after the fact. Box text for FigJam is in **bold**;
 the paragraph under it is the note.
@@ -16,18 +16,18 @@ A data deliverable, with no interface implied and no source named.
 
 ## 01 · Visible layer, or plumbing?
 
-**On the table:** a data field and nothing else — cheapest, since the motifs
+**On the table:** a data field and nothing else – cheapest, since the motifs
 exist to feed the steps after this one.
 
 **Chosen: visible, in the product detail, and never in the filter column.**
 A layer nobody can see cannot be checked by looking, and the product page had
 nothing on it that said what a book is *about* beyond the description. But a
 fourth row of chips in the filter column would make the filters heavier than the
-shelf they filter — nineteen titles behind four axes of narrowing.
+shelf they filter – nineteen titles behind four axes of narrowing.
 
 ---
 
-## 02 · Whose vocabulary — invented here, or established?
+## 02 · Whose vocabulary – invented here, or established?
 
 **On the table:** open subject vocabularies with working APIs. FAST from OCLC,
 published as linked data. Wikidata's *main subject*. Open Library's subject
@@ -38,7 +38,7 @@ catalogue data is a check, not a source.**
 
 The test that settled it: Open Library was asked for *mothers and daughters*, a
 motif at least three of our books carry. It returned *Little Women*, *Dubliners*,
-*Lady Susan*, *The Cherry Orchard* and two Victorian novels — not one title from
+*Lady Susan*, *The Cherry Orchard* and two Victorian novels – not one title from
 our shelf. A single book's subject list from that answer included *Coloring
 books*, *Reading Level-Grade 5*, *Large type books* and *Agricultural
 Bacteriology*.
@@ -46,7 +46,7 @@ Bacteriology*.
 Those are cataloguing headings: built to shelve a book, mixed with format and
 reading level, and ranked by edition count so the answer is a century-old canon
 rather than this shop. What was needed instead was the vocabulary of feminist
-literary criticism, where the terms have authors and dates — Gilbert and Gubar
+literary criticism, where the terms have authors and dates – Gilbert and Gubar
 1979, Rich 1976 and 1980, Spivak 1985, Butler 1990, Freeman 2010.
 
 **Rule adopted:** a term with no attributable source does not enter the
@@ -75,7 +75,7 @@ is thin enough to make a recommendation arbitrary. The dozen was a number guesse
 before the vocabulary existed; the count replaced the guess.
 
 **Cut:** *rememory* (two books only) and *double consciousness* (on this shelf it
-selected almost the same books as intersectionality — two terms, one distinction).
+selected almost the same books as intersectionality – two terms, one distinction).
 
 ---
 
@@ -86,8 +86,8 @@ for a tag and rich enough to say something.
 
 **Chosen: a chip, an expansion, a term and an origin note.**
 The chip goes beside the title and carries no thesis, because the thesis is one
-click away. That freed the names to be plain — *mother and daughter*, *growing
-up*, *passing* — where a set of fifteen aphorisms beside a book title would be
+click away. That freed the names to be plain – *mother and daughter*, *growing
+up*, *passing* – where a set of fifteen aphorisms beside a book title would be
 exhausting to read.
 
 The Polish and English names are not translations of each other. Each was chosen
@@ -139,7 +139,7 @@ trade, than a fixed list of motifs.
 
 **Chosen: both, with the vocabulary underneath.**
 The agent covers the long tail no vocabulary can anticipate. But an agent with no
-description of *this* shelf recommends from its own memory — inventing stock, or
+description of *this* shelf recommends from its own memory – inventing stock, or
 matching by vibe. The vocabulary is what it matches against.
 
 The resulting shape is the point:
@@ -158,15 +158,15 @@ how to call one.
 
 Two motifs, for the reasons above. One assignment: *Convenience Store Woman*
 had been filed under compulsory heterosexuality and the monstrous feminine, and
-neither was what the book does — the pressure on its heroine is to be a legible
+neither was what the book does – the pressure on its heroine is to be a legible
 adult, not to desire anyone in particular. It now carries the social clock,
 passing and the angel.
 
-One name: the fifteenth motif was first called *rola kobiety* — the woman's role.
+One name: the fifteenth motif was first called *rola kobiety* – the woman's role.
 It was a bucket. It did not say the motif was about *timing*, and it overlapped
 with two others, so an agent given a closed list would have reached for it
 whenever it could not name something. Replaced by *zegar społeczny*, the social
-clock, which turned out to be a sociological term from 1965 — giving that motif
+clock, which turned out to be a sociological term from 1965 – giving that motif
 two independent groundings, forty-five years apart.
 
 ## Where it goes next

@@ -1,12 +1,12 @@
 # nubook.
 
 Niezależna księgarnia internetowa z powieściami o kobietach i płci.
-Dwujęzyczna (PL / EN), dwuwalutowa (PLN / EUR), bez frameworków —
+Dwujęzyczna (PL / EN), dwuwalutowa (PLN / EUR), bez frameworków –
 czysty HTML, CSS i JavaScript.
 
 ## Uruchomienie
 
-Otwórz `index.html` w przeglądarce. To wystarczy — nie ma kroku budowania
+Otwórz `index.html` w przeglądarce. To wystarczy – nie ma kroku budowania
 ani zależności do zainstalowania.
 
 Jeśli przeglądarka blokuje wczytywanie plików lokalnych, uruchom serwer:
@@ -18,7 +18,7 @@ python3 -m http.server 8000
 
 ## Podgląd jednoplikowy
 
-`preview.html` to wygenerowana wersja całego sklepu w jednym pliku — style,
+`preview.html` to wygenerowana wersja całego sklepu w jednym pliku – style,
 skrypt i okładki wklejone do środka. Przydaje się do szybkiego podglądu,
 wysłania komuś jednym załącznikiem albo otwarcia bez serwera. Odtwarza się
 go po każdej zmianie:
@@ -27,7 +27,7 @@ go po każdej zmianie:
 python3 build.py
 ```
 
-Nie edytuj `preview.html` ręcznie — jest zawsze wynikiem, a nie źródłem.
+Nie edytuj `preview.html` ręcznie – jest zawsze wynikiem, a nie źródłem.
 
 ## Struktura
 
@@ -43,7 +43,7 @@ nubook/
 ```
 
 Cały wygląd wynika z tokenów zebranych na górze `css/styles.css`.
-Zmiana palety czy skali typograficznej to edycja tego jednego bloku —
+Zmiana palety czy skali typograficznej to edycja tego jednego bloku –
 komponenty nigdy nie zawierają wartości wpisanych na sztywno.
 
 ## Design system
@@ -75,7 +75,7 @@ Repozytorium jest założone i pierwszy commit obejmuje cały projekt.
 Zasada na dalej: **jeden commit na jedną zatwierdzoną decyzję**, nie jeden
 na sesję. Dzięki temu da się cofnąć pojedynczą zmianę, nie tracąc reszty.
 
-Opis commita mówi, czego dotyczy i co się zmieniło — po polsku, w trybie
+Opis commita mówi, czego dotyczy i co się zmieniło – po polsku, w trybie
 oznajmującym, tak samo jak dokumentacja:
 
 ```
@@ -84,7 +84,7 @@ dostępność: fokus wchodzi do koszyka przy obu sposobach otwarcia
 ikonografia: filtry, plus, krzyżyk i strzałka selecta jako SVG
 ```
 
-Commity trzeba wykonywać z Terminala — środowisko, w którym Claude pracuje
+Commity trzeba wykonywać z Terminala – środowisko, w którym Claude pracuje
 na tym folderze, potrafi pliki zapisywać, ale nie potrafi ich usuwać, a git
 kasuje własne pliki blokady po każdym zapisie. Claude może przygotować treść
 opisu; wykonanie należy do Ciebie:
@@ -120,5 +120,5 @@ Sklep jest prototypem: koszyk i zamówienie żyją w pamięci przeglądarki,
 nie ma płatności ani serwera. Kody rabatowe do testów: `ROOM5`, `ROOM10`,
 `SIOSTRA15`.
 
-Okładki i portret pochodzą od wydawców i posiadaczy praw — przed
+Okładki i portret pochodzą od wydawców i posiadaczy praw – przed
 publicznym wdrożeniem zastąp je materiałami, do których masz licencję.

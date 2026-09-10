@@ -1,4 +1,4 @@
-# Step 04 — Motifs on the shelf
+# Step 04 – Motifs on the shelf
 
 Decision architecture, written after the fact. Box text for FigJam is in **bold**;
 the paragraph under it is the note.
@@ -20,14 +20,14 @@ build.
 
 ## 01 · A block of its own, or a row of the list already there?
 
-**On the table:** a section under the description with a heading — *Motifs* —
+**On the table:** a section under the description with a heading – *Motifs* –
 and the terms set out beneath it. That is what a new kind of content usually
 gets.
 
 **Chosen: the first row of the details list that was already on the page.**
 The product page ends with a two-row list: *Genre* and *Edition language*, each
 a term on the left and its answer on the right, separated by hairlines. A motif
-is the same shape of fact — a question about the book and its answer — so it
+is the same shape of fact – a question about the book and its answer – so it
 became a third row of that list rather than a fourth region of the page.
 
 **What that saved:** no heading style to choose, no spacing decision, no new
@@ -41,13 +41,13 @@ outranks how it is catalogued.
 
 ## 02 · Which control carries a motif?
 
-**On the table:** the chip. It looks exactly right — a short word in a small
+**On the table:** the chip. It looks exactly right – a short word in a small
 box, in a row of others.
 
 **Chosen: the ghost button.**
 The chip is defined in this design system as a toggle over a set: it carries
 `aria-pressed`, it has a count, and pressing it narrows the shelf. A motif does
-none of that — step 03 had already ruled that motifs never become a filter. A
+none of that – step 03 had already ruled that motifs never become a filter. A
 chip that filters nothing would announce a state it does not have, and the Chip
 tab would have to be rewritten to accommodate one exception.
 
@@ -65,7 +65,7 @@ it looks like. The chip looked right and was wrong.
 **On the table:** a second drawer for motifs, beside the author's and the cart's.
 
 **Chosen: one drawer, two contents.**
-Two state variables that exclude each other — a book or a motif, never both —
+Two state variables that exclude each other – a book or a motif, never both –
 and the drawer fills itself from whichever is set. Everything around the
 content is shared and was already tested: the focus moves to the close button on
 opening, `aria-modal` and `inert` seal the page behind it, Escape closes, the
@@ -86,11 +86,11 @@ different from what exists.
 > a label saying what kind of thing this is → the name → a one-line lead →
 > the expansion → **the origin, below a rule**
 
-The lead exists because the chip name is deliberately plain — *the madwoman*,
+The lead exists because the chip name is deliberately plain – *the madwoman*,
 *growing up*, *passing*. Plain names read well beside a title and say almost
 nothing on their own, so the first line after the click has to carry the thesis.
 
-The origin — who coined the term, when, in what work — was asked for after the
+The origin – who coined the term, when, in what work – was asked for after the
 rest was built, and it is the field that makes the difference between a
 vocabulary and a set of opinions. It stands below a hairline because it answers
 a different question from everything above it: not *what is this motif* but
@@ -100,7 +100,7 @@ a different question from everything above it: not *what is this motif* but
 
 ## 05 · How many typographic registers?
 
-**On the table:** three — the expansion at full strength, the origin smaller and
+**On the table:** three – the expansion at full strength, the origin smaller and
 quieter, as a footnote would be.
 
 **Chosen: two registers, and the origin is not a footnote.**
@@ -119,7 +119,7 @@ the second one needed to change.
 **Chosen: *Geneza motywu*.**
 The first version described the block's function to the reader, which is the
 kind of caption that appears when a thing has not been named yet. The section
-has a name in the language of criticism, and using it costs the reader nothing —
+has a name in the language of criticism, and using it costs the reader nothing –
 she is already reading a page about literary motifs.
 
 ---
@@ -132,7 +132,7 @@ is where they are read from.
 **Chosen: a document, with the code generated from it.**
 `docs/motifs.md` holds all fifteen in both languages with all four fields. The
 `MOTIFS` structure in the shop is parsed out of that file, and the two were
-checked field by field — 15 of 15 identical.
+checked field by field – 15 of 15 identical.
 
 **Why it matters more than it looks:** this vocabulary has two more readers
 coming. Step 05 writes a bookseller's brief around it and the agent after that
@@ -144,7 +144,7 @@ nobody can review; a vocabulary in prose is one that can be argued with.
 ## 08 · The prose had to be rewritten
 
 **Found during review:** ten sentences in the Polish expansions that were
-English underneath — a phrase like *samo nazwanie robi robotę*, which is not
+English underneath – a phrase like *samo nazwanie robi robotę*, which is not
 something anyone says in Polish. One was spotted by reading; the other nine came
 out of checking the remaining fourteen motifs on purpose once the first was
 found.
@@ -164,7 +164,7 @@ shipped, and both are still open:
   takes its name from the heading above it.* The motif row reuses `.chip-row`
   for its layout, inside a `dd`, with no group role and no heading. The rule as
   written is now false about the class in general.
-- **Motion:** *both drawers — the author's and the cart's.* The first drawer is
+- **Motion:** *both drawers – the author's and the cart's.* The first drawer is
   no longer only the author's.
 
 Neither is a defect in the shop. Both are the ordinary cost of a component being
@@ -183,7 +183,7 @@ reader recognise a book; the motif is for after she has stopped at one.
 of narrowing over nineteen titles makes the filter column heavier than the shelf.
 
 **An index of motifs.** A page listing all fifteen with the books under each is
-the natural next thing to build and the wrong one — it is a browsing interface
+the natural next thing to build and the wrong one – it is a browsing interface
 for a catalogue that fits on a screen and a half. The vocabulary is going to be
 reached through a typed question instead, which is step 06.
 
@@ -192,7 +192,7 @@ reached through a typed question instead, which is step 06.
 ## What would say it worked
 
 - Share of product-page visits that open a motif drawer at all.
-- Whether a reader who opens one opens a second — the test of whether the terms
+- Whether a reader who opens one opens a second – the test of whether the terms
   read as a vocabulary or as decoration.
 - Carts started after a drawer was opened, against carts started without.
 - Which motifs are never opened. That is the shortlist of names that do not say
@@ -203,5 +203,5 @@ reached through a typed question instead, which is step 06.
 ## Where it goes next
 
 The vocabulary is now visible, attributable and in two languages. Step 05 is the
-bookseller's brief — who she is, what she may never say, how she refuses —
+bookseller's brief – who she is, what she may never say, how she refuses –
 which is the last thing written down before the first model call.

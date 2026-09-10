@@ -1,4 +1,4 @@
-# Step 05 — The bookseller's brief
+# Step 05 – The bookseller's brief
 
 Decision architecture, written after the fact. Box text for FigJam is in **bold**;
 the paragraph under it is the note.
@@ -29,7 +29,7 @@ in the same voice as the empty state. Or a full character with a name, a length
 of service and favourite books.
 
 **Chosen: a person with a position, and no biography at all.**
-She may say *I'd start with this one* and *that is not a book for this request* —
+She may say *I'd start with this one* and *that is not a book for this request* –
 judgement about fit is the whole job, and a bookseller with no opinion is a search
 box with better manners. But she has no name, no age and no reading history.
 
@@ -49,7 +49,7 @@ fluently. Or refuse and stop.
 title's motifs, then one book from the shelf, then why. A shop that slides past
 the missing title has answered a question nobody asked.
 
-**This is not a new decision — it is step 02's decision applied again.** The
+**This is not a new decision – it is step 02's decision applied again.** The
 empty search state was built on the same order: the truth about what is missing,
 then the way out. Reusing it meant no argument and no second pattern.
 
@@ -72,7 +72,7 @@ changes every session is two copies that drift.
 **On the table:** what she may know, the shape of an answer, what she does not
 comment on, how she is tested.
 
-**Chosen: all four — and a fifth that reshaped the document.**
+**Chosen: all four – and a fifth that reshaped the document.**
 
 > *"Nie wchodzi w nic poza motywem podanego tytułu i jak to się ma do
 > zaproponowanej książki. To jest bardzo ważne, żeby granice konwersacji były
@@ -84,7 +84,7 @@ of things not to say: it does not enumerate the failures, it removes the room fo
 them.
 
 **Consequence:** the section on what falls outside gained its own rule about
-*how* she declines — by returning to the shelf, never by describing her own
+*how* she declines – by returning to the shelf, never by describing her own
 limits. A model asked for something out of scope will, left alone, deliver a
 paragraph about what it is and cannot do, which is exactly the exit from
 character that the persona decision was protecting.
@@ -127,7 +127,7 @@ is a few days. That is the price of the difference between a rule and a wish.
 
 ---
 
-## 07 · Which sources — and the one decision the evidence overturned
+## 07 · Which sources – and the one decision the evidence overturned
 
 **Chosen first:** two or three open review outlets, alongside the encyclopaedia
 and an identity source. More coverage of contemporary fiction.
@@ -146,7 +146,7 @@ and an identity source. More coverage of contemporary fiction.
 
 **Chosen instead: the encyclopaedia already carries the reviews.** A Wikipedia
 article on a current novel quotes Kirkus, the Guardian, the New York Times, NPR,
-the Chicago Review of Books and the Washington Post — each attributed, each in one
+the Chicago Review of Books and the Washington Post – each attributed, each in one
 sentence. The outlets we wanted to add were inside the source we already had, and
 reachable on a day when the outlets themselves were not.
 
@@ -168,7 +168,7 @@ useful part is one section.
 sees it.**
 A plot summary is a scene-by-scene account of a book written by someone who read
 it. Handing that to a model is handing it the exact material it needs to sound
-like a reader — and *never claim to have read one* is prohibition number two.
+like a reader – and *never claim to have read one* is prohibition number two.
 Nearly every rule in the brief fails at that one page and only there.
 
 ---
@@ -181,13 +181,13 @@ not say which was which.
 
 **Chosen: every rule is marked *structure* or *behaviour*.**
 
-- **Structure** — the code makes it true; the model cannot break it; there is
+- **Structure** – the code makes it true; the model cannot break it; there is
   nothing to test, only something to keep from being dismantled.
-- **Behaviour** — breaking it means writing a sentence; it needs a test case and
+- **Behaviour** – breaking it means writing a sentence; it needs a test case and
   the case is re-run after every change of prompt, model or fetcher.
 
-**What the marking exposed:** section 4 — all six prohibitions, including all
-three from the board — is **entirely behaviour**. The plumbing decides what she
+**What the marking exposed:** section 4 – all six prohibitions, including all
+three from the board – is **entirely behaviour**. The plumbing decides what she
 can reach and when she appears. Nothing in the plumbing decides what she says.
 
 **And a third category fell out:** some behavioural rules can be **promoted** by
@@ -209,7 +209,7 @@ widget that notices and speaks first is a different product.
 
 **Chosen: the shop may begin, on two events and no others.**
 
-The shape did not actually change — what changed is **who supplies the title**.
+The shape did not actually change – what changed is **who supplies the title**.
 The reader types it, or the page she is standing on provides it. Everything after
 that is identical, which is why one document still covers both.
 
@@ -235,7 +235,7 @@ not omissions:
 
 **The best property of this: the model never decides to speak.** Our code decides,
 on two conditions. So the most dangerous quality of an assistant that interrupts
-is *entirely structural* — the one thing nobody has to police.
+is *entirely structural* – the one thing nobody has to police.
 
 **Four test cases were written anyway, and they pass by producing nothing.** A
 silence is easy to lose: someone widens a trigger condition and the shop starts
@@ -250,7 +250,7 @@ state. Fluent, and it makes the assistant feel central.
 
 **Chosen: the page keeps the bad news, she keeps the offer.**
 The empty state goes on saying *we do not have "X"* on its own, before any model
-has answered and whether or not one ever does. Her bubble never repeats it —
+has answered and whether or not one ever does. Her bubble never repeats it –
 it opens at the guess, *looking for Gone Girl?*, which is the one thing the page
 cannot work out for itself.
 
@@ -267,7 +267,7 @@ of two.
 
 **Chosen: everything about the nineteen books is written in advance, read, and
 stored beside the motifs.**
-It is all derivable from data already in the repo — description, motifs,
+It is all derivable from data already in the repo – description, motifs,
 expansions, status. Pre-written, those answers are instant, cost nothing to serve,
 and cannot invent a fact about a book we described ourselves.
 
@@ -293,13 +293,13 @@ The widget (10) inverted who starts the conversation. Neither was a request for
 more text; both changed what the text was organised around.
 
 **One question exposed a gap nobody had noticed.** *Where are the links to the
-sources?* — the brief had said *the web* and stopped, in a project whose whole
+sources?* – the brief had said *the web* and stopped, in a project whose whole
 argument two steps earlier had been that a closed list beats free prose.
 
 **Measurement overruled a decision, and it was said out loud.** Aga chose two or
 three review outlets. The outlets did not answer. The right move was to report
 that plainly and propose the change, not to quietly build the version that
-worked — and not to build the version that had been chosen knowing it would fail.
+worked – and not to build the version that had been chosen knowing it would fail.
 
 **A settled decision was re-litigated once, and caught.** During the button-tab
 audit in the same session, a sentence written the previous day was reported as a
@@ -308,7 +308,7 @@ finding was withdrawn.
 
 **Nothing was written into the document without being checked against the data.**
 Nineteen books, fifteen motifs, two out of stock, one preorder, all English
-editions — every one of those numbers in the brief was verified by script, and one
+editions – every one of those numbers in the brief was verified by script, and one
 test case was rewritten when the shelf turned out not to support it.
 
 ---
@@ -355,10 +355,10 @@ where three behavioural rules get promoted into things that cannot fail unnotice
 
 | | Kept by |
 |---|---|
-| Stays on the source list | the code — no search tool exists |
-| Never follows a link | the code — no fetching exists |
-| Never reads a plot summary | the code — stripped at layer 3 |
-| Speaks only on two events | the code — layer 2 |
+| Stays on the source list | the code – no search tool exists |
+| Never follows a link | the code – no fetching exists |
+| Never reads a plot summary | the code – stripped at layer 3 |
+| Speaks only on two events | the code – layer 2 |
 | Never invents a title | the model, checked at layer 5 |
 | Never recommends off the shelf | the model, checked at layer 5 |
 | Never softens a status | the model, checked at layer 5 |
@@ -378,7 +378,7 @@ reads as someone who noticed. That is a decision to take while drawing it, not
 while specifying it.
 
 **The widget as a component.** A floating element, an avatar, a bubble, an opened
-state — none of it exists in the design system. It is design work, not agent work,
+state – none of it exists in the design system. It is design work, not agent work,
 and probably a card of its own.
 
 **The prompt.** The brief is not a prompt and says so in its first line. Writing
@@ -393,6 +393,6 @@ needs a number.
 ## Where it goes next
 
 Step 06 builds layers 2 to 5 and finds out which parts of this were optimistic.
-The first thing it should produce is not the agent but layer 1 — nineteen short
-texts, read and approved — because that is the half of the product that needs no
+The first thing it should produce is not the agent but layer 1 – nineteen short
+texts, read and approved – because that is the half of the product that needs no
 model at all.

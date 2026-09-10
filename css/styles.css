@@ -45,7 +45,7 @@
     --nu-gold-800:#6e5710;
 
     /* ---------- semantic ---------- */
-    /* background — surfaces an element sits on */
+    /* background – surfaces an element sits on */
     --nu-bg-primary:light-dark(var(--nu-white), var(--nu-grey-900));            /* the page, drawers, menus */
     --nu-bg-secondary:light-dark(var(--nu-grey-100), var(--nu-grey-800));       /* raised panels: tiles, thumbnails */
     --nu-bg-tertiary:light-dark(var(--nu-grey-600), var(--nu-grey-400));        /* third surface step: glass outline and shading */
@@ -77,7 +77,7 @@
     --nu-bg-action-glow:var(--nu-burgundy-500);      /* CTA inner glow, bottom edge */
     --nu-bg-action-glow-deep:var(--nu-burgundy-700); /* CTA aura cast beneath */
 
-    /* foreground — text and icons */
+    /* foreground – text and icons */
     --nu-fg-primary:light-dark(var(--nu-grey-900), var(--nu-grey-100));         /* titles, body copy, prices, icons */
     --nu-fg-secondary:light-dark(var(--nu-grey-600), var(--nu-grey-400));       /* authors, labels, quotes, notes */
     --nu-fg-tertiary:light-dark(var(--nu-grey-400), var(--nu-grey-600));        /* disabled or less prominent text */
@@ -86,7 +86,7 @@
     --nu-fg-warning:light-dark(var(--nu-burgundy-500), var(--nu-burgundy-300));     /* inventory running out */
     --nu-fg-alert:light-dark(var(--nu-red-600), var(--nu-red-300));            /* failed validation */
 
-    /* border — outlines and separators */
+    /* border – outlines and separators */
     --nu-border-neutral:light-dark(var(--nu-grey-100), var(--nu-grey-700));     /* hairlines, field borders, dividers */
     --nu-border-primary:light-dark(var(--nu-grey-900), var(--nu-grey-100));     /* focus rings, selected chip, badge */
     --nu-border-muted:light-dark(var(--nu-grey-400), var(--nu-grey-600));       /* receded outline: unavailable badge */
@@ -99,7 +99,7 @@
     --nu-font-display:"DM Serif Display",Georgia,serif;   /* identity & headings */
     --nu-font-text:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
 
-    /* Size on its own, named by size. A step says how big, never what for —
+    /* Size on its own, named by size. A step says how big, never what for –
        what for is the business of a style, which points at one of these. Two
        styles sharing a step today part company by pointing at different ones,
        not by the scale growing a second value of the same size. */
@@ -110,7 +110,7 @@
     --nu-text-size-xl:1.5rem;
     --nu-text-size-2xl:1.875rem;
 
-    /* line height — six steps, named after how much air the line needs rather
+    /* line height – six steps, named after how much air the line needs rather
        than after the number. A step is a ratio, so it holds at every size. */
     --nu-line-flat:1;        /* the box sets the height: badge, counter, wordmark */
     --nu-line-tight:1.15;    /* display sizes, where the leading would gape */
@@ -127,8 +127,8 @@
 
        Two things the shorthand cannot carry. Letter-spacing is not part of it,
        so a style that needs one declares it beside. And the shorthand resets
-       every font property it does not mention — font-style and
-       font-variant-numeric among them — so where a rule wants italics or
+       every font property it does not mention – font-style and
+       font-variant-numeric among them – so where a rule wants italics or
        tabular figures, the shorthand goes first and the exception after it. */
     --nu-type-h1:var(--nu-weight-normal) var(--nu-text-size-2xl)/var(--nu-line-tight) var(--nu-font-display);
     --nu-type-h2:var(--nu-weight-normal) var(--nu-text-size-xl)/var(--nu-line-tight) var(--nu-font-display);
@@ -144,7 +144,7 @@
     --nu-type-label:var(--nu-weight-normal) var(--nu-text-size-sm)/var(--nu-line-flat) var(--nu-font-text);
     --nu-type-caption:var(--nu-weight-normal) var(--nu-text-size-xs)/var(--nu-line-flat) var(--nu-font-text);
 
-    /* letter-spacing — scales against size and length, not case */
+    /* letter-spacing – scales against size and length, not case */
     --nu-tracking-display:-.017em; /* large display type: the wordmark */
     --nu-tracking-body:0;          /* running copy: never spaced out */
     --nu-tracking-compact:.04em;   /* short strings of any case: buttons, labels, badges */
@@ -162,13 +162,13 @@
 
        The names order the steps from smallest to largest without binding any of
        them to an index. Dropping a step is then: point its users at a neighbour,
-       delete the line. Nothing else shifts, and no hole is left behind — a
+       delete the line. Nothing else shifts, and no hole is left behind – a
        numbered scale would read 1,2,3,4,6,8,10,12,16 afterwards, which looks
        like a mistake and invites a renumber nobody needs to risk.
 
        Two kinds of spacing sit outside the scale, both on purpose:
 
-       HAIRLINES. Every literal px left in this sheet is 1px — a label held off
+       HAIRLINES. Every literal px left in this sheet is 1px – a label held off
        its own 1px underline, a 1.5px bar placed inside a 10px icon, a glyph
        pulled onto its baseline. Optical correction under the grid's resolution;
        the smallest step is four times too coarse for it.
@@ -179,8 +179,8 @@
        padded in %, so the same jacket reads identically at grid size and at
        packshot size. A fixed step would cut those ties.
 
-       Everything else — space between two separate things, at a size of its
-       own — comes off the scale. */
+       Everything else – space between two separate things, at a size of its
+       own – comes off the scale. */
     --nu-space-nano:0.25rem;
     --nu-space-micro:0.5rem;
     --nu-space-milli:0.75rem;
@@ -268,10 +268,10 @@
     --nu-form-max-width:1440px;      /* cart & checkout: grows, then stops and centres */
     /* One gutter for every side-by-side layout: shop, product, checkout, docs.
        Named rather than repeated, because "how far apart do two columns sit" is
-       a single decision — four copies of it could drift without anyone noticing. */
+       a single decision – four copies of it could drift without anyone noticing. */
     --nu-gutter-column:var(--nu-space-huge);
 
-    /* Height of the mobile sticky bars. Fallbacks only — the real values are
+    /* Height of the mobile sticky bars. Fallbacks only – the real values are
        measured and written back by the script, so the page clearance is always
        exactly the bar, whatever the label length or the device safe area. */
     --nu-mobar-height:var(--nu-space-max);  /* shop bar: filters + sort */
@@ -332,7 +332,7 @@
     -webkit-font-smoothing:antialiased;
   }
   /* The browser default for emphasis is 700, which the text family does not
-     ship — it would be synthesised from 400 and smear. 500 is the one heavier
+     ship – it would be synthesised from 400 and smear. 500 is the one heavier
      weight the shop loads, so emphasis uses it. */
   strong,b{font-weight:var(--nu-weight-medium)}
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -491,7 +491,7 @@
 
   /* ---------- tertiary button ----------
      Reveals or hides a region and says so through aria-expanded. Starts at full
-     strength and lightens under the pointer — it has nowhere darker to go, and the
+     strength and lightens under the pointer – it has nowhere darker to go, and the
      link shares that register. Carries a leading icon, a trailing one, or an icon
      on its own; the gap is the only thing an icon adds. */
   /* No cursor here, nor on the ghost or the link: the hand comes from the
@@ -510,7 +510,7 @@
 
   /* ---------- ghost button and link ----------
      What separates them is what happens, not how they look at first glance: a
-     ghost button does something on the spot — opens the drawer, removes a line —
+     ghost button does something on the spot – opens the drawer, removes a line –
      while a link leaves for another view. So the button wears its underline all
      the time, the way a control does, and the link only takes one under the
      pointer. Both declare it at rest, so colouring one moves no text. They part
@@ -600,7 +600,7 @@
      right angles and a cross is the same pair turned 45 degrees, which is why
      the sort button can rotate one into the other. Drawn rather than set as
      glyphs, because a glyph's visual size is a fraction of its font-size that
-     depends on the typeface — that is how three icons ended up three sizes. */
+     depends on the typeface – that is how three icons ended up three sizes. */
   /* The tertiary marks, drawn as SVG on the 16 grid like every other icon. The
      filter's lower bar reports the panel's state: it runs full width while the
      panel is closed and shortens once it opens. Scaling it horizontally leaves
@@ -800,7 +800,7 @@
   }
   .cover .pad{position:absolute;inset:0;padding:9% 10%;display:flex;flex-direction:column}
 
-  /* photographic / image covers — box adopts the image's own proportions */
+  /* photographic / image covers – box adopts the image's own proportions */
   .cover.cv-img{aspect-ratio:auto;height:auto}
   .cv-img img{
     position:static;width:100%;height:auto;
@@ -957,7 +957,7 @@
       0 4px 10px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 55%, transparent),
       0 1px 2px color-mix(in srgb, var(--nu-bg-shadow) 14%, transparent);
   }
-  /* secondary button: the same glass, uncoloured — grey body, dark label */
+  /* secondary button: the same glass, uncoloured – grey body, dark label */
   .btn-secondary{
     /* Its own box, so the component stands up anywhere. The vertical value
        matches the field's, which is what makes the two line up side by side
@@ -987,7 +987,7 @@
     .btn-secondary{transition:box-shadow var(--nu-motion-quick) ease, background var(--nu-motion-base) ease}
   }
   /* Same move as the primary: the body holds its colour and the light around it
-     grows — highlight up, inner shading deeper, drop shadow longer. Swapping the
+     grows – highlight up, inner shading deeper, drop shadow longer. Swapping the
      ground for a darker mix, as this used to, reads as a different button rather
      than the same one under the pointer. */
   .btn-secondary:hover{
@@ -1344,7 +1344,7 @@
   .ds h2{font:var(--nu-type-h2);margin:var(--nu-space-huge) 0 var(--nu-space-milli)}
   .ds h3{font:var(--nu-type-h3);margin:var(--nu-space-medium) 0 var(--nu-space-milli)}
   /* Documentation prose only. A specimen embedded in these pages carries the
-     shop's own class, and this rule outranks the component's — so a quote would
+     shop's own class, and this rule outranks the component's – so a quote would
      render here with different spacing than it has in the shop, which is the one
      thing a worked example must never do. */
   .ds p:not([class]){max-width:62ch;margin-bottom:var(--nu-space-milli)}
@@ -1383,7 +1383,7 @@
   .ds .tok-table td:nth-child(2) code{white-space:nowrap}
   /* Deliberately NOT a --nu- token: the monospace face is not part of the design
      system, it belongs to these documentation pages alone. Token names read
-     badly in a proportional face — hyphens and underscores stop being legible —
+     badly in a proportional face – hyphens and underscores stop being legible –
      so both inline code and code blocks borrow one, declared here and nowhere
      else. The shop itself never loads or uses it. */
   .ds{
@@ -1499,7 +1499,7 @@
   .ds .ds-buttons .demo,
   .ds .ds-links .demo{margin:0;justify-content:center;min-height:76px}
   /* A specimen only has to show the badge and its inset, so the tile drops the
-     packshot's 4/5 ratio for a crop. Height, not spacing — hence a plain value.
+     packshot's 4/5 ratio for a crop. Height, not spacing – hence a plain value.
      In the preview frame it also needs a width: the badge inside is positioned
      against the tile, so the tile has no content of its own to be sized by. */
   .ds .ds-specimens .tile{aspect-ratio:auto;height:88px}
@@ -1545,7 +1545,7 @@
   /* same tint as the figures: a bar in this table is a measured distance too,
      and one reading for that across the whole tab */
   .ds .space-bar{background:var(--nu-bg-measure);height:12px;display:inline-block}
-  /* Spacing scale table. Column widths, not spacing — so plain lengths, not
+  /* Spacing scale table. Column widths, not spacing – so plain lengths, not
      scale steps: the name column has to hold the longest token on one line and
      the bar column the largest step on the scale. */
   .ds .space-table{table-layout:fixed}
@@ -1574,7 +1574,7 @@
   .ds .sp-gap{background:var(--nu-bg-measure);flex:none}
   .ds .sp-pad{background:var(--nu-bg-measure)}
   /* the container carries the tint and the children cover it, so what shows
-     through is exactly the gap — no second element pretending to be the space */
+     through is exactly the gap – no second element pretending to be the space */
   .ds .sp-tiles{display:flex;background:var(--nu-bg-measure)}
   .ds .sp-tiles > div{flex:1;aspect-ratio:7/10;background:var(--nu-bg-secondary)}
   .ds .sp-groups{display:flex;flex-direction:column;background:var(--nu-bg-measure)}
@@ -1586,7 +1586,7 @@
   .ds .sp-groups .ln{height:10px;background:var(--nu-bg-secondary)}
   /* Marks laid over the worked example. Their boxes come from measuring the
      rendered component, so they cannot show a distance the component does not
-     have — and they sit behind the text, so nothing is obscured. */
+     have – and they sit behind the text, so nothing is obscured. */
   .ds .ds-eg{position:relative}
   .ds .ds-eg > *{position:relative;z-index:1}
   .ds .sp-mark{position:absolute;z-index:0;background:var(--nu-bg-measure);pointer-events:none}
@@ -1650,7 +1650,7 @@
       max-height:0;opacity:0;margin:0;padding:0;border-top-color:transparent;
     }
     /* Raising or dropping the sheet takes the panel in and out of the flow. That
-       has to happen in one frame so the scroll can be corrected against it —
+       has to happen in one frame so the scroll can be corrected against it –
        an animated collapse would move the list for the whole transition afterwards. */
     .filters.no-anim{transition:none}
 
@@ -1709,7 +1709,7 @@
       position:fixed;left:0;right:0;top:auto;bottom:var(--nu-mobar-height);z-index:80;
       max-height:min(62vh,460px);overflow-y:auto;
       /* filters-hidden is set while the sheet is up (it collapses the inline
-         copy), and that rule also parks pointer-events — hand them back, or the
+         copy), and that rule also parks pointer-events – hand them back, or the
          chips inside the sheet are unclickable. */
       margin:0;padding:var(--nu-space-medium) var(--nu-space-small);opacity:1;pointer-events:auto;
       /* the inline panel animates its own max-height to collapse; here the

@@ -153,7 +153,7 @@ const BOOKS = [
    q:"I am no bird; and no net ensnares me: I am a free human being with an independent will.", qby:"Jane Eyre",
    dp:"Skromna, biedna i niezłomna: guwernantka Brontë żąda miłości na równych prawach - protofeministyczny klasyk.",
    qp:"Nie jestem ptakiem i nie schwyta mnie żadna sieć: jestem wolną istotą ludzką o niezależnej woli.", qbyp:"Jane Eyre", a:"Charlotte Brontë", gd:"f", ab:"Published as Currer Bell to bypass prejudice against women writers. Jane Eyre demanded equality in love and work as early as 1847.", abp:"Publikowała jako Currer Bell, by ominąć uprzedzenia wobec piszących kobiet. Jane Eyre już w 1847 roku żądała równości w miłości i pracy.",                 g:"Classic",      p:9.50, pp:40.90, s:null,
-   m:["madwoman","growing-up","angel-in-house"],
+   m:["madwoman","who-speaks","growing-up","angel-in-house"],
    img:COVER_JE},
   {t:"Convenience Store Woman", tp:"Dziewczyna z konbini", ed:"en", added:"2026-05-21", pub:2016,
    de:"Keiko has worked in a konbini for eighteen years and is perfectly happy - it's everyone else who has a problem.",
@@ -200,15 +200,15 @@ const MOTIFS = {
     chip:{en:"the madwoman", pl:"wariatka"},
     lead:{en:"anger renamed illness", pl:"gniew nazwany chorobą"},
     sign:{en:"Sandra Gilbert and Susan Gubar, 1979", pl:"Sandra Gilbert i Susan Gubar, 1979"},
-    text:{en:"When a woman in a novel does not fit the part written for her, the world rarely calls it refusal. It calls it illness — and the naming does the work, because a sick woman can be moved aside, shut in, waited out. The rage the good heroine cannot show passes to another woman standing beside her like a darker reflection.",
-          pl:"Kiedy kobieta w powieści nie mieści się w roli, którą jej przewidziano, świat rzadko nazywa to sprzeciwem. Nazywa to chorobą — i samo to słowo wystarczy, bo chorą można odsunąć, zamknąć, przeczekać. Wściekłość, której grzeczna bohaterka nie może okazać, przechodzi wtedy na inną kobietę, stojącą obok niej jak ciemniejsze odbicie."},
-    origin:{en:"Sandra Gilbert and Susan Gubar, *The Madwoman in the Attic*, 1979. The title points to Bertha Mason in *Jane Eyre* — Rochester's first wife, shut in the attic at Thornfield.",
-            pl:"Sandra Gilbert i Susan Gubar, „The Madwoman in the Attic”, 1979. Tytuł odsyła do Berthy Mason z „Jane Eyre” — pierwszej żony Rochestera, zamkniętej na strychu Thornfield."}},
+    text:{en:"When a woman in a novel does not fit the part written for her, the world rarely calls it refusal. It calls it illness – and the naming does the work, because a sick woman can be moved aside, shut in, waited out. The rage the good heroine cannot show passes to another woman standing beside her like a darker reflection.",
+          pl:"Kiedy kobieta w powieści nie mieści się w roli, którą jej przewidziano, świat rzadko nazywa to sprzeciwem. Nazywa to chorobą – i samo to słowo wystarczy, bo chorą można odsunąć, zamknąć, przeczekać. Wściekłość, której grzeczna bohaterka nie może okazać, przechodzi wtedy na inną kobietę, stojącą obok niej jak ciemniejsze odbicie."},
+    origin:{en:"Sandra Gilbert and Susan Gubar, *The Madwoman in the Attic*, 1979. The title points to Bertha Mason in *Jane Eyre* – Rochester's first wife, shut in the attic at Thornfield.",
+            pl:"Sandra Gilbert i Susan Gubar, „The Madwoman in the Attic”, 1979. Tytuł odsyła do Berthy Mason z „Jane Eyre” – pierwszej żony Rochestera, zamkniętej na strychu Thornfield."}},
   "gender-norms":{
     chip:{en:"gender norms", pl:"płciowe normy"},
     lead:{en:"heterosexuality as duty", pl:"heteroseksualność z obowiązku"},
     sign:{en:"Adrienne Rich, 1980", pl:"Adrienne Rich, 1980"},
-    text:{en:"Heterosexuality appears in these books not as a preference anyone was asked about, but as an arrangement kept in place by money, law and family. A woman who steps outside it loses more than approval — she loses a living and a place among her own people. The clearest evidence is the price paid by the one who will not or cannot fit.",
+    text:{en:"Heterosexuality appears in these books not as a preference anyone was asked about, but as an arrangement kept in place by money, law and family. A woman who steps outside it loses more than approval – she loses a living and a place among her own people. The clearest evidence is the price paid by the one who will not or cannot fit.",
           pl:"Heteroseksualność występuje w tych książkach nie jako upodobanie, o które ktoś zapytał, tylko jako układ utrzymywany pieniędzmi, prawem i rodziną. Kobieta, która się z niego wyłamuje, traci nie tylko akceptację, ale też środki do życia i miejsce wśród swoich. Najlepiej widać to po cenie, jaką płaci ta, która nie chce albo nie potrafi się dopasować."},
     origin:{en:"Adrienne Rich, in the essay \"Compulsory Heterosexuality and Lesbian Existence\", published in *Signs* in 1980.",
             pl:"Adrienne Rich, esej „Compulsory Heterosexuality and Lesbian Existence”, ogłoszony w piśmie „Signs” w 1980 roku."}},
@@ -232,15 +232,15 @@ const MOTIFS = {
     chip:{en:"growing up", pl:"dorastanie"},
     lead:{en:"the voyage in", pl:"podróż do wewnątrz"},
     sign:{en:"Elizabeth Abel, Marianne Hirsch and Elizabeth Langland, 1983", pl:"Elizabeth Abel, Marianne Hirsch i Elizabeth Langland, 1983"},
-    text:{en:"The classic novel of growing up sends a young man into a world that forms him and gives him a place in it. To a girl that world is closed, so her development turns inward — delayed, cut short, or ended by marriage rather than by a calling. Growing up is then not the winning of a place but the discovery of how small the allotted one is.",
-          pl:"Klasyczna powieść o dojrzewaniu wysyła młodego mężczyznę w świat, który go formuje i wyznacza mu miejsce. Przed dziewczyną ten świat jest zamknięty, więc jej rozwój kieruje się do wewnątrz — bywa opóźniony, urwany albo zakończony małżeństwem zamiast powołaniem. Dorastanie okazuje się wtedy nie zdobywaniem miejsca, tylko odkryciem, jak małe zostało jej wyznaczone."},
+    text:{en:"The classic novel of growing up sends a young man into a world that forms him and gives him a place in it. To a girl that world is closed, so her development turns inward – delayed, cut short, or ended by marriage rather than by a calling. Growing up is then not the winning of a place but the discovery of how small the allotted one is.",
+          pl:"Klasyczna powieść o dojrzewaniu wysyła młodego mężczyznę w świat, który go formuje i wyznacza mu miejsce. Przed dziewczyną ten świat jest zamknięty, więc jej rozwój kieruje się do wewnątrz – bywa opóźniony, urwany albo zakończony małżeństwem zamiast powołaniem. Dorastanie okazuje się wtedy nie zdobywaniem miejsca, tylko odkryciem, jak małe zostało jej wyznaczone."},
     origin:{en:"Elizabeth Abel, Marianne Hirsch and Elizabeth Langland, the collection *The Voyage In: Fictions of Female Development*, 1983.",
             pl:"Elizabeth Abel, Marianne Hirsch i Elizabeth Langland, tom zbiorowy „The Voyage In: Fictions of Female Development”, 1983."}},
   "own-room":{
     chip:{en:"a room of one's own", pl:"własny pokój"},
     lead:{en:"conditions, not talent", pl:"warunki, nie talent"},
     sign:{en:"Virginia Woolf, 1929", pl:"Virginia Woolf, 1929"},
-    text:{en:"Writing a book takes money and a door that shuts; only after that does ability come into it. A woman as gifted as any man, but without schooling, without an income of her own and without an hour nobody interrupts, writes nothing and no one hears of it. The scarce thing is rarely the talent — it is the conditions in which the talent can be used.",
+    text:{en:"Writing a book takes money and a door that shuts; only after that does ability come into it. A woman as gifted as any man, but without schooling, without an income of her own and without an hour nobody interrupts, writes nothing and no one hears of it. The scarce thing is rarely the talent – it is the conditions in which the talent can be used.",
           pl:"Do napisania książki potrzeba pieniędzy i drzwi, które da się zamknąć; dopiero potem zaczyna się rozmowa o zdolnościach. Kobieta równie utalentowana jak mężczyzna, ale bez szkoły, bez własnego dochodu i bez godziny, w której nikt jej nie przerywa, nie napisze nic i nikt się o tym nie dowie. Brakuje zwykle nie talentu, tylko warunków, w których da się go użyć."},
     origin:{en:"Virginia Woolf, *A Room of One's Own*, 1929. The book grew out of lectures given the previous year at two women's colleges in Cambridge.",
             pl:"Virginia Woolf, „A Room of One's Own”, 1929, po polsku „Własny pokój”. Książka wyrosła z wykładów wygłoszonych rok wcześniej w dwóch kolegiach kobiecych w Cambridge."}},
@@ -256,8 +256,8 @@ const MOTIFS = {
     chip:{en:"race, class, gender", pl:"rasa, klasa, płeć"},
     lead:{en:"harm at the crossing", pl:"krzywda na skrzyżowaniu"},
     sign:{en:"Kimberlé Crenshaw, 1989", pl:"Kimberlé Crenshaw, 1989"},
-    text:{en:"Race, class and gender are not three separate matters that can be taken one at a time. When an institution recognises only one of them at once, the harm arising where they cross becomes invisible to it — not because it is absent but because there is no column for it. Hence the image of the crossing: it strikes from several directions and no one can say which car did it.",
-          pl:"Rasa, klasa i płeć nie są trzema osobnymi sprawami, które da się rozpatrzyć po kolei. Kiedy instytucja rozpoznaje tylko jedną naraz, krzywda powstająca na ich przecięciu staje się dla niej niewidoczna — nie dlatego, że jej nie ma, tylko dlatego, że nie ma na nią rubryki. Stąd obraz skrzyżowania: uderza z kilku stron i nie sposób wskazać, który samochód to zrobił."},
+    text:{en:"Race, class and gender are not three separate matters that can be taken one at a time. When an institution recognises only one of them at once, the harm arising where they cross becomes invisible to it – not because it is absent but because there is no column for it. Hence the image of the crossing: it strikes from several directions and no one can say which car did it.",
+          pl:"Rasa, klasa i płeć nie są trzema osobnymi sprawami, które da się rozpatrzyć po kolei. Kiedy instytucja rozpoznaje tylko jedną naraz, krzywda powstająca na ich przecięciu staje się dla niej niewidoczna – nie dlatego, że jej nie ma, tylko dlatego, że nie ma na nią rubryki. Stąd obraz skrzyżowania: uderza z kilku stron i nie sposób wskazać, który samochód to zrobił."},
     origin:{en:"Kimberlé Crenshaw, in a law article published in the *University of Chicago Legal Forum* in 1989. The concept came out of court cases, not literary theory.",
             pl:"Kimberlé Crenshaw, artykuł prawniczy ogłoszony w „University of Chicago Legal Forum” w 1989 roku. Pojęcie powstało z analizy spraw sądowych, nie z teorii literatury."}},
   "angel-in-house":{
@@ -272,10 +272,10 @@ const MOTIFS = {
     chip:{en:"who is looking", pl:"kto patrzy"},
     lead:{en:"looking is power", pl:"władza patrzenia"},
     sign:{en:"Laura Mulvey, 1975", pl:"Laura Mulvey, 1975"},
-    text:{en:"Looking is not a neutral act here — it is a position from which some judge and others are judged. Whoever looks decides what the thing looked at means; whoever is looked at learns about herself from someone else's face. What matters is not only who is shown but through whose eyes, and what happens when that position changes hands.",
-          pl:"Patrzenie nie jest tu czynnością obojętną — jest pozycją, z której jedni oceniają, a drudzy są oceniani. Kto patrzy, decyduje, co znaczy to, na co patrzy; kto jest oglądany, dowiaduje się o sobie z cudzej miny. Liczy się więc nie tylko, kogo się przedstawia, ale też czyimi oczami — i co się dzieje, kiedy ta pozycja zmienia właściciela."},
+    text:{en:"Looking is not a neutral act here – it is a position from which some judge and others are judged. Whoever looks decides what the thing looked at means; whoever is looked at learns about herself from someone else's face. What matters is not only who is shown but through whose eyes, and what happens when that position changes hands.",
+          pl:"Patrzenie nie jest tu czynnością obojętną – jest pozycją, z której jedni oceniają, a drudzy są oceniani. Kto patrzy, decyduje, co znaczy to, na co patrzy; kto jest oglądany, dowiaduje się o sobie z cudzej miny. Liczy się więc nie tylko, kogo się przedstawia, ale też czyimi oczami – i co się dzieje, kiedy ta pozycja zmienia właściciela."},
     origin:{en:"Laura Mulvey, in the essay \"Visual Pleasure and Narrative Cinema\", published in *Screen* in 1975. Written about cinema rather than the novel; it was carried into literary criticism later.",
-            pl:"Laura Mulvey, esej „Visual Pleasure and Narrative Cinema”, ogłoszony w piśmie „Screen” w 1975 roku. Napisany o kinie, nie o powieści — do literatury przeniesiono go później."}},
+            pl:"Laura Mulvey, esej „Visual Pleasure and Narrative Cinema”, ogłoszony w piśmie „Screen” w 1975 roku. Napisany o kinie, nie o powieści – do literatury przeniesiono go później."}},
   "womens-friendship":{
     chip:{en:"women's friendship", pl:"kobieca przyjaźń"},
     lead:{en:"the axis, not the backdrop", pl:"oś, a nie tło"},
@@ -289,7 +289,7 @@ const MOTIFS = {
     lead:{en:"gesture, clothing, voice", pl:"gest, ubranie, głos"},
     sign:{en:"Judith Butler, 1990; Candace West and Don Zimmerman, 1987", pl:"Judith Butler, 1990; Candace West i Don Zimmerman, 1987"},
     text:{en:"Gender shows up here not as something held inside but as something done daily: how one sits, what one puts on, in what tone one speaks. Repeated without end it looks like nature though it is practice, and no true self stands behind the repetition, pretending. It is clearest when the repetition falters or runs differently from what those around expect.",
-          pl:"Płeć pokazuje się tu nie jako coś, co się ma w środku, tylko jako to, co się codziennie robi: jak się siedzi, co się wkłada, jakim tonem się mówi. Powtarzane bez końca, wygląda na naturę, choć jest wyćwiczone — i za tym powtarzaniem nie stoi żadne prawdziwe „ja”, które by udawało. Widać to najlepiej wtedy, gdy powtórzenie się zacina albo idzie inaczej, niż otoczenie zakłada."},
+          pl:"Płeć pokazuje się tu nie jako coś, co się ma w środku, tylko jako to, co się codziennie robi: jak się siedzi, co się wkłada, jakim tonem się mówi. Powtarzane bez końca, wygląda na naturę, choć jest wyćwiczone – i za tym powtarzaniem nie stoi żadne prawdziwe „ja”, które by udawało. Widać to najlepiej wtedy, gdy powtórzenie się zacina albo idzie inaczej, niż otoczenie zakłada."},
     origin:{en:"Judith Butler, *Gender Trouble*, 1990. Three years earlier Candace West and Don Zimmerman had described the same thing from sociology in \"Doing Gender\", *Gender & Society*, 1987.",
             pl:"Judith Butler, „Gender Trouble”, 1990, po polsku „Uwikłani w płeć”. Trzy lata wcześniej to samo opisali od strony socjologii Candace West i Don Zimmerman w artykule „Doing Gender” w piśmie „Gender & Society”, 1987."}},
   "who-speaks":{
@@ -596,7 +596,7 @@ const sortBtn = document.getElementById("sortBtn"),
 
 /* A menu button: the trigger says a menu hangs off it, the panel is a menu, and
    each option is one choice out of a set. That is what makes aria-checked the
-   right attribute here — it belongs to a radio item, not to a list option.
+   right attribute here – it belongs to a radio item, not to a list option.
    The role also promises keyboard behaviour, so the keyboard has to deliver it:
    arrows walk the options, Home and End reach the ends, Escape closes and hands
    focus back to the trigger. */
@@ -791,7 +791,7 @@ const sheetOpen = ()=>document.body.classList.contains("fsheet");
    few hundred pixels out of the document and dropping it puts them back. Left
    alone, that slides the whole list under the reader's thumb. Anchor on the
    grid, apply the change in a single frame, then undo the difference by the same
-   amount — from the reader's side nothing moves but the sheet. */
+   amount – from the reader's side nothing moves but the sheet. */
 function keepListStill(mutate){
   const before = gridEl.getBoundingClientRect().top;
   filtersEl.classList.add("no-anim");
@@ -854,11 +854,11 @@ window.addEventListener("scroll", ()=>{
 
 fsheetBg.onclick = closeFilterSheet;
 document.getElementById("fsheetClose").onclick = closeFilterSheet;
-/* sorting and filtering both want the space above the bar — one at a time */
+/* sorting and filtering both want the space above the bar – one at a time */
 sortBtn.addEventListener("click", ()=>{ if (isMobile()) closeFilterSheet(); });
 
 /* The bars are the page's bottom edge on mobile, so the clearance underneath the
-   content has to match them exactly — measured, not guessed, because the label
+   content has to match them exactly – measured, not guessed, because the label
    length and the device safe area both change the height. */
 function measureBars(){
   const bar = document.getElementById("shopbar");
@@ -1004,7 +1004,7 @@ function render(rebuildChips = true){
 
 /* ---------------- packshot open transition ---------------- */
 /* Both the grid tile and the product tile are the same 4/5 box with the cover at 62% width,
-   so we can zoom ONE box uniformly (same scale on both axes) — no stretching. */
+   so we can zoom ONE box uniformly (same scale on both axes) – no stretching. */
 let openFrom = null;   // { rect, node }
 const gridEl = document.getElementById("grid");
 function captureTile(e){
@@ -1056,7 +1056,7 @@ function playOpenTransition(){
   });
   document.body.appendChild(clone);
 
-  // uniform scale (boxes share the 4/5 ratio) — take the width ratio; height follows
+  // uniform scale (boxes share the 4/5 ratio) – take the width ratio; height follows
   const s  = to.width / from.rect.width;
   const dx = to.left - from.rect.left, dy = to.top - from.rect.top;
   const anim = clone.animate([
@@ -1067,7 +1067,7 @@ function playOpenTransition(){
   anim.onfinish = ()=>{
     ptile.style.visibility = "";
     if (info) info.style.visibility = "";
-    clone.remove();          // real tile is pixel-identical at this point — no reload/flash
+    clone.remove();          // real tile is pixel-identical at this point – no reload/flash
     revealInfo();
   };
 }
@@ -1502,7 +1502,7 @@ function fieldError(input){
   return rule.re && !rule.re.test(v) ? T()[rule.err] : "";
 }
 /* The message goes to the element the control already points at through
-   aria-describedby, so a container holding two controls — prefix and number —
+   aria-describedby, so a container holding two controls – prefix and number –
    writes each message under its own field. */
 function markField(input, msg){
   const out = document.getElementById(input.getAttribute("aria-describedby"));
@@ -1943,8 +1943,8 @@ function dsVal(name){
   return getComputedStyle(host).getPropertyValue(name).trim();
 }
 /* Both the palette and what each colour feeds are discovered in :root. Typed out
-   beside the table they went stale twice over &mdash; once for the scrim, once for
-   the measure tint &mdash; because adding a semantic token does not remind anyone to
+   beside the table they went stale twice over &ndash; once for the scrim, once for
+   the measure tint &ndash; because adding a semantic token does not remind anyone to
    come back and amend a list. */
 const DS_PRIMITIVE = /^--nu-(?:white|grey|red|burgundy|gold)/;
 const DS_SEMANTIC  = /^--nu-(?:bg|fg|border)-/;
@@ -2003,7 +2003,7 @@ function dsContrast(fg, bg){
 }
 function dsContrastCell(fg, bg){
   const c = dsContrast(fg, bg);
-  if (!c) return "&mdash;";
+  if (!c) return "&ndash;";
   const verdict = c.pass ? "AA" : L("below AA","poniżej AA");
   const colour = c.pass ? "" : ` style="color:var(--nu-fg-alert)"`;
   return `${c.ratio}:1 <span${colour}>${verdict}</span>`;
@@ -2073,7 +2073,7 @@ let DS_DECLS = null;
    reader who meets --ds-font-mono in another tab has to find it here. The built
    shop inlines the sheet in a <style>, so reading the text is enough; served
    from a <link> there is no text to read, and the CSSOM has to be asked
-   instead. Order matters — the docs list a scale in the order it is declared,
+   instead. Order matters – the docs list a scale in the order it is declared,
    not in an order repeated here. */
 function dsRootDecls(){
   if (DS_DECLS) return DS_DECLS;
@@ -2105,7 +2105,7 @@ function dsRootDecls(){
   return DS_DECLS;
 }
 /* Every token in :root, sorted into groups by the prefix it carries. Names and
-   order come from the sheet, so a token added there shows up here on its own —
+   order come from the sheet, so a token added there shows up here on its own –
    and one whose prefix matches nothing lands in a group of its own rather than
    disappearing, because a silently dropped token is exactly what this table
    exists to prevent. */
@@ -2136,13 +2136,13 @@ const DS_TOKEN_GROUPS = [
    other tabs work anywhere. Listing them all is the hard part, because it needs
    the names, and where they come from depends on how the page was opened:
 
-   1. the stylesheet inlined in a <style> — the built page. Keeps the order the
+   1. the stylesheet inlined in a <style> – the built page. Keeps the order the
       sheet declares them in and says what each one is built from.
-   2. the CSSOM — the folder served over http. Same names, same order.
+   2. the CSSOM – the folder served over http. Same names, same order.
    A stylesheet arriving through a <link> from a local file is readable by
    neither: the browser treats it as opaque. Enumerating the computed style
    looks like a third way out and is not taken, because browsers differ in what
-   they expose there — a list that is complete in one browser and short in
+   they expose there – a list that is complete in one browser and short in
    another is worse in a tab whose whole point is completeness. When the names
    cannot be read the tab says so instead of printing a confident number. */
 function dsTokenNames(){
@@ -2205,7 +2205,7 @@ function dsDecl(token){
 /* The scale is discovered in the stylesheet rather than listed here a second
    time: whatever :root declares as --nu-space-* is what the docs show, in the
    order it is declared. Names carry no position, so a step can be dropped or
-   renamed without renumbering anything — only its note is looked up, and a step
+   renamed without renumbering anything – only its note is looked up, and a step
    with no note says so instead of quietly vanishing. */
 /* The three curves CSS names with a keyword, written here as the numbers the
    specification gives them. Ours come from the sheet instead. */
@@ -2265,7 +2265,7 @@ function dsMotionSteps(){
 function dsSpaceSteps(){
   /* A Map, not an object: some step names are still bare numbers, and object
      keys that look like integers are iterated before the rest whatever order
-     they were written in — which would print the scale out of order whenever
+     they were written in – which would print the scale out of order whenever
      the names have to come from here. */
   /* Two answers per step, because a step answers two different questions:
      how much air at an element's own edge, and how far apart two elements sit.
@@ -2292,7 +2292,7 @@ function dsSpaceSteps(){
   const P = "--nu-space-";
   /* Names come from the sheet when its text can be reached, so a step added in
      CSS shows up here on its own. Served from a <link> there is nothing to read
-     back — and the scale must still render, so the notes supply the names then.
+     back – and the scale must still render, so the notes supply the names then.
      Values always come from the computed style, which works either way. */
   const fromSheet = Object.keys(dsRootDecls()).filter(n => n.startsWith(P));
   const names = fromSheet.length ? fromSheet : [...notes.keys()].map(k => P + k);
@@ -2362,7 +2362,7 @@ function dsMeasure(root){
 }
 /* Same contract as the spacing scale: the size printed beside each specimen is
    asked of the stylesheet, and the specimen itself is set from the same token,
-   so the two cannot disagree. Every style on a specimen goes through a token —
+   so the two cannot disagree. Every style on a specimen goes through a token –
    a literal here would be a value the shop has no way of honouring. */
 /* The nine styles read back from their own declarations and split into the four
    properties the shorthand packs, so the table cannot describe a style the
@@ -2730,7 +2730,7 @@ const DS_SECTIONS = [
         <div class="ds-face">
           <div class="ds-face-head"><span class="name">${token}</span></div>
           <div class="ds-face-aa" style="font-family:var(${token})">Aa</div>
-          <div class="ds-face-set" style="font-family:var(${token})">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz &#260;&#262;&#280;&#321;&#323;&#211;&#346;&#377;&#379; &#261;&#263;&#281;&#322;&#324;&#243;&#347;&#378;&#380; 0123456789 , . ; : ! ? &bdquo;&rdquo; &mdash; &ndash; z&#322; &euro;</div>
+          <div class="ds-face-set" style="font-family:var(${token})">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz &#260;&#262;&#280;&#321;&#323;&#211;&#346;&#377;&#379; &#261;&#263;&#281;&#322;&#324;&#243;&#347;&#378;&#380; 0123456789 , . ; : ! ? &bdquo;&rdquo; &ndash; &ndash; z&#322; &euro;</div>
         </div>`).join("")}
     </div>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
@@ -2937,7 +2937,7 @@ const DS_SECTIONS = [
       "Jeden komponent zwykle zużywa kilka stopni naraz, a cytat na stronie produktu zużywa trzy. Okaz poniżej to komponent wzięty ze sklepu, a każda odległość w tabeli jest z niego odczytana &ndash; zmień style cytatu, a wiersze pójdą za nim.")}</p>
     <div class="demo on-page" style="display:block">
       <div class="ds-eg">
-        <p class="p-quote">${L("There is always the other side, always.","Zawsze jest druga strona, zawsze.")}<span class="q-by"><span class="q-dash">&mdash;</span> ${L("the narrator","narratorka")}</span></p>
+        <p class="p-quote">${L("There is always the other side, always.","Zawsze jest druga strona, zawsze.")}<span class="q-by"><span class="q-dash">&ndash;</span> ${L("the narrator","narratorka")}</span></p>
         <p class="p-desc">${L("The next block on the page.","Następny blok na stronie.")}</p>
       </div>
     </div>
@@ -3778,7 +3778,7 @@ const DS_SECTIONS = [
       "Sklep jest w pełni dwujęzyczny (PL / EN) i dwuwalutowy (PLN / EUR). Żaden napis nie zostaje w interfejsie w postaci wpisanej w znacznikach: wszystkie przechodzą przez <code>I18N</code> przy starcie i przy każdej zmianie języka. Ta dokumentacja stosuje tę samą zasadę.")}</p>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Book copy","Teksty książek")}</td><td>${L("Plain hyphens, never em dashes","Zwykłe myślniki, nigdy długie")}</td></tr>
-      <tr><td>${L("Quote attribution","Podpis pod cytatem")}</td><td>${L("Em dash + speaker (&ldquo;&mdash;&nbsp;Offred&rdquo;), in <code>--nu-fg-secondary</code> so the rule does not outweigh the type","Długi myślnik + postać („&mdash;&nbsp;Offred”), w kolorze <code>--nu-fg-secondary</code>, żeby kreska nie przeważyła nad tekstem")}</td></tr>
+      <tr><td>${L("Quote attribution","Podpis pod cytatem")}</td><td>${L("Em dash + speaker (&ldquo;&ndash;&nbsp;Offred&rdquo;), in <code>--nu-fg-secondary</code> so the rule does not outweigh the type","Długi myślnik + postać („&ndash;&nbsp;Offred”), w kolorze <code>--nu-fg-secondary</code>, żeby kreska nie przeważyła nad tekstem")}</td></tr>
       <tr><td>${L("Prices","Ceny")}</td><td>${L("Tabular numerals. PLN with a comma (59,90&nbsp;z&#322;), EUR with a dot (&euro;14.00)","Cyfry tabelaryczne. PLN z przecinkiem (59,90&nbsp;z&#322;), EUR z kropką (&euro;14.00)")}</td></tr>
       <tr><td>${L("Filter counts","Liczniki filtrów")}</td><td>${L("Always reflect the current combination of other filters; options that would return zero are disabled","Zawsze odzwierciedlają bieżącą kombinację pozostałych filtrów; opcje bez wyników są wyłączone")}</td></tr>
       <tr><td>${L("Empty state","Stan pusty")}</td><td>${L(

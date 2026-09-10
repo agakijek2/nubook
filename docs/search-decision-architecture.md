@@ -1,4 +1,4 @@
-# Step 01 — Catalogue search
+# Step 01 – Catalogue search
 
 Decision architecture, written after the fact. Each node is one question the build
 had to answer, the option that was on the table, and what was chosen.
@@ -13,7 +13,7 @@ A reader who arrives with a title in mind should not have to browse for it. The
 hypothesis is that a shop which answers a typed title starts more carts, and that
 those carts are worth more, because the reader who names a book is closer to
 buying than the reader who is looking around. That the header carried a magnifier
-that did nothing was not a reason to build anything — it was an artefact of the
+that did nothing was not a reason to build anything – it was an artefact of the
 mockup, and it was removed rather than justified.
 
 ---
@@ -25,7 +25,7 @@ already narrow it by genre, tag and edition language.
 
 **Chosen: build it.**
 Not for this catalogue but for the behaviour it establishes. Every later step of
-the roadmap — a title the shop does not stock, a pasted quotation, a theme — is
+the roadmap – a title the shop does not stock, a pasted quotation, a theme – is
 a field the reader types into. Step 01 is the field; the steps after it change
 what happens to what was typed.
 
@@ -37,7 +37,7 @@ what happens to what was typed.
 favourites, account and cart. Or a visible field in the bar over the grid.
 
 **Chosen: in the bar, next to filters and sorting.**
-Those two controls do exactly what search does — narrow the same list. The header
+Those two controls do exactly what search does – narrow the same list. The header
 holds controls about the reader: who they are, what they saved, what they are
 buying. Search is not about the reader, so it does not belong there.
 
@@ -49,7 +49,7 @@ hiding it behind a click.
 
 ## 03 · What does the field look like?
 
-**On the table:** the boxed field the checkout already uses — four borders, own
+**On the table:** the boxed field the checkout already uses – four borders, own
 ground, square corners.
 
 **Chosen: the lower edge only, and no ground.**
@@ -59,7 +59,7 @@ the underline the chips carry, so the bar speaks in a single hairline language
 rather than two.
 
 **Consequence:** `.input` gained a second variant, `.in-bar`, and the design system
-now documents the field as two variants separated by where it stands — a box
+now documents the field as two variants separated by where it stands – a box
 inside a form, a hairline on a bar.
 
 ---
@@ -83,7 +83,7 @@ bar has no width to share, so the field takes a row of its own.
 **Chosen: the existing border goes to full strength.**
 A ring drawn inside a box that already has a border reads as a second border. The
 mark appears on a click as well as on arriving by keyboard, because entering a
-field is followed by typing — unlike a button, where a click needs no aftermath.
+field is followed by typing – unlike a button, where a click needs no aftermath.
 
 ---
 
@@ -115,8 +115,8 @@ does not have.
 
 ## Built, then removed
 
-The placeholder typed itself out through three phrases — *search by title*,
-*search by author*, *search by title or author* — and settled on the last. It
+The placeholder typed itself out through three phrases – *search by title*,
+*search by author*, *search by title or author* – and settled on the last. It
 demonstrated the field's range to a reader who had not asked, and it forced the
 accessible name to stay still while the visible text moved, so the field had two
 names for a few seconds. Removed. The field now says the true thing from the
@@ -140,5 +140,5 @@ keeping in step with the rest of the system.
 - Share of sessions that use the field at all.
 - Carts started after a search, against carts started after browsing.
 - Average value of the two kinds of cart.
-- **Queries that return nothing** — the most useful of the four, because it is a
+- **Queries that return nothing** – the most useful of the four, because it is a
   shortlist of what readers came for and the shop does not stock.
