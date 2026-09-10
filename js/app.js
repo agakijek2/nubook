@@ -1896,10 +1896,27 @@ function bsHide(){
   bsShut();
   bsEl.hidden = true;
 }
+/* The mark beats twice whenever something in the panel opens. Purely decorative:
+   the change it accompanies is already announced by the panel's own live region,
+   so nothing here is a reader's only notice of anything.
+
+   Reading offsetWidth between removing and adding the class is what restarts an
+   animation already running - the browser recomputes layout at that point and
+   treats the second class as a new start rather than a continuation. Without it
+   a second click inside half a second does nothing at all. */
+function bsThink(){
+  const dot = bsAvaEl.querySelector(".bs-dot");
+  if (!dot) return;
+  dot.classList.remove("is-thinking");
+  void dot.offsetWidth;
+  dot.classList.add("is-thinking");
+}
+
 function bsShow(){
   bsFill();
   bsPanel.hidden = false;
   bsAvaEl.setAttribute("aria-expanded", "true");
+  bsThink();
 }
 
 function bsFill(){
@@ -1943,6 +1960,7 @@ function bsPick(i){
     box.hidden = !on;
     box.innerHTML = on ? offer[n].text[LANG] : "";
   });
+  if (!open) bsThink();
 }
 
 function bsToggle(){
@@ -1950,6 +1968,8 @@ function bsToggle(){
   bsMoreEl.setAttribute("aria-expanded", String(open));
   bsListEl.hidden = !open;
   document.getElementById("bsMoreLbl").textContent = open ? T().bsLess : T().bsMore;
+  /* Only on the way out. Putting something away is not work. */
+  if (open) bsThink();
 }
 
 /* The one place that decides she appears at all. */
