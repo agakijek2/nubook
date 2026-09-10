@@ -1300,8 +1300,11 @@
        page once the footer arrives. --bs-lift is how much of the footer is on
        screen, measured on scroll: at the bottom of a view she stands on the last
        line of content instead of on the colophon. */
+    /* Named, because the panel above has to subtract it to work out how tall it
+       may grow, and the value differs between the wide window and the phone. */
+    --bs-bottom:calc(var(--nu-space-medium) + var(--bs-lift, 0px));
     position:fixed;right:var(--nu-space-medium);z-index:75;
-    bottom:calc(var(--nu-space-medium) + var(--bs-lift, 0px));
+    bottom:var(--bs-bottom);
     /* The mark keeps the corner and the offer opens upward from it, the way a
        speech bubble stands over whoever is speaking. Beside it, the panel pushed
        the mark off the corner every time it appeared. */
@@ -1313,6 +1316,17 @@
   .bs-panel{
     position:relative;
     max-width:34ch;
+    /* It never grows past the window. Anchored at the bottom, a panel taller than
+       the viewport climbs out through the top edge and takes its own close button
+       with it. What is left over after the mark, the gap under it and a step of
+       air at the top is all it may have; the list of proposals takes the overflow
+       and scrolls, so the offer and the way out stay put.
+
+       dvh rather than vh on a phone, where the address bar is part of the height
+       and vh is the tallest the window ever gets rather than the current one. */
+    max-height:calc(100vh - var(--bs-bottom) - var(--nu-space-micro) - var(--nu-avatar-size-sm) - var(--nu-space-medium));
+    max-height:calc(100dvh - var(--bs-bottom) - var(--nu-space-micro) - var(--nu-avatar-size-sm) - var(--nu-space-medium));
+    display:flex;flex-direction:column;min-height:0;
     background:var(--nu-bg-primary);
     border:1px solid var(--nu-border-neutral);
     /* One step on all four sides. The panel row of the spacing table asks for
@@ -1348,7 +1362,9 @@
      button keeps the same air below it either way, which is what made the closed
      and open states read differently before. */
   .bs-more{margin:var(--nu-space-micro) 0 0}
-  .bs-list{margin-top:var(--nu-space-small)}
+  /* The one part that gives way. Everything above it is the offer and the way
+     out, and both have to stay where the reader last saw them. */
+  .bs-list{margin-top:var(--nu-space-small);overflow-y:auto;min-height:0}
   /* One proposal: the cover, the title and what it costs. The same three things
      a cart line shows, at the same thumbnail size, because a reader deciding
      between two books wants exactly what she wants when deciding to keep one. */
@@ -1389,17 +1405,19 @@
   .bs-b-meta{display:block;margin-top:var(--nu-space-nano);color:var(--nu-fg-secondary);font-variant-numeric:tabular-nums}
   /* What she says about one book, once it has been chosen. Its own scroll,
      because this is the one part whose length the shop does not control. */
-  /* A margin, not padding: padding sits inside the scrolling area and travels
-     with the text, so the first line ended up against the button the moment
-     anything was scrolled. Outside the box the gap stays put, and the text is cut
-     off at it rather than at the control above.
+  /* A margin, not padding, and it stays one whatever else changes here: padding
+     would sit inside a scrolling area and travel with the text, putting the first
+     line against the button the moment anything moved.
+
+     No scroll of its own. The list above is the one place that scrolls, because
+     two scrolling areas one inside the other in a panel this narrow leaves the
+     reader guessing which one her wheel is turning.
 
      No air underneath: the block around it already ends the proposal, and two
      spacings meaning the same thing add up to one that reads as a mistake. */
   .bs-text{
     font:var(--nu-type-body-m);color:var(--nu-fg-secondary);
     margin-top:var(--nu-space-micro);
-    max-height:44vh;overflow-y:auto;
   }
   .bs-text p{margin-bottom:var(--nu-space-micro)}
   .bs-text > :last-child{margin-bottom:0}
@@ -1434,11 +1452,20 @@
     /* The corner is where the shop bar lives on a phone, so she sits on top of
        it rather than over it, and spans the width instead of floating in a
        corner there is no room for. */
+    /* The corner is where the shop bar lives on a phone, but only on the views
+       that have one. The product page has none, so the clearance is asked for by
+       the same class that reserves room for the bar everywhere else, instead of
+       being assumed - a mark hovering above an absent bar reads as misplaced. */
     .bs{
       left:var(--nu-space-micro);right:var(--nu-space-micro);
-      bottom:calc(var(--nu-mobar-height) + var(--nu-space-micro) + var(--bs-lift, 0px));
+      --bs-bottom:calc(var(--nu-space-micro) + var(--bs-lift, 0px));
     }
-    .bs-panel{max-width:none;flex:1;min-width:0}
+    body.has-mobar .bs{
+      --bs-bottom:calc(var(--nu-mobar-height) + var(--nu-space-micro) + var(--bs-lift, 0px));
+    }
+    /* Full width here, and it has to be asked for: the column aligns its children
+       to the right edge, which would otherwise shrink the panel to its text. */
+    .bs-panel{max-width:none;width:100%;min-width:0}
   }
 
   /* ---------- site footer ---------- */
