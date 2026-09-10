@@ -1070,7 +1070,13 @@
     .ci{transition:none}
   }
   .ci-cover{width:var(--nu-thumb-size-sm);flex-shrink:0}
-  .ci-cover .cover{width:100%;max-width:none;box-shadow:0 2px 8px color-mix(in srgb, var(--nu-bg-shadow) 18%, transparent)}
+  /* A cover standing at thumbnail size takes a thumbnail's shadow. The packshot
+     casts 14px down with 22px of blur, which is a shelf's worth of depth under a
+     44px picture: it swallows the gap beneath and crowds whatever stands there.
+     Two places show a cover this small - a cart line and the bookseller's
+     proposal - and they share one rule so the two cannot drift. */
+  .ci-cover .cover,
+  .bs-b-cover .cover{width:100%;max-width:none;box-shadow:0 2px 8px color-mix(in srgb, var(--nu-bg-shadow) 18%, transparent)}
   .ci-main{flex:1;min-width:0}
   .ci-title{display:block;line-height:var(--nu-line-snug);margin-bottom:var(--nu-space-nano)}
   .ci-price{color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-micro)}
@@ -1349,11 +1355,13 @@
   .bs-b-go{display:flex;gap:var(--nu-space-micro);align-items:flex-start;flex:1;min-width:0}
   .bs-b-go:hover .bs-b-title{border-bottom-color:var(--nu-border-primary)}
   .bs-b-go:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
-  /* No margin underneath: the block's own padding is what stands between this
-     control and the next hairline, and it is the same step. */
-  .bs-why{margin:var(--nu-space-micro) 0 0}
+  /* One step more above than below, and it is an optical correction rather than
+     an inconsistency: the cover overhead casts a shadow into the gap, so a
+     measured 8px reads as less than the 8px underneath, where nothing is falling
+     into it. Equal numbers would look unequal. No margin below - the block's own
+     padding is what stands between this control and the next hairline. */
+  .bs-why{margin:var(--nu-space-milli) 0 0}
   .bs-b-cover{width:var(--nu-thumb-size-sm);flex-shrink:0}
-  .bs-b-cover .cover{width:100%;max-width:none}
   .bs-b-main{flex:1;min-width:0}
   /* The title carries the underline, not the row: the mark belongs to the words
      the way it does on a ghost button, and the price underneath is not part of
