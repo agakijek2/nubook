@@ -1359,6 +1359,10 @@
   .bs-item{
     padding:var(--nu-space-small) 0;border-top:1px solid var(--nu-border-neutral);
   }
+  /* The last block has nothing under it but the panel's own edge, and that edge
+     already keeps a step. The same rule the toggle above follows: a control's air
+     underneath belongs to whatever it stands above, never to two things at once. */
+  .bs-item:last-child{padding-bottom:0}
   /* The cover and the title lead to the book, so they are one link: something
      that goes to an address is an <a>, and the reader gets a target the size of
      the thumbnail rather than the size of a word. */
