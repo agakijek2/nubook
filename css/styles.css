@@ -1313,6 +1313,10 @@
   /* Room for the panel to be as wide as it needs and no wider. A measure, not a
      spacing step: this is how long a line may run before it stops being easy to
      read, which the scale has nothing to say about. */
+  /* Two widths, because the panel holds two different things. Closed it is two
+     sentences, and a measure that long reads best narrow. Open it holds covers,
+     titles, prices and prose, all of which want room. The panel is anchored to
+     the right, so it grows leftward into the page rather than pushing the mark. */
   .bs-panel{
     position:relative;
     max-width:34ch;
@@ -1338,6 +1342,7 @@
     box-shadow:0 8px 24px color-mix(in srgb, var(--nu-bg-shadow) 8%, transparent);
     animation:bsIn var(--nu-motion-slow) var(--nu-ease-slide);
   }
+  .bs-panel:has(.bs-list:not([hidden])){max-width:46ch}
   @keyframes bsIn{from{opacity:0;transform:translateY(var(--nu-space-micro))}to{opacity:1;transform:none}}
   /* She arrives without travelling for a reader who asked for less motion: the
      panel still appears, it just stops sliding. */
@@ -1463,9 +1468,15 @@
     body.has-mobar .bs{
       --bs-bottom:calc(var(--nu-mobar-height) + var(--nu-space-micro) + var(--bs-lift, 0px));
     }
-    /* Full width here, and it has to be asked for: the column aligns its children
-       to the right edge, which would otherwise shrink the panel to its text. */
-    .bs-panel{max-width:none;width:100%;min-width:0}
+    /* Narrower here than the room allows, both closed and open. Edge to edge, an
+       offer stops reading as something said in the corner and starts reading as a
+       banner across the page. The two steps are smaller than on a wide window,
+       and the container's own edges cap them on a narrow phone.
+
+       The panel keeps to the right, above the mark, and everything inside it
+       stays flush left, exactly as on a wide window. */
+    .bs-panel{max-width:26ch;min-width:0}
+    .bs-panel:has(.bs-list:not([hidden])){max-width:34ch}
   }
 
   /* ---------- site footer ---------- */
