@@ -1315,7 +1315,12 @@
     max-width:34ch;
     background:var(--nu-bg-primary);
     border:1px solid var(--nu-border-neutral);
-    padding:var(--nu-space-milli) var(--nu-space-small);
+    /* One step on all four sides. The panel row of the spacing table asks for
+       --nu-space-medium, and that belongs to a drawer or an order summary; this
+       one is a third of a drawer's width and the same air would leave too narrow
+       a measure. The sort menu already sets the precedent for a floating panel
+       taking less than a docked one. */
+    padding:var(--nu-space-small);
     box-shadow:0 8px 24px color-mix(in srgb, var(--nu-bg-shadow) 8%, transparent);
     animation:bsIn var(--nu-motion-slow) var(--nu-ease-slide);
   }
@@ -1332,13 +1337,14 @@
   }
   /* Room for the close, so a two-line offer never runs under it. */
   .bs-say{padding-right:var(--nu-space-large)}
-  /* Both ghosts in this panel keep the same air above and below, and it is the
-     same value on all four sides. A control with more room on one side than the
-     other reads as belonging to whatever is nearest, and here the nearest thing
-     is a hairline. The list adds nothing of its own: the space under the button
-     is the button's, and the space under the hairline is the block's. */
-  .bs-more{margin:var(--nu-space-micro) 0}
-  .bs-list{margin-top:0}
+  /* The offer and its toggle are one block, laid out on the same step as a
+     proposal below. The margin is on top only, so the space underneath comes
+     from whatever the button turns out to be standing above: the panel's own
+     edge while the list is closed, the list's own margin while it is open. Both
+     are one step, so the button keeps the same air below it either way - which
+     is what made the closed and open states read differently before. */
+  .bs-more{margin:var(--nu-space-small) 0 0}
+  .bs-list{margin-top:var(--nu-space-small)}
   /* One proposal: the cover, the title and what it costs. The same three things
      a cart line shows, at the same thumbnail size, because a reader deciding
      between two books wants exactly what she wants when deciding to keep one. */
@@ -1347,7 +1353,7 @@
      rule and the air, so the last control in a proposal cannot end up leaning on
      the next proposal's divider. */
   .bs-item{
-    padding:var(--nu-space-micro) 0;border-top:1px solid var(--nu-border-neutral);
+    padding:var(--nu-space-small) 0;border-top:1px solid var(--nu-border-neutral);
   }
   /* The cover and the title lead to the book, so they are one link: something
      that goes to an address is an <a>, and the reader gets a target the size of
@@ -1355,12 +1361,13 @@
   .bs-b-go{display:flex;gap:var(--nu-space-micro);align-items:flex-start;flex:1;min-width:0}
   .bs-b-go:hover .bs-b-title{border-bottom-color:var(--nu-border-primary)}
   .bs-b-go:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
-  /* One step more above than below, and it is an optical correction rather than
-     an inconsistency: the cover overhead casts a shadow into the gap, so a
-     measured 8px reads as less than the 8px underneath, where nothing is falling
-     into it. Equal numbers would look unequal. No margin below - the block's own
-     padding is what stands between this control and the next hairline. */
-  .bs-why{margin:var(--nu-space-milli) 0 0}
+  /* The same step above as the block keeps below it, and no correction: the
+     thumbnail's shadow reaches ten pixels, which sits comfortably inside this
+     gap. It needed one while the cover was still carrying the packshot's shadow
+     and throwing twenty-six pixels into an eight-pixel space. No margin below -
+     the block's own padding is what stands between this control and the next
+     hairline. */
+  .bs-why{margin:var(--nu-space-small) 0 0}
   .bs-b-cover{width:var(--nu-thumb-size-sm);flex-shrink:0}
   .bs-b-main{flex:1;min-width:0}
   /* The title carries the underline, not the row: the mark belongs to the words
