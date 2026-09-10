@@ -212,13 +212,11 @@
     /* The starts of the mosaic are spread over this, not the length of one card. */
     --nu-motion-stagger:900ms;
     /* Neither is it a duration of movement: this is how long a confirmation
-       stays on screen once the movement has finished. */
+       stays on screen once the movement has finished, and how long a reader is
+       left alone with a view before anything speaks to her unasked. Two
+       waits rather than two names: both are the pause the shop keeps around
+       something the reader did not ask to see. */
     --nu-motion-hold:1800ms;
-    /* Nor is this one. It is how long a reader is left alone with a view before
-       anything speaks to her unasked - long enough to have looked at the page
-       and decided for herself, short enough that the offer still belongs to what
-       she is reading. */
-    --nu-motion-settle:5000ms;
     /* Two curves that are decisions rather than defaults: a panel sliding into
        place, and a tile growing into a packshot. Plain ease and linear stay
        keywords. */
@@ -1292,7 +1290,12 @@
      drawers: everything the reader opened on purpose outranks something that
      spoke without being asked. */
   .bs{
-    position:fixed;right:var(--nu-space-medium);bottom:var(--nu-space-medium);z-index:75;
+    /* The corner belongs to the reader while the page is under it, and to the
+       page once the footer arrives. --bs-lift is how much of the footer is on
+       screen, measured on scroll: at the bottom of a view she stands on the last
+       line of content instead of on the colophon. */
+    position:fixed;right:var(--nu-space-medium);z-index:75;
+    bottom:calc(var(--nu-space-medium) + var(--bs-lift, 0px));
     /* The mark keeps the corner and the offer opens upward from it, the way a
        speech bubble stands over whoever is speaking. Beside it, the panel pushed
        the mark off the corner every time it appeared. */
@@ -1392,7 +1395,7 @@
        corner there is no room for. */
     .bs{
       left:var(--nu-space-micro);right:var(--nu-space-micro);
-      bottom:calc(var(--nu-mobar-height) + var(--nu-space-micro));
+      bottom:calc(var(--nu-mobar-height) + var(--nu-space-micro) + var(--bs-lift, 0px));
     }
     .bs-panel{max-width:none;flex:1;min-width:0}
   }

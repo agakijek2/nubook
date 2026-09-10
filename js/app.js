@@ -914,11 +914,26 @@ function syncFilterToggle(){
   const open = inlineFiltersInView() && !shopEl.classList.contains("filters-hidden");
   filterToggle.setAttribute("aria-expanded", String(open));
 }
+/* How much of the footer is on screen. The bookseller is fixed to the corner of
+   the viewport, and the footer is the one thing that arrives underneath her with
+   a claim to it: it is the page's own last word, and a mark sitting on top of it
+   reads as a control that failed to get out of the way. She is lifted by exactly
+   the overlap, so she comes to rest on the last line of content.
+
+   Measured rather than watched for a threshold: an observer fires at the moments
+   it was told about, and this has to hold at every scroll position in between. */
+function liftOverFooter(){
+  const foot = document.getElementById("siteFoot");
+  const lift = foot && !foot.hidden
+    ? Math.max(0, window.innerHeight - foot.getBoundingClientRect().top)
+    : 0;
+  document.documentElement.style.setProperty("--bs-lift", Math.round(lift) + "px");
+}
 let syncPending = false;
 window.addEventListener("scroll", ()=>{
   if (syncPending) return;
   syncPending = true;
-  requestAnimationFrame(()=>{ syncPending = false; syncFilterToggle(); });
+  requestAnimationFrame(()=>{ syncPending = false; syncFilterToggle(); liftOverFooter(); });
 }, {passive:true});
 
 fsheetBg.onclick = closeFilterSheet;
@@ -944,6 +959,7 @@ window.addEventListener("resize", ()=>{
   if (!isMobile()) closeFilterSheet();
   measureBars();
   syncFilterToggle();
+  liftOverFooter();
   /* the example's marks are absolute boxes measured once, so they have to be
      taken again whenever the text they were measured against can reflow */
   if (!dsEl.hidden) dsHighlight(dsEl);
@@ -1946,6 +1962,9 @@ function bsSync(b){
   bsShut();
   bsFill();
   bsEl.hidden = false;
+  /* A view can open already scrolled to its foot, so the clearance is taken on
+     arrival rather than waiting for the reader to move. */
+  liftOverFooter();
   /* The mark arrives with the view; the offer waits. A reader who has just
      opened a page is reading it, and a shop that speaks into that moment is
      interrupting rather than helping. Only once per book, so returning to a
@@ -1953,7 +1972,7 @@ function bsSync(b){
   if (!bsSeen.has(b.id)){
     const id = b.id;
     bsTimer = setTimeout(() => { if (bsBook && bsBook.id === id){ bsSeen.add(id); bsShow(); } },
-                         motionMs("--nu-motion-settle"));
+                         motionMs("--nu-motion-hold"));
   }
 }
 
