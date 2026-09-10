@@ -1476,8 +1476,40 @@
     100%{transform:scale(1)}
   }
   .bs-dot.is-thinking{animation:bsThink var(--nu-motion-slower) ease-in-out}
+  /* A breath rather than a beat, and its own shape: two quick beats say something
+     just happened, and this has to say something is still happening. One swell
+     every --nu-motion-hold, which is about the rate a person breathes when they
+     are thinking rather than hurrying. */
+  @keyframes bsBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+  .bs-dot.is-working{animation:bsBreathe var(--nu-motion-hold) ease-in-out infinite}
+
+  /* Where the answer will be. Three rules of falling length, so the shape reads
+     as a paragraph rather than as a control, and no text at all: a placeholder
+     that says words would be a sentence nobody wrote. Marked aria-hidden and
+     paired with aria-busy on the box, so assistive technology is told the region
+     is being filled instead of being read three empty bars. */
+  .bs-sk{display:block}
+  .bs-sk span{
+    display:block;height:var(--nu-space-micro);
+    background:var(--nu-bg-secondary);
+    margin-bottom:var(--nu-space-micro);
+    animation:bsPend var(--nu-motion-slower) ease-in-out infinite alternate;
+  }
+  .bs-sk span:nth-child(1){width:100%}
+  .bs-sk span:nth-child(2){width:86%}
+  .bs-sk span:nth-child(3){width:62%;margin-bottom:0}
+  @keyframes bsPend{from{opacity:1}to{opacity:.45}}
+
+  /* One word at a time, and only while there is a real answer arriving to be
+     shown one word at a time. The stagger is the delivery, so nothing here
+     carries its own duration: the interval is the hold divided by the words. */
+  .bs-w{opacity:0}
+  .bs-w.is-in{opacity:1;transition:opacity var(--nu-motion-quick) ease}
+
   @media (prefers-reduced-motion:reduce){
-    .bs-dot.is-thinking{animation:none}
+    .bs-dot.is-thinking,.bs-dot.is-working,.bs-sk span{animation:none}
+    .bs-w{opacity:1}
+    .bs-w.is-in{transition:none}
   }
   @media (max-width:820px){
     /* The corner is where the shop bar lives on a phone, so she sits on top of

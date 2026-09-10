@@ -1949,6 +1949,71 @@ function bsFill(){
 }
 
 /* One book at a time: two open texts in a corner panel is a page, not an offer. */
+/* How long the shop waits before it can answer. Zero, because the answer about a
+   book on this shelf was written in advance and read before it shipped - there is
+   nothing to wait for, and making a reader wait for text that is already here
+   would be the shop performing work it is not doing.
+
+   The waiting state itself is real, built and tested, and it appears the moment
+   there is something to wait for. Step 08 asks a model about a title we do not
+   stock; that call takes time, and this is what will cover it. Until then it can
+   be seen and worked on by opening index.html?bs=slow, which is a tool rather
+   than a behaviour. */
+const BS_SLOW = /[?&]bs=slow\b/.test(location.search);
+const bsWait = () => BS_SLOW ? motionMs("--nu-motion-hold") : 0;
+const BS_SKELETON = '<span class="bs-sk" aria-hidden="true"><span></span><span></span><span></span></span>';
+let bsTypeTimer = null;
+
+/* Reveals prose one word at a time without touching its markup: the words are
+   found in the text nodes and wrapped where they stand, so paragraphs, lists and
+   emphasis arrive intact. Building the string up piece by piece would tear tags
+   in half. */
+function bsType(box, html){
+  box.innerHTML = html;
+  const words = [], texts = [];
+  const walk = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
+  while (walk.nextNode()) texts.push(walk.currentNode);
+  texts.forEach(node => {
+    const frag = document.createDocumentFragment();
+    node.nodeValue.split(/(\s+)/).forEach(part => {
+      if (!part) return;
+      if (/^\s+$/.test(part)) return frag.appendChild(document.createTextNode(part));
+      const s = document.createElement("span");
+      s.className = "bs-w"; s.textContent = part;
+      frag.appendChild(s); words.push(s);
+    });
+    node.parentNode.replaceChild(frag, node);
+  });
+  /* A fixed interval per word, not a fixed total. Spreading one duration over
+     however many words there are made a long passage arrive faster than a short
+     one, which is backwards - and it is not how text really arrives either, a
+     word at a time at a steady rate. --nu-motion-instant is the scale's name for
+     a change below the threshold at which it reads as movement, which is exactly
+     what one word appearing is. */
+  const per = motionMs("--nu-motion-instant");
+  let i = 0;
+  (function step(){
+    if (i >= words.length) return;
+    words[i++].classList.add("is-in");
+    bsTypeTimer = setTimeout(step, per);
+  })();
+}
+
+function bsDeliver(box, html){
+  clearTimeout(bsTypeTimer);
+  const wait = bsWait();
+  if (!wait){ box.removeAttribute("aria-busy"); box.innerHTML = html; return; }
+  box.setAttribute("aria-busy", "true");
+  box.innerHTML = BS_SKELETON;
+  const dot = bsAvaEl.querySelector(".bs-dot");
+  if (dot) dot.classList.add("is-working");
+  setTimeout(() => {
+    if (dot) dot.classList.remove("is-working");
+    box.removeAttribute("aria-busy");
+    bsType(box, html);
+  }, wait);
+}
+
 function bsPick(i){
   const offer = bsOffer(bsBook); if (!offer) return;
   const rows = [...bsListEl.querySelectorAll(".bs-why")];
@@ -1958,7 +2023,8 @@ function bsPick(i){
     r.setAttribute("aria-expanded", String(on));
     const box = document.getElementById("bsText" + n);
     box.hidden = !on;
-    box.innerHTML = on ? offer[n].text[LANG] : "";
+    if (on) bsDeliver(box, offer[n].text[LANG]);
+    else { box.innerHTML = ""; box.removeAttribute("aria-busy"); }
   });
   if (!open) bsThink();
 }
