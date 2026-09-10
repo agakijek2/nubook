@@ -1326,8 +1326,13 @@
   }
   /* Room for the close, so a two-line offer never runs under it. */
   .bs-say{padding-right:var(--nu-space-large)}
-  .bs-more{margin-top:var(--nu-space-micro)}
-  .bs-list{margin-top:var(--nu-space-milli)}
+  /* Both ghosts in this panel keep the same air above and below, and it is the
+     same value on all four sides. A control with more room on one side than the
+     other reads as belonging to whatever is nearest, and here the nearest thing
+     is a hairline. The list adds nothing of its own: the space under the button
+     is the button's, and the space under the hairline is the block's. */
+  .bs-more{margin:var(--nu-space-micro) 0}
+  .bs-list{margin-top:0}
   /* One proposal: the cover, the title and what it costs. The same three things
      a cart line shows, at the same thumbnail size, because a reader deciding
      between two books wants exactly what she wants when deciding to keep one. */
@@ -1344,7 +1349,9 @@
   .bs-b-go{display:flex;gap:var(--nu-space-micro);align-items:flex-start;flex:1;min-width:0}
   .bs-b-go:hover .bs-b-title{border-bottom-color:var(--nu-border-primary)}
   .bs-b-go:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
-  .bs-why{margin-top:var(--nu-space-nano)}
+  /* No margin underneath: the block's own padding is what stands between this
+     control and the next hairline, and it is the same step. */
+  .bs-why{margin:var(--nu-space-micro) 0 0}
   .bs-b-cover{width:var(--nu-thumb-size-sm);flex-shrink:0}
   .bs-b-cover .cover{width:100%;max-width:none}
   .bs-b-main{flex:1;min-width:0}
