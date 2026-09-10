@@ -1337,13 +1337,17 @@
   }
   /* Room for the close, so a two-line offer never runs under it. */
   .bs-say{padding-right:var(--nu-space-large)}
-  /* The offer and its toggle are one block, laid out on the same step as a
-     proposal below. The margin is on top only, so the space underneath comes
-     from whatever the button turns out to be standing above: the panel's own
-     edge while the list is closed, the list's own margin while it is open. Both
-     are one step, so the button keeps the same air below it either way - which
-     is what made the closed and open states read differently before. */
-  .bs-more{margin:var(--nu-space-small) 0 0}
+  /* Close to the sentence it acts on. The spacing table gives this step to a
+     thing and its own label, and the toggle belongs to the offer above it far
+     more than to the list below - proximity is what says so. The step below it
+     is the wider one, and the difference between the two is the grouping.
+
+     The margin is on top only, so the space underneath comes from whatever the
+     button turns out to be standing above: the panel's own edge while the list
+     is closed, the list's own margin while it is open. Both are one step, so the
+     button keeps the same air below it either way, which is what made the closed
+     and open states read differently before. */
+  .bs-more{margin:var(--nu-space-micro) 0 0}
   .bs-list{margin-top:var(--nu-space-small)}
   /* One proposal: the cover, the title and what it costs. The same three things
      a cart line shows, at the same thumbnail size, because a reader deciding
