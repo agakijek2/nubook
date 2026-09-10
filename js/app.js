@@ -1920,14 +1920,14 @@ function bsFill(){
     /* An offer she cannot act on is half an offer. The cover and the title lead
        to the book itself; the reason sits under them, behind a control of its
        own, because going somewhere and reading more are two different acts. */
-    return `<div class="bs-book">
+    return `<div class="bs-item">
         <a class="bs-b-go" href="#p${o.book.id}">
           <span class="bs-b-cover">${coverHTML(o.book)}</span>
           <span class="bs-b-main"><span class="bs-b-title">${titleOf(o.book)}</span><span class="bs-b-meta">${meta}</span></span>
         </a>
-      </div>
-      <button type="button" class="bs-why btn-ghost" aria-expanded="false" aria-controls="bsText${i}" onclick="bsPick(${i})"><span class="lbl">${t.bsWhy}</span></button>
-      <div class="bs-text" id="bsText${i}" hidden></div>`;
+        <button type="button" class="bs-why btn-ghost" aria-expanded="false" aria-controls="bsText${i}" onclick="bsPick(${i})"><span class="lbl">${t.bsWhy}</span></button>
+        <div class="bs-text" id="bsText${i}" hidden></div>
+      </div>`;
   }).join("");
 }
 

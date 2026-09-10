@@ -1331,8 +1331,11 @@
   /* One proposal: the cover, the title and what it costs. The same three things
      a cart line shows, at the same thumbnail size, because a reader deciding
      between two books wants exactly what she wants when deciding to keep one. */
-  .bs-book{
-    display:flex;gap:var(--nu-space-micro);align-items:flex-start;
+  /* One proposal is three things - the link, the reason and the reason's text -
+     and they are one block, not three siblings in a row. The wrapper carries the
+     rule and the air, so the last control in a proposal cannot end up leaning on
+     the next proposal's divider. */
+  .bs-item{
     padding:var(--nu-space-micro) 0;border-top:1px solid var(--nu-border-neutral);
   }
   /* The cover and the title lead to the book, so they are one link: something
@@ -1356,12 +1359,15 @@
   .bs-b-meta{display:block;margin-top:var(--nu-space-nano);color:var(--nu-fg-secondary);font-variant-numeric:tabular-nums}
   /* What she says about one book, once it has been chosen. Its own scroll,
      because this is the one part whose length the shop does not control. */
+  /* No air underneath: the block around it already ends the proposal, and two
+     spacings meaning the same thing add up to one that reads as a mistake. */
   .bs-text{
     font:var(--nu-type-body-m);color:var(--nu-fg-secondary);
-    padding:var(--nu-space-micro) 0 var(--nu-space-milli);
+    padding-top:var(--nu-space-micro);
     max-height:44vh;overflow-y:auto;
   }
   .bs-text p{margin-bottom:var(--nu-space-micro)}
+  .bs-text > :last-child{margin-bottom:0}
   .bs-text ul{margin:var(--nu-space-micro) 0;padding-left:var(--nu-space-small)}
   .bs-text li{margin-bottom:var(--nu-space-micro)}
   .bs-text strong{color:var(--nu-fg-primary)}
