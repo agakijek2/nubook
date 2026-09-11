@@ -2555,22 +2555,22 @@ function dsCurveGraph(spec){
    computed style. */
 function dsMotionSteps(){
   const notes = new Map([
-    ["instant", L("Short enough that the change does not read as movement, it simply happens. The filter column disappears within it, before the tiles start to spread.",
-                  "Tak krótki, że zmiana nie wygląda na ruch, tylko po prostu następuje. Kolumna filtrów znika w tym czasie, zanim kafle zaczną się rozsuwać.")],
-    ["quick",   L("An answer that lasts as long as the pointer stays: a button presses, a stepper cell fills, a link takes on its second colour, a label crossfades into the next one. The element does not leave its place.",
-                  "Odpowiedź, która trwa tyle, ile kursor nad elementem: przycisk się wciska, komórka steppera wypełnia się tłem, link przechodzi w drugi kolor, napis przechodzi w kolejny. Element nie zmienia położenia.")],
-    ["base",    L("A change that stays after the pointer leaves: a field keeps the border it took on being entered, an icon keeps its turn, a cart line goes for good.",
-                  "Zmiana, która zostaje po zdjęciu kursora: pole trzyma ramkę, którą przyjęło po wejściu w nie, ikona zostaje obrócona, pozycja koszyka odchodzi na dobre.")],
-    ["slow",    L("An element comes onto the screen or leaves it: either drawer, the filter panel, the dimmed backdrop behind them.",
-                  "Element wjeżdża na ekran albo z niego znika: każda z dwóch szuflad, panel filtrów, przyciemnione tło pod nimi.")],
-    ["slower",  L("The longest transitions, the ones covering a larger area: a tile growing into a packshot, and cards appearing in the grid.",
-                  "Najdłuższe przejścia, te obejmujące większy obszar: kafel powiększający się do packshotu i karty pojawiające się w siatce.")],
-    ["loop",    L("The one thing that repeats: the accent in the logo.",
-                  "Jedyna rzecz, która się powtarza: akcent w logo.")],
-    ["hold",    L("Nor is this one a duration of movement: it is how long a confirmation stays once the movement has finished &ndash; the word that answers the copy button, in the promotion bar and in this documentation.",
-                  "Ten też nie jest czasem ruchu: mówi, jak długo stoi potwierdzenie, kiedy ruch już się skończył &ndash; napis odpowiadający przyciskowi kopiowania, w belce promocyjnej i w tej dokumentacji.")],
-    ["stagger", L("This one does not set how long an animation lasts, but the window its starts are spread over: the mosaic cards begin one after another within it.",
-                  "Ten nie ustala, jak długo trwa animacja, tylko w jakim czasie rozkładają się jej starty: karty mozaiki ruszają jedna po drugiej właśnie w nim.")],
+    ["instant", L("Short enough that the change does not read as movement, it simply happens. This step carries whatever has to clear before something else can move, and it measures the gap when small changes follow one another.",
+                  "Tak krótki, że zmiana nie wygląda na ruch, tylko po prostu następuje. Tym stopniem znika to, co ma ustąpić, zanim ruszy się coś innego, i w nim odmierza się odstęp, gdy drobne zmiany idą jedna po drugiej.")],
+    ["quick",   L("The shortest step still read as a change. Only the look of the element changes: colour, border, shadow, opacity. It neither moves nor changes size.",
+                  "Najkrótszy stopień, który jeszcze czyta się jako zmiana. Zmienia się sam wygląd elementu: kolor, obramowanie, cień, krycie. Element nie zmienia ani położenia, ani rozmiaru.")],
+    ["base",    L("A change that stays after the pointer leaves, and movement that happens on the spot: an element takes a new state, turns or changes size without leaving the place it stands in.",
+                  "Zmiana, która zostaje po zdjęciu kursora, i ruch zachodzący w miejscu: element przyjmuje nowy stan, obraca się albo zmienia rozmiar, nie schodząc z miejsca, w którym stoi.")],
+    ["slow",    L("An element comes onto the screen or leaves it, travelling in from an edge of the view or out from under another element.",
+                  "Element wchodzi na ekran albo z niego schodzi, pokonując drogę od krawędzi widoku albo spod innego elementu.")],
+    ["slower",  L("The longest movement. It goes to whatever covers a large part of the screen, and to whatever is meant to be noticed in itself.",
+                  "Najdłuższy ruch. Bierze go to, co obejmuje dużą część ekranu, i to, co ma zostać zauważone samo w sobie.")],
+    ["loop",    L("The step for movement that comes back on its own, with nobody having asked for it. Long, because a repeat returning every few seconds stops being an accent and starts asking for attention.",
+                  "Stopień dla ruchu, który wraca sam z siebie, bez niczyjego udziału. Długi, bo powtórzenie wracające co kilka sekund przestaje być akcentem, a zaczyna domagać się uwagi.")],
+    ["hold",    L("Nor is this one a duration of movement. It measures waiting: how long a confirmation stands so that it can be read, how long a pause lasts before something that should not arrive too soon, and how long one breath of a mark waiting for an answer takes.",
+                  "Ten też nie jest czasem ruchu. Mierzy czekanie: jak długo stoi potwierdzenie, które trzeba zdążyć przeczytać, jak długa jest zwłoka przed czymś, co ma nie pojawić się za szybko, i ile trwa jeden oddech znaku czekającego na odpowiedź.")],
+    ["stagger", L("Not how long an animation lasts, but the window its starts are spread over when many elements set off at once.",
+                  "Nie czas trwania animacji, tylko okno, w którym rozkładają się jej starty, gdy wiele elementów rusza naraz.")],
   ]);
   const P = "--nu-motion-";
   const fromSheet = Object.keys(dsRootDecls()).filter(n => n.startsWith(P));
@@ -2766,8 +2766,8 @@ const DS_SECTIONS = [
           <td>${L("A view carries at most one primary button, built as dark translucent glass. Below it stand three lighter variants &ndash; secondary, tertiary and ghost &ndash; and beside them the chip and the link.",
                   "Widok ma najwyżej jeden przycisk główny, zbudowany jako ciemne, półprzezroczyste szkło. Pod nim stoją trzy lżejsze typy &ndash; drugorzędny, trzeciorzędny i ghost &ndash; a obok nich chip i link.")}</td></tr>
       <tr><td><strong>${L("Motion explains","Ruch objaśnia")}</strong></td>
-          <td>${L("Animation shows where something came from or where it went. That is its only job.",
-                  "Animacja pokazuje, skąd coś przyszło albo dokąd odeszło. To jej jedyne zadanie.")}</td></tr>
+          <td>${L("Animation confirms an action and shows where something came from or where it went. Nothing beyond that.",
+                  "Animacja potwierdza działanie i pokazuje, skąd coś przyszło albo dokąd odeszło. Nic poza tym.")}</td></tr>
       <tr><td><strong>${L("Bilingual first","Dwujęzyczność u podstaw")}</strong></td>
           <td>${L("No string stays as the markup wrote it: every one passes through <code>I18N</code> in Polish and English, at start-up and on every change of language, including the labels only a screen reader reaches.",
                   "Żaden napis nie zostaje w postaci wpisanej w znacznikach: wszystkie przechodzą przez <code>I18N</code> po polsku i angielsku, przy starcie i przy każdej zmianie języka &ndash; łącznie z etykietami, do których dociera wyłącznie czytnik ekranu.")}</td></tr>
@@ -4095,8 +4095,8 @@ const DS_SECTIONS = [
 
     <h3>${L("Scale","Skala")}</h3>
     <p>${L(
-      "Six steps, each named after the job it does, so changing a value does not mean renaming rules. The stylesheet and the script read the same tokens, so every duration is written down in one place.",
-      "Stopni jest sześć, a każdy ma nazwę od zadania, które wykonuje. Dzięki temu zmiana wartości nie wymaga poprawiania nazw w regułach. Arkusz i skrypt czytają te same tokeny, więc każdy czas jest zapisany w jednym miejscu.")}</p>
+      "Each step is named after the job it does, so changing a value does not mean renaming rules. The stylesheet and the script read the same tokens, so every duration is written down in one place.",
+      "Każdy stopień ma nazwę od zadania, które wykonuje. Dzięki temu zmiana wartości nie wymaga poprawiania nazw w regułach. Arkusz i skrypt czytają te same tokeny, więc każdy czas jest zapisany w jednym miejscu.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("What it carries","Co się w nim mieści")}</th></tr></thead><tbody>
       ${dsMotionSteps().map(([name, val, note]) =>
         `<tr><td class="spec"><code>${name}</code></td><td>${val}</td><td>${note}</td></tr>`).join("")}
@@ -4108,19 +4108,19 @@ const DS_SECTIONS = [
       "Krzywa mówi, jak ruch rozkłada się w czasie, a nie jak długo trwa. Poziomo płynie czas, pionowo rośnie przebyta droga, a przerywana przekątna to <code>linear</code> do porównania: im krzywa stromsza w danym miejscu, tym szybciej element się wtedy porusza.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>${L("Curve","Krzywa")}</th><th>${L("Shape","Kształt")}</th><th>${L("Where it runs","Gdzie działa")}</th></tr></thead><tbody>
       <tr><td class="spec">${dsTok("--nu-ease-zoom")}</td><td>${dsCurveGraph("--nu-ease-zoom")}</td>
-        <td>${L("The most decisive of the four: about four fifths of the way is behind it in the first quarter of the time, and the rest settles gently. The tile growing into a packshot.","Najbardziej zdecydowana z czterech: w pierwszej ćwiartce czasu ma za sobą jakieś cztery piąte drogi, a resztę osiada łagodnie. Kafel rosnący do packshotu.")}</td></tr>
+        <td>${L("The most decisive of them all: about four fifths of the way is behind it in the first quarter of the time, and the rest settles gently. It goes to movement covering a large part of the screen, which has to reach its place quickly and only then come to rest.","Najbardziej zdecydowana ze wszystkich: w pierwszej ćwiartce czasu ma za sobą jakieś cztery piąte drogi, a resztę osiada łagodnie. Bierze ją ruch obejmujący dużą część ekranu, który ma dojść na miejsce szybko i dopiero tam się uspokoić.")}</td></tr>
       <tr><td class="spec">${dsTok("--nu-ease-slide")}</td><td>${dsCurveGraph("--nu-ease-slide")}</td>
-        <td>${L("The same family, a tone calmer. Both drawers and the filter sheet arrive decisively, without looking fired from somewhere.","Ta sama rodzina, o ton spokojniejsza. Obie szuflady i panel filtrów przyjeżdżają zdecydowanie, bez wrażenia, że coś je wystrzeliło.")}</td></tr>
+        <td>${L("The same family, a tone calmer. It goes to everything that comes onto the screen from an edge or out from under another element: it should arrive decisively, without looking fired from somewhere.","Ta sama rodzina, o ton spokojniejsza. Bierze ją wszystko, co wchodzi na ekran od krawędzi albo spod innego elementu: ma dojść zdecydowanie, bez wrażenia, że coś je wystrzeliło.")}</td></tr>
       <tr><td class="spec"><code>ease</code></td><td>${dsCurveGraph("ease")}</td>
-        <td>${L("The browser's default. Sets off briskly, covers most of the way early, finishes calmly. It fits wherever the movement has nothing to say beyond &ldquo;it happened&rdquo;, which is most of the shop.","Domyślna krzywa przeglądarki. Rusza żwawo, większość drogi ma za sobą wcześnie, końcówkę dojeżdża spokojnie. Pasuje wszędzie tam, gdzie ruch nie ma nic do powiedzenia poza „stało się”, czyli w większości sklepu.")}</td></tr>
+        <td>${L("The browser's default. Sets off briskly, covers most of the way early, and finishes calmly. It fits wherever the movement has nothing to say beyond &ldquo;it happened&rdquo;, which is most of the shop.","Domyślna krzywa przeglądarki. Rusza żwawo, większość drogi ma za sobą wcześnie, a kończy spokojnie. Pasuje wszędzie tam, gdzie ruch nie ma nic do powiedzenia poza „stało się”, czyli w większości sklepu.")}</td></tr>
       <tr><td class="spec"><code>ease-in-out</code></td><td>${dsCurveGraph("ease-in-out")}</td>
-        <td>${L("Symmetrical: slow off the mark, quick through the middle, slow into the end. With no marked start and no marked landing it takes repetition well, which is why it carries the one loop in the shop &ndash; the accent in the logo.","Symetryczna: wolno rusza, przyspiesza w środku, wolno hamuje. Bez wyraźnego startu i bez wyraźnego lądowania dobrze znosi powtarzanie, dlatego prowadzi jedyną pętlę w sklepie &ndash; akcent w logo.")}</td></tr>
+        <td>${L("Symmetrical: slow off the mark, quick through the middle, slow into the end. With no marked start and no marked landing it takes repetition well, which is why it carries the movement that comes back: the accent in the logo and the bookseller's mark.","Symetryczna: wolno rusza, przyspiesza w środku, wolno hamuje. Bez wyraźnego startu i bez wyraźnego lądowania dobrze znosi powtarzanie, dlatego prowadzi ruch, który wraca: akcent w logo i znak księgarki.")}</td></tr>
       <tr><td class="spec"><code>linear</code></td><td>${dsCurveGraph("linear")}</td>
         <td>${L("The same speed throughout. The filter toggle uses it because the tiles are being measured from one place to another, and any easing would read as the layout hesitating.","Stała prędkość przez cały czas. Używa jej przełączenie filtrów, bo kafle są mierzone z jednego położenia do drugiego, a każde wygładzenie czytałoby się jako wahanie układu.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
-      "None of the three that answer an action starts slowly. A curve with a lazy opening makes a click look ignored for the first tenth of a second, which reads as the interface stalling rather than as a style. The last two answer nothing and are free of the rule: <code>ease-in-out</code> carries a loop nobody asked for, and <code>linear</code> carries a move measured from one place to another.",
-      "Żadna z trzech odpowiadających na działanie nie zaczyna się powoli. Krzywa z leniwym startem sprawia, że kliknięcie wygląda na zignorowane przez pierwszą dziesiątą sekundy, a to czyta się jako zacinanie interfejsu, nie jako styl. Dwie ostatnie na nic nie odpowiadają i ta zasada ich nie dotyczy: <code>ease-in-out</code> prowadzi pętlę, o którą nikt nie prosił, a <code>linear</code> ruch mierzony z jednego położenia do drugiego.")}</p>
+      "None of the three that answer an action starts slowly. A slow opening makes a click look ignored for the first tenth of a second, which reads as the interface stalling rather than as a style. The last two answer nothing and are free of the rule: <code>ease-in-out</code> carries movement that repeats, and <code>linear</code> a move measured from one place to another.",
+      "Żadna z trzech odpowiadających na działanie nie zaczyna się powoli. Wolny start sprawia, że kliknięcie wygląda na zignorowane przez pierwszą dziesiątą sekundy, a to czyta się jako zacinanie interfejsu, nie jako styl. Dwie ostatnie na nic nie odpowiadają i ta zasada ich nie dotyczy: <code>ease-in-out</code> prowadzi ruch, który się powtarza, a <code>linear</code> ruch mierzony z jednego położenia do drugiego.")}</p>
 
     <h3>${L("Transitions","Przejścia")}</h3>
     <table><thead><tr><th>${L("Transition","Przejście")}</th><th>${L("Duration","Czas")}</th><th>${L("Curve","Krzywa")}</th><th>${L("Why","Po co")}</th></tr></thead><tbody>
@@ -4133,13 +4133,20 @@ const DS_SECTIONS = [
       <tr><td>${L("Add to cart","Dodanie do koszyka")}</td><td>${L("from","od")} ${dsTok("--nu-motion-quick")} ${L("to","do")} ${dsTok("--nu-motion-slow")}</td><td>${L("ease, the drawer on","ease, szuflada na")} ${dsTok("--nu-ease-slide")}</td>
         <td>${L("Label crossfades, counter fades in, drawer follows","Napis przenika, licznik się pojawia, potem wysuwa się szuflada")}</td></tr>
       <tr><td>${L("Search","Wyszukiwanie")}</td><td>${L("the field","pole")} ${dsTok("--nu-motion-base")}, ${L("the edge","krawędź")} ${dsTok("--nu-motion-quick")}</td><td>ease</td>
-        <td>${L("The field opens for as long as it holds the focus, because a query is longer than its resting width; the lower edge goes to full strength at the same time, in the step every hover answers over","Pole otwiera się na czas, w którym trzyma fokus, bo zapytanie bywa dłuższe niż jego szerokość spoczynkowa; dolna krawędź nabiera wtedy pełnej siły, w tym stopniu, w którym odpowiada każde najechanie")}</td></tr>
+        <td>${L("The field opens for as long as it holds the focus, because a query is longer than the field's resting width. The lower edge goes to full strength at the same time, in the same step of the scale that every hover answers over","Pole otwiera się na czas trzymania fokusu, bo zapytanie bywa dłuższe niż szerokość spoczynkowa pola. Dolna krawędź nabiera przy tym pełnej siły, w tym samym stopniu skali, którym odpowiada każde najechanie")}</td></tr>
       <tr><td>${L("Logo accent","Akcent w logo")}</td><td>${dsTok("--nu-motion-loop")}</td><td>ease-in-out</td>
         <td>${L("The dot blooms into a rainbow glow once per cycle &ndash; a rare accent, not a loop that demands attention","Kropka raz na cykl rozkwita tęczową poświatą &ndash; rzadki akcent, nie pętla domagająca się uwagi")}</td></tr>
+      <tr><td>${L("The bookseller speaks","Odezwanie się księgarki")}</td>
+        <td>${L("the panel","dymek")} ${dsTok("--nu-motion-slow")}, ${L("the mark","znak")} ${dsTok("--nu-motion-slower")}, ${L("the pause","zwłoka")} ${dsTok("--nu-motion-hold")}</td>
+        <td>${dsTok("--nu-ease-slide")}, ${L("the mark on","znak na")} ease-in-out</td>
+        <td>${L("The panel comes up from under the mark by one step of spacing and the dot beats twice. The pause before she first speaks leaves time to read the page","Dymek wchodzi spod znaku o jeden stopień odstępu, a kropka bije dwa razy. Zwłoka przed pierwszym odezwaniem zostawia czas na przeczytanie strony")}</td></tr>
+      <tr><td>${L("An answer unfolds","Rozwinięcie odpowiedzi")}</td>
+        <td>${L("a word every","słowo co")} ${dsTok("--nu-motion-instant")}, ${L("each over","każde na")} ${dsTok("--nu-motion-quick")}</td><td>ease</td>
+        <td>${L("The text arrives a word at a time rather than standing on the page all at once","Tekst pojawia się słowo po słowie, zamiast stanąć na stronie w całości")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "All of the movement above yields to <code>prefers-reduced-motion: reduce</code>, and so does everything this table does not name: anything that travels, scales, changes size or repeats. It is withdrawn in two places, never in a list of its own &ndash; a rule in the stylesheet standing beside the rule that sets the movement, and a check in the script before an animation is started. A new view therefore inherits the setting from whichever of the two it uses, and nothing has to be added anywhere for it to.",
-      "Cały powyższy ruch ustępuje przy <code>prefers-reduced-motion: reduce</code>, a razem z nim wszystko, czego ta tabela nie wymienia: każde przesunięcie, skalowanie, zmiana rozmiaru i powtórzenie. Wycofuje się w dwóch miejscach i nigdy na osobnej liście &ndash; regułą w arkuszu, stojącą obok reguły, która ruch ustawia, oraz sprawdzeniem w skrypcie, zanim animacja ruszy. Nowy widok dziedziczy więc to ustawienie przez to z dwojga, którego użyje, i nie trzeba go nigdzie dopisywać.")}</p>` },
+      "Cały powyższy ruch ustępuje przy <code>prefers-reduced-motion: reduce</code>, a razem z nim wszystko, czego ta tabela nie wymienia: każde przesunięcie, skalowanie, zmiana rozmiaru i powtórzenie. Wycofuje się w dwóch miejscach i nigdy na osobnej liście &ndash; regułą w arkuszu, stojącą obok reguły, która ruch ustawia, oraz sprawdzeniem w skrypcie, zanim animacja ruszy. Nowy widok dziedziczy więc to ustawienie z tego miejsca, którego użyje, i nie trzeba go nigdzie dopisywać.")}</p>` },
 
   { group:{en:"Patterns",pl:"Wzorce"}, id:"content", label:{en:"Content",pl:"Treść"}, body: ()=>`
     <h1>${L("Content","Treść")}</h1>
