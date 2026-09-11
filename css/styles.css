@@ -14,7 +14,7 @@
                            position = bg | fg | border
                            meaning  = primary | secondary | tertiary | inverse
                                     | neutral | highlight | warning | alert
-                                    | action | scrim
+                                    | action | scrim | dot | glow
        Components only ever use layer 2. */
 
     /* ---------- primitives ---------- */
@@ -43,6 +43,19 @@
     --nu-gold-100:#f7e9b8;
     --nu-gold-600:#9a7b1c;
     --nu-gold-800:#6e5710;
+    /* The spectrum the glow is laid out of, one step each and all at the same
+       level of the scale, because they are read together as one light rather
+       than compared with one another. The red is its own step and not the error
+       red: an accent that has to hold its own against four other hues is a
+       brighter colour than a message on a white page.
+
+       They sit in the palette because a hex value belongs here and nowhere else.
+       Nothing outside the glow uses them. */
+    --nu-red-500:#E23B3B;
+    --nu-yellow-500:#E8D22D;
+    --nu-green-500:#3FB45A;
+    --nu-blue-500:#2D8FE8;
+    --nu-violet-500:#7B4FE0;
 
     /* ---------- semantic ---------- */
     /* background – surfaces an element sits on */
@@ -55,6 +68,22 @@
        moment it is dark: the opposite of a dark page is light, but a shadow
        stays dark or stops being a shadow. */
     --nu-bg-shadow:light-dark(var(--nu-grey-900), var(--nu-grey-900));
+    /* The five rings of the glow, from the core outwards, named after what each
+       one does to the light rather than after its hue: the order is what the eye
+       reads, and a ring could be re-toned without the name going stale. They are
+       named at all because two marks draw them now, the accent beside the
+       wordmark and the bookseller's dot, and a colour kept in two places is a
+       colour that will end up being two colours.
+
+       They carry no second value: the halo reads the same on a light page and a
+       dark one. Strength is set where the glow is drawn, not here, because the
+       same ring at four fifths and at two fifths is what tells working apart
+       from ready. */
+    --nu-bg-glow-warm:var(--nu-red-500);
+    --nu-bg-glow-bright:var(--nu-yellow-500);
+    --nu-bg-glow-fresh:var(--nu-green-500);
+    --nu-bg-glow-cool:var(--nu-blue-500);
+    --nu-bg-glow-dusk:var(--nu-violet-500);
     /* The logotype accent, and the two names exist because of where they are
        used: inside @keyframes. A keyframe resolves light-dark() once, against a
        scheme that is not the one in force, so the dot came out at its dark value
@@ -430,48 +459,53 @@
   /* The glow is a box-shadow, not a drop-shadow. A filter rasterises the element
      it runs on: at six pixels across that shows as a ragged edge and a clipped
      right side. A shadow on a border-radius circle draws the same halo and stays
-     vector. The five hues are the accent's own and appear nowhere else; the
-     second set is the first one reordered, which reads as the hue drifting. */
+     vector. The second set of hues is the first one reordered, which reads as
+     the hue drifting rather than as a different light.
+
+     A stop with no glow says transparent rather than naming a hue at nothing:
+     the colour is interpolated with its alpha already applied, so a hue at zero
+     and plain transparent take the same path to full strength, and transparent
+     is the shorter way of saying there is nothing there. */
   @keyframes dotBloom{
     /* resting: plain dot, no glow - most of the cycle */
     0%, 74% {
       background:var(--nu-bg-dot);transform:scale(1);
       box-shadow:
-        0 0 4px rgba(226,59,59,0),
-        0 0 8px rgba(232,210,45,0),
-        0 0 12px rgba(63,180,90,0),
-        0 0 16px rgba(45,143,232,0),
-        0 0 20px rgba(123,79,224,0);
+        0 0 4px transparent,
+        0 0 8px transparent,
+        0 0 12px transparent,
+        0 0 16px transparent,
+        0 0 20px transparent;
     }
     /* accent blooms in */
     81% {
       background:var(--nu-bg-dot-bloom);transform:scale(1);
       box-shadow:
-        0 0 4px rgba(226,59,59,.85),
-        0 0 8px rgba(232,210,45,.8),
-        0 0 12px rgba(63,180,90,.8),
-        0 0 16px rgba(45,143,232,.8),
-        0 0 20px rgba(123,79,224,.8);
+        0 0 4px color-mix(in srgb, var(--nu-bg-glow-warm) 85%, transparent),
+        0 0 8px color-mix(in srgb, var(--nu-bg-glow-bright) 80%, transparent),
+        0 0 12px color-mix(in srgb, var(--nu-bg-glow-fresh) 80%, transparent),
+        0 0 16px color-mix(in srgb, var(--nu-bg-glow-cool) 80%, transparent),
+        0 0 20px color-mix(in srgb, var(--nu-bg-glow-dusk) 80%, transparent);
     }
     /* held a little while, hues drifting */
     91% {
       background:var(--nu-bg-dot-bloom);transform:scale(1);
       box-shadow:
-        0 0 4px rgba(123,79,224,.85),
-        0 0 8px rgba(45,143,232,.8),
-        0 0 12px rgba(226,59,59,.8),
-        0 0 16px rgba(232,210,45,.8),
-        0 0 20px rgba(63,180,90,.8);
+        0 0 4px color-mix(in srgb, var(--nu-bg-glow-dusk) 85%, transparent),
+        0 0 8px color-mix(in srgb, var(--nu-bg-glow-cool) 80%, transparent),
+        0 0 12px color-mix(in srgb, var(--nu-bg-glow-warm) 80%, transparent),
+        0 0 16px color-mix(in srgb, var(--nu-bg-glow-bright) 80%, transparent),
+        0 0 20px color-mix(in srgb, var(--nu-bg-glow-fresh) 80%, transparent);
     }
     /* recede back to the plain dot */
     97%, 100% {
       background:var(--nu-bg-dot);transform:scale(1);
       box-shadow:
-        0 0 4px rgba(123,79,224,0),
-        0 0 8px rgba(45,143,232,0),
-        0 0 12px rgba(226,59,59,0),
-        0 0 16px rgba(232,210,45,0),
-        0 0 20px rgba(63,180,90,0);
+        0 0 4px transparent,
+        0 0 8px transparent,
+        0 0 12px transparent,
+        0 0 16px transparent,
+        0 0 20px transparent;
     }
   }
   @media (prefers-reduced-motion:reduce){
@@ -1494,9 +1528,12 @@
   .bs-dot::after{
     content:"";position:absolute;inset:0;border-radius:50%;
     background:var(--nu-bg-ava-dot-bloom);
-    box-shadow:0 0 5px rgba(226,59,59,.42), 0 0 10px rgba(232,210,45,.4),
-               0 0 15px rgba(63,180,90,.4), 0 0 20px rgba(45,143,232,.4),
-               0 0 26px rgba(123,79,224,.4);
+    /* Half the strength of a breath, the same five hues in the same order. */
+    box-shadow:0 0 5px  color-mix(in srgb, var(--nu-bg-glow-warm) 42%, transparent),
+               0 0 10px color-mix(in srgb, var(--nu-bg-glow-bright) 40%, transparent),
+               0 0 15px color-mix(in srgb, var(--nu-bg-glow-fresh) 40%, transparent),
+               0 0 20px color-mix(in srgb, var(--nu-bg-glow-cool) 40%, transparent),
+               0 0 26px color-mix(in srgb, var(--nu-bg-glow-dusk) 40%, transparent);
     opacity:0;
     /* Going out: the breath's release. */
     transition:opacity var(--nu-motion-slower) ease-in-out;
@@ -1537,23 +1574,25 @@
   @keyframes bsBloom{
     0%{
       background:var(--nu-bg-ava-dot);
-      box-shadow:0 0 5px rgba(226,59,59,0), 0 0 10px rgba(232,210,45,0),
-                 0 0 15px rgba(63,180,90,0), 0 0 20px rgba(45,143,232,0),
-                 0 0 26px rgba(123,79,224,0);
+      box-shadow:0 0 5px transparent, 0 0 10px transparent,
+                 0 0 15px transparent, 0 0 20px transparent,
+                 0 0 26px transparent;
       animation-timing-function:var(--nu-ease-zoom);
     }
     30%{
       background:var(--nu-bg-ava-dot-bloom);
-      box-shadow:0 0 5px rgba(226,59,59,.85), 0 0 10px rgba(232,210,45,.8),
-                 0 0 15px rgba(63,180,90,.8), 0 0 20px rgba(45,143,232,.8),
-                 0 0 26px rgba(123,79,224,.8);
+      box-shadow:0 0 5px  color-mix(in srgb, var(--nu-bg-glow-warm) 85%, transparent),
+                 0 0 10px color-mix(in srgb, var(--nu-bg-glow-bright) 80%, transparent),
+                 0 0 15px color-mix(in srgb, var(--nu-bg-glow-fresh) 80%, transparent),
+                 0 0 20px color-mix(in srgb, var(--nu-bg-glow-cool) 80%, transparent),
+                 0 0 26px color-mix(in srgb, var(--nu-bg-glow-dusk) 80%, transparent);
       animation-timing-function:ease-in-out;
     }
     100%{
       background:var(--nu-bg-ava-dot);
-      box-shadow:0 0 5px rgba(226,59,59,0), 0 0 10px rgba(232,210,45,0),
-                 0 0 15px rgba(63,180,90,0), 0 0 20px rgba(45,143,232,0),
-                 0 0 26px rgba(123,79,224,0);
+      box-shadow:0 0 5px transparent, 0 0 10px transparent,
+                 0 0 15px transparent, 0 0 20px transparent,
+                 0 0 26px transparent;
     }
   }
   /* Once, whenever something in the panel opens - the only moment the shop is

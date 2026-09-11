@@ -1913,7 +1913,17 @@ function bsThink(){
   dot.classList.add("is-thinking");
 }
 
+/* The one way the panel opens, whoever opens it. Both things at the top are
+   about the offer that would otherwise arrive by itself a moment later: the
+   waiting one is called off, and the book is marked as having been offered, so
+   it is not offered again on the way back.
+
+   Without them, a reader who pressed the mark herself within the delay had the
+   panel rebuilt underneath her when the delay ran out - and a rebuild empties
+   the list, so an answer being set down word by word disappeared mid-sentence. */
 function bsShow(){
+  clearTimeout(bsTimer);
+  if (bsBook) bsSeen.add(bsBook.id);
   bsFill();
   bsPanel.hidden = false;
   bsAvaEl.setAttribute("aria-expanded", "true");
@@ -2294,7 +2304,7 @@ function dsVal(name){
    beside the table they went stale twice over &ndash; once for the scrim, once for
    the measure tint &ndash; because adding a semantic token does not remind anyone to
    come back and amend a list. */
-const DS_PRIMITIVE = /^--nu-(?:white|grey|red|burgundy|gold)/;
+const DS_PRIMITIVE = /^--nu-(?:white|grey|red|burgundy|gold|yellow|green|blue|violet)/;
 const DS_SEMANTIC  = /^--nu-(?:bg|fg|border)-/;
 /* Served from a <link> and opened off the filesystem, the sheet cannot be read
    back at all, and both tables below would render empty. These two lists are the
@@ -2302,8 +2312,11 @@ const DS_SEMANTIC  = /^--nu-(?:bg|fg|border)-/;
    what each colour feeds is simply left out, since it cannot be worked out
    without the declarations. */
 const DS_FALLBACK_PRIMITIVES = ["--nu-white","--nu-grey-100","--nu-grey-400","--nu-grey-600",
-  "--nu-grey-900","--nu-red-600","--nu-burgundy-500","--nu-burgundy-700",
-  "--nu-gold-100","--nu-gold-600","--nu-gold-800"];
+  "--nu-grey-700","--nu-grey-800","--nu-grey-900",
+  "--nu-red-300","--nu-red-500","--nu-red-600",
+  "--nu-burgundy-300","--nu-burgundy-500","--nu-burgundy-700",
+  "--nu-gold-100","--nu-gold-600","--nu-gold-800",
+  "--nu-yellow-500","--nu-green-500","--nu-blue-500","--nu-violet-500"];
 const DS_FALLBACK_MEANINGS = ["primary","secondary","tertiary","inverse","neutral","muted",
   "highlight","warning","alert","scrim","measure","action","action-secondary",
   "action-glow","action-glow-deep"];
@@ -2467,7 +2480,9 @@ function dsRootDecls(){
    table alone. */
 const dsIsBuilt = name => /--nu-/.test(dsRootDecls()[name] || "");
 const DS_TOKEN_GROUPS = [
-  ["colour", ["--nu-white","--nu-grey","--nu-red","--nu-burgundy","--nu-gold","--nu-bg","--nu-fg","--nu-border"],
+  ["colour", ["--nu-white","--nu-grey","--nu-red","--nu-burgundy","--nu-gold",
+              "--nu-yellow","--nu-green","--nu-blue","--nu-violet",
+              "--nu-bg","--nu-fg","--nu-border"],
              [["primitive", false], ["semantic", true]]],
   ["type",   ["--nu-font","--nu-text","--nu-tracking","--nu-line","--nu-weight","--nu-type","--nu-underline"],
              [["primitive", false], ["style", true]]],
@@ -3005,11 +3020,18 @@ const DS_SECTIONS = [
       ["--nu-bg-shadow",L("What a shadow is made of","Barwa, z której zrobiony jest cień")],
       ["--nu-bg-dot",L("The logotype accent at rest","Akcent logotypu w spoczynku")],
       ["--nu-bg-dot-bloom",L("The logotype accent while it blooms","Akcent logotypu w rozbłysku")],
+      ["--nu-bg-ava-dot",L("The bookseller's mark at rest","Znak księgarki w spoczynku")],
+      ["--nu-bg-ava-dot-bloom",L("The bookseller's mark while it blooms","Znak księgarki w rozbłysku")],
+      ["--nu-bg-glow-warm",L("The glow, first ring from the core","Łuna, pierścień pierwszy od rdzenia")],
+      ["--nu-bg-glow-bright",L("The glow, second ring","Łuna, pierścień drugi")],
+      ["--nu-bg-glow-fresh",L("The glow, third ring","Łuna, pierścień trzeci")],
+      ["--nu-bg-glow-cool",L("The glow, fourth ring","Łuna, pierścień czwarty")],
+      ["--nu-bg-glow-dusk",L("The glow, outermost ring","Łuna, pierścień zewnętrzny")],
       ["--nu-bg-measure",L("A measured distance","Mierzona odległość")],
     ])}</tbody></table>
     <p class="note">${L(
-      "Both glow tokens belong to the primary button. The secondary carries neither &ndash; one of the things that keep the two buttons apart. <code>--nu-bg-shadow</code> holds the same value as the inverse surface and stands apart from it because the two answer different questions &ndash; what is the opposite of the page, and what colour is a shadow. On a light page one answer serves both; the moment a page is dark they part.",
-      "Oba tokeny łuny należą do przycisku głównego. Drugorzędny nie bierze żadnego z nich &ndash; to jedna z rzeczy, które oba przyciski rozdzielają. <code>--nu-bg-shadow</code> ma tę samą wartość co powierzchnia odwrócona i stoi osobno, bo odpowiadają na różne pytania &ndash; co jest przeciwieństwem strony, a z czego zrobiony jest cień. Na jasnej stronie jedna odpowiedź obsługuje oba; z chwilą, gdy strona jest ciemna, rozchodzą się.")}</p>
+      "The two <code>action</code> glows belong to the primary button. The secondary carries neither &ndash; one of the things that keep the two buttons apart. The five <code>glow</code> rings are a different light: they are laid one over another, from the core outwards, and both marks that bloom draw all five in that order. They are also the only colours here that carry one value rather than two, because the halo reads the same on either page. <code>--nu-bg-shadow</code> holds the same value as the inverse surface and stands apart from it because the two answer different questions &ndash; what is the opposite of the page, and what colour is a shadow. On a light page one answer serves both; the moment a page is dark they part.",
+      "Dwie łuny <code>action</code> należą do przycisku głównego. Drugorzędny nie bierze żadnej z nich &ndash; to jedna z rzeczy, które oba przyciski rozdzielają. Pięć pierścieni <code>glow</code> to inne światło: kładą się jeden na drugim, od rdzenia na zewnątrz, i oba rozbłyskujące znaki biorą wszystkie pięć w tej kolejności. Są też jedynymi kolorami w tej tabeli, które niosą jedną wartość zamiast dwóch, bo poświata czyta się tak samo na obu stronach. <code>--nu-bg-shadow</code> ma tę samą wartość co powierzchnia odwrócona i stoi osobno, bo odpowiadają na różne pytania &ndash; co jest przeciwieństwem strony, a z czego zrobiony jest cień. Na jasnej stronie jedna odpowiedź obsługuje oba; z chwilą, gdy strona jest ciemna, rozchodzą się.")}</p>
     <h3>Foreground</h3>
     <table class="tok-table">
     <colgroup><col class="c-token"><col class="c-source"><col><col></colgroup>
