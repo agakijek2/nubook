@@ -1860,7 +1860,7 @@ const bookByTitle = t => BOOKS.find(b => b.t === t);
 /* Once per visit. An assistant that returns with the same offer is not attentive,
    it is stuck. */
 const bsSeen = new Set();
-let bsBook = null, bsTimer = null;
+let bsBook = null, bsTimer = null, bsThinkTimer = null;
 
 const bsEl    = document.getElementById("bookseller"),
       bsPanel = document.getElementById("bsPanel"),
@@ -1908,9 +1908,16 @@ function bsHide(){
 function bsThink(){
   const dot = bsAvaEl.querySelector(".bs-dot");
   if (!dot) return;
+  clearTimeout(bsThinkTimer);
   dot.classList.remove("is-thinking");
   void dot.offsetWidth;
   dot.classList.add("is-thinking");
+  /* Taken off again when the breath is over. The animation stops on its own and
+     leaves nothing behind, so the class changed nothing by staying - but it said
+     the mark was thinking for the rest of the visit, and a state written in the
+     markup is read by more than the stylesheet. */
+  bsThinkTimer = setTimeout(() => dot.classList.remove("is-thinking"),
+                            motionMs("--nu-motion-hold"));
 }
 
 /* The one way the panel opens, whoever opens it. Both things at the top are
@@ -1921,13 +1928,18 @@ function bsThink(){
    Without them, a reader who pressed the mark herself within the delay had the
    panel rebuilt underneath her when the delay ran out - and a rebuild empties
    the list, so an answer being set down word by word disappeared mid-sentence. */
-function bsShow(){
+function bsShow(unprompted){
   clearTimeout(bsTimer);
   if (bsBook) bsSeen.add(bsBook.id);
   bsFill();
   bsPanel.hidden = false;
   bsAvaEl.setAttribute("aria-expanded", "true");
-  bsThink();
+  /* The breath belongs to the offer arriving of its own accord. Bringing back
+     something that was put away is the reader's doing and nothing is being
+     worked out, so the mark stays as it is - and it is under her pointer at that
+     moment, already lit, so a breath there would start by putting the light out
+     and read as a flinch rather than as an answer. */
+  if (unprompted) bsThink();
 }
 
 function bsFill(){
@@ -2036,8 +2048,9 @@ const bsSaid = new Set();
    nobody is waiting for. */
 function bsIdle(){
   clearTimeout(bsTypeTimer);
+  clearTimeout(bsThinkTimer);
   const dot = bsAvaEl.querySelector(".bs-dot");
-  if (dot) dot.classList.remove("is-working");
+  if (dot) dot.classList.remove("is-working", "is-thinking");
 }
 
 function bsDeliver(box, html, key){
@@ -2108,7 +2121,7 @@ function bsSync(b){
      title she has already been offered leaves her alone. */
   if (!bsSeen.has(b.id)){
     const id = b.id;
-    bsTimer = setTimeout(() => { if (bsBook && bsBook.id === id){ bsSeen.add(id); bsShow(); } },
+    bsTimer = setTimeout(() => { if (bsBook && bsBook.id === id){ bsSeen.add(id); bsShow(true); } },
                          motionMs("--nu-motion-hold"));
   }
 }
