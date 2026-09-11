@@ -1884,6 +1884,7 @@ function bsOffer(b){
    put the bookseller away for good. Closing the panel leaves her on the page;
    only leaving the view takes her off it. */
 function bsShut(){
+  bsIdle();
   bsPanel.hidden = true;
   bsAvaEl.setAttribute("aria-expanded", "false");
   bsMoreEl.setAttribute("aria-expanded", "false");
@@ -1896,7 +1897,7 @@ function bsHide(){
   bsShut();
   bsEl.hidden = true;
 }
-/* The mark beats twice whenever something in the panel opens. Purely decorative:
+/* The mark takes one breath whenever something in the panel opens. Purely decorative:
    the change it accompanies is already announced by the panel's own live region,
    so nothing here is a reader's only notice of anything.
 
@@ -1968,7 +1969,7 @@ let bsTypeTimer = null;
    found in the text nodes and wrapped where they stand, so paragraphs, lists and
    emphasis arrive intact. Building the string up piece by piece would tear tags
    in half. */
-function bsType(box, html){
+function bsType(box, html, done){
   box.innerHTML = html;
   const words = [], texts = [];
   const walk = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
@@ -1987,13 +1988,24 @@ function bsType(box, html){
   /* A fixed interval per word, not a fixed total. Spreading one duration over
      however many words there are made a long passage arrive faster than a short
      one, which is backwards - and it is not how text really arrives either, a
-     word at a time at a steady rate. --nu-motion-instant is the scale's name for
-     a change below the threshold at which it reads as movement, which is exactly
-     what one word appearing is. */
+     word at a time at a steady rate.
+
+     The interval is shorter than the arrival it starts, so two or three words
+     are coming in at any moment and the line resolves as a wave rather than as a
+     row of separate appearances. --nu-motion-instant is the scale's name for a
+     change below the threshold at which it reads as movement, which is what the
+     gap between one word and the next has to be.
+
+     done() is called one interval after the last word set off. */
   const per = motionMs("--nu-motion-instant");
   let i = 0;
   (function step(){
-    if (i >= words.length) return;
+    /* One word's arrival after the last one set off, so the work is over when
+       the text has finished coming in rather than when the last word began. */
+    if (i >= words.length){
+      if (done) bsTypeTimer = setTimeout(done, motionMs("--nu-motion-base"));
+      return;
+    }
     words[i++].classList.add("is-in");
     bsTypeTimer = setTimeout(step, per);
   })();
@@ -2009,35 +2021,53 @@ function bsType(box, html){
    being asked twice about the same book. */
 const bsSaid = new Set();
 
-function bsDeliver(box, html, key){
+/* Stops whatever the last answer was still doing. Called before a new one starts
+   and whenever the panel closes, so the mark never goes on breathing over a box
+   nobody is waiting for. */
+function bsIdle(){
   clearTimeout(bsTypeTimer);
+  const dot = bsAvaEl.querySelector(".bs-dot");
+  if (dot) dot.classList.remove("is-working");
+}
+
+function bsDeliver(box, html, key){
+  bsIdle();
   const wait = bsSaid.has(key) ? 0 : bsWait();
   bsSaid.add(key);
   if (!wait){ box.removeAttribute("aria-busy"); box.innerHTML = html; return; }
   box.setAttribute("aria-busy", "true");
   box.innerHTML = BS_SKELETON;
   const dot = bsAvaEl.querySelector(".bs-dot");
+  /* One stretch of work, not two: the mark keeps breathing from the moment the
+     answer is asked for until its last word has arrived. Stopping at the end of
+     the wait said the work was over while the text was still being set down. */
   if (dot) dot.classList.add("is-working");
   setTimeout(() => {
-    if (dot) dot.classList.remove("is-working");
     box.removeAttribute("aria-busy");
-    bsType(box, html);
+    bsType(box, html, () => { if (dot) dot.classList.remove("is-working"); });
   }, wait);
 }
 
+/* Closing first, opening second, and the order is the point: both passes touch
+   the one mark in the corner, so opening a row inside the same loop that closes
+   its neighbours meant the neighbour's closing put out the breath the chosen row
+   had just started. */
 function bsPick(i){
   const offer = bsOffer(bsBook); if (!offer) return;
   const rows = [...bsListEl.querySelectorAll(".bs-why")];
   const open = rows[i].getAttribute("aria-expanded") === "true";
+  bsIdle();
   rows.forEach((r, n) => {
-    const on = n === i && !open;
-    r.setAttribute("aria-expanded", String(on));
+    r.setAttribute("aria-expanded", "false");
     const box = document.getElementById("bsText" + n);
-    box.hidden = !on;
-    if (on) bsDeliver(box, offer[n].text[LANG], bsBook.t + "|" + offer[n].title + "|" + LANG);
-    else { box.innerHTML = ""; box.removeAttribute("aria-busy"); }
+    box.hidden = true; box.innerHTML = ""; box.removeAttribute("aria-busy");
   });
-  if (!open) bsThink();
+  if (open) return;
+  rows[i].setAttribute("aria-expanded", "true");
+  const box = document.getElementById("bsText" + i);
+  box.hidden = false;
+  bsDeliver(box, offer[i].text[LANG], bsBook.t + "|" + offer[i].title + "|" + LANG);
+  bsThink();
 }
 
 function bsToggle(){

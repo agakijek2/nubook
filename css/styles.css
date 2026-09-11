@@ -62,6 +62,11 @@
        scheme rules below - a change of value, which does reach an animation. */
     --nu-bg-dot:var(--nu-grey-900);          /* the dot at rest */
     --nu-bg-dot-bloom:var(--nu-white);       /* the dot while the accent blooms */
+    /* The bookseller's mark, on the same terms and under its own names. The pair
+       of values is the logotype's, so the two look drawn from one colour, and
+       the pair of names is not, so a change to one never reaches the other. */
+    --nu-bg-ava-dot:var(--nu-grey-900);      /* the bookseller's dot at rest */
+    --nu-bg-ava-dot-bloom:var(--nu-white);   /* the bookseller's dot while it blooms */
     --nu-bg-highlight:light-dark(var(--nu-gold-100), var(--nu-gold-100));       /* award badge */
     /* the dim laid over the page behind anything modal: author drawer, cart
        drawer, filter sheet. One name, so the scrims cannot drift apart. */
@@ -301,15 +306,20 @@
    accents that carry meaning need their lighter steps, because a dark red on a
    dark page is unreadable. The award badge keeps its pale ground either way. */
 @media (prefers-color-scheme:dark){
-  :root{--nu-bg-dot:var(--nu-grey-100);--nu-bg-dot-bloom:var(--nu-grey-900)}
+  :root{
+    --nu-bg-dot:var(--nu-grey-100);--nu-bg-dot-bloom:var(--nu-grey-900);
+    --nu-bg-ava-dot:var(--nu-grey-100);--nu-bg-ava-dot-bloom:var(--nu-grey-900);
+  }
 }
 :root[data-scheme="light"]{
   color-scheme:light;
   --nu-bg-dot:var(--nu-grey-900);--nu-bg-dot-bloom:var(--nu-white);
+  --nu-bg-ava-dot:var(--nu-grey-900);--nu-bg-ava-dot-bloom:var(--nu-white);
 }
 :root[data-scheme="dark"]{
   color-scheme:dark;
   --nu-bg-dot:var(--nu-grey-100);--nu-bg-dot-bloom:var(--nu-grey-900);
+  --nu-bg-ava-dot:var(--nu-grey-100);--nu-bg-ava-dot-bloom:var(--nu-grey-900);
 }
 
 /* The two solid buttons stay out of the scheme: their glass was drawn once and
@@ -1446,42 +1456,114 @@
     width:var(--nu-avatar-size-sm);height:var(--nu-avatar-size-sm);flex-shrink:0;
     border-radius:50%;background:var(--nu-bg-secondary);border:1px solid var(--nu-border-neutral);
     display:inline-flex;align-items:center;justify-content:center;
-    transition:border-color var(--nu-motion-quick) ease;
   }
-  .bs-ava:hover{border-color:var(--nu-border-hover)}
   .bs-ava:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
-  /* Full strength, and its own token rather than the wordmark's. --nu-fg-primary
-     carries the same two values as --nu-bg-dot in both schemes, so the mark looks
-     exactly as it would drawn from the logotype's colour - without a change to
-     the logo reaching the corner afterwards, which is what the two of them
-     sharing a name would have meant.
+  /* Its own pair of names rather than the wordmark's, carrying the wordmark's
+     pair of values: the mark looks drawn from the logotype's colour, and a
+     change to the logo does not reach the corner afterwards.
 
-     light-dark() is safe here in a way it is not in the logotype: that token was
-     split into plain values because it is read inside @keyframes, and nothing
-     animates this colour. Only the size moves. */
+     Plain colours rather than light-dark() for the same reason the logotype
+     splits its own: these are read inside @keyframes, and a keyframe resolves
+     light-dark() once, against a scheme that is not the one in force. */
   .bs-dot{
     width:var(--nu-space-micro);height:var(--nu-space-micro);
-    border-radius:50%;background:var(--nu-fg-primary);
+    border-radius:50%;background:var(--nu-bg-ava-dot);
+    position:relative;
   }
-  /* Two beats, then still again. It runs whenever something in the panel opens,
-     which is the only moment the shop is putting an answer together, and it says
-     that much and nothing more: the mark does not claim to be a person, it
-     reports that it is working. Uneven on purpose - a regular blink reads as a
-     loading indicator, and this is one thought, not a wait of unknown length. */
-  @keyframes bsThink{
-    0%  {transform:scale(1)}
-    22% {transform:scale(1.8)}
-    44% {transform:scale(1.15)}
-    68% {transform:scale(1.5)}
-    100%{transform:scale(1)}
+  /* The mark answers the pointer with light rather than with a border, because
+     the mark is a light and every other control in the shop is a box. Half the
+     strength of a breath and held for as long as the pointer stays: at rest it
+     is a dot, under the pointer it is lit and waiting, working it breathes. One
+     signal at three levels rather than three signals.
+
+     It lights the way a breath does, and takes as long: --nu-motion-slower on
+     --nu-ease-zoom is the rising half of bsBloom to within ten milliseconds. At
+     the hover step the same light arrived in a tenth of the time, which read as
+     switched on rather than as lit.
+
+     The lit state is a layer of its own and the only thing that transitions is
+     its opacity. The dot's resting colour changes with the scheme, and a colour
+     under transition is a colour on its way somewhere: putting the two together
+     left the mark finishing a journey to the value the page had just stopped
+     using. Nothing about the scheme is animated now - it lands, and the layer
+     above it fades.
+
+     Both of these stay under prefers-reduced-motion, on the rule the shop
+     already follows: colour and shadow answer the pointer instead of moving the
+     page. */
+  .bs-dot::after{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    background:var(--nu-bg-ava-dot-bloom);
+    box-shadow:0 0 5px rgba(226,59,59,.42), 0 0 10px rgba(232,210,45,.4),
+               0 0 15px rgba(63,180,90,.4), 0 0 20px rgba(45,143,232,.4),
+               0 0 26px rgba(123,79,224,.4);
+    opacity:0;
+    /* Going out: the breath's release. */
+    transition:opacity var(--nu-motion-slower) ease-in-out;
   }
-  .bs-dot.is-thinking{animation:bsThink var(--nu-motion-slower) ease-in-out}
-  /* A breath rather than a beat, and its own shape: two quick beats say something
-     just happened, and this has to say something is still happening. One swell
-     every --nu-motion-hold, which is about the rate a person breathes when they
-     are thinking rather than hurrying. */
-  @keyframes bsBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
-  .bs-dot.is-working{animation:bsBreathe var(--nu-motion-hold) ease-in-out infinite}
+  /* Coming in: the breath's rise. */
+  .bs-ava:hover .bs-dot::after{
+    opacity:1;
+    transition:opacity var(--nu-motion-slower) var(--nu-ease-zoom);
+  }
+  /* Light rather than size. The mark answers by brightening the way the logotype
+     accent does - the dot goes to its bloom colour and a halo opens out until it
+     fills the ground behind it - so the one thing that glows in the shop and the
+     one thing that glows in the corner read as the same gesture.
+
+     The glow is a box-shadow, not a filter, on the logotype's reasoning: a
+     filter rasterises the element it runs on, and at eight pixels across that
+     shows as a ragged edge. Five blur steps, the last reaching the rim of the
+     avatar, so the halo stops where the ground does.
+
+     The five hues are the logotype's own, written out again rather than shared:
+     lifting them into tokens would mean editing the accent beside the wordmark,
+     which is a change to the logo. Worth doing as its own decision.
+
+     One shape for both states, and the whole difference between them is how many
+     times it runs. Something has happened: one breath. Something is still
+     happening: breathing. A separate shape for each would have made them two
+     signals to learn instead of one, and the mark has nothing else to say.
+
+     --nu-motion-hold is one breath, which is what that step already measures:
+     the rate a person breathes when thinking rather than hurrying.
+
+     Taken in, then let out: --nu-ease-zoom on the way up, so the light is
+     already there within about a tenth of a second of the press, and the long
+     ease-in-out release afterwards. A symmetrical breath was the first shape and
+     the wrong one - the answer to a click has to arrive inside the moment the
+     click is still being felt, and a slow opening put a beat of nothing between
+     the two, which read as the mark responding to something else. */
+  @keyframes bsBloom{
+    0%{
+      background:var(--nu-bg-ava-dot);
+      box-shadow:0 0 5px rgba(226,59,59,0), 0 0 10px rgba(232,210,45,0),
+                 0 0 15px rgba(63,180,90,0), 0 0 20px rgba(45,143,232,0),
+                 0 0 26px rgba(123,79,224,0);
+      animation-timing-function:var(--nu-ease-zoom);
+    }
+    30%{
+      background:var(--nu-bg-ava-dot-bloom);
+      box-shadow:0 0 5px rgba(226,59,59,.85), 0 0 10px rgba(232,210,45,.8),
+                 0 0 15px rgba(63,180,90,.8), 0 0 20px rgba(45,143,232,.8),
+                 0 0 26px rgba(123,79,224,.8);
+      animation-timing-function:ease-in-out;
+    }
+    100%{
+      background:var(--nu-bg-ava-dot);
+      box-shadow:0 0 5px rgba(226,59,59,0), 0 0 10px rgba(232,210,45,0),
+                 0 0 15px rgba(63,180,90,0), 0 0 20px rgba(45,143,232,0),
+                 0 0 26px rgba(123,79,224,0);
+    }
+  }
+  /* Once, whenever something in the panel opens - the only moment the shop is
+     putting an answer together. The curve comes from the keyframes themselves,
+     so the shorthand sets none. */
+  .bs-dot.is-thinking{animation:bsBloom var(--nu-motion-hold)}
+  /* Without end: from the moment an answer is asked for until its last word has
+     arrived. Waiting for the words and setting them down are one stretch of work
+     as far as the reader is concerned, and the mark stops when the work does. */
+  .bs-dot.is-working{animation:bsBloom var(--nu-motion-hold) infinite}
 
   /* Where the answer will be. Three rules of falling length, so the shape reads
      as a paragraph rather than as a control, and no text at all: a placeholder
@@ -1500,16 +1582,42 @@
   .bs-sk span:nth-child(3){width:62%;margin-bottom:0}
   @keyframes bsPend{from{opacity:1}to{opacity:.45}}
 
-  /* One word at a time, and only while there is a real answer arriving to be
-     shown one word at a time. The stagger is the delivery, so nothing here
-     carries its own duration: the interval is the hold divided by the words. */
-  .bs-w{opacity:0}
-  .bs-w.is-in{opacity:1;transition:opacity var(--nu-motion-quick) ease}
+  /* A word comes out of blur as it fades in, rather than simply appearing. The
+     blur is what makes the arrival readable as one word settling: opacity alone
+     changes only how dark the word is, and the eye reads that as the text being
+     switched on rather than as something being written.
+
+     Absent rather than transparent. A word waiting at opacity 0 still holds its
+     place, so the box stood at its full height from the first word and the text
+     filled a space that was already there. display:none keeps the place out of
+     the layout until the word takes it, and the panel grows line by line as the
+     answer arrives.
+
+     That is also why this is an animation and not a transition: a transition has
+     nothing to run from when an element has just stopped being display:none,
+     while an animation starts the moment the element is rendered.
+
+     A word is still arriving when the next one sets off - the animation runs
+     nearly three times the interval between words. Waiting for each to finish
+     made the passage read as a series of separate arrivals; overlapping them
+     reads as one line of text coming in. */
+  .bs-w{display:none}
+  .bs-w.is-in{display:inline;animation:bsWordIn var(--nu-motion-base) ease both}
+  /* A block stays out of the layout until a word has reached it. An empty
+     paragraph still carries its margins and an empty list item still draws its
+     bullet, so without this the shape of the answer would be standing there
+     before any of the answer was. */
+  .bs-text p:not(:has(.bs-w.is-in)),
+  .bs-text ul:not(:has(.bs-w.is-in)),
+  .bs-text li:not(:has(.bs-w.is-in)){display:none}
+  @keyframes bsWordIn{
+    from{opacity:0;filter:blur(4px)}
+    to{opacity:1;filter:blur(0)}
+  }
 
   @media (prefers-reduced-motion:reduce){
     .bs-dot.is-thinking,.bs-dot.is-working,.bs-sk span{animation:none}
-    .bs-w{opacity:1}
-    .bs-w.is-in{transition:none}
+    .bs-w,.bs-w.is-in{display:inline;animation:none}
   }
   @media (max-width:820px){
     /* The corner is where the shop bar lives on a phone, so she sits on top of
