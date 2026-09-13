@@ -1,6 +1,6 @@
 # Skille — jak powstaje i jak jest sprawdzany ten projekt
 
-Ten sklep i jego design system powstają we współpracy z Claude. Trzy pliki
+Ten sklep i jego design system powstają we współpracy z Claude. Cztery pliki
 w tym katalogu opisują sposób pracy, który się przy tym wypracował:
 powtarzalne procedury, spisane po to, żeby przy każdym kolejnym komponencie
 wychodziło to samo, a nie za każdym razem trochę co innego.
@@ -11,13 +11,14 @@ zapisane na koncie i to one działają w rozmowie; te pliki są ich kopią,
 umieszczoną w repozytorium, żeby konwencja jechała razem z kodem i wchodziła
 do historii zmian.
 
-## Trzy skille i podział pracy między nimi
+## Cztery skille i podział pracy między nimi
 
 | plik | kiedy działa |
 |---|---|
 | [`nowy-widok-w-sklepie.md`](nowy-widok-w-sklepie.md) | coś powstaje w sklepie |
 | [`zakladka-dokumentacji-ds.md`](zakladka-dokumentacji-ds.md) | coś zostaje opisane w dokumentacji |
 | [`audyt-dokumentacji-ds.md`](audyt-dokumentacji-ds.md) | opis zostaje sprawdzony względem kodu |
+| [`polszczyzna.md`](polszczyzna.md) | powstaje albo jest poprawiany polski tekst |
 
 Kolejność nie jest przypadkowa i wynika z jednej obserwacji: **dokumentacja
 design systemu psuje się w jeden sposób — kod idzie dalej, tekst zostaje.**
@@ -29,6 +30,13 @@ komponentów, zamiast wprowadzać wartości wpisane na sztywno. Drugi pilnuje,
 żeby każda zakładka miała ten sam kształt. Trzeci jest testem: przechodzi
 zakładkę trzema przebiegami — zgodność z kodem, zgodność z pozostałymi
 zakładkami, język — i weryfikuje twierdzenia skryptem, a nie wzrokiem.
+
+Czwarty dołączył później i działa poprzecznie do tamtych trzech: obsługuje
+każdy polski tekst, który w projekcie powstaje, a trzeci wywołuje go w swoim
+przebiegu językowym. Powstał z obserwacji, że model pisze po polsku zdania
+poprawne gramatycznie, których nikt by nie powiedział, bo układa je po
+angielsku i dopiero potem ubiera w polskie wyrazy. Skill jest procedurą
+przeciwko temu: cztery testy na gotowym zdaniu zamiast listy zakazanych słów.
 
 ## Co się przy tym sprawdziło
 
@@ -51,6 +59,12 @@ sprawdzić na przypadku znanym jako zły.
 z arkuszem stylów i sprzeczne ze skryptem — na przykład token wysokości
 belki jest zadeklarowany ze skali odstępów, ale skrypt nadpisuje go zmierzoną
 wartością po wyrenderowaniu.
+
+**Wersja polska pisana z angielskiej zawsze to widać.** Oba zdania mają wtedy
+tę samą budowę i tyle samo członów, choć każdy język rozwiązuje to samo
+inaczej. Test, który to wyłapuje, jest mechaniczny: przełóż polskie zdanie
+z powrotem na angielski, słowo po słowie, i sprawdź, czy nie wraca jako
+płynna angielszczyzna.
 
 ## Uwaga o kopiach
 

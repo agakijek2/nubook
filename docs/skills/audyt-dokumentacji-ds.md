@@ -37,7 +37,7 @@ Wzorce, które powtarzają się najczęściej — szukaj ich celowo:
 - **Wiersz wspólny opisujący jeden przypadek.** Tabela ma cztery warianty, a wiersz „Obramowanie" opisuje tylko pierwszy — bez zastrzeżenia, że pozostałe go nie mają.
 - **Wyliczenie miejsc, które się skurczyło albo urosło.** „Widok produktu, koszyk, kasa, potwierdzenie i dokumentacja" — a dwa pierwsze już nie należą.
 - **Odwołanie do nieistniejącego sąsiada.** Przypis mówiący „ta para", gdy pary już nie ma, bo komponent wyniesiono do osobnej zakładki.
-- **Martwy kod udający źródło prawdy.** Napisy, stałe albo klasy, które wyglądają na używane, a nie są. Ktoś je poprawi i nie zobaczy efektu.
+- **Martwy kod udający źródło prawdy.** Napisy, stałe albo klasy, które wyglądają na używane, a nie są. Ktoś je poprawi i nie zobaczy efektu. Ta sama pułapka w jednej deklaracji: skrót nazywający token, po którym stoi druga deklaracja nadpisująca tę samą właściwość wartością wpisaną na sztywno — token jest tam martwy, choć widać go w kodzie.
 - **Napis, którego brak niczego nie wywala.** W projekcie dwujęzycznym brakujący klucz słownika nie kończy się błędem — kontrolka pokazuje puste miejsce albo `undefined`, i to tylko w tym języku, którego nikt akurat nie ogląda. Sprawdź skryptem, czy oba słowniki mają dokładnie ten sam zbiór kluczy i czy żadne odwołanie w kodzie nie wskazuje na klucz, którego nie ma. Dwie pułapki: klucze sięgane dynamicznie (`t.shipNames[s.id]`, `T()[rule.err]`) wyglądają na nieużywane, a wywołania metod na zmiennej o nazwie `t` (`t.replace`, `t.localeCompare`) wyglądają na klucze.
 - **Milczenie zamiast nieprawdy.** Zakładka opisuje komponent w jednym kontekście, choć w kodzie występuje w trzech — i wszystko, co mówi, jest prawdą. Sprawdź nie tylko, czy twierdzenia są prawdziwe, ale czy obejmują wszystkie miejsca, w których rzecz żyje. Wyszukaj funkcję albo klasę komponentu w całym kodzie i policz konteksty.
 
@@ -46,6 +46,8 @@ Wzorce, które powtarzają się najczęściej — szukaj ich celowo:
 **Gdy skrypt audytu mówi „wszystko w porządku", sprawdź, czy złapałby przypadek, o którym wiesz, że jest zły.** Skrypty potrafią przechodzić, bo szukają nie tam: dopasowanie po tekście nie trafia, bo wcięcie się nie zgadza, albo wyrażenie regularne łapie `border-bottom` przy szukaniu `bottom`. Cichy fałszywy sukces jest gorszy niż brak testu.
 
 **Gdy skrypt zgłasza lawinę naruszeń, najpierw podejrzewaj skrypt.** Dwadzieścia naruszeń w kodzie, który wygląda na zadbany, to zwykle błąd metody, nie kodu. Zanim zaczniesz raportować, sprawdź jedno naruszenie ręcznie w źródle.
+
+**Gdy skrypt zgłasza jedno naruszenie, też najpierw podejrzewaj skrypt.** Najczęstszy fałszywy alarm to zła liczba oczekiwana: policzyłaś cztery akapity, a są trzy, bo czwarty należy do sąsiedniej sekcji. Zanim zgłosisz, wypisz to, co skrypt faktycznie znalazł, i policz ręcznie.
 
 Dwie pułapki przy czytaniu arkusza wyrażeniem regularnym, obie dające fałszywy wynik w przeciwnych kierunkach. **Selektor rozpisany na kilka linii** (`.a,` w jednej, `.b{` w następnej) nie zostanie dopasowany wzorcem szukającym selektora i klamry w tej samej linii — audyt zgłosi wtedy jako nieobsłużone reguły, które są obsłużone. **Komentarz stojący przed regułą** wchodzi w dopasowanie selektora, jeśli wzorzec nie wycina komentarzy najpierw — audyt zwróci wtedy listę „selektorów" będących zdaniami z komentarza. Wycinaj komentarze przed parsowaniem i dopasowuj selektor jako wszystko do klamry, bez względu na łamanie linii.
 
@@ -61,6 +63,7 @@ Ta sama rzecz opisana dwa razy rozjeżdża się zawsze. Porównaj zakładkę z r
 - **powtórzeń** — to samo zdanie techniczne w dwóch zakładkach; wybierz miejsce, gdzie należy, i w drugim zostaw samą zasadę
 - **obietnic ogólnych, których szczegóły nie dotrzymują** — wstęp obiecuje cztery miejsca zastosowania, a specyfikacja opisuje jedno
 - **zakładki, która wie więcej o cudzym komponencie niż on sam** — jeśli tabela kolorów wymienia zastosowanie, o którym milczy zakładka komponentu, to ta druga ma lukę
+- **odesłania do zasad, których pod wskazanym adresem nie ma** — wiersz mówiący „na zasadach opisanych w Ruchu", gdy zakładka Ruch o tym komponencie milczy. Sprawdzaj każde odesłanie, czytając to, do czego odsyła.
 
 Rozbieżność zgłaszaj **z obu stron**: która zakładka ma rację, zależy od kodu, nie od tego, którą właśnie czytasz.
 
@@ -77,7 +80,9 @@ Kryteria: rzeczowo, fachowo, oznajmująco, naturalnie.
 
 ### Naturalna polszczyzna
 
-Najtrudniejsze do wyłapania, bo tekst wygląda poprawnie. Trzy odmiany tego samego problemu:
+Najtrudniejsze do wyłapania, bo tekst wygląda poprawnie. **Ten fragment przebiegu prowadź razem ze skillem `polszczyzna`** — tam stoją testy, lista konstrukcji przeniesionych z angielskiego i reguły szyku. Tutaj zostaje to, co dotyczy samej dokumentacji.
+
+Trzy odmiany problemu wracają w zakładkach najczęściej:
 
 **Kalki słownikowe.** „Stan mieszka w atrybucie", „pudełko" na `box`. Osobne słowo brzmi znajomo, całość nie jest polszczyzną.
 
@@ -85,7 +90,9 @@ Najtrudniejsze do wyłapania, bo tekst wygląda poprawnie. Trzy odmiany tego sam
 
 **Personifikacja rzeczy bez sprawczości.** „Okładka potrafi chodzić sama", „miniatura rzuca cień, bo stoi na liście", „pole czeka na odpowiedź". Metafora ruchu wciska się w opis układu i brzmi jak literatura, nie jak specyfikacja.
 
-Test, który to wyłapuje: **przeczytaj zdanie na głos i sprawdź, czy powiedziałabyś je tak w rozmowie o pracy.** Jeśli nie — przepisz najprostszym możliwym szykiem: co jest czym, co gdzie stoi, co się dzieje. „Kafel to szare pole 4:5 z okładką w środku" zamiast „pole, w którym staje okładka".
+Dwa testy ze skilla `polszczyzna` wystarczają na większość znalezisk. **Przeczytaj zdanie na głos** i sprawdź, czy powiedziałabyś je tak w rozmowie o pracy. Potem **przełóż je z powrotem na angielski, słowo po słowie**: jeśli wraca jako płynna angielszczyzna, było angielskim zdaniem w polskim przebraniu. Gdy któryś test wypadnie źle, przepisz najprostszym możliwym szykiem: co jest czym, co gdzie stoi, co się dzieje. „Kafel to szare pole 4:5 z okładką w środku" zamiast „pole, w którym staje okładka".
+
+W dokumentacji dwujęzycznej sprawdź dodatkowo, **czy wersja polska nie jest przekładem angielskiej**. Objaw widać od razu: oba zdania mają tę samą budowę, tyle samo członów i ten sam szyk. Oba języki rozwiązują to samo inaczej — angielski częściej rzeczownikiem odczasownikowym, polski zdaniem podrzędnym — więc identyczna budowa oznacza, że jedno zdanie powstało z drugiego. Poprawka polega na napisaniu wersji polskiej od faktu, a nie na przestawianiu wyrazów w przekładzie. Treść ma się zgadzać, budowa nie musi i zwykle nie powinna.
 
 Ta wada bierze się z pisania kilku zdań jednym oddechem, więc **gdy znajdziesz jedno takie zdanie, przejrzyj sąsiednie** — zwykle są z tej samej partii.
 
@@ -96,7 +103,7 @@ Ta wada bierze się z pisania kilku zdań jednym oddechem, więc **gdy znajdzies
 Dla każdego znaleziska podaj:
 
 1. **czego dotyczy** — cytat spornego zdania
-2. **dlaczego jest nie tak** — dowód z kodu: nazwa selektora, wartość, liczba wystąpień. Konkret, nie wrażenie.
+2. **dlaczego jest nie tak** — dowód z kodu: nazwa selektora, wartość, liczba wystąpień. Konkret, nie wrażenie. W przebiegu 3 dowodem jest nazwana wada: kalka składniowa, personifikacja, ciąg rzeczownikowy, zły zakres partykuły. Nazwana wada uczy, „brzmi nienaturalnie" nie.
 3. **propozycję** — gotowe brzmienie do zatwierdzenia, a nie kierunek zmiany
 
 Napisz też, **co sprawdziłaś i wyszło dobrze**. Audyt, który wymienia same usterki, nie mówi, jak szeroko sięgnął — a zakładka bez znalezisk to wynik, nie brak wyniku.
@@ -104,6 +111,8 @@ Napisz też, **co sprawdziłaś i wyszło dobrze**. Audyt, który wymienia same 
 Gdy niezgodność da się usunąć z dwóch stron, **przedstaw obie drogi**: poprawić kod czy poprawić opis. Napisz, którą polecasz i dlaczego, ale zostaw wybór.
 
 **Zanim uznasz coś za błąd w kodzie, sprawdź, czy nie jest zamierzone.** Zachowanie, które wygląda na niedopatrzenie, bywa decyzją projektową, której nikt nie zapisał — okładka nieprzygaszona na stronie produktu wygląda jak zapomniana reguła, a jest świadomym wyborem, bo czytelniczka przyszła obejrzeć właśnie tę okładkę. Opisz, co widzisz, i zapytaj o intencję. Gdy intencja się potwierdzi, praca polega na **zapisaniu jej** — komentarzem przy regule i wierszem w dokumentacji — oraz na usunięciu tego, co ją podważa: martwej klasy, nieużywanego selektora, przełącznika bez reguły.
+
+**Zanim zgłosisz, że czegoś brakuje, sprawdź historię.** Zdanie poprawione wczoraj wygląda tak samo jak zdanie sprzed roku. Jeśli zgłaszasz brak opisu albo błąd w opisie, zajrzyj w `git log` i `git blame` na ten fragment: zdarza się, że zgłaszany brak został uzupełniony poprzedniego dnia i to ty go uzupełniałaś.
 
 Niektóre niezgodności to za to okazja, żeby domknąć prawdziwą lukę: brak reguły fokusu, brak tokenu, wartość powtórzona w pięciu miejscach zamiast jednej.
 
@@ -115,4 +124,4 @@ Zbuduj projekt i **uruchom cały zestaw testów regresyjnych**, nie tylko sprawd
 
 Sprawdź też, czy poprawka nie unieważniła zdania **gdzie indziej**: zawężenie reguły w jednej zakładce często czyni fałszywym podsumowanie we wstępie.
 
-Na koniec podaj gotowy opis commita — jeden na jedną zatwierdzoną decyzję.
+Na koniec podaj gotowy opis commita — jeden na jedną zatwierdzoną decyzję. Jeśli zatwierdzone decyzje przeplatają się w tych samych plikach i rozdzielenie ich wymagałoby wybierania fragment po fragmencie, podaj jeden commit z rozpisanym uzasadnieniem i powiedz wprost, dlaczego nie jest ich kilka.

@@ -77,7 +77,9 @@ The criteria: factual, professional, indicative, natural.
 
 ### Natural language
 
-The hardest thing to catch, because the text looks correct. Three versions of the same problem, all of them what a model writes when it composes in one language while thinking in another:
+The hardest thing to catch, because the text looks correct. **Run this part of the pass together with the `polszczyzna` skill** — it holds the tests, the list of constructions carried over from English, and the word-order rules. What stays here is what belongs to documentation itself.
+
+Three versions of the same problem come back most often, all of them what a model writes when it composes in one language while thinking in another:
 
 **Dictionary calques.** "State lives in the attribute", "box" translated word for word. Each word looks familiar; the whole is not the language anyone writes.
 
@@ -85,9 +87,11 @@ The hardest thing to catch, because the text looks correct. Three versions of th
 
 **Personifying things with no agency.** "The cover can walk on its own", "the thumbnail casts a shadow because it stands in a list", "the field waits for an answer". A metaphor of movement pushes into a description of layout and reads as literature rather than specification.
 
-The test that catches all three: **read the sentence aloud and ask whether you would say it that way in a conversation at work.** If not, rewrite it in the plainest possible order: what is what, what stands where, what happens. "A tile is a grey 4:5 field with a cover in it" rather than "the field the cover stands in".
+Two tests carry most of the findings. **Read the sentence aloud** and ask whether you would say it that way in a conversation at work. Then **translate it back into the other language, word for word**: if it comes back as fluent prose there, it was a sentence of that language wearing this one's words. When either test fails, rewrite in the plainest possible order: what is what, what stands where, what happens. "A tile is a grey 4:5 field with a cover in it" rather than "the field the cover stands in".
 
-This fault comes from writing several sentences in one breath, so **when you find one, read its neighbours** — they are usually from the same batch.
+In bilingual documentation, check additionally **whether one version is a translation of the other**. The symptom is easy to see: both sentences have the same shape, the same number of parts and the same order. The two languages solve the same thing differently — English reaches for a verbal noun where Polish takes a subordinate clause — so an identical shape means one sentence was made out of the other. The fix is to write the second version from the fact, not to rearrange the words of a translation. The content has to match; the shape does not and usually should not.
+
+This fault comes from writing several sentences in one breath, so **when you find one such sentence, look at its neighbours** — they are usually from the same batch.
 
 ## How to report
 
