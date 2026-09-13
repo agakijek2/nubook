@@ -3095,11 +3095,11 @@ const DS_SECTIONS = [
       "--nu-type-h1": L("The subject of a view","Temat widoku"),
       "--nu-type-h2": L("A section within a view","Sekcja wewnątrz widoku"),
       "--nu-type-h3": L("A section that needs a heading but not its weight","Sekcja, która potrzebuje nagłówka, ale nie jego ciężaru"),
-      "--nu-type-body-l": L("Emphasis within running copy","Wyróżnienie w tekście ciągłym"),
+      "--nu-type-body-l": L("The largest step of the text family. It goes to what has to dominate its own box without changing face: a total at the foot of a bill, initials inside a mark. That is what separates it from <code>--nu-type-h3</code>, which is the same size in the display family.","Największy stopień rodziny tekstowej. Bierze go to, co ma dominować w swoim polu, nie zmieniając kroju: suma na dole rachunku, inicjały w znaku. Tym różni się od <code>--nu-type-h3</code>, który ma ten sam stopień w rodzinie tytułowej."),
       "--nu-type-body-m": L("The page's own style, inherited by everything that does not say otherwise","Własny styl strony, dziedziczony przez wszystko, co nie mówi inaczej"),
       "--nu-type-body-s": L("Small running text that can still break onto a second line: a field's label and its message, the strapline under the wordmark. Also the uppercase headings over a group &ndash; a filter group, a specimen, a bar &ndash; where the rule adds the capitals and the tracking on top of it, the <code>font:</code> shorthand carrying neither.","Mały tekst ciągły, który wciąż może złamać się na drugi wiersz: etykieta pola i jej komunikat, podpis pod sygnetem. Także wersalikowe nagłówki nad grupą &ndash; grupą filtrów, okazem, belką &ndash; gdzie reguła dokłada do niego wersaliki i światło, bo skrót <code>font:</code> nie niesie ani jednego, ani drugiego."),
       "--nu-type-label": L("Text that names another element rather than being read as content. Its box is one line high, which is what separates it from <code>--nu-type-body-s</code>: that one can break onto a second line, this one is not meant to.","Napis, który nazywa inny element, zamiast być treścią do czytania. Jego pudełko ma wysokość jednego wiersza i tym różni się od <code>--nu-type-body-s</code>: tamten może złamać się na drugi wiersz, ten nie."),
-      "--nu-type-caption": L("A count bound to a larger element. Never for reading.","Liczba przypięta do większego elementu. Nigdy do czytania."),
+      "--nu-type-caption": L("The smallest step in the scale, and the quietest thing the interface sets: a count bound to an element, or the name of a section standing behind it. It differs from <code>--nu-type-label</code> in size, not in role.","Najmniejszy stopień skali i najcichszy napis, jaki interfejs stawia: liczba przypięta do elementu albo nazwa sekcji stojącej w drugim planie. Od <code>--nu-type-label</code> różni się stopniem, nie rolą."),
     };
     return `
     <h1>${L("Typography","Typografia")}</h1>
@@ -3209,8 +3209,8 @@ const DS_SECTIONS = [
     <h3>${L("Rules","Zasady")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Same value, different role","Ta sama wartość, inna rola")}</td>
-          <td>${L("Heading 3 and Body L take the same step, <code>lg</code>. They are separate styles, not one style used twice: the first is the floor of the display family and the second is emphasis inside running copy. Either can be moved by pointing it at a different step, which is what keeps them independent without the scale holding two values of the same size.",
-                  "Heading 3 i Body L biorą ten sam stopień, <code>lg</code>. Są osobnymi stylami, a nie jednym użytym dwa razy: pierwszy jest najniższym stopniem kroju tytułowego, drugi wyróżnieniem w tekście ciągłym. Każdy da się przesunąć, wskazując mu inny stopień, i to trzyma je niezależnie, bez trzymania w skali dwóch wartości tej samej wielkości.")}</td></tr>
+          <td>${L("Heading 3 and Body L take the same step, <code>lg</code>. They are separate styles, not one style used twice: the first is the floor of the display family and the second is the ceiling of the text family. Either can be moved by pointing it at a different step, which is what keeps them independent without the scale holding two values of the same size.",
+                  "Heading 3 i Body L biorą ten sam stopień, <code>lg</code>. Są osobnymi stylami, a nie jednym użytym dwa razy: pierwszy jest najniższym stopniem kroju tytułowego, drugi najwyższym stopniem kroju tekstowego. Każdy da się przesunąć, wskazując mu inny stopień, i to trzyma je niezależnie, bez trzymania w skali dwóch wartości tej samej wielkości.")}</td></tr>
       <tr><td>${L("Reaching for a style","Sięganie po styl")}</td>
           <td>${L("A rule reads a style rather than a step of a scale, so that the four properties travel together. The exception is an element that needs a font property the <code>font:</code> shorthand resets: italic, tabular figures, small capitals. There the rule sets only what it changes and leaves the rest to inheritance &ndash; a price is set at <code>lg</code> with tabular figures beside it, both declared on their own, because the <code>font:</code> shorthand would clear the figures away. The same holds at a breakpoint, where only the size moves.",
                   "Reguła sięga po styl, a nie po stopień skali, żeby cztery właściwości podróżowały razem. Wyjątkiem jest element, który potrzebuje właściwości pisma kasowanej przez skrót <code>font:</code>: kursywy, cyfr tabelarycznych, kapitalików. Wtedy reguła ustawia tylko to, co zmienia, a resztę zostawia dziedziczeniu &ndash; cena dostaje stopień <code>lg</code> i cyfry tabelaryczne, ustawione osobno, bo skrót <code>font:</code> by je skasował. Tak samo na progu, gdzie zmienia się sam stopień.")}</td></tr>
@@ -3444,8 +3444,8 @@ const DS_SECTIONS = [
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Typography","Typografia")}</td><td>${L(
-        `Label, ${dsTok("--nu-text-size-sm")}, uppercase, tracking ${dsTok("--nu-tracking-caps")}, line-height 1`,
-        `Label, ${dsTok("--nu-text-size-sm")}, wersaliki, światło ${dsTok("--nu-tracking-caps")}, interlinia 1`)}</td></tr>
+        `${dsTok("--nu-type-label")}, uppercase, with ${dsTok("--nu-tracking-caps")} declared beside it: the shorthand carries neither the case nor the tracking.`,
+        `${dsTok("--nu-type-label")}, wersaliki, ze światłem ${dsTok("--nu-tracking-caps")} zadeklarowanym obok: skrót nie niesie ani wielkości liter, ani światła.`)}</td></tr>
       <tr><td>${L("Padding","Wypełnienie")}</td><td>${L(
         `${dsTok("--nu-space-nano")} vertical, ${dsTok("--nu-space-micro")} horizontal.`,
         `${dsTok("--nu-space-nano")} w pionie, ${dsTok("--nu-space-micro")} w poziomie.`)}</td></tr>
@@ -3754,8 +3754,8 @@ const DS_SECTIONS = [
         "<code>--nu-bg-secondary</code> with a 1px <code>--nu-border-neutral</code> hairline, in both. The photograph covers the ground; the initials and the dot stand on it.",
         "<code>--nu-bg-secondary</code> z kreską włosową 1px <code>--nu-border-neutral</code>, w obu. Zdjęcie zakrywa tło; inicjały i kropka na nim stoją.")}</td></tr>
       <tr><td>${L("Type","Typografia")}</td><td>${L(
-        `Initials only, at ${dsTok("--nu-text-size-lg")} with ${dsTok("--nu-tracking-compact")}: two capitals closed inside a container, which is what that tracking is for. Two at most, from the first two words of the name.`,
-        `Tylko inicjały, w stopniu ${dsTok("--nu-text-size-lg")} ze światłem ${dsTok("--nu-tracking-compact")}: dwa wersaliki zamknięte w kontenerze, a to światło jest właśnie do takich przypadków. Najwyżej dwa, wzięte z dwóch pierwszych słów imienia i nazwiska.`)}</td></tr>
+        `Initials only, in ${dsTok("--nu-type-body-l")} with ${dsTok("--nu-tracking-compact")} declared beside it: two capitals closed inside a container, which is what that tracking is for. Two at most, from the first two words of the name.`,
+        `Tylko inicjały, stylem ${dsTok("--nu-type-body-l")} ze światłem ${dsTok("--nu-tracking-compact")} zadeklarowanym obok: dwa wersaliki zamknięte w kontenerze, a to światło jest właśnie do takich przypadków. Najwyżej dwa, wzięte z dwóch pierwszych słów imienia i nazwiska.`)}</td></tr>
       <tr><td>${L("The dot","Kropka")}</td><td>${L(
         `${dsTok("--nu-space-micro")} across, in <code>--nu-bg-ava-dot</code>. The value is the one the accent beside the wordmark carries, the name is not, so the logotype and the corner can change apart. Lit, the dot goes to <code>--nu-bg-ava-dot-bloom</code> and five rings of glow open out around it, the same five the wordmark draws.`,
         `${dsTok("--nu-space-micro")} średnicy, w kolorze <code>--nu-bg-ava-dot</code>. Wartość jest ta sama co przy znaku marki, nazwa inna, więc logotyp i róg ekranu mogą zmieniać się osobno. Zapalona kropka przechodzi w <code>--nu-bg-ava-dot-bloom</code>, a wokół niej otwiera się pięć pierścieni poświaty, tych samych, które rysuje znak marki.`)}</td></tr>

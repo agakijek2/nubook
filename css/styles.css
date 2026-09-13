@@ -706,7 +706,7 @@
      separate piece of information, and running under it would read as part of the
      name. Hence the inner span - a border cannot stop halfway across an element. */
   .chip .chip-t{border-bottom:1px solid transparent;padding-bottom:var(--nu-underline-offset)}
-  .chip sup{font-size:var(--nu-text-size-xs);color:var(--nu-fg-tertiary);margin-left:var(--nu-space-nano)}
+  .chip sup{font:var(--nu-type-caption);color:var(--nu-fg-tertiary);margin-left:var(--nu-space-nano)}
   .chip[aria-pressed="true"] .chip-t{border-bottom-color:var(--nu-border-primary)}
   .chip:hover .chip-t{border-bottom-color:var(--nu-fg-secondary)}
   .chip:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
@@ -815,7 +815,7 @@
      a packshot is one place it appears, not part of what it is. The tile holding
      it does the positioning, which is what lets a badge also stand in a row. */
   .badge{
-    font-size:var(--nu-text-size-sm);line-height:var(--nu-line-flat);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    font:var(--nu-type-label);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
     padding:var(--nu-space-nano) var(--nu-space-micro);background:var(--nu-bg-primary);border:1px solid var(--nu-border-primary);
   }
   .tile .badge{position:absolute;top:var(--nu-space-milli);left:var(--nu-space-milli);z-index:2}
@@ -901,9 +901,12 @@
     font:var(--nu-type-body-m);font-style:italic;color:var(--nu-fg-secondary);
     padding-left:var(--nu-space-small);border-left:1px solid var(--nu-border-neutral);
   }
+  /* The one place where the shorthand is reached for because of what it clears:
+     the quote above is italic and the attribution is not, and font: returns the
+     style to roman on its own. */
   .p-quote .q-by{
-    display:block;margin-top:var(--nu-space-micro);font-style:normal;
-    font-size:var(--nu-text-size-md);letter-spacing:var(--nu-tracking-compact);color:var(--nu-fg-secondary);
+    display:block;margin-top:var(--nu-space-micro);
+    font:var(--nu-type-body-m);letter-spacing:var(--nu-tracking-compact);color:var(--nu-fg-secondary);
   }
   /* a solid em dash reads heavier than letterforms at the same colour,
      so lighten it slightly to match the text optically */
@@ -937,11 +940,11 @@
     width:var(--nu-avatar-size-md);height:var(--nu-avatar-size-md);border-radius:50%;
     background:var(--nu-bg-secondary);border:1px solid var(--nu-border-neutral);
     display:inline-flex;align-items:center;justify-content:center;
-    font-size:var(--nu-text-size-lg);letter-spacing:var(--nu-tracking-compact);color:var(--nu-fg-primary);
+    font:var(--nu-type-body-l);letter-spacing:var(--nu-tracking-compact);color:var(--nu-fg-primary);
     object-fit:cover;overflow:hidden;margin:var(--nu-space-medium) 0 var(--nu-space-medium);
   }
   .d-label{
-    font-size:var(--nu-text-size-xs);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
+    font:var(--nu-type-caption);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;
     color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-micro);
   }
   .d-name{
@@ -1151,7 +1154,13 @@
   .sum-row{display:flex;justify-content:space-between;padding:var(--nu-space-nano) 0;font-variant-numeric:tabular-nums}
   .sum-row.muted{color:var(--nu-fg-secondary)}
   /* size only: a style here would reset the tabular figures set by .sum-row */
-  .sum-row.total{font-size:var(--nu-text-size-lg);padding-top:var(--nu-space-milli);margin-top:var(--nu-space-micro);border-top:1px solid var(--nu-border-neutral)}
+  /* Tabular figures restated after the style: .sum-row sets them, but font: on a
+     more specific selector clears every font property it does not name, and this
+     is a column of numbers that has to hold its alignment. */
+  .sum-row.total{
+    font:var(--nu-type-body-l);font-variant-numeric:tabular-nums;
+    padding-top:var(--nu-space-milli);margin-top:var(--nu-space-micro);border-top:1px solid var(--nu-border-neutral);
+  }
   .cart-cta{display:block;width:100%;text-align:center;margin-top:var(--nu-space-medium);padding:var(--nu-space-milli) 0}
   .cart-page-list .ci-cover{width:var(--nu-thumb-size-md)}
   .cart-page-list .ci{padding:var(--nu-space-medium) 0}
