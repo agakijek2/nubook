@@ -3097,15 +3097,15 @@ const DS_SECTIONS = [
       "--nu-type-h3": L("A section that needs a heading but not its weight","Sekcja, która potrzebuje nagłówka, ale nie jego ciężaru"),
       "--nu-type-body-l": L("Emphasis within running copy","Wyróżnienie w tekście ciągłym"),
       "--nu-type-body-m": L("The page's own style, inherited by everything that does not say otherwise","Własny styl strony, dziedziczony przez wszystko, co nie mówi inaczej"),
-      "--nu-type-body-s": L("Small running text that can still break onto a second line: a field's label and its message, the strapline under the wordmark. Also the uppercase headings over a group &ndash; a filter group, a specimen, a bar &ndash; where the rule adds the capitals and the tracking on top of it, the <code>font:</code> shorthand carrying neither.","Mały tekst ciągły, który wciąż może złamać się na drugi wiersz: etykieta pola i jej komunikat, podpis pod sygnetem. Także wersalikowe nagłówki nad grupą &ndash; grupą filtrów, okazem, belką &ndash; gdzie reguła dokłada do niego wersaliki i światło, bo skrót <code>font:</code> nie unosi ani jednego, ani drugiego."),
-      "--nu-type-label": L("Text that names another element rather than being read as content. Its box is one line high, which is what separates it from <code>--nu-type-body-s</code>: that one can break onto a second line, this one is not meant to.","Napis, który nazywa inny element, zamiast być treścią do czytania. Jego pudełko ma wysokość jednego wiersza i tym różni się od <code>--nu-type-body-s</code>: tamten może złamać się na drugi wiersz, ten nie ma prawa."),
+      "--nu-type-body-s": L("Small running text that can still break onto a second line: a field's label and its message, the strapline under the wordmark. Also the uppercase headings over a group &ndash; a filter group, a specimen, a bar &ndash; where the rule adds the capitals and the tracking on top of it, the <code>font:</code> shorthand carrying neither.","Mały tekst ciągły, który wciąż może złamać się na drugi wiersz: etykieta pola i jej komunikat, podpis pod sygnetem. Także wersalikowe nagłówki nad grupą &ndash; grupą filtrów, okazem, belką &ndash; gdzie reguła dokłada do niego wersaliki i światło, bo skrót <code>font:</code> nie niesie ani jednego, ani drugiego."),
+      "--nu-type-label": L("Text that names another element rather than being read as content. Its box is one line high, which is what separates it from <code>--nu-type-body-s</code>: that one can break onto a second line, this one is not meant to.","Napis, który nazywa inny element, zamiast być treścią do czytania. Jego pudełko ma wysokość jednego wiersza i tym różni się od <code>--nu-type-body-s</code>: tamten może złamać się na drugi wiersz, ten nie."),
       "--nu-type-caption": L("A count bound to a larger element. Never for reading.","Liczba przypięta do większego elementu. Nigdy do czytania."),
     };
     return `
     <h1>${L("Typography","Typografia")}</h1>
     <p class="ds-lede">${L(
       "Two families, four scales, and the styles assembled from them. A style is named by level &ndash; Heading 1, Body, Label &ndash; not by the view it appears in, so one style serves every context that calls for it.",
-      "Dwie rodziny, cztery skale i złożone z nich style. Styl nazwany jest przez poziom &ndash; Heading 1, Body, Label &ndash; a nie przez widok, w którym występuje, więc jeden styl obsługuje każdy kontekst, który go wymaga.")}</p>
+      "Dwie rodziny, cztery skale i złożone z nich style. Styl nazwany jest przez poziom &ndash; Heading 1, Body, Label &ndash; a nie przez widok, w którym występuje, więc jeden styl wystarcza na każdy kontekst, który go wymaga.")}</p>
 
     <h3>${L("Families","Rodziny")}</h3>
     <div class="ds-faces">
@@ -3151,13 +3151,13 @@ const DS_SECTIONS = [
       <tr><td class="spec"><code>--nu-weight-medium</code></td><td>${dsVal("--nu-weight-medium")}</td><td>${L("Emphasis where size is not enough: a section heading too small to stand out by size alone, and a word inside a sentence.","Wyróżnienie tam, gdzie nie wystarcza rozmiar: nagłówek sekcji za mały, żeby odciąć się samą wielkością, i pojedyncze słowo w zdaniu.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
-      "The display family ships one weight and the text family two. Nothing heavier is loaded, so asking for a weight the shop does not hold would have the browser synthesise it from 400 and smear the letterforms &ndash; which is why the weight is stated by the style token rather than left to a default.",
-      "Rodzina tytułowa dostarczana jest w jednej grubości, tekstowa w dwóch. Nic cięższego nie jest wczytywane, więc prośba o grubość, której sklep nie posiada, kazałaby przeglądarce wygenerować ją z 400 i rozmyć litery &ndash; dlatego grubość wnosi token stylu, zamiast zostawiać ją wartości domyślnej.")}</p>
+      "The display family ships one weight and the text family two. Nothing heavier is loaded, so a rule asking for a weight the shop does not have would have the browser thicken one it does, outlining the letters instead of loading a real cut, and their shapes would fall apart &ndash; which is why the weight is stated by the style token rather than left to a default.",
+      "Rodzina tytułowa dostarczana jest w jednej grubości, tekstowa w dwóch. Nic cięższego nie jest wczytywane, więc gdyby reguła poprosiła o grubość, której sklep nie ma, przeglądarka pogrubiłaby sama tę, którą ma, obrysowując litery zamiast wczytać prawdziwą odmianę, a ich kształty by się posypały &ndash; dlatego grubość wnosi token stylu, zamiast zostawiać ją wartości domyślnej.")}</p>
 
     <h3>${L("Letter-spacing","Światło międzyliterowe")}</h3>
     <p>${L(
       "Set against size and string length, not against case. Four values cover the shop, all relative, so they follow the type size instead of being restated per breakpoint. A style token carries four properties and this is not one of them, so a rule that needs tracking declares it beside the style.",
-      "Dobierane do stopnia i długości ciągu, nie do wielkości liter. Cztery wartości obsługują cały sklep, wszystkie względne, więc idą za stopniem pisma, zamiast być powtarzane przy każdym progu. Token stylu unosi cztery właściwości i światła wśród nich nie ma, więc reguła, która go potrzebuje, deklaruje je obok stylu.")}</p>
+      "Dobierane do stopnia i długości ciągu, nie do wielkości liter. Cztery wartości obsługują cały sklep, wszystkie względne, więc idą za stopniem pisma, zamiast być powtarzane przy każdym progu. Token stylu niesie cztery właściwości i światła wśród nich nie ma, więc reguła, która go potrzebuje, deklaruje je obok stylu.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-tracking-display</code></td><td>${dsVal("--nu-tracking-display")}</td>
           <td>${L("Negative. Large display type sets loosely by default, so it is drawn in.","Ujemne. Duży krój tytułowy składa się z natury luźno, więc jest ściągany.")}</td></tr>
@@ -3171,8 +3171,8 @@ const DS_SECTIONS = [
 
     <h3>${L("The underline","Podkreślenie")}</h3>
     <p>${L(
-      "A word underlined by a control &ndash; a link standing in text, a ghost button, a pressed chip, the chosen option in the sort menu &ndash; needs air between the letters and the rule, or the rule lands on the descenders. One token holds that distance for all of them.",
-      "Słowo podkreślone przez kontrolkę &ndash; link stojący w tekście, przycisk ghost, wciśnięty chip, obowiązująca opcja w menu sortowania &ndash; potrzebuje powietrza między literami a kreską, bo inaczej kreska ląduje na ogonkach. Jeden token trzyma tę odległość dla wszystkich.")}</p>
+      "A control that underlines a word needs air between the letters and the rule, or the rule lands on the descenders. One token holds that distance for all of them.",
+      "Kontrolka, która podkreśla słowo, potrzebuje powietrza między literami a kreską, bo inaczej kreska ląduje na ogonkach. Jeden token trzyma tę odległość dla wszystkich.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-underline-offset</code></td><td>${dsVal("--nu-underline-offset")}</td>
           <td>${L("The distance between a word and the rule under it. In <code>px</code>, unlike everything else on this tab: a hairline&rsquo;s distance from a hairline is measured against the rule, not against the text, so it does not grow with it. It sits below the spacing scale, which starts four times higher.",
@@ -3209,20 +3209,20 @@ const DS_SECTIONS = [
     <h3>${L("Rules","Zasady")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Same value, different role","Ta sama wartość, inna rola")}</td>
-          <td>${L("Heading 3 and Body L both take <code>lg</code> today. They are separate styles, not one style used twice: the first is the floor of the display family and the second is emphasis inside running copy. Either can be moved by pointing it at a different step, which is what keeps them independent without the scale holding two values of the same size.",
-                  "Heading 3 i Body L biorą dziś stopień <code>lg</code>. Są osobnymi stylami, a nie jednym użytym dwa razy: pierwszy jest najniższym stopniem kroju tytułowego, drugi wyróżnieniem w tekście ciągłym. Każdy da się przesunąć, wskazując mu inny stopień, i to trzyma je niezależnie, bez trzymania w skali dwóch wartości tej samej wielkości.")}</td></tr>
+          <td>${L("Heading 3 and Body L take the same step, <code>lg</code>. They are separate styles, not one style used twice: the first is the floor of the display family and the second is emphasis inside running copy. Either can be moved by pointing it at a different step, which is what keeps them independent without the scale holding two values of the same size.",
+                  "Heading 3 i Body L biorą ten sam stopień, <code>lg</code>. Są osobnymi stylami, a nie jednym użytym dwa razy: pierwszy jest najniższym stopniem kroju tytułowego, drugi wyróżnieniem w tekście ciągłym. Każdy da się przesunąć, wskazując mu inny stopień, i to trzyma je niezależnie, bez trzymania w skali dwóch wartości tej samej wielkości.")}</td></tr>
       <tr><td>${L("Reaching for a style","Sięganie po styl")}</td>
-          <td>${L("A rule reads a style rather than a step of a scale, so that the four properties travel together. The exception is an element that needs a font property the <code>font:</code> shorthand resets: italic, tabular figures, small capitals. There the rule sets only what it changes and leaves the rest to inheritance &ndash; a price is set at <code>lg</code> and nothing more, because the shorthand would take its tabular figures away. The same holds at a breakpoint, where only the size moves.",
-                  "Reguła sięga po styl, a nie po stopień skali, żeby cztery właściwości podróżowały razem. Wyjątkiem jest element, który potrzebuje właściwości pisma kasowanej przez skrót <code>font:</code>: kursywy, cyfr tabelarycznych, kapitalików. Wtedy reguła ustawia tylko to, co zmienia, a resztę zostawia dziedziczeniu &ndash; cena dostaje stopień <code>lg</code> i nic poza tym, bo skrót odebrałby jej cyfry tabelaryczne. Tak samo na progu, gdzie zmienia się sam stopień.")}</td></tr>
+          <td>${L("A rule reads a style rather than a step of a scale, so that the four properties travel together. The exception is an element that needs a font property the <code>font:</code> shorthand resets: italic, tabular figures, small capitals. There the rule sets only what it changes and leaves the rest to inheritance &ndash; a price is set at <code>lg</code> with tabular figures beside it, both declared on their own, because the <code>font:</code> shorthand would clear the figures away. The same holds at a breakpoint, where only the size moves.",
+                  "Reguła sięga po styl, a nie po stopień skali, żeby cztery właściwości podróżowały razem. Wyjątkiem jest element, który potrzebuje właściwości pisma kasowanej przez skrót <code>font:</code>: kursywy, cyfr tabelarycznych, kapitalików. Wtedy reguła ustawia tylko to, co zmienia, a resztę zostawia dziedziczeniu &ndash; cena dostaje stopień <code>lg</code> i cyfry tabelaryczne, ustawione osobno, bo skrót <code>font:</code> by je skasował. Tak samo na progu, gdzie zmienia się sam stopień.")}</td></tr>
       <tr><td>${L("Italic","Kursywa")}</td>
           <td>${L("A cut of <code>--nu-type-body-m</code>, declared beside the style because the shorthand does not carry it. Reserved for book quotes; the attribution beneath returns to roman. Nothing else in the shop is set in italic.",
-                  "Odmiana <code>--nu-type-body-m</code>, deklarowana obok stylu, bo skrót jej nie unosi. Zarezerwowana dla cytatów z książek; podpis pod cytatem wraca do odmiany prostej. Nic innego w sklepie nie jest składane kursywą.")}</td></tr>
+                  "Odmiana <code>--nu-type-body-m</code>, deklarowana obok stylu, bo skrót jej nie niesie. Zarezerwowana dla cytatów z książek; podpis pod cytatem wraca do odmiany prostej. Nic innego w sklepie nie jest składane kursywą.")}</td></tr>
       <tr><td>${L("Numerals","Cyfry")}</td>
           <td>${L("Prices, quantities and totals set in tabular figures, so a column of numbers holds its alignment when a value changes.",
                   "Ceny, ilości i sumy składane są cyframi tabelarycznymi, więc kolumna liczb utrzymuje wyrównanie przy zmianie wartości.")}</td></tr>
       <tr><td>${L("Mobile","Mobile")}</td>
-          <td>${L("Below 820px the product title and the wordmark move to Heading 2. Every other application of Heading 1 and the rest of the scale are unchanged.",
-                  "Poniżej 820px tytuł produktu i znak marki przechodzą na Heading 2. Pozostałe zastosowania Heading 1 oraz reszta skali zostają bez zmian.")}</td></tr>
+          <td>${L("Below 820px the product title and the wordmark take <code>xl</code> in place of <code>2xl</code>. Only the size moves: that makes the title Heading 2, the two styles differing in nothing else, while the wordmark keeps its flat line. Every other application of Heading 1 and the rest of the scale are unchanged.",
+                  "Poniżej 820px tytuł produktu i znak marki biorą stopień <code>xl</code> zamiast <code>2xl</code>. Zmienia się sam stopień: tytuł staje się przez to Heading 2, bo oba style różnią się tylko wielkością, a znak marki zachowuje swój płaski wiersz. Pozostałe zastosowania Heading 1 oraz reszta skali zostają bez zmian.")}</td></tr>
     </tbody></table>
 
     <h3>${L("Outside the scales","Poza skalami")}</h3>

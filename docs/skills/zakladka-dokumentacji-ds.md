@@ -9,6 +9,8 @@ Zakładki, które różnią się strukturą, zmuszają czytelniczkę do uczenia 
 
 Zanim zaczniesz pisać, **przeczytaj dwie istniejące zakładki tego samego rodzaju**. Ten opis podaje kształt, ale to kod jest źródłem prawdy i mógł się od czasu jego powstania zmienić.
 
+Tekst polski pisz razem ze skillem `polszczyzna`: zakładka opisana poprawną angielszczyzną w polskich wyrazach czyta się gorzej niż zakładka o gorszej strukturze.
+
 ## Dwa rodzaje zakładek
 
 **Komponent** — konkretna rzecz na ekranie: odznaka, przycisk, chip, link, kafel, stepper, pole. Opisuje się ją przez warianty albo stany.
@@ -60,13 +62,19 @@ W tej kolejności:
 
 **Każdy token z kodu ma swój wiersz.** Po dopisaniu tokenu do arkusza dopisz go do tabeli w tej samej chwili. Parzystość da się sprawdzić skryptem: policz tokeny w bloku `:root` i w tabelach, porównaj listy. Rozjazd znajdziesz w sekundę, oko nie znajdzie go wcale.
 
-**Obie wersje językowe.** Każdy napis przez funkcję tłumaczącą, także podpisy okazów, nagłówki tabel i przypisy.
+**Obie wersje językowe.** Każdy napis przez funkcję tłumaczącą, także podpisy okazów, nagłówki tabel i przypisy. Pisz każdą wersję od faktu, nie jedną z drugiej: jeśli obie mają tę samą budowę i tyle samo członów, jedna jest przekładem.
 
 **Te same nazwy w różnych zakładkach.** Jeśli gdzieś stoi wiersz „Ta sama wartość, inna rola", to w innej zakładce ten sam problem nazywa się tak samo. Nagłówki „Specyfikacja", „Zasady", „Podgląd na żywo", „Poza skalą" są wspólne. Nowa nazwa dla znanego zjawiska to koszt dla czytelniczki.
 
-**Język — oznajmujący, rzeczowy, naturalny.** Opisuj, jak jest, a nie jak nie jest. Bez trybu rozkazującego: dokumentacja opisuje system, nie wydaje poleceń. Bez kroniki zmian: „teraz", „już nie", „zostaje przy" mówią o przebudowie, której czytelniczka nie widziała. Bez ozdobników: „45°", a nie „pół kąta prostego". Jedno słowo w jednym znaczeniu na stronie.
+**Język — oznajmujący, rzeczowy, naturalny.** Opisuj, jak jest, a nie jak nie jest. Bez trybu rozkazującego: dokumentacja opisuje system, nie wydaje poleceń. Bez kroniki zmian: „teraz", „już nie", „zostaje przy", „dziś" mówią o przebudowie, której czytelniczka nie widziała. Bez ozdobników: „45°", a nie „pół kąta prostego". Jedno słowo w jednym znaczeniu na stronie.
+
+**Zasada użycia, nie spis miejsc.** Dokumentacja mówi, **na jakich zasadach** się z czegoś korzysta, a nie gdzie akurat tego użyto. Wyliczenie miejsc dezaktualizuje się przy każdym nowym widoku, a czytelniczka i tak nie dowiaduje się z niego, czy jej przypadek do nich należy. „Kontrolka, która podkreśla słowo, potrzebuje powietrza między literami a kreską" zamiast „link w tekście, przycisk ghost, wciśnięty chip i opcja w menu sortowania". Konkretny przykład wolno podać, gdy sama zasada byłaby niejasna — ale jako przykład, nie jako listę zastosowań.
+
+**Termin wprowadzony to termin wyjaśniony.** Jeśli nazwa fachowa pada w całej dokumentacji raz, zwykle nie musi paść wcale: nazwij konstrukcję tak, jak nazywa ją kod, w `<code>`. A jeśli termin jest potrzebny, ma zostać wyjaśniony tam, gdzie pada pierwszy raz.
 
 **Uzasadnienie tam, gdzie decyzja może wyglądać na przypadek.** Nie przy każdej wartości — przy tych, które ktoś kiedyś zechce „poprawić". Dlaczego pole kodu ma wersaliki, dlaczego jedna ikona jest mniejsza, dlaczego dwa tokeny o tej samej wartości zostają osobno.
+
+**Mechanizm i skutek.** Zdanie, które wyjaśnia, dlaczego coś jest zrobione tak, a nie inaczej, ma powiedzieć, **co się psuło** w wersji odrzuconej. „Wartość z `light-dark()` odczytana wewnątrz `@keyframes` wychodzi po niewłaściwej stronie: kropka na jasnej stronie dostawała kolor przeznaczony na ciemną" zamiast samego opisu mechanizmu. Bez objawu czytelniczka nie wie, czy jej przypadek jest tym przypadkiem.
 
 ## Po napisaniu
 

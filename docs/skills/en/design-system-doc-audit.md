@@ -35,11 +35,13 @@ The patterns that recur most often — look for them deliberately:
 
 - **A description of the state before a change.** Most often a change made the same day. If anything was moved, renamed or swapped for another component in this session, check whether the documentation knows.
 - **A shared row describing one case.** The table has four variants and the "Border" row describes only the first — with no note that the other three have none.
-- **A list of places that has shrunk or grown.** "Product view, cart, checkout, confirmation and documentation" — and the first two no longer belong.
+- **A list of places instead of a rule.** "The product view, the cart, checkout, the confirmation and the documentation" — and the first two no longer belong. The fix is not to update the list but to remove it: documentation states **on what terms** a thing is used, not where it currently happens to be used. A list goes stale with every new view, and either way it does not answer the reader's question, which is whether her case belongs on it.
 - **A reference to a neighbour that no longer exists.** A note saying "this pair", when the pair is gone because one component was moved to its own tab.
 - **Dead code posing as a source of truth.** Strings, constants or classes that look used and are not. Someone will edit them and see no effect.
+- **A token with no use that names a role the shop actually has.** Before reporting it as dead, look for the place that fills that role. If such a place exists and assembles itself by hand, this is not dead code but a gap — and the decision is "put the token to use", not "delete it".
 - **A string whose absence breaks nothing.** In a bilingual project a missing dictionary key raises no error — the control shows a blank or `undefined`, and only in the language nobody happens to be reading. Check with a script that both dictionaries hold exactly the same set of keys and that no reference in the code points at a key that is not there. Two traps: keys reached dynamically (`t.shipNames[s.id]`, `T()[rule.err]`) look unused, and method calls on a variable named `t` (`t.replace`, `t.localeCompare`) look like keys.
 - **Silence instead of untruth.** The tab describes a component in one context although the code uses it in three — and everything it says is true. Check not only whether the claims are true but whether they cover every place the thing lives. Search the whole codebase for the component's function or class and count the contexts.
+- **A term that appears once and is never explained.** Count the occurrences of a technical name across the whole documentation. One usually means the term is not needed: the construction can be named the way the code names it.
 
 ### Do not trust your own script
 
@@ -47,7 +49,11 @@ The patterns that recur most often — look for them deliberately:
 
 **When the script reports an avalanche of violations, suspect the script first.** Twenty violations in code that looks well kept is usually a fault in the method, not in the code. Before reporting anything, verify one violation by hand in the source.
 
+**When the script reports a single violation, suspect the script first as well.** The commonest false alarm is a wrong expected count: you counted four paragraphs and there are three, because the fourth belongs to the neighbouring section. The next commonest is a match that landed in a comment, or in a longer name containing the one you searched for (`f-count` inside `f-country`). Before reporting, print what the script actually found and count it by hand.
+
 Two traps when reading a stylesheet with a regular expression, each producing a false result in the opposite direction. **A selector split across lines** (`.a,` on one, `.b{` on the next) will not be matched by a pattern expecting the selector and the brace on one line — the audit then reports as unhandled the rules that are handled. **A comment standing before a rule** is swallowed into the selector match if the pattern does not strip comments first — the audit then returns a list of "selectors" that are sentences from a comment. Strip comments before parsing, and match the selector as everything up to the brace, regardless of line breaks.
+
+A third, when checking the contents of a media query: **the same breakpoint may have several blocks**. A pattern that finds the first and stops there will report a rule missing that stands in the third. Collect every block before ruling.
 
 One concrete trap of the test environment: **computed styles for SVG are unreliable**. `fill`, `stroke` and `stroke-width` are presentation attributes, and a test engine can return values for them that disagree with the stylesheet — the audit will then report that every icon has a fill, although a shared rule sets `fill:none`. Verify claims about SVG appearance **by reading the stylesheet**, not by asking for a computed style. Compute path geometry from the `d` attribute, not from the rendered element's box.
 
@@ -56,11 +62,14 @@ One concrete trap of the test environment: **computed styles for SVG are unrelia
 The same thing described twice always drifts apart. Compare the tab with the rest of the documentation and look for:
 
 - **contradictions** — one tab says a control is a button, another says it is a link
+- **a number against a shrug** — one tab says "four times", another "several times" about the same thing. The number wins.
 - **different words for the same thing** — one says "container", another says "box"; one says "variant", another says "type"
 - **different structure for the same kind of content** — one component tab has a captioned specimen grid, another a bare row; one puts the class in the first column of a table, another hides it in brackets at the end of a paragraph
 - **repetition** — the same technical sentence in two tabs; pick the place it belongs and leave only the principle in the other
 - **general promises the details do not keep** — the lede promises four places of use and the specification describes one
 - **a tab that knows more about somebody else's component than that component's own tab** — if the colour table names a use the component tab is silent about, the component tab has the gap
+- **a contradiction inside one tab** — an opening that names one exception where the closing section lists two kinds. A tab is read whole, so compare it against itself as well.
+- **a pointer to rules that are not at the address given** — a row saying "on the terms set out under Motion" while the Motion tab says nothing about that component. Check every pointer by reading what it points at.
 
 Report a discrepancy **from both sides**: which tab is right depends on the code, not on which one you happen to be reading.
 
@@ -88,6 +97,8 @@ Three versions of the same problem come back most often, all of them what a mode
 **Personifying things with no agency.** "The cover can walk on its own", "the thumbnail casts a shadow because it stands in a list", "the field waits for an answer". A metaphor of movement pushes into a description of layout and reads as literature rather than specification.
 
 Two tests carry most of the findings. **Read the sentence aloud** and ask whether you would say it that way in a conversation at work. Then **translate it back into English, word for word**: if it comes back as fluent English, it was an English sentence wearing Polish words. When either test fails, rewrite in the plainest possible order: what is what, what stands where, what happens. "A tile is a grey 4:5 field with a cover in it" rather than "the field the cover stands in".
+
+Pull the sentences out **with a script, not by eye**. List every string in the tab and walk the list: reading by eye gives a different subset every time, a list gives the same one.
 
 In bilingual documentation, check additionally **whether one version is a translation of the other**. The symptom is easy to see: both sentences have the same shape, the same number of parts and the same order. The two languages solve the same thing differently — English reaches for a verbal noun where Polish takes a subordinate clause — so an identical shape means one sentence was made out of the other. The fix is to write the second version from the fact, not to rearrange the words of a translation. The content has to match; the shape does not and usually should not.
 
