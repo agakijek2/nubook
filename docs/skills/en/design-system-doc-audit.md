@@ -38,7 +38,7 @@ The patterns that recur most often — look for them deliberately:
 - **A list of places instead of a rule.** "The product view, the cart, checkout, the confirmation and the documentation" — and the first two no longer belong. The fix is not to update the list but to remove it: documentation states **on what terms** a thing is used, not where it currently happens to be used. A list goes stale with every new view, and either way it does not answer the reader's question, which is whether her case belongs on it.
 - **A reference to a neighbour that no longer exists.** A note saying "this pair", when the pair is gone because one component was moved to its own tab.
 - **Dead code posing as a source of truth.** Strings, constants or classes that look used and are not. Someone will edit them and see no effect.
-- **A token with no use that names a role the shop actually has.** Before reporting it as dead, look for the place that fills that role. If such a place exists and assembles itself by hand, this is not dead code but a gap — and the decision is "put the token to use", not "delete it".
+- **A token with no use — two different cases, both easy to mistake for dead code.** First: a token the code reaches for **by a name assembled at run time**, such as `` `--nu-icon-${k}-inset` ``. Searching for the literal name returns nothing and the token looks dead, while it is in fact read every time the tab is opened. **Never rule on a dead token from a name search.** Reconstruct every name the code can assemble and check that each one exists, or query the rendered page. Second: a token genuinely unused that names a role the shop fills by hand. That is not dead code but a gap, and the decision is "put the token to use", not "delete it".
 - **A string whose absence breaks nothing.** In a bilingual project a missing dictionary key raises no error — the control shows a blank or `undefined`, and only in the language nobody happens to be reading. Check with a script that both dictionaries hold exactly the same set of keys and that no reference in the code points at a key that is not there. Two traps: keys reached dynamically (`t.shipNames[s.id]`, `T()[rule.err]`) look unused, and method calls on a variable named `t` (`t.replace`, `t.localeCompare`) look like keys.
 - **Silence instead of untruth.** The tab describes a component in one context although the code uses it in three — and everything it says is true. Check not only whether the claims are true but whether they cover every place the thing lives. Search the whole codebase for the component's function or class and count the contexts.
 - **A term that appears once and is never explained.** Count the occurrences of a technical name across the whole documentation. One usually means the term is not needed: the construction can be named the way the code names it.
@@ -47,9 +47,11 @@ The patterns that recur most often — look for them deliberately:
 
 **When the audit script says "all clear", check whether it would catch a case you know is bad.** Scripts pass because they look in the wrong place: a text match misses because the indentation differs, or a regular expression catches `border-bottom` while looking for `bottom`. A quiet false success is worse than no test.
 
+**The same applies to the script you use to check your own correction.** A test looking for a different passage of the same file will pass although the replacement never landed. Check for exactly what was supposed to change, finding by finding, rather than for one sentence from the neighbourhood.
+
 **When the script reports an avalanche of violations, suspect the script first.** Twenty violations in code that looks well kept is usually a fault in the method, not in the code. Before reporting anything, verify one violation by hand in the source.
 
-**When the script reports a single violation, suspect the script first as well.** The commonest false alarm is a wrong expected count: you counted four paragraphs and there are three, because the fourth belongs to the neighbouring section. The next commonest is a match that landed in a comment, or in a longer name containing the one you searched for (`f-count` inside `f-country`). Before reporting, print what the script actually found and count it by hand.
+**When the script reports a single violation, suspect the script first as well.** The commonest false alarm is a wrong expected count: you counted four paragraphs and there are three, because the fourth belongs to the neighbouring section. The next commonest is a match that landed in a comment, or in a longer name containing the one you searched for (`f-count` inside `f-country`). The third is searching for wording you invented rather than the wording in the file. Before reporting, print what the script actually found and count it by hand.
 
 Two traps when reading a stylesheet with a regular expression, each producing a false result in the opposite direction. **A selector split across lines** (`.a,` on one, `.b{` on the next) will not be matched by a pattern expecting the selector and the brace on one line — the audit then reports as unhandled the rules that are handled. **A comment standing before a rule** is swallowed into the selector match if the pattern does not strip comments first — the audit then returns a list of "selectors" that are sentences from a comment. Strip comments before parsing, and match the selector as everything up to the brace, regardless of line breaks.
 
@@ -98,7 +100,7 @@ Three versions of the same problem come back most often, all of them what a mode
 
 Two tests carry most of the findings. **Read the sentence aloud** and ask whether you would say it that way in a conversation at work. Then **translate it back into English, word for word**: if it comes back as fluent English, it was an English sentence wearing Polish words. When either test fails, rewrite in the plainest possible order: what is what, what stands where, what happens. "A tile is a grey 4:5 field with a cover in it" rather than "the field the cover stands in".
 
-Pull the sentences out **with a script, not by eye**. List every string in the tab and walk the list: reading by eye gives a different subset every time, a list gives the same one.
+Pull the sentences out **with a script, not by eye**. List every string in the tab and walk the list: reading by eye gives a different subset every time, a list gives the same one. The same calque can survive three passes because the eye stops somewhere else on each of them.
 
 In bilingual documentation, check additionally **whether one version is a translation of the other**. The symptom is easy to see: both sentences have the same shape, the same number of parts and the same order. The two languages solve the same thing differently — English reaches for a verbal noun where Polish takes a subordinate clause — so an identical shape means one sentence was made out of the other. The fix is to write the second version from the fact, not to rearrange the words of a translation. The content has to match; the shape does not and usually should not.
 
@@ -120,6 +122,10 @@ When a discrepancy can be removed from either side, **present both ways**: fix t
 
 **Before calling something a bug, check whether it is intended.** Behaviour that looks like an oversight is sometimes a design decision nobody wrote down — a cover left unfaded on the product page looks like a forgotten rule and is a deliberate choice, because the reader came to look at that cover. Describe what you see and ask about the intention. When the intention is confirmed, the work is to **write it down** — a comment by the rule and a row in the documentation — and to remove whatever undermines it: a dead class, an unused selector, a switch with no rule behind it.
 
+**Before deleting anything, write the test that would catch the deletion.** A deletion is the one change that leaves no trace in the output: the tab still renders, only the numbers in it are different. Run the test **twice** — against the code before the deletion, to see it pass, and against the code after, to see it fail. A test that does not fail on broken code is not a test.
+
+**Before reporting that something is missing, check the history.** A sentence corrected yesterday looks exactly like a sentence from a year ago. If you are reporting a missing description or a wrong one, look at `git log` and `git blame` on that passage: it happens that the gap you are reporting was filled the day before, by you. The same applies to statements about the state of the repository: read `git log` rather than guessing what has been committed.
+
 Some discrepancies are an opportunity to close a real gap instead: a missing focus rule, a missing token, a value repeated in five places rather than one.
 
 Group the report by the three passes, in their order. At the end ask outright what to apply.
@@ -130,4 +136,6 @@ Build the project and **run the whole regression set**, not just a check of the 
 
 Check as well whether the fix invalidated a sentence **somewhere else**: narrowing a rule in one tab often makes the summary in the introduction false.
 
-Finally, hand over a ready commit message — one per approved decision.
+Finally, hand over a ready commit message — one per approved decision. Where the approved decisions interleave in the same files and separating them would mean staging hunk by hunk, hand over one commit with the reasoning written out, and say outright why it is not several. When you correct something after a remark on a commit already handed over, hand over the **next, short commit** rather than the same message again: two commits with the same message and different contents are a history that lies.
+
+When it turns out that an earlier correction broke something, say so in the **first sentence**, before the rest of the report, and fix it before going on. A tab describing the thing you have just broken is not a tab you can audit.
