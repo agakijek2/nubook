@@ -1261,20 +1261,53 @@ const SHIPPING = [
   {id:"pickup",  pln:0,     eur:0},
 ];
 const FREE_OVER = {pln:150, eur:35};
-/* The one icon the shop builds from script rather than from markup. Same grid,
-   stroke and fill rules as every other: 24x24, 1.5, none, currentColor. It used
-   to be a typed arrow inside the translated string, which meant a glyph living
-   in the content layer and taking its weight from the font. */
-const ICON_BACK = '<svg class="ico-back ico-sm" viewBox="0 0 16 16" aria-hidden="true">' +
-  '<path d="M13.6 8H2.75"/><path d="M6.95 3.45L2.4 8l4.55 4.55"/></svg>';
-const ICON_MINUS = '<svg class="ico-sm ico-minus" viewBox="0 0 16 16" aria-hidden="true">' +
-  '<path d="M3.5 8h9"/></svg>';
-const ICON_PLUS = '<svg class="ico-sm ico-plus" viewBox="0 0 16 16" aria-hidden="true">' +
-  '<path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg>';
-const ICON_CHECK = '<svg class="ico-check ico-sm" viewBox="0 0 16 16" aria-hidden="true">' +
-  '<path d="M2.75 8.35l3.5 3.5 7-8.05"/></svg>';
-const ICON_CHEVRON = '<svg class="ico-chevron ico-sm" viewBox="0 0 16 16" aria-hidden="true">' +
-  '<path d="M3.5 6.25L8 10.75l4.5-4.5"/></svg>';
+/* Every drawing in the shop, each one written down once. A drawing repeated in
+   the markup is a drawing that will be corrected in one copy and left in the
+   others: the cross alone stood in five places, and the chevron in the icon
+   table had already drifted into a different notation from the chevron in the
+   select - the same three points, written another way, which is how a specimen
+   stops being the thing it shows.
+
+   An entry holds the grid the drawing was made on and the drawing itself.
+   Nothing else: size, colour and stroke come from the class, which is chosen
+   where the icon is used rather than where it is drawn. */
+const ICONS = {
+  heart:   {vb:24, d:'<path d="M12 19.69L4.45 12.14C2.75 10.44 2.75 7.71 4.45 6.01c1.7-1.7 4.34-1.7 6.04 0L12 7.52 13.51 6.01c1.7-1.7 4.34-1.7 6.04 0 1.7 1.7 1.7 4.44 0 6.13z"/>'},
+  figure:  {vb:24, d:'<circle cx="12" cy="7.5" r="3.5"/><path d="M5 20v-1.2C5 15.9 8.1 14 12 14s7 1.9 7 4.8V20"/>'},
+  bag:     {vb:24, d:'<path d="M5.18 6.64h13.64l1.94 14.61H3.24z"/><path d="M8.59 8.59V6.16a3.41 3.41 0 0 1 6.82 0v2.43"/>'},
+  back:    {vb:16, d:'<path d="M13.6 8H2.75"/><path d="M6.95 3.45L2.4 8l4.55 4.55"/>'},
+  sheets:  {vb:16, d:'<path d="M2.05 5.55h8.4v8.4h-8.4z"/><path d="M5.55 5.55V2.05h8.4v8.4h-3.5"/>'},
+  search:  {vb:16, d:'<circle cx="7" cy="7" r="4.6"/><path d="M13.9 13.9l-3.1-3.1"/>'},
+  filter:  {vb:16, d:'<path class="bar-top" d="M2 5h12"/><path class="bar-bot" d="M2 11h12"/>'},
+  plus:    {vb:16, d:'<path d="M3.5 8h9"/><path d="M8 3.5v9"/>'},
+  minus:   {vb:16, d:'<path d="M3.5 8h9"/>'},
+  cross:   {vb:16, d:'<path d="M3.5 8h9"/><path d="M8 3.5v9"/>'},
+  chevron: {vb:16, d:'<path d="M3.5 6.25L8 10.75l4.5-4.5"/>'},
+  check:   {vb:16, d:'<path d="M2.75 8.35l3.5 3.5 7-8.05"/>'},
+};
+/* Built for a script that is writing markup. The class comes from the caller,
+   because the same drawing is a small icon in one control and a large one in
+   another. aria-hidden always: the name belongs to the control around it. */
+function icon(name, cls){
+  const it = ICONS[name];
+  return `<svg class="${cls}" viewBox="0 0 ${it.vb} ${it.vb}" aria-hidden="true">${it.d}</svg>`;
+}
+/* The same registry filling the icons that stand in index.html. Those carry the
+   class and the name and nothing else, so a drawing cannot be corrected in the
+   script and left standing in the markup. */
+function paintIcons(root){
+  root.querySelectorAll("svg[data-icon]").forEach(el => {
+    const it = ICONS[el.dataset.icon];
+    if (!it) return;
+    el.setAttribute("viewBox", `0 0 ${it.vb} ${it.vb}`);
+    el.innerHTML = it.d;
+  });
+}
+const ICON_BACK    = icon("back",    "ico-back ico-sm");
+const ICON_MINUS   = icon("minus",   "ico-sm ico-minus");
+const ICON_PLUS    = icon("plus",    "ico-sm ico-plus");
+const ICON_CHECK   = icon("check",   "ico-check ico-sm");
+const ICON_CHEVRON = icon("chevron", "ico-chevron ico-sm");
 /* A link that names where it goes is an <a>: it announces as a link, opens in a
    new tab on a middle click and hands its address to the context menu. Hash
    routing already listens for the address changing, so no handler is needed.
@@ -3383,29 +3416,29 @@ const DS_SECTIONS = [
 
     <h3>${L("The set","Zestaw")}</h3>
     <table><thead><tr><th>${L("Icon","Ikona")}</th><th>${L("Name","Nazwa")}</th><th>${L("Where","Gdzie")}</th></tr></thead><tbody>
-      <tr><td class="ico-cell"><svg class="ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19.69L4.45 12.14C2.75 10.44 2.75 7.71 4.45 6.01c1.7-1.7 4.34-1.7 6.04 0L12 7.52 13.51 6.01c1.7-1.7 4.34-1.7 6.04 0 1.7 1.7 1.7 4.44 0 6.13z"/></svg></td>
+      <tr><td class="ico-cell">${icon("heart","ico-lg")}</td>
         <td>${L("Heart","Serce")}</td><td>${L("The favourites list. Header.","Lista ulubionych. Nagłówek.")}</td></tr>
-      <tr><td class="ico-cell"><svg class="ico-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 20v-1.2C5 15.9 8.1 14 12 14s7 1.9 7 4.8V20"/></svg></td>
+      <tr><td class="ico-cell">${icon("figure","ico-lg")}</td>
         <td>${L("Figure","Sylwetka")}</td><td>${L("The account. Header.","Konto. Nagłówek.")}</td></tr>
-      <tr><td class="ico-cell"><svg class="ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.18 6.64h13.64l1.94 14.61H3.24z"/><path d="M8.59 8.59V6.16a3.41 3.41 0 0 1 6.82 0v2.43"/></svg></td>
+      <tr><td class="ico-cell">${icon("bag","ico-lg")}</td>
         <td>${L("Bag","Torba")}</td><td>${L("The cart; carries the item counter. Header, last position.","Koszyk; nosi licznik pozycji. Nagłówek, ostatnia pozycja.")}</td></tr>
       <tr><td class="ico-cell">${ICON_BACK}</td>
         <td>${L("Back arrow","Strzałka wstecz")}</td><td>${L("Return to where the reader came from. Leads a link that names its destination, and a tertiary button that steps back through history.","Powrót tam, skąd czytelniczka przyszła. Prowadzi link wskazujący swój cel oraz przycisk trzeciorzędny cofający przez historię.")}</td></tr>
-      <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.05 5.55h8.4v8.4h-8.4z"/><path d="M5.55 5.55V2.05h8.4v8.4h-3.5"/></svg></td>
+      <tr><td class="ico-cell">${icon("sheets","ico-sm")}</td>
         <td>${L("Sheets","Kartki")}</td><td>${L("Copy to the clipboard. The promotion bar, after the code.","Skopiuj do schowka. Belka promocyjna, za kodem.")}</td></tr>
-      <tr><td class="ico-cell"><svg class="ico-sm ico-search" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M13.9 13.9l-3.1-3.1"/></svg></td>
+      <tr><td class="ico-cell">${icon("search","ico-sm ico-search")}</td>
         <td>${L("Magnifier","Lupa")}</td><td>${L("Search. Inside the field in the bar over the grid, at its left edge.","Wyszukiwanie. Wewnątrz pola w belce nad siatką, przy jego lewej krawędzi.")}</td></tr>
-      <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 5h12"/><path d="M2 11h12"/></svg></td>
+      <tr><td class="ico-cell">${icon("filter","ico-sm")}</td>
         <td>${L("Filter","Filtry")}</td><td>${L("Opens and closes the filter panel. The lower bar runs full width while the panel is closed and shortens once it opens.","Otwiera i zamyka panel filtrów. Dolna kreska ma pełną szerokość przy zamkniętym panelu i skraca się po jego otwarciu.")}</td></tr>
-      <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></td>
+      <tr><td class="ico-cell">${icon("plus","ico-sm")}</td>
         <td>${L("Plus","Plus")}</td><td>${L("Adds one: opens the sort menu, where it turns 45&deg; into the cross while the menu is open, and raises the quantity in the stepper.","Dokłada jeden: otwiera menu sortowania, gdzie przy otwartym menu obraca się o 45&deg; w krzyżyk, i zwiększa ilość w stepperze.")}</td></tr>
-      <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/></svg></td>
+      <tr><td class="ico-cell">${icon("minus","ico-sm")}</td>
         <td>${L("Minus","Minus")}</td><td>${L("Takes one away in the stepper. Disabled at one, where there is nothing left to take.","Odejmuje jeden w stepperze. Wyłączony przy jednej sztuce, gdy nie ma już czego odejmować.")}</td></tr>
-      <tr><td class="ico-cell"><svg class="ico-sm ico-close" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></td>
+      <tr><td class="ico-cell">${icon("cross","ico-sm ico-close")}</td>
         <td>${L("Cross","Krzyżyk")}</td><td>${L("Closes a drawer or the filter sheet, and empties the search field. The same drawing as the plus, turned.","Zamyka szufladę i arkusz filtrów, czyści pole wyszukiwania. Ten sam rysunek co plus, obrócony.")}</td></tr>
-      <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 6.25 8 10.75 12.5 6.25"/></svg></td>
+      <tr><td class="ico-cell">${icon("chevron","ico-sm")}</td>
         <td>${L("Chevron","Chevron")}</td><td>${L("Marks a select as a list to open. Sits inside the field, on its right. It does not turn when the list opens, because a native select gives the page no signal that it did &ndash; unlike the plus, which sits on a control that knows.","Oznacza pole wyboru jako listę do rozwinięcia. Stoi wewnątrz pola, po jego prawej. Nie obraca się przy rozwinięciu listy, bo natywny select nie daje stronie znać, że to nastąpiło &ndash; inaczej niż plus, który siedzi na kontrolce, która wie.")}</td></tr>
-      <tr><td class="ico-cell"><svg class="ico-sm" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.75 8.35l3.5 3.5 7-8.05"/></svg></td>
+      <tr><td class="ico-cell">${icon("check","ico-sm")}</td>
         <td>${L("Check","Ptaszek")}</td><td>${L("Something just succeeded. Leads the primary button through the &ldquo;Added&rdquo; sequence; in the promotion bar it replaces the sheets for 1.8s.","Coś się właśnie udało. Prowadzi przycisk główny w sekwencji „Dodano”; w belce promocyjnej zastępuje kartki na 1,8s.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
@@ -3479,9 +3512,9 @@ const DS_SECTIONS = [
       <figure><div class="demo on-page"><span class="btn-secondary">${L("Apply","Zastosuj")}</span></div>
         <figcaption>${L("Secondary","Drugorzędny")}</figcaption></figure>
       <figure><div class="demo on-page">
-          <span class="filter-toggle btn-tertiary has-icon"><svg class="ico-sm ico-filter" viewBox="0 0 16 16" aria-hidden="true"><path class="bar-top" d="M2 5h12"/><path class="bar-bot" d="M2 11h12"/></svg>${L("Filter","Filtry")}</span>
-          <span class="sort-btn btn-tertiary has-icon">${L("Sort by:","Sortuj:")} <svg class="ico-sm ico-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></span>
-          <span class="btn-tertiary"><svg class="ico-sm ico-close" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></span>
+          <span class="filter-toggle btn-tertiary has-icon">${icon("filter","ico-sm ico-filter")}${L("Filter","Filtry")}</span>
+          <span class="sort-btn btn-tertiary has-icon">${L("Sort by:","Sortuj:")} ${icon("plus","ico-sm ico-plus")}</span>
+          <span class="btn-tertiary">${icon("cross","ico-sm ico-close")}</span>
         </div>
         <figcaption>${L("Tertiary","Trzeciorzędny")}</figcaption></figure>
       <figure><div class="demo on-page"><span class="btn-ghost"><span class="lbl">Margaret Atwood</span></span></div>
@@ -3837,7 +3870,7 @@ const DS_SECTIONS = [
         <div class="demo on-page ds-sort">
           <div class="sort">
             <span class="sort-btn btn-tertiary has-icon">${L("Sort by:","Sortuj:")} ${L("Our recommendations","Nasze rekomendacje")}
-              <svg class="ico-sm ico-plus" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8h9"/><path d="M8 3.5v9"/></svg></span>
+              ${icon("plus","ico-sm ico-plus")}</span>
           </div>
         </div>
         <figcaption>${L("Closed","Zamknięte")}</figcaption>
@@ -3940,7 +3973,7 @@ const DS_SECTIONS = [
       <figure>
         <div class="demo on-page">
           <div class="search-wrap">
-            <svg class="ico-search ico-sm" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M13.9 13.9l-3.1-3.1"/></svg>
+            ${icon("search","ico-search ico-sm")}
             <input class="input in-bar" id="ds-in-c" value="Atwood" aria-label="${L("Search","Szukaj")}" readonly>
           </div>
         </div>
@@ -4414,6 +4447,9 @@ const _applyLangFoot = applyLang;
 applyLang = function(){ _applyLangFoot(); renderFooter(); if (!dsEl.hidden) renderDesignSystem(); };
 renderFooter();
 
+/* Before anything else renders: the icons standing in the markup are empty until
+   the registry fills them. */
+paintIcons(document);
 applyLang();
 applyCur();
 render();
