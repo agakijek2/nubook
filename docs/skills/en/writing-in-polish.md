@@ -3,12 +3,15 @@ name: "polszczyzna"
 description: "Writes and edits Polish so that it reads as Polish rather than as a translation from English. Use whenever any Polish text is written or corrected: documentation, descriptions, interface strings, messages, articles, notes. Use it as well when the Polish and the English of a bilingual project are written side by side, and whenever someone says a sentence sounds unnatural, stiff, wooden, or like a calque."
 ---
 
-# The second language, written rather than translated
+# Writing Polish that is not a translation
 
-> This is the English rendering of a skill written in Polish and used in Polish.
-> The rules below are stated for Polish, because that is the language the project
-> is written in; the procedure transfers to any pair of languages where one text
-> is habitually made out of the other.
+> This is the English rendering of a skill that is written in Polish, used in Polish,
+> and about Polish. It is translated so that the method can be read outside the project;
+> the rules themselves are rules of Polish and are stated as such. Clitic placement,
+> particle scope, the low-then-high quotation mark and the genitive after a negation
+> have no counterparts to generalise to. **Whenever Polish is being written, this is the
+> skill to reach for** — and in this project that is most of the prose, because the shop
+> and its documentation are written in Polish first.
 
 Polish written by a language model breaks in one way: every word is Polish, the grammar is correct, and the whole is not Polish. It can be understood and nobody talks like that. This is not a vocabulary problem. The sentence was composed in English and then dressed in Polish words.
 
@@ -28,7 +31,7 @@ Run them after writing, on the finished sentence. They are cheap and they catch 
 
 ### 1. The back-translation test
 
-Translate your Polish sentence back into English, word for word. **If it comes back as fluent English, it was an English sentence in Polish clothes.** A Polish sentence translated literally into English usually sounds odd in English, and that oddness is the sign that it is Polish.
+Translate the Polish sentence back into English, word for word. **If it comes back as fluent English, it was an English sentence in Polish clothes.** A Polish sentence translated literally into English usually sounds odd in English, and that oddness is the sign that it is Polish.
 
 - *Stan mieszka w atrybucie* → "The state lives in the attribute". Fluent. The sentence is English. In Polish: *Stan jest zapisany w atrybucie*.
 - *Wartość kończy się na sumie wypełnienia i ikony* → "The value ends up at the sum of the padding and the icon". Fluent. In Polish: *Wartość to wypełnienie plus ikona*.
@@ -65,9 +68,9 @@ Noun chains are not errors, but they are marked: they belong to official and aca
 
 ## Constructions that give away the English original
 
-These are not grammatical errors. They are a signal that the sentence has a foreign skeleton, and there is nearly always a simpler way to say it. **When you find one such sentence, look at its neighbours** — they come in batches, written in one breath.
+These are not grammatical errors in Polish. They are a signal that the sentence has an English skeleton, and there is nearly always a simpler way to say it. **When you find one such sentence, look at its neighbours** — they come in batches, written in one breath.
 
-In Polish the recurring ones are: *dwa poziomy jednej rzeczy* for "two levels of one thing", *pole, w którym staje okładka* for "the field the cover stands in", *przez to z dwojga, którego użyje* for "through whichever of the two it uses", *jedna odpowiedź obsługuje oba* for "one answer serves both", *adresować problem* for "address the problem", *robić sens* for "make sense", *wydaje się być* for "seems to be", *posiadać* for "to have", *dedykowany* for "dedicated" in the sense of "intended for".
+The recurring ones are: *dwa poziomy jednej rzeczy* for "two levels of one thing", *pole, w którym staje okładka* for "the field the cover stands in", *przez to z dwojga, którego użyje* for "through whichever of the two it uses", *jedna odpowiedź obsługuje oba* for "one answer serves both", *adresować problem* for "address the problem", *robić sens* for "make sense", *wydaje się być* for "seems to be", *posiadać* for "to have", *dedykowany* for "dedicated" in the sense of "intended for".
 
 Separately: **filler words** that fit anywhere and carry nothing — "key", "an important element", "in the final analysis", "it is worth emphasising", "let us take a look". Cut them or replace them with the specific thing. If something is key, write what it is key to.
 
@@ -75,7 +78,7 @@ And **pleonasms**: "go back backwards", "continue further", "in the month of May
 
 ## Word order
 
-Polish word order is free but not arbitrary. The neutral order is **topic → predicate → objects → adjuncts**, and the most important, new information goes **near the end of the sentence**. If the logical stress falls on an unimportant word, move the phrase.
+These are rules of Polish and most of them have no English counterpart, because English word order is fixed where Polish leaves a choice. Polish word order is free but not arbitrary. The neutral order is **topic → predicate → objects → adjuncts**, and the most important, new information goes **near the end of the sentence**. If the logical stress falls on an unimportant word, move the phrase.
 
 **Norm, not style:**
 
@@ -95,6 +98,8 @@ Polish word order is free but not arbitrary. The neutral order is **topic → pr
 Technical documentation takes the **indicative rather than the imperative**: "A token is chosen by role", not "Choose by role". Documentation describes a system; it does not issue orders.
 
 ## Punctuation and typography
+
+Polish punctuation is grammatical rather than rhetorical: a comma marks a clause boundary whether or not anyone would pause there. That is the single biggest difference from English practice and the source of most of the errors.
 
 **Norm:**
 
@@ -125,7 +130,7 @@ Settle who is speaking and to whom before writing the first sentence.
 
 ## Checklist before handing the text over
 
-1. Does any sentence come back from the back-translation as fluent prose in the other language?
+1. Does any sentence come back from the back-translation as fluent English?
 2. Does a thing anywhere perform an action it cannot perform?
 3. Is there a sentence with three verbal nouns and one verb?
 4. Do the unstressed pronouns sit next to the verb, and does none of them open a sentence?

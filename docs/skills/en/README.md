@@ -17,7 +17,7 @@ repository so the convention travels with the code and enters its history.
 | [`new-view-in-the-shop.md`](new-view-in-the-shop.md) | something is being built in the shop |
 | [`design-system-tab.md`](design-system-tab.md) | something is being documented |
 | [`design-system-doc-audit.md`](design-system-doc-audit.md) | a description is being checked against the code |
-| [`natural-second-language.md`](natural-second-language.md) | Polish prose is being written or corrected |
+| [`writing-in-polish.md`](writing-in-polish.md) | any Polish text is being written or corrected |
 
 The order is not accidental. It follows from one observation: **design system
 documentation breaks in exactly one way — the code moves on, the text stays.** A
@@ -30,11 +30,16 @@ the test: it walks a tab in three passes — agreement with the code, agreement 
 other tabs, language — and verifies claims with a script rather than by eye.
 
 The fourth arrived later and cuts across the other three: it handles every piece of
-Polish prose the project produces, and the third one calls it during its language pass.
-It came out of one observation — the model writes Polish sentences that are
-grammatically correct and that nobody would say, because it composes them in English
-and then dresses them in Polish words. The skill is a procedure against that: four
-tests run on the finished sentence, rather than a list of forbidden words.
+Polish the project produces, which is most of it, and the third one calls it during its
+language pass. It came out of one observation — the model writes Polish sentences that
+are grammatically correct and that nobody would say, because it composes them in
+English and then dresses them in Polish words. The skill is a procedure against that:
+four tests run on the finished sentence, rather than a list of forbidden words.
+
+Its rules are rules of Polish and do not generalise: clitic placement, particle scope,
+the low-then-high quotation mark and the genitive after a negation have no counterparts
+to carry over. The translation exists so the method can be read here, not so it can be
+applied to another language.
 
 ## What has proved true along the way
 

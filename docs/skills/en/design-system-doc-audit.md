@@ -77,7 +77,7 @@ The criteria: factual, professional, indicative, natural.
 
 ### Natural language
 
-The hardest thing to catch, because the text looks correct. **Run this part of the pass together with the `polszczyzna` skill** — it holds the tests, the list of constructions carried over from English, and the word-order rules. What stays here is what belongs to documentation itself.
+The hardest thing to catch, because the text looks correct. **Run this part of the pass together with the `polszczyzna` skill (translated here as [`writing-in-polish.md`](writing-in-polish.md))** — it holds the tests, the list of constructions carried over from English, and the word-order rules. What stays here is what belongs to documentation itself.
 
 Three versions of the same problem come back most often, all of them what a model writes when it composes in one language while thinking in another:
 
@@ -87,7 +87,7 @@ Three versions of the same problem come back most often, all of them what a mode
 
 **Personifying things with no agency.** "The cover can walk on its own", "the thumbnail casts a shadow because it stands in a list", "the field waits for an answer". A metaphor of movement pushes into a description of layout and reads as literature rather than specification.
 
-Two tests carry most of the findings. **Read the sentence aloud** and ask whether you would say it that way in a conversation at work. Then **translate it back into the other language, word for word**: if it comes back as fluent prose there, it was a sentence of that language wearing this one's words. When either test fails, rewrite in the plainest possible order: what is what, what stands where, what happens. "A tile is a grey 4:5 field with a cover in it" rather than "the field the cover stands in".
+Two tests carry most of the findings. **Read the sentence aloud** and ask whether you would say it that way in a conversation at work. Then **translate it back into English, word for word**: if it comes back as fluent English, it was an English sentence wearing Polish words. When either test fails, rewrite in the plainest possible order: what is what, what stands where, what happens. "A tile is a grey 4:5 field with a cover in it" rather than "the field the cover stands in".
 
 In bilingual documentation, check additionally **whether one version is a translation of the other**. The symptom is easy to see: both sentences have the same shape, the same number of parts and the same order. The two languages solve the same thing differently — English reaches for a verbal noun where Polish takes a subordinate clause — so an identical shape means one sentence was made out of the other. The fix is to write the second version from the fact, not to rearrange the words of a translation. The content has to match; the shape does not and usually should not.
 
