@@ -3097,8 +3097,8 @@ const DS_SECTIONS = [
       "--nu-type-h3": L("A section that needs a heading but not its weight","Sekcja, która potrzebuje nagłówka, ale nie jego ciężaru"),
       "--nu-type-body-l": L("The largest step of the text family. It goes to what has to dominate its own box without changing face: a total at the foot of a bill, initials inside a mark. That is what separates it from <code>--nu-type-h3</code>, which is the same size in the display family.","Największy stopień rodziny tekstowej. Bierze go to, co ma dominować w swoim polu, nie zmieniając kroju: suma na dole rachunku, inicjały w znaku. Tym różni się od <code>--nu-type-h3</code>, który ma ten sam stopień w rodzinie tytułowej."),
       "--nu-type-body-m": L("The page's own style, inherited by everything that does not say otherwise","Własny styl strony, dziedziczony przez wszystko, co nie mówi inaczej"),
-      "--nu-type-body-s": L("Small running text that can still break onto a second line: a field's label and its message, the strapline under the wordmark. Also the uppercase headings over a group &ndash; a filter group, a specimen, a bar &ndash; where the rule adds the capitals and the tracking on top of it, the <code>font:</code> shorthand carrying neither.","Mały tekst ciągły, który wciąż może złamać się na drugi wiersz: etykieta pola i jej komunikat, podpis pod sygnetem. Także wersalikowe nagłówki nad grupą &ndash; grupą filtrów, okazem, belką &ndash; gdzie reguła dokłada do niego wersaliki i światło, bo skrót <code>font:</code> nie niesie ani jednego, ani drugiego."),
-      "--nu-type-label": L("Text that names another element rather than being read as content. Its box is one line high, which is what separates it from <code>--nu-type-body-s</code>: that one can break onto a second line, this one is not meant to.","Napis, który nazywa inny element, zamiast być treścią do czytania. Jego pudełko ma wysokość jednego wiersza i tym różni się od <code>--nu-type-body-s</code>: tamten może złamać się na drugi wiersz, ten nie."),
+      "--nu-type-body-s": L("Small running text that can still break onto a second line: a field's label and its message, the strapline under the wordmark. Also the uppercase headings over a group &ndash; a filter group, a specimen, a bar &ndash; where the rule adds the capitals and the tracking on top of it, the <code>font:</code> shorthand carrying neither.","Mały tekst ciągły, który wciąż może złamać się na drugi wiersz: etykieta pola i jej komunikat, podpis pod znakiem marki. Także wersalikowe nagłówki nad grupą &ndash; grupą filtrów, okazem, belką &ndash; gdzie reguła dokłada do niego wersaliki i światło, bo skrót <code>font:</code> nie niesie ani jednego, ani drugiego."),
+      "--nu-type-label": L("Text that names another element rather than being read as content. Its box is one line high, which is what separates it from <code>--nu-type-body-s</code>: that one can break onto a second line, this one is not meant to.","Napis, który nazywa inny element, zamiast być treścią do czytania. Jego kontener ma wysokość jednego wiersza i tym różni się od <code>--nu-type-body-s</code>: tamten może złamać się na drugi wiersz, ten nie."),
       "--nu-type-caption": L("The smallest step in the scale, and the quietest thing the interface sets: a count bound to an element, or the name of a section standing behind it. It differs from <code>--nu-type-label</code> in size, not in role.","Najmniejszy stopień skali i najcichszy napis, jaki interfejs stawia: liczba przypięta do elementu albo nazwa sekcji stojącej w drugim planie. Od <code>--nu-type-label</code> różni się stopniem, nie rolą."),
     };
     return `
@@ -3134,11 +3134,11 @@ const DS_SECTIONS = [
 
     <h3>${L("Line height","Interlinia")}</h3>
     <p>${L("A step is a ratio, so it holds at every size.",
-           "Stopień jest proporcją, więc trzyma się przy każdym stopniu pisma.")}</p>
+           "Stopień interlinii jest proporcją, więc trzyma się przy każdej wielkości pisma.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-line-flat</code></td><td>${dsVal("--nu-line-flat")}</td><td>${L("The box sets the height, not the line.","Wysokość ustala kontener, a nie wiersz.")}</td></tr>
       <tr><td class="spec"><code>--nu-line-tight</code></td><td>${dsVal("--nu-line-tight")}</td><td>${L("Display sizes: a looser line would leave the heading gaping.","Stopnie tytułowe: luźniejszy wiersz zostawiłby w nagłówku dziurę.")}</td></tr>
-      <tr><td class="spec"><code>--nu-line-snug</code></td><td>${dsVal("--nu-line-snug")}</td><td>${L("Two lines that have to read as one object.","Dwa wiersze, które mają czytać się jako jeden przedmiot.")}</td></tr>
+      <tr><td class="spec"><code>--nu-line-snug</code></td><td>${dsVal("--nu-line-snug")}</td><td>${L("Two lines that have to read as one object.","Dwa wiersze, które mają czytać się jako jedna całość.")}</td></tr>
       <tr><td class="spec"><code>--nu-line-normal</code></td><td>${dsVal("--nu-line-normal")}</td><td>${L("Everything read as text.","Wszystko, co czyta się jako tekst.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
@@ -3148,23 +3148,23 @@ const DS_SECTIONS = [
     <h3>${L("Weight","Grubość")}</h3>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-weight-normal</code></td><td>${dsVal("--nu-weight-normal")}</td><td>${L("Everything, headings included.","Wszystko, łącznie z nagłówkami.")}</td></tr>
-      <tr><td class="spec"><code>--nu-weight-medium</code></td><td>${dsVal("--nu-weight-medium")}</td><td>${L("Emphasis where size is not enough: a section heading too small to stand out by size alone, and a word inside a sentence.","Wyróżnienie tam, gdzie nie wystarcza rozmiar: nagłówek sekcji za mały, żeby odciąć się samą wielkością, i pojedyncze słowo w zdaniu.")}</td></tr>
+      <tr><td class="spec"><code>--nu-weight-medium</code></td><td>${dsVal("--nu-weight-medium")}</td><td>${L("Emphasis where size is not enough: a section heading too small to stand out by size alone, and a word inside a sentence.","Wyróżnienie tam, gdzie nie wystarcza rozmiar: nagłówek sekcji za mały, żeby wyróżnić się samą wielkością, i pojedyncze słowo w zdaniu.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "The display family ships one weight and the text family two. Nothing heavier is loaded, so a rule asking for a weight the shop does not have would have the browser thicken one it does, outlining the letters instead of loading a real cut, and their shapes would fall apart &ndash; which is why the weight is stated by the style token rather than left to a default.",
-      "Rodzina tytułowa dostarczana jest w jednej grubości, tekstowa w dwóch. Nic cięższego nie jest wczytywane, więc gdyby reguła poprosiła o grubość, której sklep nie ma, przeglądarka pogrubiłaby sama tę, którą ma, obrysowując litery zamiast wczytać prawdziwą odmianę, a ich kształty by się posypały &ndash; dlatego grubość wnosi token stylu, zamiast zostawiać ją wartości domyślnej.")}</p>
+      "Rodzina tytułowa ma jedną grubość, tekstowa dwie. Sklep nie wczytuje nic cięższego, więc gdyby reguła poprosiła o grubość, której sklep nie ma, przeglądarka pogrubiłaby sama tę, którą ma, obrysowując litery zamiast wczytać prawdziwą odmianę, a ich kształty by się posypały &ndash; dlatego grubość wnosi token stylu, zamiast zostawiać ją wartości domyślnej.")}</p>
 
     <h3>${L("Letter-spacing","Światło międzyliterowe")}</h3>
     <p>${L(
       "Set against size and string length, not against case. Four values cover the shop, all relative, so they follow the type size instead of being restated per breakpoint. A style token carries four properties and this is not one of them, so a rule that needs tracking declares it beside the style.",
-      "Dobierane do stopnia i długości ciągu, nie do wielkości liter. Cztery wartości obsługują cały sklep, wszystkie względne, więc idą za stopniem pisma, zamiast być powtarzane przy każdym progu. Token stylu niesie cztery właściwości i światła wśród nich nie ma, więc reguła, która go potrzebuje, deklaruje je obok stylu.")}</p>
+      "Dobierane do stopnia i długości ciągu, nie do wielkości liter. Cztery wartości wystarczają na cały sklep, wszystkie względne, więc idą za stopniem pisma, zamiast powtarzać się przy każdym progu. Token stylu niesie cztery właściwości i światła wśród nich nie ma, więc reguła, która go potrzebuje, deklaruje je obok stylu.")}</p>
     <table><thead><tr><th ${DS_COL_NAME}>Token</th><th>${L("Value","Wartość")}</th><th>${L("Used for","Zastosowanie")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>--nu-tracking-display</code></td><td>${dsVal("--nu-tracking-display")}</td>
           <td>${L("Negative. Large display type sets loosely by default, so it is drawn in.","Ujemne. Duży krój tytułowy składa się z natury luźno, więc jest ściągany.")}</td></tr>
       <tr><td class="spec"><code>--nu-tracking-body</code></td><td>${dsVal("--nu-tracking-body")}</td>
           <td>${L("Zero, declared on <code>body</code>. Tracking applied to a paragraph distorts word shapes and slows reading.","Zero, zadeklarowane na <code>body</code>. Światło nałożone na akapit zniekształca kształty słów i spowalnia czytanie.")}</td></tr>
       <tr><td class="spec"><code>--nu-tracking-compact</code></td><td>${dsVal("--nu-tracking-compact")}</td>
-          <td>${L("Short mixed-case strings that read as objects rather than prose.","Krótkie ciągi pisane normalnie, czytające się jako obiekty, a nie proza.")}</td></tr>
+          <td>${L("Short mixed-case strings that read as objects rather than prose.","Krótkie ciągi pisane małymi i wielkimi literami, które czyta się jak nazwy, a nie jak prozę.")}</td></tr>
       <tr><td class="spec"><code>--nu-tracking-caps</code></td><td>${dsVal("--nu-tracking-caps")}</td>
           <td>${L("Every uppercase interface string and only those: uppercase letterforms sit tighter than lowercase and need the air put back.","Każdy napis interfejsu pisany wersalikami i tylko one: wersaliki stoją ciaśniej niż małe litery i trzeba im to powietrze oddać.")}</td></tr>
     </tbody></table>
@@ -3182,7 +3182,7 @@ const DS_SECTIONS = [
     <h3>${L("The styles","Style")}</h3>
     <p>${L(
       "A text style is four properties that have to travel together: weight, size, line height and family. Changing the size without the line height breaks the rhythm; changing the family without the tracking changes the width of everything. So each style is packed into one token, assembled from the four scales above.",
-      "Styl tekstu to cztery właściwości, które muszą podróżować razem: grubość, stopień, interlinia i rodzina. Zmiana stopnia bez interlinii psuje rytm, zmiana rodziny bez światła zmienia szerokość wszystkiego. Dlatego każdy styl jest spakowany w jeden token, złożony z czterech skal powyżej.")}</p>
+      "Styl tekstu to cztery właściwości, które muszą trzymać się razem: grubość, stopień, interlinia i rodzina. Zmiana stopnia bez interlinii psuje rytm, zmiana rodziny bez światła zmienia szerokość wszystkiego. Dlatego każdy styl jest spakowany w jeden token, złożony z czterech skal powyżej.")}</p>
     <div class="demo on-page" style="display:block">
       ${dsTypeSpecimens().map(([token, sample, extra]) =>
         `<div class="ds-style-row"><span class="lbl">${token}</span>
@@ -3195,7 +3195,7 @@ const DS_SECTIONS = [
       ${styles.map(t => `<tr><td class="spec"><code>${t.name}</code></td><td>${useOf[t.name] || ""}</td></tr>`).join("")}
     </tbody></table>` : `<p class="note">${L(
       "The table of styles needs the stylesheet to be readable, which it is not in this way of opening the page. Open the built page, or serve the folder over http.",
-      "Tabela stylów potrzebuje czytelnego arkusza, a przy tym sposobie otwarcia strony arkusz czytelny nie jest. Otwórz stronę zbudowaną albo podaj folder przez http.")}</p>`}
+      "Tabela stylów czyta arkusz, a przy tym sposobie otwarcia strony arkusz jest dla niej zamknięty. Otwórz stronę zbudowaną albo podaj folder przez http.")}</p>`}
 
     <h3>${L("How a rule reads them","Jak sięga po nie reguła")}</h3>
     <p>${L(
@@ -3204,16 +3204,16 @@ const DS_SECTIONS = [
     <pre class="ds-code">.p-title{ font:var(--nu-type-h1); margin-bottom:var(--nu-space-nano) }</pre>
     <p class="note">${L(
       "The shorthand resets every font property it does not mention, font-style and tabular figures among them &ndash; so a rule wanting italics or aligned numerals puts the style first and the exception after it.",
-      "Skrót zeruje każdą właściwość kroju, której nie wymienia, w tym odmianę i cyfry tabelaryczne &ndash; więc reguła chcąca kursywy albo wyrównanych cyfr stawia styl pierwszy, a wyjątek po nim.")}</p>
+      "Skrót zeruje każdą właściwość kroju, której nie wymienia, w tym odmianę i cyfry tabelaryczne &ndash; więc reguła, która chce kursywy albo wyrównanych cyfr, stawia styl pierwszy, a wyjątek po nim.")}</p>
 
     <h3>${L("Rules","Zasady")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Same value, different role","Ta sama wartość, inna rola")}</td>
           <td>${L("Heading 3 and Body L take the same step, <code>lg</code>. They are separate styles, not one style used twice: the first is the floor of the display family and the second is the ceiling of the text family. Either can be moved by pointing it at a different step, which is what keeps them independent without the scale holding two values of the same size.",
-                  "Heading 3 i Body L biorą ten sam stopień, <code>lg</code>. Są osobnymi stylami, a nie jednym użytym dwa razy: pierwszy jest najniższym stopniem kroju tytułowego, drugi najwyższym stopniem kroju tekstowego. Każdy da się przesunąć, wskazując mu inny stopień, i to trzyma je niezależnie, bez trzymania w skali dwóch wartości tej samej wielkości.")}</td></tr>
+                  "Heading 3 i Body L biorą ten sam stopień, <code>lg</code>. Są osobnymi stylami, a nie jednym użytym dwa razy: pierwszy jest najniższym stopniem kroju tytułowego, drugi najwyższym stopniem kroju tekstowego. Każdy da się przesunąć, wskazując mu inny stopień, i to trzyma je niezależnie, a skala nie musi nieść dwóch wartości tej samej wielkości.")}</td></tr>
       <tr><td>${L("Reaching for a style","Sięganie po styl")}</td>
           <td>${L("A rule reads a style rather than a step of a scale, so that the four properties travel together. The exception is an element that needs a font property the <code>font:</code> shorthand resets: italic, tabular figures, small capitals. There the rule sets only what it changes and leaves the rest to inheritance &ndash; a price is set at <code>lg</code> with tabular figures beside it, both declared on their own, because the <code>font:</code> shorthand would clear the figures away. The same holds at a breakpoint, where only the size moves.",
-                  "Reguła sięga po styl, a nie po stopień skali, żeby cztery właściwości podróżowały razem. Wyjątkiem jest element, który potrzebuje właściwości pisma kasowanej przez skrót <code>font:</code>: kursywy, cyfr tabelarycznych, kapitalików. Wtedy reguła ustawia tylko to, co zmienia, a resztę zostawia dziedziczeniu &ndash; cena dostaje stopień <code>lg</code> i cyfry tabelaryczne, ustawione osobno, bo skrót <code>font:</code> by je skasował. Tak samo na progu, gdzie zmienia się sam stopień.")}</td></tr>
+                  "Reguła sięga po styl, a nie po stopień skali, żeby cztery właściwości trzymały się razem. Wyjątkiem jest element, który potrzebuje właściwości niezachowywanej przez skrót <code>font:</code> &ndash; kursywy, cyfr tabelarycznych, kapitalików. Wtedy reguła ustawia tylko to, co zmienia, a resztę zostawia dziedziczeniu &ndash; cena dostaje stopień <code>lg</code> i cyfry tabelaryczne, ustawione osobno, bo skrót <code>font:</code> by je skasował. Tak samo na progu, gdzie zmienia się sam stopień.")}</td></tr>
       <tr><td>${L("Italic","Kursywa")}</td>
           <td>${L("A cut of <code>--nu-type-body-m</code>, declared beside the style because the shorthand does not carry it. Reserved for book quotes; the attribution beneath returns to roman. Nothing else in the shop is set in italic.",
                   "Odmiana <code>--nu-type-body-m</code>, deklarowana obok stylu, bo skrót jej nie niesie. Zarezerwowana dla cytatów z książek; podpis pod cytatem wraca do odmiany prostej. Nic innego w sklepie nie jest składane kursywą.")}</td></tr>
@@ -3232,7 +3232,7 @@ const DS_SECTIONS = [
                   "Jedyne miejsce składające styl ręcznie. Bierze stopień Heading 1 z płaskim wierszem, bo interlinia nagłówka przy tym stopniu zostawiłaby kropkę za nazwą w powietrzu.")}</td></tr>
       <tr><td>${L("The cart counter","Licznik koszyka")}</td>
           <td>${L("The one line height given as a length rather than a ratio: it equals the height of the circle the count sits in, which is what centres it. Both are in <code>rem</code>, so the circle and the digit grow together.",
-                  "Jedyna interlinia podana jako długość, a nie proporcja: równa wysokości kółka, w którym stoi liczba, i to ona ją centruje. Oba są w <code>rem</code>, więc kółko i cyfra rosną razem.")}</td></tr>
+                  "Jedyna interlinia podana jako długość, a nie proporcja: równa wysokości kółka, w którym stoi liczba, i to właśnie ona ustawia liczbę pośrodku. Oba są w <code>rem</code>, więc kółko i cyfra rosną razem.")}</td></tr>
       <tr><td>${L("Monospace in these pages","Krój maszynowy na tych stronach")}</td>
           <td>${L("Token names and code blocks in this documentation are set in a monospace face, sized against the text around them rather than from the scale. It is not a design system family and the shop neither loads nor uses it &ndash; it exists so that hyphens and underscores in a token name can be read apart.",
                   "Nazwy tokenów i bloki kodu w tej dokumentacji składane są krojem maszynowym, w rozmiarze liczonym od otaczającego tekstu, a nie ze skali. Nie jest to rodzina design systemu i sklep ani go nie wczytuje, ani nie używa &ndash; istnieje po to, żeby myślniki i podkreślenia w nazwie tokenu dało się odróżnić.")}</td></tr>
@@ -3374,7 +3374,7 @@ const DS_SECTIONS = [
       `Kontrolka, która łączy ikonę ze słowem, nosi klasę <code>.has-icon</code>, niezależnie od tego, jakim jest komponentem: link albo przycisk trzeciorzędny. Ikona i słowo stoją w rzędzie z odstępem ${dsTok("--nu-space-micro")}, wyśrodkowane względem siebie.`)}</p>
     <p>${L(
       `Centring lines up the two boxes, and a word's box is taller than the word: the leading and the space for descenders sit under the letters, so the middle of the box falls below the middle of the word. The icon is lifted back onto it by ${dsTok("--nu-icon-lift")}. That value is judged by eye rather than derived, which is what an optical correction is, and it is in <code>px</code> because it corrects one mark against another rather than a length against the text.`,
-      `Wyśrodkowanie zestawia dwa pudełka, a pudełko słowa jest wyższe niż samo słowo: interlinia i miejsce na ogonki leżą pod literami, więc środek pudełka wypada poniżej środka słowa. Ikonę podnosi z powrotem na jego wysokość ${dsTok("--nu-icon-lift")}. Ta wartość jest dobrana okiem, a nie wyliczona &ndash; tym właśnie jest korekta optyczna &ndash; i zapisana w <code>px</code>, bo poprawia jeden ślad względem drugiego, a nie długość względem tekstu.`)}</p>
+      `Wyśrodkowanie zestawia dwa prostokąty, a prostokąt słowa jest wyższy niż samo słowo: interlinia i miejsce na ogonki leżą pod literami, więc jego środek wypada poniżej środka słowa. Ikonę podnosi z powrotem na jego wysokość ${dsTok("--nu-icon-lift")}. Ta wartość jest dobrana okiem, a nie wyliczona &ndash; tym właśnie jest korekta optyczna &ndash; i zapisana w <code>px</code>, bo poprawia jeden ślad względem drugiego, a nie długość względem tekstu.`)}</p>
 
     <h3>${L("An icon inside a field","Ikona wewnątrz pola")}</h3>
     <p>${L(
@@ -3652,7 +3652,7 @@ const DS_SECTIONS = [
         "Należy do wariantu w tekście i stoi tam stale, 1px w <code>currentColor</code>. Link samodzielny nie ma go w żadnym stanie. Rozstrzyga to, czy czytelniczka musi link znaleźć: między słowami jedyną inną wskazówką jest kolor, a sam kolor jest tym, czego WCAG 1.4.1 nie dopuszcza. Kreska idzie za tekstem przez <code>currentColor</code>, a nie przez nazwany token obramowania, więc nigdy nie wychodzi ciemniejsza niż słowa nad nią.")}</td></tr>
       <tr><td>${L("Icon","Ikona")}</td><td>${L(
         `Optional on a standalone link, and a 16&times;16 icon on the terms set out under Iconography. <code>.has-icon</code> lays the control out as a row with ${dsTok("--nu-space-micro")} between glyph and word. The glyph is lifted by ${dsTok("--nu-icon-lift")}, the optical correction set out under Iconography, so it sits on the middle of the word rather than on the middle of its box. A link standing in text does not take an icon: a glyph among words reads as punctuation, and the rule would have to run under it or stop short of it, neither of which looks like an underlined word.`,
-        `Opcjonalna przy linku samodzielnym, ikona 16&times;16 na zasadach opisanych w Ikonografii. <code>.has-icon</code> układa kontrolkę w rząd z odstępem ${dsTok("--nu-space-micro")} między znakiem a słowem. Znak podnosi ${dsTok("--nu-icon-lift")}, korekta optyczna opisana w Ikonografii, żeby siedział na środku słowa, a nie na środku jego pudełka. Link stojący w tekście ikony nie przyjmuje: znak między słowami czyta się jak znak interpunkcyjny, a kreska musiałaby albo biec pod nim, albo urwać się przed nim &ndash; żadne z tego nie wygląda jak podkreślone słowo.`)}</td></tr>
+        `Opcjonalna przy linku samodzielnym, ikona 16&times;16 na zasadach opisanych w Ikonografii. <code>.has-icon</code> układa kontrolkę w rząd z odstępem ${dsTok("--nu-space-micro")} między znakiem a słowem. Znak podnosi ${dsTok("--nu-icon-lift")}, korekta optyczna opisana w Ikonografii, żeby siedział na środku słowa, a nie na środku prostokąta, który słowo zajmuje. Link stojący w tekście ikony nie przyjmuje: znak między słowami czyta się jak znak interpunkcyjny, a kreska musiałaby albo biec pod nim, albo urwać się przed nim &ndash; żadne z tego nie wygląda jak podkreślone słowo.`)}</td></tr>
       <tr><td>${L("Typography","Typografia")}</td><td>${L(
         "Inherited from its surroundings, so a link in the footer sits at the footer's size without being told.",
         "Dziedziczona z otoczenia, więc link w stopce siedzi w rozmiarze stopki, nie będąc o tym informowany.")}</td></tr>
