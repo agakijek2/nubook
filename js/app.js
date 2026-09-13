@@ -3403,43 +3403,43 @@ const DS_SECTIONS = [
 
     <h3>${L("An icon beside a word","Ikona przy słowie")}</h3>
     <p>${L(
-      `A control that pairs an icon with a word carries <code>.has-icon</code>, whichever component it is: a link or a tertiary button. The icon and the word stand in a row with ${dsTok("--nu-space-micro")} between them, centred on each other.`,
-      `Kontrolka, która łączy ikonę ze słowem, nosi klasę <code>.has-icon</code>, niezależnie od tego, jakim jest komponentem: link albo przycisk trzeciorzędny. Ikona i słowo stoją w rzędzie z odstępem ${dsTok("--nu-space-micro")}, wyśrodkowane względem siebie.`)}</p>
+      `A control that pairs an icon with a word carries <code>.has-icon</code>, whichever component it is. The icon and the word stand in a row with ${dsTok("--nu-space-micro")} between them, centred on each other.`,
+      `Kontrolka, która łączy ikonę ze słowem, nosi klasę <code>.has-icon</code>, niezależnie od tego, jakim jest komponentem. Ikona i słowo stoją w rzędzie z odstępem ${dsTok("--nu-space-micro")}, wyśrodkowane względem siebie.`)}</p>
     <p>${L(
       `Centring lines up the two boxes, and a word's box is taller than the word: the leading and the space for descenders sit under the letters, so the middle of the box falls below the middle of the word. The icon is lifted back onto it by ${dsTok("--nu-icon-lift")}. That value is judged by eye rather than derived, which is what an optical correction is, and it is in <code>px</code> because it corrects one mark against another rather than a length against the text.`,
       `Wyśrodkowanie zestawia dwa prostokąty, a prostokąt słowa jest wyższy niż samo słowo: interlinia i miejsce na ogonki leżą pod literami, więc jego środek wypada poniżej środka słowa. Ikonę podnosi z powrotem na jego wysokość ${dsTok("--nu-icon-lift")}. Ta wartość jest dobrana okiem, a nie wyliczona &ndash; tym właśnie jest korekta optyczna &ndash; i zapisana w <code>px</code>, bo poprawia jeden ślad względem drugiego, a nie długość względem tekstu.`)}</p>
 
     <h3>${L("An icon inside a field","Ikona wewnątrz pola")}</h3>
     <p>${L(
-      `The second arrangement, and a different one: the glyph stands inside the field rather than beside a word. It is positioned against the field, takes no pointer events and carries no name, because it says what the field is for rather than doing anything. The field leaves it room with padding on that side, so the value never runs under it. Two components read this way &ndash; the chevron in the select, at the right, and the magnifier in search, at the left.`,
-      `Drugi układ i inny co do zasady: znak stoi wewnątrz pola, a nie obok słowa. Pozycjonowany jest względem pola, nie przyjmuje kliknięć i nie ma nazwy, bo mówi, do czego pole służy, a nie robi czegokolwiek. Pole zostawia mu miejsce wypełnieniem od tej strony, żeby wartość nigdy pod niego nie wchodziła. Tak zbudowane są dwa komponenty &ndash; chevron w selekcie, po prawej, i lupa w wyszukiwarce, po lewej.`)}</p>
+      `The second arrangement, and a different one: the glyph stands inside the field rather than beside a word. It is positioned against the field, takes no pointer events and carries no name, because it says what the field is for rather than doing anything. The field leaves it room with padding on the side it stands on, so the value never runs under it.`,
+      `Drugi układ i inny co do zasady: znak stoi wewnątrz pola, a nie obok słowa. Pozycjonowany jest względem pola, nie przyjmuje kliknięć i nie ma nazwy, bo mówi, do czego pole służy, a nie robi czegokolwiek. Pole zostawia mu miejsce wypełnieniem od tej strony, po której stoi, żeby wartość nigdy pod niego nie wchodziła.`)}</p>
 
     <h3>${L("The set","Zestaw")}</h3>
-    <table><thead><tr><th>${L("Icon","Ikona")}</th><th>${L("Name","Nazwa")}</th><th>${L("Where","Gdzie")}</th></tr></thead><tbody>
+    <table><thead><tr><th>${L("Icon","Ikona")}</th><th>${L("Name","Nazwa")}</th><th>${L("Meaning","Znaczenie")}</th></tr></thead><tbody>
       <tr><td class="ico-cell">${icon("heart","ico-lg")}</td>
-        <td>${L("Heart","Serce")}</td><td>${L("The favourites list. Header.","Lista ulubionych. Nagłówek.")}</td></tr>
+        <td>${L("Heart","Serce")}</td><td>${L("The favourites list.","Lista ulubionych.")}</td></tr>
       <tr><td class="ico-cell">${icon("figure","ico-lg")}</td>
-        <td>${L("Figure","Sylwetka")}</td><td>${L("The account. Header.","Konto. Nagłówek.")}</td></tr>
+        <td>${L("Figure","Sylwetka")}</td><td>${L("The account.","Konto.")}</td></tr>
       <tr><td class="ico-cell">${icon("bag","ico-lg")}</td>
-        <td>${L("Bag","Torba")}</td><td>${L("The cart; carries the item counter. Header, last position.","Koszyk; nosi licznik pozycji. Nagłówek, ostatnia pozycja.")}</td></tr>
+        <td>${L("Bag","Torba")}</td><td>${L("The cart. The only icon that carries a counter.","Koszyk. Jedyna ikona, która nosi licznik.")}</td></tr>
       <tr><td class="ico-cell">${ICON_BACK}</td>
-        <td>${L("Back arrow","Strzałka wstecz")}</td><td>${L("Return to where the reader came from. Leads a link that names its destination, and a tertiary button that steps back through history.","Powrót tam, skąd czytelniczka przyszła. Prowadzi link wskazujący swój cel oraz przycisk trzeciorzędny cofający przez historię.")}</td></tr>
+        <td>${L("Back arrow","Strzałka wstecz")}</td><td>${L("Return to where the reader came from.","Powrót tam, skąd czytelniczka przyszła.")}</td></tr>
       <tr><td class="ico-cell">${icon("sheets","ico-sm")}</td>
-        <td>${L("Sheets","Kartki")}</td><td>${L("Copy to the clipboard. The promotion bar, after the code.","Skopiuj do schowka. Belka promocyjna, za kodem.")}</td></tr>
+        <td>${L("Sheets","Kartki")}</td><td>${L("Copy to the clipboard.","Skopiuj do schowka.")}</td></tr>
       <tr><td class="ico-cell">${icon("search","ico-sm ico-search")}</td>
-        <td>${L("Magnifier","Lupa")}</td><td>${L("Search. Inside the field in the bar over the grid, at its left edge.","Wyszukiwanie. Wewnątrz pola w belce nad siatką, przy jego lewej krawędzi.")}</td></tr>
+        <td>${L("Magnifier","Lupa")}</td><td>${L("Search. It stands inside a field rather than beside a word.","Wyszukiwanie. Stoi wewnątrz pola, a nie obok słowa.")}</td></tr>
       <tr><td class="ico-cell">${icon("filter","ico-sm")}</td>
         <td>${L("Filter","Filtry")}</td><td>${L("Opens and closes the filter panel. The lower bar runs full width while the panel is closed and shortens once it opens.","Otwiera i zamyka panel filtrów. Dolna kreska ma pełną szerokość przy zamkniętym panelu i skraca się po jego otwarciu.")}</td></tr>
       <tr><td class="ico-cell">${icon("plus","ico-sm")}</td>
-        <td>${L("Plus","Plus")}</td><td>${L("Adds one: opens the sort menu, where it turns 45&deg; into the cross while the menu is open, and raises the quantity in the stepper.","Dokłada jeden: otwiera menu sortowania, gdzie przy otwartym menu obraca się o 45&deg; w krzyżyk, i zwiększa ilość w stepperze.")}</td></tr>
+        <td>${L("Plus","Plus")}</td><td>${L("Adds one. Where it opens something, it turns 45&deg; into the cross while that thing is open, because it sits on a control that knows.","Dokłada jeden. Tam, gdzie coś otwiera, obraca się o 45&deg; w krzyżyk na czas otwarcia, bo siedzi na kontrolce, która o tym wie.")}</td></tr>
       <tr><td class="ico-cell">${icon("minus","ico-sm")}</td>
-        <td>${L("Minus","Minus")}</td><td>${L("Takes one away in the stepper. Disabled at one, where there is nothing left to take.","Odejmuje jeden w stepperze. Wyłączony przy jednej sztuce, gdy nie ma już czego odejmować.")}</td></tr>
+        <td>${L("Minus","Minus")}</td><td>${L("Takes one away. Disabled at one, where there is nothing left to take.","Odejmuje jeden. Wyłączony przy jednej sztuce, gdy nie ma już czego odejmować.")}</td></tr>
       <tr><td class="ico-cell">${icon("cross","ico-sm ico-close")}</td>
-        <td>${L("Cross","Krzyżyk")}</td><td>${L("Closes a drawer or the filter sheet, and empties the search field. The same drawing as the plus, turned.","Zamyka szufladę i arkusz filtrów, czyści pole wyszukiwania. Ten sam rysunek co plus, obrócony.")}</td></tr>
+        <td>${L("Cross","Krzyżyk")}</td><td>${L("Closes, or empties. The same drawing as the plus, turned.","Zamyka albo czyści. Ten sam rysunek co plus, obrócony.")}</td></tr>
       <tr><td class="ico-cell">${icon("chevron","ico-sm")}</td>
-        <td>${L("Chevron","Chevron")}</td><td>${L("Marks a select as a list to open. Sits inside the field, on its right. It does not turn when the list opens, because a native select gives the page no signal that it did &ndash; unlike the plus, which sits on a control that knows.","Oznacza pole wyboru jako listę do rozwinięcia. Stoi wewnątrz pola, po jego prawej. Nie obraca się przy rozwinięciu listy, bo natywny select nie daje stronie znać, że to nastąpiło &ndash; inaczej niż plus, który siedzi na kontrolce, która wie.")}</td></tr>
+        <td>${L("Chevron","Chevron")}</td><td>${L("Marks a select as a list to open. It does not turn when the list opens, because a native select gives the page no signal that it did &ndash; unlike the plus, which sits on a control that knows.","Oznacza pole wyboru jako listę do rozwinięcia. Nie obraca się przy rozwinięciu listy, bo natywny select nie daje stronie znać, że to nastąpiło &ndash; inaczej niż plus, który siedzi na kontrolce, która wie.")}</td></tr>
       <tr><td class="ico-cell">${icon("check","ico-sm")}</td>
-        <td>${L("Check","Ptaszek")}</td><td>${L("Something just succeeded. Leads the primary button through the &ldquo;Added&rdquo; sequence; in the promotion bar it replaces the sheets for 1.8s.","Coś się właśnie udało. Prowadzi przycisk główny w sekwencji „Dodano”; w belce promocyjnej zastępuje kartki na 1,8s.")}</td></tr>
+        <td>${L("Check","Ptaszek")}</td><td>${L("Something just succeeded. It stands for as long as a confirmation stands, then gives the place back to whatever was there before.","Coś się właśnie udało. Stoi przez czas potwierdzenia, a potem oddaje miejsce temu, co było wcześniej.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "The icon is marked <code>aria-hidden</code> and the name is carried by the control: its visible text, or an <code>aria-label</code> where the control shows the icon alone. Every icon in the shop is on this list and follows the rules above.",
