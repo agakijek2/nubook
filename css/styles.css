@@ -297,8 +297,12 @@
     --nu-field-width-search:13rem;
     --nu-field-width-search-focus:22rem;
 
-    --nu-icon-lg:1.5rem;   --nu-icon-lg-stroke:1.5;
-    --nu-icon-sm:1rem;     --nu-icon-sm-stroke:1.25;
+    /* The inset is the margin between the container and the safe area the drawing
+       has to fit inside. No rule in the sheet reads it: the documentation does,
+       building the name from the size it is describing, so a search for the
+       literal name finds nothing and the token looks dead. It is not. */
+    --nu-icon-lg:1.5rem;   --nu-icon-lg-inset:2px; --nu-icon-lg-stroke:1.5;
+    --nu-icon-sm:1rem;     --nu-icon-sm-inset:1px; --nu-icon-sm-stroke:1.25;
 
     /* An icon set beside a word is centred against the word's box, and that box
        is taller than the marks inside it: the leading and the descender space

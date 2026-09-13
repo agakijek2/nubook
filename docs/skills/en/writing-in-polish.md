@@ -66,11 +66,15 @@ Noun chains are not errors, but they are marked: they belong to official and aca
 - "carry out a verification" → "check"
 - "the implementation of the system by the team took place" → "the team implemented the system"
 
+## Pull the sentences out with a script, not by eye
+
+For anything longer than a paragraph, **list every sentence and walk the list**. Reading by eye gives a different subset each time: the same calque can survive three passes because the eye stops somewhere else on each of them. A list gives the same set every time, and lets you mark off what you have checked.
+
 ## Constructions that give away the English original
 
 These are not grammatical errors in Polish. They are a signal that the sentence has an English skeleton, and there is nearly always a simpler way to say it. **When you find one such sentence, look at its neighbours** — they come in batches, written in one breath.
 
-The recurring ones are: *dwa poziomy jednej rzeczy* for "two levels of one thing", *pole, w którym staje okładka* for "the field the cover stands in", *przez to z dwojga, którego użyje* for "through whichever of the two it uses", *jedna odpowiedź obsługuje oba* for "one answer serves both", *adresować problem* for "address the problem", *robić sens* for "make sense", *wydaje się być* for "seems to be", *posiadać* for "to have", *dedykowany* for "dedicated" in the sense of "intended for".
+The recurring ones are: *pudełko* for "box" (say *kontener* of an element, *prostokąt* of the rectangle a thing occupies), *obiekt* and *przedmiot* for "object", *podróżować razem* for "travel together" (say *trzymać się razem*), *obsługuje* for "serves" (say *wystarcza na*), *unosi* for "carries" (say *niesie*), *odciąć się* for "stand out" (say *wyróżnić się*),*dwa poziomy jednej rzeczy* for "two levels of one thing", *pole, w którym staje okładka* for "the field the cover stands in", *przez to z dwojga, którego użyje* for "through whichever of the two it uses", *jedna odpowiedź obsługuje oba* for "one answer serves both", *adresować problem* for "address the problem", *robić sens* for "make sense", *wydaje się być* for "seems to be", *posiadać* for "to have", *dedykowany* for "dedicated" in the sense of "intended for".
 
 Separately: **filler words** that fit anywhere and carry nothing — "key", "an important element", "in the final analysis", "it is worth emphasising", "let us take a look". Cut them or replace them with the specific thing. If something is key, write what it is key to.
 
@@ -97,6 +101,13 @@ These are rules of Polish and most of them have no English counterpart, because 
 
 Technical documentation takes the **indicative rather than the imperative**: "A token is chosen by role", not "Choose by role". Documentation describes a system; it does not issue orders.
 
+## One word, one meaning
+
+Two checks, both mechanical:
+
+- **One concept, one name in the text.** Count the variants: if *kontener* appears six times and *pudełko* once, the single occurrence is the one to replace. A term that appears once alongside many occurrences of its synonym is nearly always a slip rather than a decision.
+- **One word, one meaning in a sentence and on a screen.** *Stopień jest proporcją, więc trzyma się przy każdym stopniu pisma* uses *stopień* once for the line-height step and once for the type size. One of them has to give way.
+
 ## Punctuation and typography
 
 Polish punctuation is grammatical rather than rhetorical: a comma marks a clause boundary whether or not anyone would pause there. That is the single biggest difference from English practice and the source of most of the errors.
@@ -115,6 +126,7 @@ Polish punctuation is grammatical rather than rhetorical: a comma marks a clause
 - The **en dash** (–) and **em dash** (—) are marks of the sentence and take spaces. Polish practical typography sets an en dash with spaces.
 - Do not leave a conjunction or a preposition at the end of a line — one-letter words are bound to the next word with a non-breaking space.
 - No space before a comma, full stop, colon, semicolon or question mark.
+- A technical name ending in a colon (`font:`) cannot stand before the colon of a sentence: it renders as "skrót font:: kursywy". Recast the sentence or use an en dash.
 
 Where a project has its own convention that conflicts with the above, **the project's convention wins** — write it down and hold to it.
 

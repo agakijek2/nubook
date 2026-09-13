@@ -59,6 +59,10 @@ Rzeczownikowe ciągi nie są błędem, ale są nacechowane: należą do stylu ur
 - „nastąpiło wdrożenie systemu przez zespół" → „zespół wdrożył system"
 - „Ucieszyła mnie chęć Piotra obejrzenia filmu" → „Ucieszyło mnie, że Piotr chciał obejrzeć film"
 
+## Wyciągaj zdania skryptem, nie wzrokiem
+
+Przy dłuższym tekście **wypisz wszystkie zdania listą i przejdź je po kolei**. Przeglądanie wzrokiem daje za każdym razem inny podzbiór: ta sama kalka potrafi przetrwać trzy przebiegi, bo za każdym razem oko zatrzymuje się gdzie indziej. Lista daje ten sam zbiór i pozwala zaznaczać, co już sprawdzone.
+
 ## Konstrukcje, które zdradzają angielski oryginał
 
 Te nie są błędami gramatycznymi. Są sygnałem, że zdanie ma obcy szkielet, i prawie zawsze da się je powiedzieć prościej. **Gdy znajdziesz jedno takie zdanie, przejrzyj sąsiednie** — powstają partiami, jednym oddechem.
@@ -69,6 +73,12 @@ Te nie są błędami gramatycznymi. Są sygnałem, że zdanie ma obcy szkielet, 
 | „pole, w którym staje okładka" | „szare pole z okładką w środku" |
 | „okładka to to, co w nim stoi" | „w środku stoi okładka" |
 | „przez to z dwojga, którego użyje" | „z tego miejsca, którego użyje" |
+| „pudełko" na *box* | „kontener" o elemencie, „prostokąt" o polu, które coś zajmuje |
+| „obiekt", „przedmiot" na *object* | „nazwa", „całość", „rzecz" — zależnie od tego, o czym mowa |
+| „podróżować razem" na *travel together* | „trzymać się razem" |
+| „obsługuje wszystkie przypadki" na *serves* | „wystarcza na wszystkie przypadki" |
+| „unosi cztery właściwości" na *carries* | „niesie cztery właściwości" |
+| „odciąć się" w znaczeniu *stand out* | „wyróżnić się" |
 | „w tym stopniu, w którym odpowiada każde najechanie" | „w tym samym stopniu skali, którym odpowiada każde najechanie" |
 | „jedna odpowiedź obsługuje oba" | „jedna odpowiedź wystarcza na oba" |
 | „to jest coś, co robimy" | „robimy to" |
@@ -107,6 +117,13 @@ Polszczyzna ma szyk swobodny, ale nie dowolny. Neutralny porządek to **temat �
 
 W dokumentacji technicznej obowiązuje dodatkowo **tryb oznajmujący, nie rozkazujący**: „Token dobiera się według roli", nie „Dobieraj według roli". Dokumentacja opisuje system, nie wydaje poleceń.
 
+## Jedno słowo, jedno znaczenie
+
+Dwa sprawdzenia, oba mechaniczne:
+
+- **To samo pojęcie ma w tekście jedną nazwę.** Policz warianty: jeśli „kontener" pada sześć razy, a „pudełko" raz, to jedno wystąpienie jest do wymiany. Termin pojawiający się raz przy wielu wystąpieniach synonimu to prawie zawsze pomyłka, nie decyzja.
+- **To samo słowo nie ma dwóch znaczeń w jednym zdaniu ani na jednym ekranie.** „Stopień jest proporcją, więc trzyma się przy każdym stopniu pisma" używa „stopnia" raz o interlinii, raz o wielkości pisma. Jedno z nich musi ustąpić.
+
 ## Interpunkcja i typografia
 
 **Norma:**
@@ -123,6 +140,7 @@ W dokumentacji technicznej obowiązuje dodatkowo **tryb oznajmujący, nie rozkaz
 - **Półpauza** (–) i **pauza** (—) są znakami zdania i mają spacje wokół. W polskiej typografii użytkowej standardem jest półpauza ze spacjami.
 - Nie zostawiaj spójnika ani przyimka na końcu wiersza — jednoliterowe wyrazy (*a, i, o, u, w, z*) wiąże się z następnym słowem spacją nierozdzielającą.
 - Nie stawiaj spacji przed przecinkiem, kropką, dwukropkiem, średnikiem, znakiem zapytania.
+- Nazwa techniczna zakończona dwukropkiem (`font:`) nie może stać przed dwukropkiem zdania: wyjdzie z tego „skrót font:: kursywy". Przestaw zdanie albo użyj półpauzy.
 
 Jeśli projekt ma własną konwencję, która kłóci się z powyższym (na przykład: wyłącznie półpauzy, nigdy pauzy), **konwencja projektu wygrywa** — zapisz ją i trzymaj się jej konsekwentnie.
 
@@ -131,7 +149,7 @@ Jeśli projekt ma własną konwencję, która kłóci się z powyższym (na przy
 Ustal, kto mówi i do kogo, zanim napiszesz pierwsze zdanie.
 
 - **Do klienta albo użytkowniczki:** zwroty grzecznościowe wielką literą (Twój, Państwa, Pani). Trzymaj jedną formę w całym tekście — przejście z „Ty" na „Państwo" w połowie widać od razu.
-- **Dokumentacja i specyfikacja:** rzeczowo, oznajmująco, bez ozdobników. „Obraca się o 45°", nie „obraca się o pół kąta prostego". Bez kroniki: „teraz", „już nie", „zostaje przy" opisują przebudowę, a nie stan, a czytelniczka nie zna poprzedniej wersji.
+- **Dokumentacja i specyfikacja:** rzeczowo, oznajmująco, bez ozdobników. „Obraca się o 45°", nie „obraca się o pół kąta prostego". Bez kroniki: „teraz", „już nie", „zostaje przy", „dziś" opisują przebudowę, a nie stan, a czytelniczka nie zna poprzedniej wersji.
 - **Bez korpomowy:** zamiast „zaadresować" — „zająć się"; zamiast „zforwardować" — „przekazać"; zamiast „sfinalizować" — „skończyć"; zamiast „implementować" — „wdrożyć" albo „zrobić".
 - **Pisz, jak jest, nie jak nie jest.** „Ikona ma dwa rozmiary" zamiast „Dwa rozmiary i żadnych innych". Zdania przez zaprzeczenie brzmią jak obrona przed zarzutem.
 - **Jedno słowo, jedno znaczenie w obrębie tekstu.** Jeśli „etykieta" znaczy raz styl typograficzny, a raz napis na kontrolce, jedno z nich musi ustąpić.
@@ -145,8 +163,8 @@ Ustal, kto mówi i do kogo, zanim napiszesz pierwsze zdanie.
 5. Czy „tylko", „nawet", „właśnie" stoją przy tym, co naprawdę ograniczają?
 6. Czy nowa informacja w każdym zdaniu jest bliżej końca niż początku?
 7. Czy strona bierna występuje tylko tam, gdzie wykonawca jest nieistotny?
-8. Czy zdania mają różną długość?
-9. Czy to samo słowo nie powtarza się trzy razy w sąsiednich zdaniach i czy nic się nie rymuje?
+8. Czy to samo pojęcie ma jedną nazwę, a to samo słowo jedno znaczenie?
+9. Czy zdania mają różną długość, nic się nie rymuje i żadne słowo nie wraca trzy razy w sąsiednich zdaniach?
 10. Czy cudzysłowy są dolno-górne, a myślniki mają spacje?
 11. Czy odmieniłaś wszystkie nazwy własne i terminy?
 12. Czy da się skreślić co dziesiąte słowo bez straty sensu? Jeśli tak, skreśl.
