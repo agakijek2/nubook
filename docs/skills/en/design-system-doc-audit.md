@@ -55,7 +55,7 @@ The patterns that recur most often — look for them deliberately:
 
 Two traps when reading a stylesheet with a regular expression, each producing a false result in the opposite direction. **A selector split across lines** (`.a,` on one, `.b{` on the next) will not be matched by a pattern expecting the selector and the brace on one line — the audit then reports as unhandled the rules that are handled. **A comment standing before a rule** is swallowed into the selector match if the pattern does not strip comments first — the audit then returns a list of "selectors" that are sentences from a comment. Strip comments before parsing, and match the selector as everything up to the brace, regardless of line breaks.
 
-A third, when checking the contents of a media query: **the same breakpoint may have several blocks**. A pattern that finds the first and stops there will report a rule missing that stands in the third. Collect every block before ruling.
+A third, when checking the contents of a media query, and it misleads in both directions. **The same breakpoint may have several blocks**: a pattern that finds the first and stops there will report a rule missing that stands in the third. And **a rule lifted out of a breakpoint looks like a base rule**: a selector search returns a declaration that only holds on a narrow screen, and it is easy to report a contradiction that does not exist. When you collect a rule, record the condition it holds under along with it.
 
 One concrete trap of the test environment: **computed styles for SVG are unreliable**. `fill`, `stroke` and `stroke-width` are presentation attributes, and a test engine can return values for them that disagree with the stylesheet — the audit will then report that every icon has a fill, although a shared rule sets `fill:none`. Verify claims about SVG appearance **by reading the stylesheet**, not by asking for a computed style. Compute path geometry from the `d` attribute, not from the rendered element's box.
 
@@ -100,9 +100,13 @@ Three versions of the same problem come back most often, all of them what a mode
 
 Two tests carry most of the findings. **Read the sentence aloud** and ask whether you would say it that way in a conversation at work. Then **translate it back into English, word for word**: if it comes back as fluent English, it was an English sentence wearing Polish words. When either test fails, rewrite in the plainest possible order: what is what, what stands where, what happens. "A tile is a grey 4:5 field with a cover in it" rather than "the field the cover stands in".
 
+**Your own proposed correction goes through these tests too.** A sentence written to fix a calque is often a calque: *kontrolka nad tym, co czytelniczka widzi* comes back as "a control over what the reader can see". Run your proposal through the tests before you show it.
+
 Pull the sentences out **with a script, not by eye**. List every string in the tab and walk the list: reading by eye gives a different subset every time, a list gives the same one. The same calque can survive three passes because the eye stops somewhere else on each of them.
 
 In bilingual documentation, check additionally **whether one version is a translation of the other**. The symptom is easy to see: both sentences have the same shape, the same number of parts and the same order. The two languages solve the same thing differently — English reaches for a verbal noun where Polish takes a subordinate clause — so an identical shape means one sentence was made out of the other. The fix is to write the second version from the fact, not to rearrange the words of a translation. The content has to match; the shape does not and usually should not.
+
+Check as well that **both versions say the same thing**. A divergence in content between the languages is rarer than a calque and more dangerous: one version can assert the opposite of the other and nobody notices, because almost nobody reads both. For every sentence describing a behaviour, compare the verb on each side.
 
 This fault comes from writing several sentences in one breath, so **when you find one such sentence, look at its neighbours** — they are usually from the same batch.
 

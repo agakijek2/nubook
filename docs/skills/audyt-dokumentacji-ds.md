@@ -55,7 +55,7 @@ Wzorce, które powtarzają się najczęściej — szukaj ich celowo:
 
 Dwie pułapki przy czytaniu arkusza wyrażeniem regularnym, obie dające fałszywy wynik w przeciwnych kierunkach. **Selektor rozpisany na kilka linii** (`.a,` w jednej, `.b{` w następnej) nie zostanie dopasowany wzorcem szukającym selektora i klamry w tej samej linii — audyt zgłosi wtedy jako nieobsłużone reguły, które są obsłużone. **Komentarz stojący przed regułą** wchodzi w dopasowanie selektora, jeśli wzorzec nie wycina komentarzy najpierw — audyt zwróci wtedy listę „selektorów" będących zdaniami z komentarza. Wycinaj komentarze przed parsowaniem i dopasowuj selektor jako wszystko do klamry, bez względu na łamanie linii.
 
-Trzecia, gdy sprawdzasz zawartość media query: **ten sam próg potrafi mieć kilka bloków**. Wzorzec, który znajduje pierwszy i na nim poprzestaje, zgłosi brak reguły, która stoi w trzecim. Zbierz wszystkie bloki, zanim orzekniesz.
+Trzecia, gdy sprawdzasz zawartość media query, i myli w obie strony. **Ten sam próg potrafi mieć kilka bloków**: wzorzec, który znajduje pierwszy i na nim poprzestaje, zgłosi brak reguły, która stoi w trzecim. A **reguła wyjęta z wnętrza progu wygląda jak reguła podstawowa**: wyszukanie selektora zwraca deklarację obowiązującą tylko na wąskim ekranie, i na jej podstawie łatwo zgłosić sprzeczność, której nie ma. Zbierając regułę, zapisuj razem z nią warunek, pod którym obowiązuje.
 
 Konkretna pułapka środowiska testowego: **wyliczone style dla SVG są niewiarygodne**. `fill`, `stroke`, `stroke-width` to atrybuty prezentacyjne i silnik testowy potrafi zwracać dla nich wartości niezgodne z arkuszem — audyt zgłosi wtedy, że każda ikona ma wypełnienie, choć reguła wspólna ustawia `fill:none`. Twierdzenia o wyglądzie SVG weryfikuj **czytając arkusz**, a nie odpytując wyliczony styl. Geometrię ścieżek licz z atrybutu `d`, nie z wymiarów renderowanego elementu.
 
@@ -100,9 +100,13 @@ Trzy odmiany problemu wracają w zakładkach najczęściej:
 
 Dwa testy ze skilla `polszczyzna` wystarczają na większość znalezisk. **Przeczytaj zdanie na głos** i sprawdź, czy powiedziałabyś je tak w rozmowie o pracy. Potem **przełóż je z powrotem na angielski, słowo po słowie**: jeśli wraca jako płynna angielszczyzna, było angielskim zdaniem w polskim przebraniu. Gdy któryś test wypadnie źle, przepisz najprostszym możliwym szykiem: co jest czym, co gdzie stoi, co się dzieje. „Kafel to szare pole 4:5 z okładką w środku" zamiast „pole, w którym staje okładka".
 
+**Twoja własna propozycja poprawki też przechodzi te testy.** Zdanie napisane po to, żeby naprawić kalkę, bywa kalką: „kontrolka nad tym, co czytelniczka widzi" wraca jako *a control over what the reader can see*. Puść przez testy to, co proponujesz, zanim to pokażesz.
+
 Wyciągaj zdania **skryptem, nie wzrokiem**. Wypisz wszystkie napisy zakładki i przejdź je po kolei: przeglądanie wzrokiem daje za każdym razem inny podzbiór, a lista daje ten sam. Ta sama kalka potrafi przeżyć trzy przebiegi, bo za każdym razem oko zatrzymuje się gdzie indziej.
 
 W dokumentacji dwujęzycznej sprawdź dodatkowo, **czy wersja polska nie jest przekładem angielskiej**. Objaw widać od razu: oba zdania mają tę samą budowę, tyle samo członów i ten sam szyk. Oba języki rozwiązują to samo inaczej — angielski częściej rzeczownikiem odczasownikowym, polski zdaniem podrzędnym — więc identyczna budowa oznacza, że jedno zdanie powstało z drugiego. Poprawka polega na napisaniu wersji polskiej od faktu, a nie na przestawianiu wyrazów w przekładzie. Treść ma się zgadzać, budowa nie musi i zwykle nie powinna.
+
+Sprawdź też, **czy obie wersje mówią to samo**. Rozjazd treści między językami jest rzadszy niż kalka, ale groźniejszy: jedna wersja potrafi twierdzić coś przeciwnego niż druga, a nikt tego nie zauważa, bo prawie nikt nie czyta obu. Przy każdym zdaniu opisującym zachowanie porównaj czasownik po obu stronach.
 
 Ta wada bierze się z pisania kilku zdań jednym oddechem, więc **gdy znajdziesz jedno takie zdanie, przejrzyj sąsiednie** — zwykle są z tej samej partii.
 
