@@ -1337,6 +1337,12 @@
   .opt .o-price{font-variant-numeric:tabular-nums}
   .consent{display:flex;gap:var(--nu-space-milli);align-items:flex-start;margin-bottom:var(--nu-space-milli);cursor:pointer}
   .consent input{accent-color:var(--nu-fg-primary);margin-top:var(--nu-space-nano);flex-shrink:0}
+  /* A native checkbox and a native radio draw the browser's own ring, of a
+     thickness and a colour nothing else in the shop uses. They take the shop's
+     ring instead: the field around them keeps its border either way, so there
+     is no second border to read, and the mark stays the same everywhere. */
+  .opt input:focus-visible,.consent input:focus-visible{
+    outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   .legal{font:var(--nu-type-body-m);color:var(--nu-fg-secondary);margin-top:var(--nu-space-medium);max-width:60ch}
   .co-side{position:sticky;top:var(--nu-space-medium);background:var(--nu-bg-secondary);padding:var(--nu-space-medium)}
   .co-side h3{font:var(--nu-type-label);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase;color:var(--nu-fg-secondary);margin-bottom:var(--nu-space-small)}

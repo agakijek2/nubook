@@ -2052,6 +2052,15 @@ function bsType(box, html, done){
      gap between one word and the next has to be.
 
      done() is called one interval after the last word set off. */
+  /* A word at a time is an arrival, and an arrival is movement. The stylesheet
+     takes away the blur each word comes in with; the interval between them is
+     the script's to drop, because no rule can see it. Asked for less movement,
+     the passage is simply there. */
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    words.forEach(w => w.classList.add("is-in"));
+    if (done) bsTypeTimer = setTimeout(done, 0);
+    return;
+  }
   const per = motionMs("--nu-motion-instant");
   let i = 0;
   (function step(){
@@ -2386,15 +2395,32 @@ function dsMeanings(){
 /* Contrast computed from the tokens themselves, so lightening a grey shows up
    here as a changed ratio and a changed verdict rather than staying a number
    somebody typed once. Returns null for anything that is not a plain hex. */
+/* Which of the two schemes is in force. The switch writes data-scheme when the
+   reader chooses; with no choice made the shop follows the system. One place
+   knows this, so nothing has to work it out a second time. */
+function dsScheme(){
+  const set = document.documentElement.getAttribute("data-scheme");
+  if (set === "light" || set === "dark") return set;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
 /* Follows the alias chain itself rather than trusting the engine to substitute:
    a semantic token points at a primitive, and occasionally at another semantic
-   token first. Returns null for anything that does not end at a plain hex. */
-function dsHex(token, depth){
-  const raw = (dsRootDecls()[token] || dsVal(token) || "").trim();
-  const ref = raw.match(/^var\((--[\w-]+)\)$/);
-  if (ref) return (depth || 0) < 4 ? dsHex(ref[1], (depth || 0) + 1) : null;
-  const m = raw.match(/^#([0-9a-f]{6})$/i);
+   token first. A colour token holds a pair of values with the scheme choosing
+   between them, and the choice is made here for the same reason: the engine
+   would hand back a colour, and a colour no longer knows which primitive it
+   came from. Returns null for anything that does not end at a plain hex. */
+function dsHexOf(raw, depth){
+  const v = (raw || "").trim();
+  if ((depth || 0) > 6) return null;
+  const pair = v.match(/^light-dark\(\s*(.+?)\s*,\s*(.+?)\s*\)$/);
+  if (pair) return dsHexOf(dsScheme() === "dark" ? pair[2] : pair[1], (depth || 0) + 1);
+  const ref = v.match(/^var\(\s*(--[\w-]+)\s*\)$/);
+  if (ref) return dsHex(ref[1], (depth || 0) + 1);
+  const m = v.match(/^#([0-9a-f]{6})$/i);
   return m ? m[1] : null;
+}
+function dsHex(token, depth){
+  return dsHexOf(dsRootDecls()[token] || dsVal(token), depth);
 }
 function dsContrast(fg, bg){
   const a = dsHex(fg), b = dsHex(bg);
@@ -2867,39 +2893,39 @@ const DS_SECTIONS = [
   { group:{en:"",pl:""}, id:"a11y", label:{en:"Accessibility",pl:"Dostępność"}, body: ()=>`
     <h1>${L("Accessibility","Dostępność")}</h1>
     <p class="ds-lede">${L(
-      "An accessible interface works for everyone, whatever they use to see, read and control it. This page records where the shop meets that and where it does not.",
-      "Dostępny interfejs działa dla każdego &ndash; niezależnie od tego, jak widzi, czyta i steruje. Ta strona zapisuje, gdzie sklep to spełnia, a gdzie nie.")}</p>
+      "An accessible interface works for everyone, whatever they use to see it, read it and work it. This page shows what the shop meets and what it does not meet yet.",
+      "Dostępny interfejs działa dla każdego, niezależnie od tego, jak ktoś go ogląda, czyta i czym go obsługuje. Ta strona pokazuje, co sklep spełnia, a czego jeszcze nie.")}</p>
     <h3>${L("In place","Na miejscu")}</h3>
     <table><colgroup><col style="width:190px"><col></colgroup><tbody>
       <tr><td>${L("Native elements","Elementy natywne")}</td>
-          <td>${L("A control is the HTML element that already means what it does: a chip is a <code>button</code>, a link and a product card are <code>a</code> with an <code>href</code>, a quantity stepper is two buttons around a number. Those elements bring focus, keyboard handling and a spoken role with them. ARIA adds only what HTML has no element for &ndash; that a panel is open, that a drawer is a dialogue, that a button showing one glyph is called Close.",
-                  "Kontrolka jest tym elementem HTML, który już znaczy to, co ona robi: chip to <code>button</code>, link i karta produktu to <code>a</code> z atrybutem <code>href</code>, stepper ilości to dwa przyciski wokół liczby. Te elementy przynoszą ze sobą fokus, obsługę klawiatury i wypowiadaną rolę. ARIA dokłada wyłącznie to, na co HTML nie ma elementu &ndash; że panel jest rozwinięty, że szuflada jest dialogiem, że przycisk z jednym znakiem nazywa się Zamknij.")}</td></tr>
+          <td>${L("A control is built from the HTML element that already means what the control does: a chip is a <code>button</code>, a link and a product card are <code>a</code> with an <code>href</code>, a quantity stepper is two buttons around a number. Such an element has focus, keyboard handling and a role a screen reader speaks, with nothing added. ARIA adds only what HTML has no element for &ndash; that a panel is open, that a drawer is a dialogue, that a button showing an icon alone is called Close. The product card has a second form, for the time it spends inside a frame where the surrounding page intercepts clicks on <code>a</code>: there it is an element with <code>role=&quot;link&quot;</code>, a <code>tabindex</code> of its own and keyboard handling written by hand. That is the one place where a role stands in for an element.",
+                  "Kontrolka powstaje z tego elementu HTML, który sam znaczy to, co ona robi: chip to <code>button</code>, link i karta produktu to <code>a</code> z atrybutem <code>href</code>, stepper ilości to dwa przyciski wokół liczby. Taki element ma fokus, obsługę klawiatury i rolę, którą czytnik ekranu odczytuje, bez dopisywania czegokolwiek. ARIA dokłada wyłącznie to, na co HTML nie ma elementu &ndash; że panel jest rozwinięty, że szuflada jest dialogiem, że przycisk z samą ikoną nazywa się Zamknij. Karta produktu ma drugą postać, na czas osadzenia w ramce, gdzie kliknięcia w <code>a</code> przechwytuje strona nadrzędna: jest wtedy elementem z <code>role=&quot;link&quot;</code>, własnym <code>tabindex</code> i obsługą klawiatury dopisaną ręcznie. To jedyne miejsce, w którym rola zastępuje element.")}</td></tr>
       <tr><td>${L("Visible focus","Widoczny fokus")}</td>
-          <td>${L("Every interactive element draws a <code>:focus-visible</code> ring in <code>--nu-border-primary</code>, one thickness throughout and one distance out. A control sitting flush inside another one's outline &ndash; a stepper button, an option in the sort menu &ndash; draws the ring inward instead, because outside there is no room for it to stand. Form fields drop the ring and darken their border instead, so the focused field is still marked without a ring sitting inside a box.",
-                  "Każdy element interaktywny rysuje obwódkę <code>:focus-visible</code> w kolorze <code>--nu-border-primary</code>, o jednej grubości i jednym odsunięciu na zewnątrz. Kontrolka siedząca ciasno w cudzym obrysie &ndash; przycisk steppera, opcja w menu sortowania &ndash; rysuje obwódkę do środka, bo na zewnątrz nie ma dla niej miejsca. Pola formularza rezygnują z obwódki na rzecz przyciemnienia własnej ramki, więc pole w fokusie nadal jest oznaczone, bez obwódki wewnątrz ramki.")}</td></tr>
+          <td>${L("Every interactive element draws a <code>:focus-visible</code> ring of one thickness and one distance out, and the ring takes the colour that stands against the ground it is drawn on: <code>--nu-border-primary</code> on the ordinary ground, <code>--nu-fg-inverse</code> on the inverse one, where the first of the two would be the ground's own colour. Two departures, each for a reason the ring itself cannot solve. A control sitting flush inside another one's outline &ndash; a stepper button, an option in the sort menu &ndash; draws the ring inward, because outside there is no room for it to stand. A form field drops the ring and darkens its border instead, a ring inside a bordered box reading as a second border.",
+                  "Każdy element interaktywny rysuje obwódkę <code>:focus-visible</code> o jednej grubości i jednym odsunięciu na zewnątrz, a jej kolor jest tym, który odcina się od tła, na którym stoi: <code>--nu-border-primary</code> na tle zwykłym, <code>--nu-fg-inverse</code> na odwróconym, gdzie pierwszy z nich byłby kolorem samego tła. Odstępstwa są dwa i każde ma powód, którego sama obwódka nie rozwiąże. Kontrolka siedząca ciasno w cudzym obrysie &ndash; przycisk steppera, opcja w menu sortowania &ndash; rysuje obwódkę do środka, bo na zewnątrz nie ma dla niej miejsca. Pole formularza obwódkę zdejmuje i zamiast niej przyciemnia własną ramkę, bo obwódka wewnątrz ramki czyta się jak druga ramka.")}</td></tr>
       <tr><td>${L("Keyboard","Klawiatura")}</td>
-          <td>${L("The first thing the Tab key finds on any view is a link past the promotion and the header, straight to the content; it shows itself the moment it takes focus and is of no use to anyone else. It works under two conditions, both to be kept in mind whenever the header changes: it has to stay the first element that takes focus, and its target has to stay directly after the header. Escape closes, in order: the sort menu, the filter sheet, the cart, the open drawer, the product view. Opening a drawer moves focus to its close button and marks everything outside it <code>inert</code>, so the page behind is out of reach of the Tab key, the pointer and assistive technology alike until it closes; opening the sort menu moves focus to the option in force, and closing it hands focus back to the button that opened it.",
-                  "Pierwszym, co tabulator znajduje na każdym widoku, jest link prowadzący za promocję i nagłówek, prosto do treści; pokazuje się w chwili, gdy przyjmie fokus, i nikomu innemu nie przeszkadza. Działa pod dwoma warunkami, o które trzeba zadbać przy każdej zmianie w nagłówku: sam musi zostać pierwszym elementem przyjmującym fokus, a jego cel musi stać zaraz za nagłówkiem. Escape zamyka kolejno: menu sortowania, panel filtrów, koszyk, otwartą szufladę, widok produktu. Otwarcie szuflady przenosi fokus na jej przycisk zamknięcia i oznacza wszystko poza nią atrybutem <code>inert</code>, więc do strony pod spodem nie sięga ani tabulator, ani wskaźnik, ani technologia wspomagająca &ndash; aż do zamknięcia; a otwarcie menu sortowania &ndash; na obowiązującą opcję; zamknięcie oddaje fokus przyciskowi, który je otworzył.")}</td></tr>
+          <td>${L("The first thing the Tab key finds on any view is a link past the promotion and the header, straight to the content; it shows itself the moment it takes focus and is in nobody else's way. It works under two conditions, which every change to the header has to keep: it stays the first element that takes focus, and its target stays directly after the header.<br><br>Escape closes, in order: the sort menu, the filter sheet, the cart, the open drawer, the product view. It stops earlier in two places, both where the key has closer work to do: inside the sort menu, which answers it itself, and inside the search field while a query is standing there, where it clears the query. An empty search field lets the key through.<br><br>Opening a drawer moves focus to its close button and marks everything outside it <code>inert</code>, so the page behind is out of reach of the Tab key, the pointer and assistive technology alike until it closes. Opening the sort menu moves focus to the option in force, and closing it gives focus back to the button that opened it.",
+                  "Pierwszym, co tabulator znajduje na każdym widoku, jest link prowadzący za promocję i nagłówek, prosto do treści; pokazuje się w chwili, gdy przyjmie fokus, i nikomu innemu nie wchodzi w drogę. Działa pod dwoma warunkami, które każda zmiana w nagłówku musi zachować: zostaje pierwszym elementem przyjmującym fokus, a jego cel stoi zaraz za nagłówkiem.<br><br>Escape zamyka kolejno: menu sortowania, panel filtrów, koszyk, otwartą szufladę, widok produktu. W dwóch miejscach zatrzymuje się wcześniej, bo ma tam bliższą robotę: w menu sortowania, które odpowiada mu samo, oraz w polu wyszukiwania, dopóki stoi w nim zapytanie &ndash; wtedy je czyści. Z pustego pola klawisz idzie dalej.<br><br>Otwarcie szuflady przenosi fokus na jej przycisk zamknięcia i oznacza wszystko poza nią atrybutem <code>inert</code>, więc do strony pod spodem nie sięga ani tabulator, ani wskaźnik, ani technologia wspomagająca, aż do zamknięcia. Otwarcie menu sortowania przenosi fokus na obowiązującą opcję, a zamknięcie oddaje go przyciskowi, który menu otworzył.")}</td></tr>
       <tr><td>${L("Announced state","Ogłaszany stan")}</td>
-          <td>${L("<code>aria-expanded</code> on every control that leaves something open, <code>aria-pressed</code> on the header's pairs of toggles and on the filter chips, <code>role=&quot;menu&quot;</code> with <code>aria-checked</code> on the sort options, <code>role=&quot;dialog&quot;</code> with <code>aria-modal</code> on both drawers, backed by <code>inert</code> on everything outside them so the attribute describes what actually happens, <code>aria-invalid</code> with <code>aria-describedby</code> on a field whose value did not pass. The product grid is an <code>aria-live</code> region, so a filter change is announced rather than happening silently.",
-                  "<code>aria-expanded</code> na każdej kontrolce, która zostawia coś otwartego, <code>aria-pressed</code> na parach przełączników w nagłówku i na chipach filtrów, <code>role=&quot;menu&quot;</code> z <code>aria-checked</code> na pozycjach sortowania, <code>role=&quot;dialog&quot;</code> z <code>aria-modal</code> w obu szufladach, poparte atrybutem <code>inert</code> na wszystkim poza nimi, więc atrybut opisuje to, co faktycznie się dzieje, <code>aria-invalid</code> wraz z <code>aria-describedby</code> na polu, którego wartość nie przeszła. Siatka produktów jest obszarem <code>aria-live</code>, więc zmiana filtra jest ogłaszana, a nie zachodzi bezgłośnie.")}</td></tr>
+          <td>${L("<code>aria-expanded</code> on every control that leaves something open, <code>aria-pressed</code> on the header's pairs of toggles and on the filter chips, <code>role=&quot;menu&quot;</code> with <code>aria-checked</code> on the sort options, <code>role=&quot;dialog&quot;</code> with <code>aria-modal</code> on both drawers and, alongside it, <code>inert</code> on everything outside the drawer, so what <code>aria-modal</code> promises holds for the Tab key and the pointer too; <code>aria-invalid</code> with <code>aria-describedby</code> on a field that did not pass validation. Whatever appears without the reader asking for it stands in an <code>aria-live</code> region &ndash; the filtered grid, the confirmation that the code was copied, what the bookseller says &ndash; so it is announced rather than arriving quietly.",
+                  "<code>aria-expanded</code> na każdej kontrolce, która zostawia coś otwartego, <code>aria-pressed</code> na parach przełączników w nagłówku i na chipach filtrów, <code>role=&quot;menu&quot;</code> z <code>aria-checked</code> na pozycjach sortowania, <code>role=&quot;dialog&quot;</code> z <code>aria-modal</code> w obu szufladach, a razem z nim <code>inert</code> na wszystkim poza szufladą, więc obietnica z <code>aria-modal</code> obowiązuje też tabulator i wskaźnik; <code>aria-invalid</code> wraz z <code>aria-describedby</code> na polu, które nie przeszło sprawdzenia. Wszystko, co pojawia się bez udziału czytelniczki &ndash; przefiltrowana siatka, potwierdzenie skopiowania kodu, wypowiedź księgarki &ndash; stoi w obszarze <code>aria-live</code>, więc jest ogłaszane, a nie dzieje się po cichu.")}</td></tr>
       <tr><td>${L("Grouping","Grupowanie")}</td>
-          <td>${L("Each row of filters is a <code>role=&quot;group&quot;</code> labelled by the heading standing above it, and the language and currency pairs in the header are groups of their own. A sighted reader takes that grouping from the layout; without the label tied to the row, a screen reader would read a run of toggles with nothing saying what they narrow down.",
-                  "Każdy rząd filtrów jest grupą <code>role=&quot;group&quot;</code>, opisaną nagłówkiem stojącym nad nim, a pary języka i waluty w nagłówku są osobnymi grupami. Osoba widząca odczytuje to grupowanie z układu; bez etykiety powiązanej z rzędem czytnik ekranu odczytałby serię przełączników, nie mówiąc, czego dotyczą.")}</td></tr>
+          <td>${L("Each row of filters is a <code>role=&quot;group&quot;</code> taking its name from the label standing above it, and each pair of toggles in the header is a group of its own, named by an <code>aria-label</code>, there being no label above it. A sighted reader takes that grouping from the layout; without a name tied to the row, a screen reader would read a run of toggles with nothing saying what they narrow down.",
+                  "Każdy rząd filtrów jest grupą <code>role=&quot;group&quot;</code>, biorącą nazwę z napisu stojącego nad nim, a każda para przełączników w nagłówku jest osobną grupą z nazwą w <code>aria-label</code>, bo nad nią żaden napis nie stoi. Osoba widząca odczytuje to grupowanie z układu; bez nazwy powiązanej z rzędem czytnik ekranu odczytałby serię przełączników, nie mówiąc, czego dotyczą.")}</td></tr>
       <tr><td>${L("Reduced motion","Ograniczony ruch")}</td>
-          <td>${L("Everything that travels &ndash; anything sliding, scaling or changing size &ndash; yields to <code>prefers-reduced-motion</code>. Colour and shadow stay, because they answer the pointer rather than move the page. In the stylesheet a rule sits beside each animation; the transitions driven from the script check the setting before running.",
-                  "Wszystko, co się przemieszcza &ndash; przesuwa, skaluje albo zmienia rozmiar &ndash; ustępuje przy <code>prefers-reduced-motion</code>. Kolor i cień zostają, bo odpowiadają na wskaźnik, a nie ruszają stroną. W arkuszu reguła stoi obok każdej animacji, a przejścia sterowane skryptem sprawdzają to ustawienie przed uruchomieniem.")}</td></tr>
+          <td>${L("Everything that travels &ndash; anything sliding, scaling or changing size &ndash; yields to <code>prefers-reduced-motion</code>. Colour and shadow stay, because they answer the pointer rather than shift anything on the page. Where the setting is answered from, and why it needs no list of its own, is set out under Motion.",
+                  "Wszystko, co się przemieszcza &ndash; przesuwa, skaluje albo zmienia rozmiar &ndash; ustępuje przy <code>prefers-reduced-motion</code>. Kolor i cień zostają, bo odpowiadają na wskaźnik, a nie przesuwają niczego na stronie. Skąd to ustawienie jest obsługiwane i dlaczego nie potrzebuje osobnej listy, opisuje zakładka Ruch.")}</td></tr>
       <tr><td>${L("Language","Język")}</td>
-          <td>${L("The document's <code>lang</code> follows the switch, so a screen reader changes voice with the interface. No string stays as the markup wrote it &ndash; every one passes through <code>I18N</code> at start-up and on every change of language, including the labels only a screen reader reaches.",
-                  "Atrybut <code>lang</code> dokumentu podąża za przełącznikiem, więc czytnik ekranu zmienia głos razem z interfejsem. Żaden napis nie zostaje w postaci wpisanej w znacznikach &ndash; wszystkie przechodzą przez <code>I18N</code> przy starcie i przy każdej zmianie języka, łącznie z etykietami, do których dociera wyłącznie czytnik.")}</td></tr>
+          <td>${L("The document's <code>lang</code> follows the switch, so a screen reader changes voice with the interface. Every string that depends on the language passes through <code>I18N</code> at start-up and on every change of language, including the names only a screen reader reaches. What stays in the markup is what reads the same in both: the wordmark, and the codes for the language and the currency.",
+                  "Atrybut <code>lang</code> dokumentu podąża za przełącznikiem, więc czytnik ekranu zmienia głos razem z interfejsem. Każdy napis, który zależy od języka, przechodzi przez <code>I18N</code> przy starcie i przy każdej zmianie języka, łącznie z nazwami, do których dociera wyłącznie czytnik. W znacznikach zostają tylko te, które w obu językach brzmią tak samo: znak marki oraz kody języka i waluty.")}</td></tr>
       <tr><td>${L("Images","Obrazy")}</td>
           <td>${L("Covers and author photographs carry <code>alt</code>; glyphs standing in for icons are marked <code>aria-hidden</code> and the name sits on the button instead.",
                   "Okładki i zdjęcia autorek mają <code>alt</code>; znaki zastępujące ikony oznaczone są jako <code>aria-hidden</code>, a nazwa stoi na przycisku.")}</td></tr>
     </tbody></table>
     <h3>${L("Contrast","Kontrast")}</h3>
     <p>${L(
-      "The figures are computed from the tokens as this page renders.",
-      "Wartości liczone są z tokenów w chwili wyświetlenia tej strony.")}</p>
+      "The figures are computed from the tokens as this page renders, for whichever scheme is in force at that moment: the same pair can clear the threshold in one scheme and fall short in the other.",
+      "Wartości liczy się z tokenów w chwili wyświetlenia tej strony, dla schematu, który wtedy obowiązuje: ta sama para potrafi osiągnąć próg w jednym schemacie, a w drugim nie.")}</p>
     <table class="tok-table">
     <colgroup><col class="c-token"><col class="c-source"><col></colgroup>
     <thead><tr><th>${L("Pair","Para")}</th><th>${L("Ratio","Stosunek")}</th><th>${L("Where","Gdzie")}</th></tr></thead><tbody>
@@ -2908,9 +2934,9 @@ const DS_SECTIONS = [
       <tr><td class="spec"><code>fg-secondary</code> / <code>bg-primary</code></td><td>${dsContrastCell("--nu-fg-secondary","--nu-bg-primary")}</td>
           <td>${L("Authors, labels, quotes","Autorzy, etykiety, cytaty")}</td></tr>
       <tr><td class="spec"><code>fg-secondary</code> / <code>bg-secondary</code></td><td>${dsContrastCell("--nu-fg-secondary","--nu-bg-secondary")}</td>
-          <td>${L("Order summary headings, empty cart &ndash; supporting text on a panel misses the threshold for body size","Nagłówki podsumowania zamówienia, pusty koszyk &ndash; tekst wspierający na panelu nie osiąga progu dla rozmiaru tekstowego")}</td></tr>
+          <td>${L("Order summary headings, empty cart. In the light scheme this supporting text on a panel falls short of the threshold for text of its size; in the dark one it clears it","Nagłówki podsumowania zamówienia, pusty koszyk. W schemacie jasnym ten tekst wspierający na panelu nie osiąga progu wymaganego dla tekstu tej wielkości; w ciemnym osiąga")}</td></tr>
       <tr><td class="spec"><code>fg-tertiary</code> / <code>bg-primary</code></td><td>${dsContrastCell("--nu-fg-tertiary","--nu-bg-primary")}</td>
-          <td>${L("Filter counts, disabled chips, placeholders in fields. A disabled control is exempt from the requirement; the count and the placeholder are not","Liczniki przy filtrach, wyłączone chipy, podpowiedzi w polach. Kontrolka wyłączona jest z wymogu zwolniona; licznik i podpowiedź nie są")}</td></tr>
+          <td>${L("Filter counts, disabled chips, placeholders in fields. The requirement does not cover a disabled control; it does cover the count and the placeholder","Liczniki przy filtrach, wyłączone chipy, podpowiedzi w polach. Wymóg nie obejmuje kontrolki wyłączonej; licznik i podpowiedź obejmuje")}</td></tr>
       <tr><td class="spec"><code>fg-inverse</code> / <code>bg-inverse</code></td><td>${dsContrastCell("--nu-fg-inverse","--nu-bg-inverse")}</td>
           <td>${L("Cart counter, pre-order badge","Licznik koszyka, odznaka przedpremierowa")}</td></tr>
       <tr><td class="spec"><code>fg-warning</code> / <code>bg-primary</code></td><td>${dsContrastCell("--nu-fg-warning","--nu-bg-primary")}</td>
@@ -2922,9 +2948,9 @@ const DS_SECTIONS = [
     </tbody></table>
     <h3>${L("Still open","Nadal otwarte")}</h3>
     <table><colgroup><col style="width:190px"><col></colgroup><tbody>
-      <tr><td>${L("Two contrast pairs","Dwie pary kontrastu")}</td>
-          <td>${L("Marked above. Both are fixed by darkening a grey primitive, which moves every token built from it &ndash; a decision for the palette, not for a single component.",
-                  "Oznaczone powyżej. Obie naprawia przyciemnienie prymitywu szarości, co porusza każdy token z niego zbudowany &ndash; to decyzja dla palety, nie dla pojedynczego komponentu.")}</td></tr>
+      <tr><td>${L("Contrast","Kontrast")}</td>
+          <td>${L("Marked above, and the table shows the scheme in force: the light one falls short on two pairs, the dark one on a single pair. All of it is fixed by moving a grey primitive one step further from its ground, which moves every token built from that primitive &ndash; a decision for the palette, not for a single component.",
+                  "Oznaczone powyżej, a tabela pokazuje obowiązujący schemat: w jasnym progu nie osiągają dwie pary, w ciemnym jedna. Wszystko to naprawia przesunięcie prymitywu szarości o stopień dalej od jego tła, co zmienia każdy token z tego prymitywu zbudowany &ndash; to decyzja dla palety, nie dla pojedynczego komponentu.")}</td></tr>
     </tbody></table>` },
 
   { group:{en:"",pl:""}, id:"tokens", label:{en:"Tokens",pl:"Tokeny"}, body: ()=>{
@@ -4022,6 +4048,9 @@ const DS_SECTIONS = [
       <tr><td>${L("Type and keyboard","Typ i klawiatura")}</td><td>${L(
         "The field sets neither its type nor its keyboard mode; the place it is used sets whichever of the three the answer calls for. <code>type</code> and <code>inputmode</code> decide which keyboard a phone offers and go on the fields whose answer is not plain text &ndash; an address, a telephone, a postal code. <code>autocomplete</code> lets the browser supply a value it already knows, and it is on every field that asks for something about the reader; the discount code and the search ask for nothing the browser could know.",
         "Pole nie ustawia ani typu, ani trybu klawiatury; miejsce użycia ustawia to z trzech, czego wymaga odpowiedź. <code>type</code> i <code>inputmode</code> decydują o tym, jaką klawiaturę poda telefon, i stoją przy polach, w których odpowiedź nie jest zwykłym tekstem &ndash; adres, telefon, kod pocztowy. <code>autocomplete</code> pozwala przeglądarce podać wartość, którą już zna, i stoi przy każdym polu pytającym o coś o czytelniczce; kod rabatowy i wyszukiwarka nie pytają o nic, co przeglądarka mogłaby wiedzieć.")}</td></tr>
+      <tr><td>${L("Escape","Escape")}</td><td>${L(
+        "The field in the bar answers Escape itself while a query is standing there: it clears the query and stops the key, which outside the field closes the sort menu, the sheet, the drawers and the product view. A reader clearing a query is asking for none of that. An empty field lets the key through.",
+        "Pole w belce odpowiada na Escape samo, dopóki stoi w nim zapytanie: czyści je i zatrzymuje klawisz, który poza polem zamyka menu sortowania, panel filtrów, szuflady i widok produktu. Czytelniczka czyszcząca zapytanie nie prosi o nic z tych rzeczy. Z pustego pola klawisz idzie dalej.")}</td></tr>
       <tr><td>${L("Own declaration","Własna deklaracja")}</td><td>${L(
         "The text field and the select declare the same box separately. Each one then works outside a form field, and a group of two controls has no rule of somebody else's to undo.",
         "Pole tekstowe i select deklarują tę samą ramkę osobno. Dzięki temu każde z nich działa poza polem formularza, a grupa dwóch kontrolek nie ma cudzej reguły do cofania.")}</td></tr>
