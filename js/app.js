@@ -2098,18 +2098,26 @@ function bsDeliver(box, html, key){
   bsIdle();
   const wait = bsSaid.has(key) ? 0 : bsWait();
   bsSaid.add(key);
-  if (!wait){ box.removeAttribute("aria-busy"); box.innerHTML = html; return; }
-  box.setAttribute("aria-busy", "true");
-  box.innerHTML = BS_SKELETON;
   const dot = bsAvaEl.querySelector(".bs-dot");
-  /* One stretch of work, not two: the mark keeps breathing from the moment the
-     answer is asked for until its last word has arrived. Stopping at the end of
-     the wait said the work was over while the text was still being set down. */
-  if (dot) dot.classList.add("is-working");
-  setTimeout(() => {
+  const say = () => {
     box.removeAttribute("aria-busy");
     bsType(box, html, () => { if (dot) dot.classList.remove("is-working"); });
-  }, wait);
+  };
+  /* Every answer arrives word by word, waited for or not. The wait stands in for
+     a model thinking and is off unless the page is opened in slow mode, so the
+     path without it is the one every reader takes: putting the text in whole
+     here left the box empty on screen, the stylesheet keeping a paragraph out of
+     sight until one of its words has been revealed. */
+  if (!wait){ say(); return; }
+  box.setAttribute("aria-busy", "true");
+  box.innerHTML = BS_SKELETON;
+  /* One stretch of work, not two: the mark keeps breathing from the moment the
+     answer is asked for until its last word has arrived. Stopping at the end of
+     the wait said the work was over while the text was still being set down.
+     Breathing belongs to the waiting, so an answer that comes without one gets
+     the single breath the opening itself takes and nothing more. */
+  if (dot) dot.classList.add("is-working");
+  setTimeout(say, wait);
 }
 
 /* Closing first, opening second, and the order is the point: both passes touch
