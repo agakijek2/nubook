@@ -386,7 +386,7 @@ const I18N = {
     strap:"novels on women & gender", logoHome:"nubook \u2014 home",
     motifs:"Motifs", motif:"Motif", motifOrigin:"Where the term comes from", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
     bsGone:"We do not have “%s” in stock at the moment.", bsOffer:"But if that is the book you came for, there are two here I would put beside it.",
-    bsMore:"See both", bsLess:"Hide them", bsClose:"Dismiss",
+    bsClose:"Dismiss",
     bsAva:"The bookseller", bsWhy:"Why this one",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
     searchPh:"Search by title or author", searchClear:"Clear",
@@ -452,7 +452,7 @@ const I18N = {
        leaves the quoted title standing beside it, so no book needs a second
        form of its own name. */
     bsGone:"Niestety, tytułu „%s” nie mamy dziś na stanie.", bsOffer:"Ale skoro interesuje Cię ten tytuł, gorąco polecam dwa inne, o podobnych motywach.",
-    bsMore:"Zobacz oba", bsLess:"Schowaj", bsClose:"Zamknij",
+    bsClose:"Zamknij",
     bsAva:"Księgarka", bsWhy:"Dlaczego akurat ta",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
     searchPh:"Szukaj tytułu lub autorki", searchClear:"Wyczyść",
@@ -1903,7 +1903,6 @@ const bsEl    = document.getElementById("bookseller"),
       bsPanel = document.getElementById("bsPanel"),
       bsAvaEl = document.getElementById("bsAva"),
       bsSayEl = document.getElementById("bsSay"),
-      bsMoreEl= document.getElementById("bsMore"),
       bsListEl= document.getElementById("bsList");
 
 /* The offer for a title, resolved against the shelf as it stands: a book she
@@ -1924,8 +1923,6 @@ function bsShut(){
   bsIdle();
   bsPanel.hidden = true;
   bsAvaEl.setAttribute("aria-expanded", "false");
-  bsMoreEl.setAttribute("aria-expanded", "false");
-  bsListEl.hidden = true;
   bsListEl.innerHTML = "";
 }
 function bsHide(){
@@ -1984,8 +1981,6 @@ function bsFill(){
   const t = T(), offer = bsOffer(bsBook);
   if (!offer) return;
   bsSayEl.innerHTML = escHTML(t.bsGone.replace("%s", titleOf(bsBook))) + " " + escHTML(t.bsOffer);
-  document.getElementById("bsMoreLbl").textContent =
-    bsMoreEl.getAttribute("aria-expanded") === "true" ? t.bsLess : t.bsMore;
   document.getElementById("bsClose").setAttribute("aria-label", t.bsClose);
   bsAvaEl.setAttribute("aria-label", t.bsAva);
   bsListEl.innerHTML = offer.map((o, i) => {
@@ -2139,15 +2134,6 @@ function bsPick(i){
   bsThink();
 }
 
-function bsToggle(){
-  const open = bsMoreEl.getAttribute("aria-expanded") !== "true";
-  bsMoreEl.setAttribute("aria-expanded", String(open));
-  bsListEl.hidden = !open;
-  document.getElementById("bsMoreLbl").textContent = open ? T().bsLess : T().bsMore;
-  /* Only on the way out. Putting something away is not work. */
-  if (open) bsThink();
-}
-
 /* The one place that decides she appears at all. */
 function bsSync(b){
   const speaks = b && (BS_ALL || b.s === "out") && bsOffer(b);
@@ -2172,7 +2158,6 @@ function bsSync(b){
   }
 }
 
-bsMoreEl.onclick = bsToggle;
 document.getElementById("bsClose").onclick = bsShut;
 /* Pressing the mark reopens what was dismissed, or puts it away again. */
 bsAvaEl.onclick = () => bsPanel.hidden ? bsShow() : bsShut();
