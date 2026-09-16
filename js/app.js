@@ -2135,18 +2135,18 @@ function bsDeliver(box, html, key){
     box.removeAttribute("aria-busy");
     bsType(box, html, () => { if (dot) dot.classList.remove("is-working"); });
   };
+  /* One stretch of work, not two: the mark breathes from the moment the answer
+     is asked for until its last line has arrived. Setting the text down is as
+     much of the answering as waiting is, so stopping between them would say the
+     work was over while the passage was still coming in - and with the wait off,
+     which is how every reader has it, it would leave the mark still. */
+  if (dot) dot.classList.add("is-working");
   /* The wait stands in for a model thinking and is off unless the page is opened
-     in slow mode. Either way the words arrive line by line: putting the text in
+     in slow mode. Either way the lines arrive one at a time: putting the text in
      whole on this path is what once left the box looking empty. */
   if (!wait){ say(); return; }
   box.setAttribute("aria-busy", "true");
   box.innerHTML = BS_SKELETON;
-  /* One stretch of work, not two: the mark keeps breathing from the moment the
-     answer is asked for until its last word has arrived. Stopping at the end of
-     the wait said the work was over while the text was still being set down.
-     Breathing belongs to the waiting, so an answer that comes without one gets
-     the single breath the opening itself takes and nothing more. */
-  if (dot) dot.classList.add("is-working");
   setTimeout(say, wait);
 }
 
@@ -4328,9 +4328,13 @@ const DS_SECTIONS = [
         <td>${L("the panel","dymek")} ${dsTok("--nu-motion-slow")}, ${L("the breath and the pause","oddech i zwłoka")} ${dsTok("--nu-motion-hold")}</td>
         <td>${dsTok("--nu-ease-slide")}, ${L("the breath rises on","oddech wznosi się na")} ${dsTok("--nu-ease-zoom")}</td>
         <td>${L("The panel comes up from under the mark by one step of spacing and the dot takes one breath: it goes to its bloom colour and a halo opens out until it fills the ground. The pause before she first speaks leaves time to read the page","Dymek wchodzi spod znaku o jeden stopień odstępu, a kropka bierze jeden oddech: przechodzi w kolor rozbłysku i otwiera wokół siebie poświatę, aż wypełni tło. Zwłoka przed pierwszym odezwaniem zostawia czas na przeczytanie strony")}</td></tr>
+      <tr><td>${L("The panel takes in an answer","Dymek przyjmuje odpowiedź")}</td>
+        <td>${dsTok("--nu-motion-base")}</td><td>${dsTok("--nu-ease-slide")}</td>
+        <td>${L("An answer needs a different amount of room, and the panel walks to it in both directions at once rather than landing there in a single frame, which would read as a second panel in place of the first. The same move takes it back when the answer is put away","Odpowiedź potrzebuje innej ilości miejsca, więc dymek dochodzi do niej w obu wymiarach naraz, zamiast w niej lądować w jednej klatce &ndash; a to czytałoby się jak drugi dymek w miejsce pierwszego. Tym samym ruchem wraca, gdy odpowiedź zostaje schowana")}</td></tr>
       <tr><td>${L("An answer unfolds","Rozwinięcie odpowiedzi")}</td>
-        <td>${L("a word every","słowo co")} ${dsTok("--nu-motion-instant")}, ${L("each over","każde na")} ${dsTok("--nu-motion-base")}</td><td>ease</td>
-        <td>${L("The text arrives a word at a time rather than standing on the page all at once. A word comes out of blur as it fades in, and the next one sets off before it has finished, so the line resolves as a wave","Tekst pojawia się słowo po słowie, zamiast stanąć na stronie w całości. Słowo wychodzi z rozmycia, a następne rusza, zanim poprzednie dojdzie, więc linijka układa się falą")}</td></tr>
+        <td>${L("a line every","linia co")} ${dsTok("--nu-motion-quick")}, ${L("each over","każda na")} ${dsTok("--nu-motion-slower")}</td>
+        <td>${dsTok("--nu-ease-zoom")}</td>
+        <td>${L("The text arrives a line at a time rather than standing on the page all at once: a line is what the eye takes in at once, so it is what arrives at once. A line comes out of blur as it fades in and settles the last of the way up, and the next one sets off before it has finished, so the passage resolves as one thing coming in. The first line waits one interval as well, so the panel has a head start on the room it is opening","Tekst pojawia się linia po linii, zamiast stanąć na stronie w całości: linia jest tym, co oko bierze naraz, więc jest też tym, co naraz przychodzi. Linia wychodzi z rozmycia, podnosząc się przy tym ostatni kawałek, a następna rusza, zanim poprzednia dojdzie, więc całość układa się jako jedno wejście. Pierwsza linia też czeka jeden odstęp, żeby dymek miał fory na miejsce, które otwiera")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "All of the movement above yields to <code>prefers-reduced-motion: reduce</code>, and so does everything this table does not name: anything that travels, scales, changes size or repeats. It is withdrawn in two places, never in a list of its own &ndash; a rule in the stylesheet standing beside the rule that sets the movement, and a check in the script before an animation is started. A new view therefore inherits the setting from whichever of the two it uses, and nothing has to be added anywhere for it to.",
