@@ -1406,6 +1406,17 @@
     animation:bsIn var(--nu-motion-slow) var(--nu-ease-slide);
   }
   @keyframes bsIn{from{opacity:0;transform:translateY(var(--nu-space-micro))}to{opacity:1;transform:none}}
+  /* An answer opening changes how much room the panel needs, in both directions
+     at once, and arriving at the new size in one frame reads as a second panel
+     replacing the first. It walks there instead: the script pins the size it had
+     and sets the one it needs, and this is what carries it between the two. The
+     clip is for the moment in between, while the content is larger than the box
+     on its way to fitting it. */
+  .bs-panel.is-resizing{
+    overflow:hidden;
+    transition:width var(--nu-motion-base) var(--nu-ease-slide),
+               height var(--nu-motion-base) var(--nu-ease-slide);
+  }
   /* She arrives without travelling for a reader who asked for less motion: the
      panel still appears, it just stops sliding. */
   @media (prefers-reduced-motion:reduce){
@@ -1651,6 +1662,20 @@
   .bs-text{--bs-blur:12px}
   .bs-w{display:inline-block;opacity:0}
   .bs-w.is-in{animation:bsLineIn var(--nu-motion-slower) var(--nu-ease-zoom) both}
+  /* A list marker is drawn by the item, not by the words, so it stood there in
+     full while the words it belongs to were still on their way. The item draws
+     its own instead, which can wait and then arrive on the same terms as the
+     first line of the item - the line whose words turn the selector true. It
+     sits in the room the list already leaves for a marker. */
+  .bs-text li{list-style:none;position:relative}
+  .bs-text li::before{
+    content:"\2022";position:absolute;left:calc(-1 * var(--nu-space-small));
+    color:var(--nu-fg-tertiary);opacity:0;
+  }
+  .bs-text li:has(.bs-w.is-in)::before{animation:bsLineIn var(--nu-motion-slower) var(--nu-ease-zoom) both}
+  /* An answer given once already is put down whole, without words to wait for,
+     and then there is nothing for the marker to wait for either. */
+  .bs-text li:not(:has(.bs-w))::before{opacity:1}
   @keyframes bsLineIn{
     from{opacity:0;filter:blur(var(--bs-blur));transform:translateY(var(--nu-space-nano))}
     to{opacity:1;filter:blur(0);transform:none}
@@ -1661,6 +1686,8 @@
     .bs-dot.is-working::before,.bs-dot.is-working::after,
     .bs-sk span{animation:none}
     .bs-w,.bs-w.is-in{opacity:1;animation:none}
+    .bs-text li::before,.bs-text li:has(.bs-w.is-in)::before{opacity:1;animation:none}
+    .bs-panel.is-resizing{transition:none}
   }
   @media (max-width:820px){
     /* The corner is where the shop bar lives on a phone, so she sits on top of

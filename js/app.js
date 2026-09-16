@@ -2061,7 +2061,7 @@ function bsType(box, html, done){
      done() is called one arrival after the last line set off. */
   const per = motionMs("--nu-motion-quick");
   let i = 0;
-  (function step(){
+  function step(){
     /* One line's arrival after the last one set off, so the work is over when
        the text has finished coming in rather than when the last line began. */
     if (i >= lines.length){
@@ -2070,7 +2070,11 @@ function bsType(box, html, done){
     }
     lines[i++].forEach(w => w.classList.add("is-in"));
     bsTypeTimer = setTimeout(step, per);
-  })();
+  }
+  /* The first line waits one interval too, so the panel has a head start on the
+     room it is opening and the words come into ground that is already theirs
+     rather than racing it. */
+  bsTypeTimer = setTimeout(step, per);
 }
 
 /* Where the text breaks is the browser's decision, not the markup's, so the
@@ -2115,18 +2119,25 @@ function bsIdle(){
 
 function bsDeliver(box, html, key){
   bsIdle();
-  const wait = bsSaid.has(key) ? 0 : bsWait();
+  /* An answer arrives once a visit. Opening the same row again is going back to
+     something the reader has already been given, so it is simply there: no wait,
+     and no arriving either, because watching a passage be written a second time
+     is watching a wait that is not happening. */
+  if (bsSaid.has(key)){
+    box.removeAttribute("aria-busy");
+    box.innerHTML = html;
+    return;
+  }
   bsSaid.add(key);
+  const wait = bsWait();
   const dot = bsAvaEl.querySelector(".bs-dot");
   const say = () => {
     box.removeAttribute("aria-busy");
     bsType(box, html, () => { if (dot) dot.classList.remove("is-working"); });
   };
-  /* Every answer arrives word by word, waited for or not. The wait stands in for
-     a model thinking and is off unless the page is opened in slow mode, so the
-     path without it is the one every reader takes: putting the text in whole
-     here left the box empty on screen, the stylesheet keeping a paragraph out of
-     sight until one of its words has been revealed. */
+  /* The wait stands in for a model thinking and is off unless the page is opened
+     in slow mode. Either way the words arrive line by line: putting the text in
+     whole on this path is what once left the box looking empty. */
   if (!wait){ say(); return; }
   box.setAttribute("aria-busy", "true");
   box.innerHTML = BS_SKELETON;
@@ -2148,17 +2159,48 @@ function bsPick(i){
   const rows = [...bsListEl.querySelectorAll(".bs-why")];
   const open = rows[i].getAttribute("aria-expanded") === "true";
   bsIdle();
-  rows.forEach((r, n) => {
-    r.setAttribute("aria-expanded", "false");
-    const box = document.getElementById("bsText" + n);
-    box.hidden = true; box.innerHTML = ""; box.removeAttribute("aria-busy");
+  bsGrow(() => {
+    rows.forEach((r, n) => {
+      r.setAttribute("aria-expanded", "false");
+      const box = document.getElementById("bsText" + n);
+      box.hidden = true; box.innerHTML = ""; box.removeAttribute("aria-busy");
+    });
+    if (open) return;
+    rows[i].setAttribute("aria-expanded", "true");
+    const box = document.getElementById("bsText" + i);
+    box.hidden = false;
+    bsDeliver(box, offer[i].text[LANG], bsBook.t + "|" + offer[i].title + "|" + LANG);
   });
-  if (open) return;
-  rows[i].setAttribute("aria-expanded", "true");
-  const box = document.getElementById("bsText" + i);
-  box.hidden = false;
-  bsDeliver(box, offer[i].text[LANG], bsBook.t + "|" + offer[i].title + "|" + LANG);
-  bsThink();
+  if (!open) bsThink();
+}
+
+/* The panel needs a different amount of room the moment an answer is put in or
+   taken out, in both directions at once, and landing on the new size in a single
+   frame reads as a second panel replacing the first. So it walks there: the size
+   it had is pinned, the change is made, and the size it needs is set on the next
+   frame for the stylesheet to carry it between the two.
+
+   The pin comes off on a timer rather than on transitionend, because two
+   properties are moving and the first to finish would take the pin with it. */
+let bsGrowTimer = null;
+function bsGrow(zmiana){
+  const przed = bsPanel.getBoundingClientRect();
+  zmiana();
+  if (bsPanel.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const po = bsPanel.getBoundingClientRect();
+  if (Math.abs(po.width - przed.width) < 1 && Math.abs(po.height - przed.height) < 1) return;
+  clearTimeout(bsGrowTimer);
+  bsPanel.classList.remove("is-resizing");
+  bsPanel.style.width = przed.width + "px";
+  bsPanel.style.height = przed.height + "px";
+  void bsPanel.offsetWidth;
+  bsPanel.classList.add("is-resizing");
+  bsPanel.style.width = po.width + "px";
+  bsPanel.style.height = po.height + "px";
+  bsGrowTimer = setTimeout(() => {
+    bsPanel.classList.remove("is-resizing");
+    bsPanel.style.width = bsPanel.style.height = "";
+  }, motionMs("--nu-motion-base"));
 }
 
 /* The one place that decides she appears at all. */
