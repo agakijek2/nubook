@@ -1629,44 +1629,52 @@
   .bs-sk span:nth-child(3){width:62%;margin-bottom:0}
   @keyframes bsPend{from{opacity:1}to{opacity:.45}}
 
-  /* A word comes out of blur as it fades in, rather than simply appearing. The
-     blur is what makes the arrival readable as one word settling: opacity alone
-     changes only how dark the word is, and the eye reads that as the text being
-     switched on rather than as something being written.
+  /* A line of text comes out of blur as it fades in and settles the last of the
+     way up, rather than simply appearing. The blur is what makes the arrival
+     readable as writing rather than as switching on: opacity alone changes only
+     how dark the words are. The unit is the line, not the word - a line is what
+     the eye takes in at once, so it is what arrives at once.
 
-     Absent rather than transparent. A word waiting at opacity 0 still holds its
-     place, so the box stood at its full height from the first word and the text
-     filled a space that was already there. display:none keeps the place out of
-     the layout until the word takes it, and the panel grows line by line as the
-     answer arrives.
+     Transparent rather than absent. Every word holds its place from the start,
+     so the lines the browser settled on are there to be measured and the text
+     never reflows while it arrives. What keeps the unread part out of sight is
+     the box itself: it is clipped to the lines that have come in and opens to
+     the next one as that line sets off.
 
-     That is also why this is an animation and not a transition: a transition has
-     nothing to run from when an element has just stopped being display:none,
-     while an animation starts the moment the element is rendered.
+     The box opens at a steady rate, which is what linear is for. It grows by one
+     line over exactly the interval between one line and the next, so the edge
+     travels at one speed from the first line to the last instead of stepping
+     down the passage a paragraph at a time.
 
-     A word is still arriving when the next one sets off - the animation runs
-     nearly three times the interval between words. Waiting for each to finish
-     made the passage read as a series of separate arrivals; overlapping them
-     reads as one line of text coming in. */
-  .bs-w{display:none}
-  .bs-w.is-in{display:inline;animation:bsWordIn var(--nu-motion-base) ease both}
-  /* A block stays out of the layout until a word has reached it. An empty
-     paragraph still carries its margins and an empty list item still draws its
-     bullet, so without this the shape of the answer would be standing there
-     before any of the answer was. */
-  .bs-text p:not(:has(.bs-w.is-in)),
-  .bs-text ul:not(:has(.bs-w.is-in)),
-  .bs-text li:not(:has(.bs-w.is-in)){display:none}
-  @keyframes bsWordIn{
-    from{opacity:0;filter:blur(4px)}
-    to{opacity:1;filter:blur(0)}
+     A line is still arriving when the next one sets off, which is what makes the
+     passage read as one thing coming in rather than as a stack of separate
+     arrivals. inline-block because the rise is a transform, and a transform does
+     nothing to a plain inline box. */
+  /* How far an arriving line reaches below its own foot: a blur spreads by its
+     radius, and the rise starts one step lower than the line lands. The clip
+     opens this much past each line, so neither gets cut off at the edge. The
+     line underneath is still at opacity 0, so what the extra shows is ground
+     opening ahead of the words rather than the next line arriving early. Two
+     numbers that have to move together, so they stand together. */
+  .bs-text{--bs-blur:12px;--bs-bleed:16px}
+  .bs-w{display:inline-block;opacity:0}
+  .bs-w.is-in{animation:bsLineIn var(--nu-motion-slower) var(--nu-ease-zoom) both}
+  .bs-text.is-arriving{overflow:hidden;transition:height var(--nu-motion-quick) linear}
+  /* The last line has nothing below it to keep out of sight, and the box's own
+     foot is where its blur and its rise would be cut. The clip comes off as that
+     line sets out rather than after it lands. */
+  .bs-text.is-arriving.is-last{overflow:visible}
+  @keyframes bsLineIn{
+    from{opacity:0;filter:blur(var(--bs-blur));transform:translateY(var(--nu-space-nano))}
+    to{opacity:1;filter:blur(0);transform:none}
   }
 
   @media (prefers-reduced-motion:reduce){
     .bs-dot.is-thinking::before,.bs-dot.is-thinking::after,
     .bs-dot.is-working::before,.bs-dot.is-working::after,
     .bs-sk span{animation:none}
-    .bs-w,.bs-w.is-in{display:inline;animation:none}
+    .bs-w,.bs-w.is-in{opacity:1;animation:none}
+    .bs-text.is-arriving{transition:none}
   }
   @media (max-width:820px){
     /* The corner is where the shop bar lives on a phone, so she sits on top of
