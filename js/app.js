@@ -2060,37 +2060,15 @@ function bsType(box, html, done){
 
      done() is called one arrival after the last line set off. */
   const per = motionMs("--nu-motion-quick");
-  /* The box opens as the lines arrive rather than after them: it is clipped to
-     what has come in, and each line moves that edge down by its own height over
-     exactly the interval before the next one. One step of the stylesheet's
-     linear transition per step of the passage, so the edge travels at one speed
-     instead of jumping a paragraph at a time.
-
-     Each step opens a little past the line, by as much as its blur and its rise
-     reach below the foot of the words. Without it the line arrives with its
-     bottom cut off against the edge of the clip. */
-  const bleed = parseFloat(getComputedStyle(box).getPropertyValue("--bs-bleed")) || 0;
-  const pelna = lines.length ? lines[lines.length - 1].bottom : 0;
-  box.classList.add("is-arriving");
-  box.style.height = "0px";
-  void box.offsetHeight;
   let i = 0;
   (function step(){
     /* One line's arrival after the last one set off, so the work is over when
        the text has finished coming in rather than when the last line began. */
     if (i >= lines.length){
-      bsTypeTimer = setTimeout(() => {
-        box.classList.remove("is-arriving", "is-last");
-        box.style.height = "";
-        if (done) done();
-      }, motionMs("--nu-motion-slower"));
+      if (done) bsTypeTimer = setTimeout(done, motionMs("--nu-motion-slower"));
       return;
     }
-    const line = lines[i++];
-    const ostatnia = i >= lines.length;
-    if (ostatnia) box.classList.add("is-last");
-    box.style.height = Math.min(line.bottom + (ostatnia ? 0 : bleed), pelna) + "px";
-    line.words.forEach(w => w.classList.add("is-in"));
+    lines[i++].forEach(w => w.classList.add("is-in"));
     bsTypeTimer = setTimeout(step, per);
   })();
 }
@@ -2100,37 +2078,19 @@ function bsType(box, html, done){
    words. Every word holds its place from the moment it is written, so the layout
    to measure is already there and stays put while the answer arrives.
 
-   Each line carries the height the box needs to show everything down to and
-   including it - its own foot, plus whatever the block below it puts between
-   them - which is what the box opens to when that line sets off.
-
    Ordinary words sort themselves into lines by top edge alone. A list is the
    exception worth naming: two items can start at the same height in different
    columns of a layout, so the item a word belongs to divides the groups first. */
 function bsLines(box, words){
-  /* Measured against the box itself. offsetTop answers from the nearest
-     positioned ancestor, which here is the panel rather than the box, so the
-     figures would carry the distance down to the text with them and the box
-     would open past its own foot on the very first line. */
-  const gora = box.getBoundingClientRect().top;
   const bloki = new Map(), rzedy = new Map();
   words.forEach(w => {
     const blok = w.closest("li, p") || box;
     if (!bloki.has(blok)) bloki.set(blok, bloki.size);
-    const r = w.getBoundingClientRect();
-    const id = bloki.get(blok) + ":" + Math.round(r.top - gora);
-    if (!rzedy.has(id)) rzedy.set(id, { words: [], bottom: 0 });
-    const rzad = rzedy.get(id);
-    rzad.words.push(w);
-    rzad.bottom = Math.max(rzad.bottom, Math.ceil(r.bottom - gora));
+    const id = bloki.get(blok) + ":" + Math.round(w.getBoundingClientRect().top);
+    if (!rzedy.has(id)) rzedy.set(id, []);
+    rzedy.get(id).push(w);
   });
-  const out = [...rzedy.values()];
-  /* The last line opens the box to the height it has standing on its own, so
-     taking the fixed height off at the end moves nothing. Clipping cannot be on
-     while this is read: it makes the box hold margins that otherwise collapse
-     away, and the box would then shrink the moment the clip came off. */
-  if (out.length) out[out.length - 1].bottom = Math.ceil(box.getBoundingClientRect().height);
-  return out;
+  return [...rzedy.values()];
 }
 
 /* What has already been said this visit. An answer arrives once; opening it a
