@@ -993,6 +993,10 @@
     background:var(--nu-bg-action);
     /* Undrawn, but counted - see the note above the variant. */
     border:1px solid transparent;border-radius:0;
+    /* Just enough to sit on the page rather than be printed on it: one contact
+       shadow, no aura. What the pointer adds is depth on top of this, not the
+       first sign that the thing is an object. */
+    box-shadow:0 1px 2px color-mix(in srgb, var(--nu-bg-shadow) 10%, transparent);
     transform-origin:center;
     transition:box-shadow var(--nu-motion-quick) ease, transform var(--nu-motion-quick) ease, background var(--nu-motion-base) ease;
   }
@@ -1022,27 +1026,24 @@
   /* Built on the primary's terms: one flat colour at rest, nothing inside at any
      point, the whole of the treatment belonging to the pointer.
 
-     Its colour is the page's own surface rather than a grey of its own - white
-     where the page is white, near-black where it is dark. That keeps it quieter
-     than the primary in both schemes, which is what a supporting action is for,
-     and it adds nothing to the palette.
+     Its colours are the page's own surface and one tenth of a step off it, and
+     the pointer is what moves between them. At rest it sits on the off-step, so
+     it is a shade away from everything around it; under the pointer it becomes
+     the surface itself - white on a white page, the page's own dark on a dark
+     one. Clean rather than bright, which is why the same rule works in both
+     schemes although it lightens in one and deepens in the other.
 
-     Quieter to the point of having no outline at rest: standing on the order
-     summary, whose ground is a step off its own, the button is a shape you find
-     rather than one that announces itself. The field beside it holds the row, and
-     the pointer is what brings the button forward.
-
-     Under the pointer the ground moves a tenth of a step toward the middle of the
-     grey scale. From a white body that is a deepening and from a dark one a
-     lifting, and it is the same sentence either way: the ground answering the
-     hand. */
+     Nothing of its own in the palette, and no outline at rest: standing on the
+     order summary, the button is a shape you find rather than one that announces
+     itself. The field beside it holds the row. */
   .btn-secondary{
     position:relative;padding:var(--nu-space-micro) var(--nu-space-medium);
     color:var(--nu-fg-primary);letter-spacing:var(--nu-tracking-compact);
-    background:var(--nu-bg-action-secondary);
+    background:color-mix(in srgb, var(--nu-bg-action-secondary-deep) 10%, var(--nu-bg-action-secondary));
     /* Undrawn, but counted - see the note above the primary. Both solid variants
        carry the 1px so that both land on a field's height. */
     border:1px solid transparent;border-radius:0;
+    box-shadow:0 1px 2px color-mix(in srgb, var(--nu-bg-shadow) 8%, transparent);
     transform-origin:center;
     transition:box-shadow var(--nu-motion-quick) ease, background var(--nu-motion-base) ease, transform var(--nu-motion-quick) ease;
   }
@@ -1056,7 +1057,7 @@
      the colour taken out: this action is not the coloured one and its shadow
      should not be either. */
   .btn-secondary:hover{
-    background:color-mix(in srgb, var(--nu-bg-action-secondary-deep) 10%, var(--nu-bg-action-secondary));
+    background:var(--nu-bg-action-secondary);
     box-shadow:
       0 7px 16px -8px color-mix(in srgb, var(--nu-bg-shadow) 22%, transparent),
       0 1px 3px color-mix(in srgb, var(--nu-bg-shadow) 14%, transparent);
