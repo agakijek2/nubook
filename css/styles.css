@@ -39,6 +39,10 @@
     --nu-red-600:#b3261e;
     --nu-burgundy-300:#cf7d92;
     --nu-burgundy-500:#8f2b45;
+    /* The top of the burgundy scale: white carrying enough of the 500 to be warm
+       rather than pink. It exists so the primary can be as far from a dark page
+       as it is from a light one and still be made of the brand's colour. */
+    --nu-burgundy-100:#efe1e5;
     --nu-burgundy-700:#5c1228;
     --nu-burgundy-900:#3f0c1b;
     --nu-gold-100:#f7e9b8;
@@ -62,7 +66,6 @@
     /* background – surfaces an element sits on */
     --nu-bg-primary:light-dark(var(--nu-white), var(--nu-grey-900));            /* the page, drawers, menus */
     --nu-bg-secondary:light-dark(var(--nu-grey-100), var(--nu-grey-800));       /* raised panels: tiles, thumbnails */
-    --nu-bg-tertiary:light-dark(var(--nu-grey-600), var(--nu-grey-400));        /* third surface step: glass outline and shading */
     --nu-bg-inverse:light-dark(var(--nu-grey-900), var(--nu-grey-100));         /* filled actions */
     /* What a shadow is made of. The same value as the inverse ground while the
        page is light, and a separate name because the two roles part company the
@@ -105,13 +108,31 @@
        Built from the red rather than the burgundy: burgundy is a muted brand
        colour and thins out grey, which is the one thing this tint must not be. */
     --nu-bg-measure:light-dark(color-mix(in srgb, var(--nu-red-600) 22%, transparent), color-mix(in srgb, var(--nu-red-300) 22%, transparent));
-    --nu-bg-action:var(--nu-burgundy-900);                                  /* CTA body, one flat colour */
+    /* The loudest thing the page can put in front of you, and it is loud by being
+       as far from the page as the burgundy goes: nearly the darkest on a white
+       page, the lightest on a dark one. One decision mirrored, not two - and the
+       label follows on its own, because "text on an inverted ground" already
+       means white on a light page and near-black on a dark one. */
+    --nu-bg-action:light-dark(var(--nu-burgundy-900), var(--nu-burgundy-100));
     /* derived, not duplicated: the secondary button borrows the panel surface,
        so the two can never drift apart by accident */
-    --nu-bg-action-secondary:var(--nu-bg-primary);    /* secondary button body: the page's own surface */
-    --nu-bg-action-secondary-deep:var(--nu-grey-400); /* the middle it moves toward under the pointer */
-    --nu-bg-action-glow:var(--nu-burgundy-500);      /* CTA inner glow, bottom edge */
-    --nu-bg-action-glow-deep:var(--nu-burgundy-700); /* CTA aura cast beneath */
+    /* The secondary stands one step off the panel it sits on, and the pointer
+       takes it one step further in the same direction. On a light page that is
+       away from the grey and into the white; on a dark one, away from the dark.
+       One sentence, two schemes - and it is the direction that carries the
+       meaning, not the colour. */
+    --nu-bg-action-secondary:light-dark(
+        color-mix(in srgb, var(--nu-grey-400) 6%, var(--nu-white)),
+        var(--nu-grey-700));
+    --nu-bg-action-secondary-lift:light-dark(
+        var(--nu-white),
+        color-mix(in srgb, var(--nu-grey-600) 30%, var(--nu-grey-700)));
+    /* Where the body goes under the pointer, and it is always further from the
+       page: up the burgundy on a light page, on into the white on a dark one,
+       where the burgundy has nowhere lighter to go. The aura follows the same
+       logic - it has to read against the page rather than sink into it. */
+    --nu-bg-action-glow:light-dark(var(--nu-burgundy-500), var(--nu-white));
+    --nu-bg-action-glow-deep:light-dark(var(--nu-burgundy-700), var(--nu-burgundy-500));
 
     /* foreground – text and icons */
     --nu-fg-primary:light-dark(var(--nu-grey-900), var(--nu-grey-100));         /* titles, body copy, prices, icons */
@@ -333,9 +354,11 @@
    Every semantic colour that differs between the two schemes is declared once
    and carries both values: light-dark() picks by the used color-scheme, so the
    shop follows the reader's system by default and the switch in the header has
-   only one property to set instead of twenty-two names to redeclare. The four
-   that carry no second value - the glass of the two buttons and the burgundy
-   glow under it - are the same on either page on purpose.
+   only one property to set instead of twenty-eight names to redeclare. The four
+   that carry no second value are the two marks that bloom and their bloom, and
+   they are redeclared in the blocks below rather than paired here, because a
+   value a keyframe reads has to be a plain colour: light-dark() does not
+   resolve inside @keyframes.
 
    It is not an inversion. The greys fold over onto themselves, but the two
    accents that carry meaning need their lighter steps, because a dark red on a
@@ -357,13 +380,12 @@
   --nu-bg-ava-dot:var(--nu-grey-100);--nu-bg-ava-dot-bloom:var(--nu-grey-900);
 }
 
-/* The primary keeps its burgundy on either page, so it keeps its white label on
-   either page, and that is the whole of what it needs pinned. Six names used to
-   be pinned here for both solid buttons, because the glass resolved half the
-   palette inside itself; a flat colour resolves one thing. The secondary needs
-   nothing at all now: its body is the page's own surface, so everything it reads
-   should follow the page, and does. */
-.btn-primary{ --nu-fg-inverse:var(--nu-white); }
+/* Nothing is pinned here any more. Six names used to be, for both solid buttons,
+   because the glass resolved half the palette inside itself. A flat colour
+   resolves one thing, and once the primary began mirroring the page - darkest
+   burgundy on white, lightest on dark - even that one came right on its own:
+   --nu-fg-inverse already means white on a light page and near-black on a dark
+   one, which is exactly what a button that inverts the page needs. */
   *{box-sizing:border-box;margin:0;padding:0}
   [hidden]{display:none !important}
   html{ -webkit-text-size-adjust:100%; }
@@ -1026,25 +1048,23 @@
   /* Built on the primary's terms: one flat colour at rest, nothing inside at any
      point, the whole of the treatment belonging to the pointer.
 
-     Its colours are the page's own surface and a breath off it, and the pointer
-     is what moves between them. At rest it sits on the breath, so it is a shade
-     away from everything around it; under the pointer it becomes the surface
-     itself - white on a white page, the page's own dark on a dark one. Clean
-     rather than bright, which is why the same rule works in both schemes although
-     it lightens in one and deepens in the other.
+     It stands one step off the panel it sits on, and the pointer takes it one
+     step further in the same direction: away from the grey and into the white on
+     a light page, away from the dark on a dark one. The direction carries the
+     meaning, not the colour, which is why one sentence covers both schemes.
 
-     The step is written as a share of the way toward mid grey rather than as a
-     colour, because the colour it lands on is not in the palette. Whether it
-     should be - a lighter grey of its own, or a different value for the one the
-     panels use - is a decision about the palette, not about this button.
+     On the light side the step is written as a share of the way toward mid grey
+     rather than as a colour, because the colour it lands on is not in the
+     palette. Whether it should be is a decision about the palette, not about this
+     button.
 
-     No outline at rest either: standing on the order summary, the button is a
-     shape you find rather than one that announces itself. The field beside it
-     holds the row. */
+     No outline at rest: standing on the order summary, the button is a shape you
+     find rather than one that announces itself. The field beside it holds the
+     row. */
   .btn-secondary{
     position:relative;padding:var(--nu-space-micro) var(--nu-space-medium);
     color:var(--nu-fg-primary);letter-spacing:var(--nu-tracking-compact);
-    background:color-mix(in srgb, var(--nu-bg-action-secondary-deep) 6%, var(--nu-bg-action-secondary));
+    background:var(--nu-bg-action-secondary);
     /* Undrawn, but counted - see the note above the primary. Both solid variants
        carry the 1px so that both land on a field's height. */
     border:1px solid transparent;border-radius:0;
@@ -1062,7 +1082,7 @@
      the colour taken out: this action is not the coloured one and its shadow
      should not be either. */
   .btn-secondary:hover{
-    background:var(--nu-bg-action-secondary);
+    background:var(--nu-bg-action-secondary-lift);
     box-shadow:
       0 7px 16px -8px color-mix(in srgb, var(--nu-bg-shadow) 22%, transparent),
       0 1px 3px color-mix(in srgb, var(--nu-bg-shadow) 14%, transparent);
