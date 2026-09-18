@@ -987,41 +987,36 @@
      to the pointer, so it is a thing the reader brings out rather than a thing
      that was sitting on the page claiming to be lit. */
   .btn-primary{
-    /* Where the pointer is on the button, as a share of its width and height.
-       The stylesheet puts the light there. Dead centre is the resting value,
-       which is what a button nobody is pointing at gets - and what it keeps on a
-       touchscreen, where there is no pointer to follow. */
-    --btn-x:50%; --btn-y:50%;
     position:relative;display:inline-block;padding:var(--nu-space-micro) var(--nu-space-medium);
     color:var(--nu-fg-inverse);letter-spacing:var(--nu-tracking-compact);
     background:var(--nu-bg-action);
     border:0;border-radius:0;
-    /* Its own stacking context, so the light below can sit above the colour and
-       below the label without either being wrapped in anything. */
-    isolation:isolate;
     transform-origin:center;
-    transition:transform var(--nu-motion-quick) ease, background var(--nu-motion-base) ease;
+    transition:box-shadow var(--nu-motion-quick) ease, transform var(--nu-motion-quick) ease, background var(--nu-motion-base) ease;
   }
-  /* The light the pointer brings. A soft patch of the surface lifting where the
-     pointer is, with no edge of its own - the falloff is the whole effect, and a
-     hard-edged circle would read as a second object sitting on the button.
+  /* Two answers to the pointer, both of them quiet. Under the button, the deep
+     burgundy aura and the shallow contact shadow - the two layers of the old
+     glass worth keeping. On the button, the whole ground lifting by a tenth of
+     the way towards the glow burgundy: evenly, with no shape to it, so it reads
+     as the colour waking rather than as anything arriving.
 
-     Negative z-index inside the button's own stacking context: painted over the
-     colour, under the label. Nothing goes behind the words, which is why there is
-     no inner shadow anywhere in this button - the one it used to have sat at the
-     foot, directly under the text, and read as a shadow the text was casting. */
-  .btn-primary::after{
-    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-    background:radial-gradient(9rem circle at var(--btn-x) var(--btn-y),
-      color-mix(in srgb, var(--nu-bg-action-glow) 38%, transparent) 0%,
-      transparent 65%);
-    opacity:0;transition:opacity var(--nu-motion-quick) ease;
+     Nothing inside, in any state. The inner glow this button used to have sat at
+     the foot, directly behind the label, and read as a shadow the text was
+     casting. */
+  .btn-primary:hover{
+    background:color-mix(in srgb, var(--nu-bg-action-glow) 10%, var(--nu-bg-action));
+    box-shadow:
+      0 7px 16px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 60%, transparent),
+      0 1px 3px color-mix(in srgb, var(--nu-bg-shadow) 18%, transparent);
   }
-  .btn-primary:hover::after{opacity:1}
-  /* Nothing under the button, in any state. The pointer's answer is the light on
-     the surface and the press is the press; a shadow would put the button back
-     on top of the page, which is the thing this variant stopped doing. */
-  .btn-primary:active{transform:translateY(1px) scale(.985)}
+  /* press: the button shrinks slightly into the page and its shadow tightens,
+     so a full-width bar reads the same as a content-width one */
+  .btn-primary:active{
+    transform:translateY(1px) scale(.985);
+    box-shadow:
+      0 4px 10px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 45%, transparent),
+      0 1px 2px color-mix(in srgb, var(--nu-bg-shadow) 12%, transparent);
+  }
   /* secondary button: the same glass, uncoloured – grey body, dark label */
   .btn-secondary{
     /* Its own box, so the component stands up anywhere. The vertical value
@@ -1046,11 +1041,9 @@
     transition:box-shadow var(--nu-motion-quick) ease, background var(--nu-motion-base) ease, transform var(--nu-motion-quick) ease;
   }
   /* Colour and light still answer the pointer; only the 1px press stops being
-     eased, so nothing on the page travels. The primary has no shadow left to
-     ease, so what it keeps is the ground - and its patch of light, which fades
-     on the pseudo-element's own transition and is not movement. */
+     eased, so nothing on the page travels. */
   @media (prefers-reduced-motion:reduce){
-    .btn-primary{transition:background var(--nu-motion-base) ease}
+    .btn-primary,
     .btn-secondary{transition:box-shadow var(--nu-motion-quick) ease, background var(--nu-motion-base) ease}
   }
   /* Same move as the primary: the body holds its colour and the light around it

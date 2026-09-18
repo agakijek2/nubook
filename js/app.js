@@ -2273,43 +2273,6 @@ function route(){
 }
 window.addEventListener("hashchange", route);
 
-/* ------------------------------------------- the light on the primary button */
-/* Where the pointer is on the button, written as two percentages the stylesheet
-   puts the light at. Only the patch of light moves; nothing under the button
-   does, because a shadow that swings about as the hand moves reads as the button
-   being tilted.
-
-   One listener on the document rather than one per button. Primaries are built
-   and rebuilt with every view, and a delegated listener needs nothing bound,
-   unbound or remembered when they are.
-
-   Mouse only. A finger has no position between taps, so a touch would put the
-   light somewhere and leave it there. */
-let btnLightFrame = null;
-document.addEventListener("pointermove", e => {
-  if (e.pointerType !== "mouse") return;
-  const btn = e.target.closest && e.target.closest(".btn-primary");
-  if (!btn) return;
-  /* One write per frame. A pointer reports far more often than the screen
-     repaints, and every extra write is a style recalculation nobody sees. */
-  if (btnLightFrame) cancelAnimationFrame(btnLightFrame);
-  const x = e.clientX, y = e.clientY;
-  btnLightFrame = requestAnimationFrame(() => {
-    btnLightFrame = null;
-    const r = btn.getBoundingClientRect();
-    btn.style.setProperty("--btn-x", (((x - r.left) / r.width) * 100).toFixed(1) + "%");
-    btn.style.setProperty("--btn-y", (((y - r.top) / r.height) * 100).toFixed(1) + "%");
-  });
-});
-/* Back to the middle on the way out, so the next hover does not begin wherever
-   the pointer happened to leave. */
-document.addEventListener("pointerout", e => {
-  const btn = e.target.closest && e.target.closest(".btn-primary");
-  if (!btn || (e.relatedTarget && btn.contains(e.relatedTarget))) return;
-  btn.style.removeProperty("--btn-x");
-  btn.style.removeProperty("--btn-y");
-});
-
 document.getElementById("backBtn").onclick = ()=>{
   history.length > 1 ? history.back() : (location.hash = "");
 };
