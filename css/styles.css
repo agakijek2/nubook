@@ -108,7 +108,8 @@
     --nu-bg-action:var(--nu-burgundy-900);                                  /* CTA body, one flat colour */
     /* derived, not duplicated: the secondary button borrows the panel surface,
        so the two can never drift apart by accident */
-    --nu-bg-action-secondary:var(--nu-grey-100); /* secondary button body */
+    --nu-bg-action-secondary:var(--nu-bg-primary);    /* secondary button body: the page's own surface */
+    --nu-bg-action-secondary-deep:var(--nu-grey-400); /* the middle it moves toward under the pointer */
     --nu-bg-action-glow:var(--nu-burgundy-500);      /* CTA inner glow, bottom edge */
     --nu-bg-action-glow-deep:var(--nu-burgundy-700); /* CTA aura cast beneath */
 
@@ -356,24 +357,12 @@
   --nu-bg-ava-dot:var(--nu-grey-100);--nu-bg-ava-dot-bloom:var(--nu-grey-900);
 }
 
-/* The secondary button stays out of the scheme: its glass was drawn once and
-   reads the same on either page. Six names pinned to their light values, which
-   every var() inside the button then resolves against - a no-op while the page
-   is light, an island while it is dark. Not --nu-border-primary: that one draws
-   the focus ring outside the button, on the page, where a dark ring on a dark
-   ground cannot be seen. */
-.btn-secondary{
-  --nu-bg-primary:var(--nu-white);
-  --nu-bg-secondary:var(--nu-grey-100);
-  --nu-bg-tertiary:var(--nu-grey-600);
-  --nu-fg-primary:var(--nu-grey-900);
-  --nu-fg-secondary:var(--nu-grey-600);
-  --nu-fg-inverse:var(--nu-white);
-}
-/* The primary needs one of the six, not six. Its body is the same burgundy on
-   either page, so its label is the same white on either page - and everything
-   else it reads should follow the scheme the way the rest of the shop does,
-   which is what the disabled state wants. */
+/* The primary keeps its burgundy on either page, so it keeps its white label on
+   either page, and that is the whole of what it needs pinned. Six names used to
+   be pinned here for both solid buttons, because the glass resolved half the
+   palette inside itself; a flat colour resolves one thing. The secondary needs
+   nothing at all now: its body is the page's own surface, so everything it reads
+   should follow the page, and does. */
 .btn-primary{ --nu-fg-inverse:var(--nu-white); }
   *{box-sizing:border-box;margin:0;padding:0}
   [hidden]{display:none !important}
@@ -984,10 +973,15 @@
 
      Two heights, and which one a button gets follows from one thing: a button
      standing in text keeps the variant's own, and a button running the full width
-     of a column takes one step more. A bar that is the whole width of what it
-     sits in needs the extra to read as a bar rather than as a stripe, and a
-     button among words needs it not to. Three heights, which is what this was,
-     followed from nothing. */
+     of a column takes one step more, which lands it exactly on the height of a
+     field. A form is a column of things one under another, and a button that ends
+     one is the same object as the fields above it or it is a mistake. A button
+     among words has no such neighbour and should not be that tall.
+
+     That equality is why both solid variants carry a 1px edge in the box whether
+     or not it is drawn: a field has a border, so a button that wants a field's
+     height has to count one too. Three heights, which is what this was, followed
+     from nothing. */
   /* At rest it is one flat colour and nothing else: no gradient, no border, no
      shadow, square corners. The shop around it is quiet, and a button built like
      a physical object was arguing with it. The whole of the treatment now belongs
@@ -997,7 +991,8 @@
     position:relative;display:inline-block;padding:var(--nu-space-micro) var(--nu-space-medium);
     color:var(--nu-fg-inverse);letter-spacing:var(--nu-tracking-compact);
     background:var(--nu-bg-action);
-    border:0;border-radius:0;
+    /* Undrawn, but counted - see the note above the variant. */
+    border:1px solid transparent;border-radius:0;
     transform-origin:center;
     transition:box-shadow var(--nu-motion-quick) ease, transform var(--nu-motion-quick) ease, background var(--nu-motion-base) ease;
   }
@@ -1024,26 +1019,30 @@
       0 4px 10px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 45%, transparent),
       0 1px 2px color-mix(in srgb, var(--nu-bg-shadow) 12%, transparent);
   }
-  /* secondary button: the same glass, uncoloured – grey body, dark label */
+  /* Built on the primary's terms: one flat colour at rest, nothing inside at any
+     point, the whole of the treatment belonging to the pointer.
+
+     Its colour is the page's own surface rather than a grey of its own - white
+     where the page is white, near-black where it is dark. That keeps it quieter
+     than the primary in both schemes, which is what a supporting action is for,
+     and it adds nothing to the palette.
+
+     Quieter to the point of having no outline at rest: standing on the order
+     summary, whose ground is a step off its own, the button is a shape you find
+     rather than one that announces itself. The field beside it holds the row, and
+     the pointer is what brings the button forward.
+
+     Under the pointer the ground moves a tenth of a step toward the middle of the
+     grey scale. From a white body that is a deepening and from a dark one a
+     lifting, and it is the same sentence either way: the ground answering the
+     hand. */
   .btn-secondary{
-    /* Its own box, so the component stands up anywhere. The vertical value
-       matches the field's, which is what makes the two line up side by side
-       without either one being told about the other. */
-    position:relative;padding:var(--nu-space-milli) var(--nu-space-small);
+    position:relative;padding:var(--nu-space-micro) var(--nu-space-medium);
     color:var(--nu-fg-primary);letter-spacing:var(--nu-tracking-compact);
-    background:
-      linear-gradient(180deg,
-        color-mix(in srgb, var(--nu-bg-primary) 50%, transparent) 0%,
-        transparent 46%),
-      var(--nu-bg-action-secondary);
-    backdrop-filter:blur(9px) saturate(1.05);
-    -webkit-backdrop-filter:blur(9px) saturate(1.05);
-    border:1px solid color-mix(in srgb, var(--nu-bg-tertiary) 30%, transparent);
-    border-top-color:color-mix(in srgb, var(--nu-bg-primary) 70%, transparent);
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 60%, transparent),
-      inset 0 -10px 18px -12px color-mix(in srgb, var(--nu-bg-tertiary) 40%, transparent),
-      0 2px 5px -2px color-mix(in srgb, var(--nu-bg-shadow) 14%, transparent);
+    background:var(--nu-bg-action-secondary);
+    /* Undrawn, but counted - see the note above the primary. Both solid variants
+       carry the 1px so that both land on a field's height. */
+    border:1px solid transparent;border-radius:0;
     transform-origin:center;
     transition:box-shadow var(--nu-motion-quick) ease, background var(--nu-motion-base) ease, transform var(--nu-motion-quick) ease;
   }
@@ -1053,22 +1052,20 @@
     .btn-primary,
     .btn-secondary{transition:box-shadow var(--nu-motion-quick) ease, background var(--nu-motion-base) ease}
   }
-  /* Same move as the primary: the body holds its colour and the light around it
-     grows – highlight up, inner shading deeper, drop shadow longer. Swapping the
-     ground for a darker mix, as this used to, reads as a different button rather
-     than the same one under the pointer. */
+  /* The same two layers under the button as the primary, in the same places, with
+     the colour taken out: this action is not the coloured one and its shadow
+     should not be either. */
   .btn-secondary:hover{
+    background:color-mix(in srgb, var(--nu-bg-action-secondary-deep) 10%, var(--nu-bg-action-secondary));
     box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 68%, transparent),
-      inset 0 -12px 20px -12px color-mix(in srgb, var(--nu-bg-tertiary) 50%, transparent),
-      0 3px 7px -2px color-mix(in srgb, var(--nu-bg-shadow) 18%, transparent);
+      0 7px 16px -8px color-mix(in srgb, var(--nu-bg-shadow) 22%, transparent),
+      0 1px 3px color-mix(in srgb, var(--nu-bg-shadow) 14%, transparent);
   }
   .btn-secondary:active{
     transform:translateY(1px) scale(.985);
     box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 50%, transparent),
-      inset 0 -8px 14px -12px color-mix(in srgb, var(--nu-bg-tertiary) 45%, transparent),
-      0 1px 3px -2px color-mix(in srgb, var(--nu-bg-shadow) 12%, transparent);
+      0 4px 10px -8px color-mix(in srgb, var(--nu-bg-shadow) 16%, transparent),
+      0 1px 2px color-mix(in srgb, var(--nu-bg-shadow) 10%, transparent);
   }
   .btn-secondary:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   /* The button stops accepting clicks for the length of the sequence, and taking
