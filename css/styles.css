@@ -40,6 +40,7 @@
     --nu-burgundy-300:#cf7d92;
     --nu-burgundy-500:#8f2b45;
     --nu-burgundy-700:#5c1228;
+    --nu-burgundy-900:#3f0c1b;
     --nu-gold-100:#f7e9b8;
     --nu-gold-600:#9a7b1c;
     --nu-gold-800:#6e5710;
@@ -104,7 +105,7 @@
        Built from the red rather than the burgundy: burgundy is a muted brand
        colour and thins out grey, which is the one thing this tint must not be. */
     --nu-bg-measure:light-dark(color-mix(in srgb, var(--nu-red-600) 22%, transparent), color-mix(in srgb, var(--nu-red-300) 22%, transparent));
-    --nu-bg-action:color-mix(in srgb, var(--nu-grey-900) 85%, transparent); /* glass CTA body */
+    --nu-bg-action:var(--nu-burgundy-900);                                  /* CTA body, one flat colour */
     /* derived, not duplicated: the secondary button borrows the panel surface,
        so the two can never drift apart by accident */
     --nu-bg-action-secondary:var(--nu-grey-100); /* secondary button body */
@@ -355,13 +356,12 @@
   --nu-bg-ava-dot:var(--nu-grey-100);--nu-bg-ava-dot-bloom:var(--nu-grey-900);
 }
 
-/* The two solid buttons stay out of the scheme: their glass was drawn once and
+/* The secondary button stays out of the scheme: its glass was drawn once and
    reads the same on either page. Six names pinned to their light values, which
    every var() inside the button then resolves against - a no-op while the page
    is light, an island while it is dark. Not --nu-border-primary: that one draws
    the focus ring outside the button, on the page, where a dark ring on a dark
    ground cannot be seen. */
-.btn-primary,
 .btn-secondary{
   --nu-bg-primary:var(--nu-white);
   --nu-bg-secondary:var(--nu-grey-100);
@@ -370,6 +370,11 @@
   --nu-fg-secondary:var(--nu-grey-600);
   --nu-fg-inverse:var(--nu-white);
 }
+/* The primary needs one of the six, not six. Its body is the same burgundy on
+   either page, so its label is the same white on either page - and everything
+   else it reads should follow the scheme the way the rest of the shop does,
+   which is what the disabled state wants. */
+.btn-primary{ --nu-fg-inverse:var(--nu-white); }
   *{box-sizing:border-box;margin:0;padding:0}
   [hidden]{display:none !important}
   html{ -webkit-text-size-adjust:100%; }
@@ -976,47 +981,47 @@
      markup beside it, but they carry only what depends on where the button sits -
      width, margin, padding, the add-to-cart sequence. Adding a fourth primary
      means writing btn-primary, not extending four selector lists. */
+  /* At rest it is one flat colour and nothing else: no gradient, no border, no
+     shadow, square corners. The shop around it is quiet, and a button built like
+     a physical object was arguing with it. The whole of the treatment now belongs
+     to the pointer, so it is a thing the reader brings out rather than a thing
+     that was sitting on the page claiming to be lit. */
   .btn-primary{
-    position:relative;display:inline-block;padding:var(--nu-space-milli) var(--nu-space-xlarge);
+    /* Where the pointer is on the button, as a share of its width and height.
+       The stylesheet puts the light there. Dead centre is the resting value,
+       which is what a button nobody is pointing at gets - and what it keeps on a
+       touchscreen, where there is no pointer to follow. */
+    --btn-x:50%; --btn-y:50%;
+    position:relative;display:inline-block;padding:var(--nu-space-micro) var(--nu-space-medium);
     color:var(--nu-fg-inverse);letter-spacing:var(--nu-tracking-compact);
-    /* dark translucent glass: page shows through, burgundy pools at the bottom edge */
-    background:
-      linear-gradient(180deg,
-        color-mix(in srgb, var(--nu-bg-action-glow) 34%, transparent) 0%,
-        transparent 42%) ,
-      linear-gradient(0deg,
-        color-mix(in srgb, var(--nu-bg-action-glow) 52%, transparent) 0%,
-        transparent 58%),
-      var(--nu-bg-action);
-    backdrop-filter:blur(9px) saturate(1.15);
-    -webkit-backdrop-filter:blur(9px) saturate(1.15);
-    border:1px solid color-mix(in srgb, var(--nu-bg-primary) 16%, transparent);
-    border-top-color:color-mix(in srgb, var(--nu-bg-primary) 34%, transparent);
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 22%, transparent),
-      inset 0 -14px 24px -12px color-mix(in srgb, var(--nu-bg-action-glow) 85%, transparent),
-      0 7px 16px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 60%, transparent),
-      0 1px 3px color-mix(in srgb, var(--nu-bg-shadow) 18%, transparent);
+    background:var(--nu-bg-action);
+    border:0;border-radius:0;
+    /* Its own stacking context, so the light below can sit above the colour and
+       below the label without either being wrapped in anything. */
+    isolation:isolate;
     transform-origin:center;
-    transition:box-shadow var(--nu-motion-quick) ease, transform var(--nu-motion-quick) ease, background var(--nu-motion-base) ease;
+    transition:transform var(--nu-motion-quick) ease, background var(--nu-motion-base) ease;
   }
-  .btn-primary:hover{
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 28%, transparent),
-      inset 0 -16px 26px -12px color-mix(in srgb, var(--nu-bg-action-glow) 95%, transparent),
-      0 9px 20px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 75%, transparent),
-      0 1px 3px color-mix(in srgb, var(--nu-bg-shadow) 20%, transparent);
+  /* The light the pointer brings. A soft patch of the surface lifting where the
+     pointer is, with no edge of its own - the falloff is the whole effect, and a
+     hard-edged circle would read as a second object sitting on the button.
+
+     Negative z-index inside the button's own stacking context: painted over the
+     colour, under the label. Nothing goes behind the words, which is why there is
+     no inner shadow anywhere in this button - the one it used to have sat at the
+     foot, directly under the text, and read as a shadow the text was casting. */
+  .btn-primary::after{
+    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(9rem circle at var(--btn-x) var(--btn-y),
+      color-mix(in srgb, var(--nu-bg-action-glow) 38%, transparent) 0%,
+      transparent 65%);
+    opacity:0;transition:opacity var(--nu-motion-quick) ease;
   }
-  /* press: the button shrinks slightly into the page and its aura tightens,
-     so a full-width bar reads the same as a content-width one */
-  .btn-primary:active{
-    transform:translateY(1px) scale(.985);
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 18%, transparent),
-      inset 0 -12px 20px -12px color-mix(in srgb, var(--nu-bg-action-glow) 80%, transparent),
-      0 4px 10px -8px color-mix(in srgb, var(--nu-bg-action-glow-deep) 55%, transparent),
-      0 1px 2px color-mix(in srgb, var(--nu-bg-shadow) 14%, transparent);
-  }
+  .btn-primary:hover::after{opacity:1}
+  /* Nothing under the button, in any state. The pointer's answer is the light on
+     the surface and the press is the press; a shadow would put the button back
+     on top of the page, which is the thing this variant stopped doing. */
+  .btn-primary:active{transform:translateY(1px) scale(.985)}
   /* secondary button: the same glass, uncoloured – grey body, dark label */
   .btn-secondary{
     /* Its own box, so the component stands up anywhere. The vertical value
@@ -1041,9 +1046,11 @@
     transition:box-shadow var(--nu-motion-quick) ease, background var(--nu-motion-base) ease, transform var(--nu-motion-quick) ease;
   }
   /* Colour and light still answer the pointer; only the 1px press stops being
-     eased, so nothing on the page travels. */
+     eased, so nothing on the page travels. The primary has no shadow left to
+     ease, so what it keeps is the ground - and its patch of light, which fades
+     on the pseudo-element's own transition and is not movement. */
   @media (prefers-reduced-motion:reduce){
-    .btn-primary,
+    .btn-primary{transition:background var(--nu-motion-base) ease}
     .btn-secondary{transition:box-shadow var(--nu-motion-quick) ease, background var(--nu-motion-base) ease}
   }
   /* Same move as the primary: the body holds its colour and the light around it
@@ -1064,16 +1071,15 @@
       0 1px 3px -2px color-mix(in srgb, var(--nu-bg-shadow) 12%, transparent);
   }
   .btn-secondary:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
-  .p-cta.is-adding{
-    pointer-events:none;
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--nu-bg-primary) 22%, transparent),
-      inset 0 -14px 24px -12px color-mix(in srgb, var(--nu-bg-action-glow) 85%, transparent);
-  }
+  /* The button stops accepting clicks for the length of the sequence, and taking
+     pointer events away takes the hover treatment with them - which is the right
+     answer now that the treatment is the hover. The colour stays full strength:
+     this is an action that worked, not one that is unavailable. */
+  .p-cta.is-adding{pointer-events:none}
   .btn-primary:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   .btn-primary:disabled{
     background:var(--nu-bg-secondary);color:var(--nu-fg-secondary);cursor:not-allowed;
-    backdrop-filter:none;-webkit-backdrop-filter:none;border:0;box-shadow:none;transform:none;
+    box-shadow:none;transform:none;
   }
   .cart-wrap{position:relative}
   .cart-n{
