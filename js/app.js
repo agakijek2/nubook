@@ -2433,7 +2433,7 @@ const DS_FALLBACK_PRIMITIVES = ["--nu-white","--nu-grey-100","--nu-grey-400","--
   "--nu-yellow-500","--nu-green-500","--nu-blue-500","--nu-violet-500"];
 const DS_FALLBACK_MEANINGS = ["primary","secondary","tertiary","inverse","neutral","muted",
   "highlight","warning","alert","scrim","measure","action","action-secondary",
-  "action-glow","action-glow-deep"];
+  "action-secondary-lift","action-glow","action-glow-deep"];
 function dsPrimitiveRows(){
   const found = Object.keys(dsRootDecls()).filter(n => DS_PRIMITIVE.test(n));
   const names = found.length ? found : DS_FALLBACK_PRIMITIVES.filter(dsVal);
@@ -3140,12 +3140,12 @@ const DS_SECTIONS = [
     <tbody>${dsColorRows([
       ["--nu-bg-primary",L("Default surface","Powierzchnia domyślna")],
       ["--nu-bg-secondary",L("Raised / recessed panel","Panel wyniesiony")],
-      ["--nu-bg-tertiary",L("Third surface step","Trzeci stopień powierzchni")],
       ["--nu-bg-inverse",L("Darkest surface","Powierzchnia najciemniejsza")],
-      ["--nu-bg-action",L("Primary action, glass body","Akcja główna, korpus szkła")],
-      ["--nu-bg-action-glow",L("Primary action, inner glow","Akcja główna, łuna wewnętrzna")],
+      ["--nu-bg-action",L("Primary action, body","Akcja główna, korpus")],
+      ["--nu-bg-action-glow",L("Primary action, lift under the pointer","Akcja główna, rozjaśnienie pod kursorem")],
       ["--nu-bg-action-glow-deep",L("Primary action, cast aura","Akcja główna, aura rzucana")],
-      ["--nu-bg-action-secondary",L("Secondary action, glass body","Akcja drugorzędna, korpus szkła")],
+      ["--nu-bg-action-secondary",L("Secondary action, body","Akcja drugorzędna, korpus")],
+      ["--nu-bg-action-secondary-lift",L("Secondary action, under the pointer","Akcja drugorzędna, stan pod kursorem")],
       ["--nu-bg-highlight",L("Distinction","Wyróżnienie")],
       ["--nu-bg-scrim",L("Dim behind a modal layer","Przyciemnienie pod warstwą modalną")],
       ["--nu-bg-shadow",L("What a shadow is made of","Barwa, z której zrobiony jest cień")],
@@ -3161,8 +3161,8 @@ const DS_SECTIONS = [
       ["--nu-bg-measure",L("A measured distance","Mierzona odległość")],
     ])}</tbody></table>
     <p class="note">${L(
-      "The two <code>action</code> glows belong to the primary button. The secondary carries neither &ndash; one of the things that keep the two buttons apart. The five <code>glow</code> rings are a different light. They are laid one over another, from the core outwards, and both marks that bloom draw all five in that order. They stand outside the scheme, as the four <code>action</code> tokens do: the halo and the button's glass read the same on either page. <code>--nu-bg-shadow</code> holds the same value as the inverse surface and stands apart from it because the two answer different questions &ndash; what is the opposite of the page, and what colour is a shadow. One answer serves both on a light page; on a dark one they part.",
-      "Dwie łuny <code>action</code> należą do przycisku głównego. Drugorzędny nie bierze żadnej z nich, i to jedna z rzeczy, które oba przyciski rozdzielają. Pięć pierścieni <code>glow</code> to inne światło. Są nałożone jeden na drugi, od rdzenia na zewnątrz, i oba rozbłyskujące znaki biorą wszystkie pięć w tej kolejności. Stoją poza schematem, tak jak cztery tokeny <code>action</code>: poświata i szkło przycisku wyglądają tak samo na obu stronach. <code>--nu-bg-shadow</code> ma tę samą wartość co powierzchnia odwrócona i stoi osobno, bo odpowiadają na różne pytania: co jest przeciwieństwem strony, a z czego zrobiony jest cień. Na jasnej stronie jedna odpowiedź wystarcza na oba, na ciemnej rozchodzą się.")}</p>
+      "The two <code>action</code> glows belong to the primary button. The secondary carries neither &ndash; one of the differences between them. The five <code>glow</code> rings are a different light. They are laid one over another, from the core outwards, and both marks that bloom draw all five in that order. They stand outside the scheme, unlike the <code>action</code> tokens: a button keeps its distance from the page, so it changes along with it, while the halo is the same halo everywhere. <code>--nu-bg-shadow</code> holds the same value as the inverse surface and stands apart from it because the two answer different questions &ndash; what is the opposite of the page, and what colour is a shadow. One answer serves both on a light page; on a dark one they part.",
+      "Dwie łuny <code>action</code> należą do przycisku głównego. Drugorzędny nie bierze żadnej z nich, i to jedna z różnic między nimi. Pięć pierścieni <code>glow</code> to inne światło. Są nałożone jeden na drugi, od rdzenia na zewnątrz, i oba rozbłyskujące znaki biorą wszystkie pięć w tej kolejności. Stoją poza schematem, inaczej niż tokeny <code>action</code>: przycisk trzyma dystans od strony, więc zmienia się razem z nią, a poświata jest tą samą poświatą wszędzie. <code>--nu-bg-shadow</code> ma tę samą wartość co powierzchnia odwrócona i stoi osobno, bo odpowiadają na różne pytania: co jest przeciwieństwem strony, a z czego zrobiony jest cień. Na jasnej stronie jedna odpowiedź wystarcza na oba, na ciemnej rozchodzą się.")}</p>
     <h3>Foreground</h3>
     <table class="tok-table">
     <colgroup><col class="c-token"><col class="c-source"><col><col></colgroup>
@@ -3171,7 +3171,7 @@ const DS_SECTIONS = [
       ["--nu-fg-primary",L("Primary content","Treść główna")],
       ["--nu-fg-secondary",L("Supporting content","Treść wspierająca")],
       ["--nu-fg-tertiary",L("Disabled or less prominent text","Tekst wyłączony lub mniej istotny")],
-      ["--nu-fg-inverse",L("Content on an inverse background","Treść na ciemnym tle")],
+      ["--nu-fg-inverse",L("Content on an inverse background","Treść na tle odwróconym")],
       ["--nu-fg-highlight",L("Distinction","Wyróżnienie")],
       ["--nu-fg-warning",L("Inventory running out","Kończący się nakład")],
       ["--nu-fg-alert",L("Failed validation","Nieudana walidacja")],
@@ -3195,8 +3195,8 @@ const DS_SECTIONS = [
           <td>${L("A component never carries a hex value. Where no token fits, the system is missing one and it has to be added.",
                   "Komponent nigdy nie nosi wartości heks. Gdy żaden token nie pasuje, systemowi go brakuje i trzeba go dodać.")}</td></tr>
       <tr><td>${L("Same value, different role","Ta sama wartość, inna rola")}</td>
-          <td>${L("<code>--nu-bg-inverse</code> has the same value as <code>--nu-fg-primary</code>. They stay apart because &ldquo;the darkest ink&rdquo; and &ldquo;a filled surface&rdquo; are different ideas and may one day diverge. Warning and alert are separate for the same reason: the burgundy of a dwindling print run ties that state to the colour the primary button emits, and the red of an alert is kept for a failure.",
-                  "<code>--nu-bg-inverse</code> ma tę samą wartość co <code>--nu-fg-primary</code>. Zostają osobne, bo „najciemniejszy atrament” i „wypełniona powierzchnia” to różne pojęcia i mogą się kiedyś rozejść. Tak samo osobne są ostrzeżenie i błąd: burgund kończącego się nakładu wiąże ten stan z barwą, którą emituje przycisk główny, a czerwień alertu zostaje dla awarii.")}</td></tr>
+          <td>${L("<code>--nu-bg-inverse</code> has the same value as <code>--nu-fg-primary</code>. They stay apart because &ldquo;the darkest ink&rdquo; and &ldquo;a filled surface&rdquo; are different ideas and may one day diverge. Warning and alert are separate for the same reason: the burgundy of a dwindling print run keeps that state in the family of the primary button's colour, and the red of an alert is kept for a failure.",
+                  "<code>--nu-bg-inverse</code> ma tę samą wartość co <code>--nu-fg-primary</code>. Zostają osobne, bo „najciemniejszy atrament” i „wypełniona powierzchnia” to różne pojęcia i mogą się kiedyś rozejść. Tak samo osobne są ostrzeżenie i błąd: burgund kończącego się nakładu trzyma ten stan w rodzinie barwy przycisku głównego, a czerwień alertu zostaje dla awarii.")}</td></tr>
       <tr><td>${L("The mark's light","Światło znaku")}</td>
           <td>${L("The bloom has two parts, and each has tokens of its own. The fill changes with the scheme, so it has to be a token: <code>--nu-bg-dot</code> beside the wordmark, <code>--nu-bg-ava-dot</code> in the corner of the shop. Two names, one pair of values, so an edit to one mark leaves the other alone. The halo is drawn by five rings, from <code>--nu-bg-glow-warm</code> at the core to <code>--nu-bg-glow-dusk</code> at the rim, and those are shared. All of them carry a plain colour rather than <code>light-dark()</code>. A <code>light-dark()</code> value read inside <code>@keyframes</code> comes out on the wrong side: on a light page the dot took the colour meant for a dark one. A plain colour has no such problem, because the scheme swaps the token's whole value, and a change of value does reach an animation.",
                   "Rozbłysk ma dwie części, każda z własnymi tokenami. Wypełnienie zmienia się razem ze schematem, więc musi być tokenem: <code>--nu-bg-dot</code> przy znaku marki, <code>--nu-bg-ava-dot</code> w rogu sklepu. Dwie nazwy, te same dwie wartości, dzięki czemu poprawka na jednym znaku nie dotyka drugiego. Poświatę rysuje pięć pierścieni, od <code>--nu-bg-glow-warm</code> w środku po <code>--nu-bg-glow-dusk</code> na zewnątrz, i te są wspólne. Wszystkie te tokeny mają wpisany zwykły kolor, a nie <code>light-dark()</code>. Wartość z <code>light-dark()</code> odczytana wewnątrz <code>@keyframes</code> wychodzi po niewłaściwej stronie: kropka na jasnej stronie dostawała kolor przeznaczony na ciemną. Zwykły kolor tego problemu nie ma, bo schemat podmienia całą wartość tokenu, a zmiana wartości dochodzi do animacji.")}</td></tr>
