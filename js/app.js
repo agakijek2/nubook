@@ -954,6 +954,12 @@ function measureBars(){
   const grid = px => Math.ceil(px / 4) * 4 + "px";
   if (!bar.hidden) root.setProperty("--nu-mobar-height", grid(bar.offsetHeight));
   if (!co.hidden)  root.setProperty("--nu-cobar-height", grid(co.offsetHeight));
+  /* The block at the top is as tall as whatever it is holding, and that differs
+     between views: the controls over the grid stand in it there and nowhere
+     else. Measured on every view, because the one place that needs it - where
+     the skip link lands - has to clear whichever height is in force. */
+  const mast = document.getElementById("masthead");
+  if (mast) root.setProperty("--nu-masthead-height", grid(mast.offsetHeight));
 }
 window.addEventListener("resize", ()=>{
   if (!isMobile()) closeFilterSheet();
@@ -1928,6 +1934,7 @@ function renderDone(){
 const dsEl = document.getElementById("dsPage");
 const productEl = document.getElementById("product"),
       shopbarEl = document.getElementById("shopbar"),
+      productbarEl = document.getElementById("productbar"),
       shopBodyEl = document.getElementById("shop");
 
 function currentProduct(){
@@ -2333,6 +2340,14 @@ bsAvaEl.onclick = () => bsPanel.hidden ? bsShow() : bsShut();
    measured where things are - so the page moved under a transition that had been
    aimed at the old position. Taking it over means saying so. */
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+/* Whether anything is passing behind the block at the top. The ramp under it
+   only has work to do once something is, and at the top of the page it would
+   otherwise soften the first row of covers for nothing. Read rather than
+   animated, because the answer is yes or no and there is no half of it. */
+function markScroll(){
+  document.body.classList.toggle("is-scrolled", window.scrollY > 0);
+}
+window.addEventListener("scroll", markScroll, { passive:true });
 let gridScroll = 0, lastView = null, lastProductId = null;
 
 function route(){
@@ -2355,6 +2370,7 @@ function route(){
   document.getElementById("siteFoot").hidden = view === "design";
   document.getElementById("promo").hidden = view === "design";
   shopbarEl.hidden  = view !== "grid";
+  productbarEl.hidden = view !== "product";
   shopBodyEl.hidden = view !== "grid";
   productEl.hidden = view !== "product";
   cartPageEl.hidden = view !== "cart";
@@ -2369,11 +2385,12 @@ function route(){
   if (view === "cart") renderCartPage();
   if (view === "checkout") renderCheckout();
   if (view === "done") renderDone();
-  if (view === "grid") measureBars();
+  measureBars();
   if (view !== "grid") window.scrollTo({top:0, behavior:"instant"});
   /* Not on the first paint: there is nothing to come back to yet, and the reader
      may have opened the shop on an address that is not the grid. */
   else if (lastView && lastView !== "grid") window.scrollTo({top:gridScroll, behavior:"instant"});
+  markScroll();          // the view changed the scroll, so the answer may have changed with it
   lastView = view;
   if (view === "product"){ lastProductId = b.id; playOpenTransition(); }  // measure the target after scrolling
   if (goingBack) playBackTransition();            // and the way back, after the scroll is restored
@@ -2725,7 +2742,7 @@ const DS_TOKEN_GROUPS = [
   ["type",   ["--nu-font","--nu-text","--nu-tracking","--nu-line","--nu-weight","--nu-type","--nu-underline"],
              [["primitive", false], ["style", true]]],
   ["space",  ["--nu-space"]],
-  ["layout", ["--nu-gutter","--nu-form-max","--nu-cover","--nu-thumb","--nu-avatar","--nu-control","--nu-field","--nu-bar","--nu-mobar","--nu-cobar"],
+  ["layout", ["--nu-gutter","--nu-form-max","--nu-cover","--nu-thumb","--nu-avatar","--nu-control","--nu-field","--nu-bar","--nu-masthead","--nu-mobar","--nu-cobar"],
              [["scale", true], ["own", false]]],
   ["icon",   ["--nu-icon"]],
   ["motion", ["--nu-motion","--nu-ease"]],
@@ -3253,6 +3270,7 @@ const DS_SECTIONS = [
       ["--nu-bg-primary",L("Default surface","Powierzchnia domyślna")],
       ["--nu-bg-secondary",L("Raised / recessed panel","Panel wyniesiony")],
       ["--nu-bg-inverse",L("Darkest surface","Powierzchnia najciemniejsza")],
+      ["--nu-bg-masthead",L("Ground of the block that stays at the top","Tło bloku, który zostaje u góry")],
       ["--nu-bg-action",L("Primary action, body","Akcja główna, korpus")],
       ["--nu-bg-action-glow",L("Primary action, lift under the pointer","Akcja główna, rozjaśnienie pod kursorem")],
       ["--nu-bg-action-glow-deep",L("Primary action, cast aura","Akcja główna, aura rzucana")],
@@ -3294,6 +3312,7 @@ const DS_SECTIONS = [
     <thead><tr><th>Token</th><th>${L("Built from","Zbudowany z")}</th><th>${L("Meaning","Znaczenie")}</th></tr></thead>
     <tbody>${dsColorRows([
       ["--nu-border-neutral",L("Separation","Rozdzielenie")],
+      ["--nu-border-sheer",L("A hairline that lets the page through","Kreska przepuszczająca to, co za nią")],
       ["--nu-border-primary",L("Emphasis / selection","Podkreślenie / zaznaczenie")],
       ["--nu-border-muted",L("Receded","Wyciszony")],
       ["--nu-border-hover",L("Answering the pointer","Odpowiedź na kursor")],
@@ -3539,6 +3558,8 @@ const DS_SECTIONS = [
     <tbody>
       <tr><td class="spec"><code>--nu-gutter-column</code></td><td>${dsDecl("--nu-gutter-column")} &middot; ${dsVal("--nu-gutter-column")}</td>
           <td>${L("The gap between columns in every side-by-side layout: shop, product, checkout, these docs. One name, because how far apart two columns sit is a single decision.","Odstęp między kolumnami w każdym układzie dwukolumnowym: sklep, produkt, zamówienie, ta dokumentacja. Jedna nazwa, bo to, jak daleko od siebie stoją dwie kolumny, jest jedną decyzją.")}</td></tr>
+      <tr><td class="spec"><code>--nu-masthead-height</code></td><td>${dsDecl("--nu-masthead-height")} &middot; ${dsVal("--nu-masthead-height")}</td>
+          <td>${L("The height of the block that stays at the top of the window: the promotion, the navigation and, on the grid, the controls over it. It differs between views, the controls standing in it there and nowhere else, so the step is a starting value and the script writes the measured height back on every view. One place reads it &ndash; where the skip link lands, which has to clear whatever the block currently is.","Wysokość bloku, który zostaje u góry okna: promocja, nawigacja i &ndash; na siatce &ndash; kontrolki nad nią. Różni się między widokami, bo kontrolki stoją w nim tylko tam, więc stopień jest wartością wyjściową, a skrypt zapisuje zmierzoną wysokość przy każdym widoku. Czyta ją jedno miejsce: to, w którym ląduje skip link, a ono musi minąć blok w wysokości, jaką akurat ma.")}</td></tr>
       <tr><td class="spec"><code>--nu-bar-height</code></td><td>${dsDecl("--nu-bar-height")}</td>
           <td>${L("The height of the row standing above the content, before the reader reaches what she came for. Every view has one and each holds one control on the left: the filter toggle in the shop, the way back on a product. The height is built from the search field &ndash; its padding twice over, one line of text and the rule underneath &ndash; because the field is the tallest thing any of these rows holds and sets the height in the shop anyway. One name, because a control that keeps its job across two views has to keep its place as well, and two copies of a height drift the first time the field changes.","Wysokość rzędu stojącego nad treścią, zanim czytelniczka dojdzie do tego, po co przyszła. Każdy widok ma taki rząd i każdy trzyma w nim jedną kontrolkę po lewej: przełącznik filtrów w sklepie, powrót na karcie produktu. Wysokość zbudowana jest z pola wyszukiwania &ndash; jego wypełnienie dwa razy, jeden wiersz tekstu i kreska pod spodem &ndash; bo pole jest najwyższą rzeczą, jaka w takim rzędzie stoi, i tak czy inaczej ustala wysokość belki w sklepie. Jedna nazwa, bo kontrolka, która przez dwa widoki ma to samo zadanie, musi mieć też to samo miejsce, a dwie kopie wysokości rozjadą się przy pierwszej zmianie pola.")}</td></tr>
       <tr><td class="spec"><code>--nu-mobar-height</code><br><code>--nu-cobar-height</code></td><td>${dsDecl("--nu-mobar-height")} &middot; ${dsVal("--nu-mobar-height")}</td>
@@ -3874,7 +3895,7 @@ const DS_SECTIONS = [
         <td>${L("Stands among words, where a reader has to find it, so it carries a permanent underline.","Stoi między słowami, gdzie trzeba go znaleźć, więc nosi stałe podkreślenie.")}</td>
         <td>${L("the same, plus a 1px rule in","to samo, plus kreska 1px w")} <code>currentColor</code></td></tr>
       <tr><td>${L("Outside the two","Poza tymi dwoma")}<br><code>.skip-link</code>, <code>.logo .mark</code></td>
-        <td>${L("Two links that take neither variant. The one past the header, set out under Accessibility, carries neither the colour nor the underline, being invisible until it takes focus. The wordmark, which leads back to the grid from every view, keeps the focus outline and nothing else: the accent beside it draws its colour from the animation, so dimming the word under the pointer would leave the dot at full strength.","Dwa linki, które nie biorą żadnego z wariantów. Ten pomijający nagłówek, opisany w Dostępności, nie nosi ani koloru, ani podkreślenia, bo jest niewidoczny do chwili, gdy przyjmie fokus. Znak marki, prowadzący z każdego widoku z powrotem na siatkę, zatrzymuje samą obwódkę fokusu: akcent obok niego bierze kolor z animacji, więc przygaszenie słowa pod kursorem zostawiłoby kropkę w pełnej sile.")}</td>
+        <td>${L("Two links that take neither variant. The one past everything that repeats, set out under Accessibility, carries neither the colour nor the underline, being invisible until it takes focus. The wordmark, which leads back to the grid from every view, keeps the focus outline and nothing else: the accent beside it draws its colour from the animation, so dimming the word under the pointer would leave the dot at full strength.","Dwa linki, które nie biorą żadnego z wariantów. Ten pomijający wszystko, co się powtarza, opisany w Dostępności, nie nosi ani koloru, ani podkreślenia, bo jest niewidoczny do chwili, gdy przyjmie fokus. Znak marki, prowadzący z każdego widoku z powrotem na siatkę, zatrzymuje samą obwódkę fokusu: akcent obok niego bierze kolor z animacji, więc przygaszenie słowa pod kursorem zostawiłoby kropkę w pełnej sile.")}</td>
         <td>${L("its own","własne")}</td></tr>
       <tr><td><code>.has-icon</code></td>
         <td>${L("An addition to the standalone variant, and the arrow says which way the link leads: back out of checkout, out of the order confirmation, out of the documentation header. A link standing in text never carries one.","Dodatek do wariantu samodzielnego; strzałka mówi, w którą stronę link prowadzi: z kasy, z potwierdzenia zamówienia, z nagłówka dokumentacji. Link stojący w tekście nigdy jej nie nosi.")}</td>
@@ -4430,8 +4451,8 @@ const DS_SECTIONS = [
 
     <h3>${L("Blur","Rozmycie")}</h3>
     <p>${L(
-      `Blur says one of two things: this is not in focus yet, or this is no longer what you are reading. The step follows from how much the thing under it can afford to lose, and a picture can afford least. ${dsTok("--nu-blur-sm")} is a cover arriving, which has to stay recognisable on the way in. ${dsTok("--nu-blur-md")} is a whole view put behind a layer &ndash; the only step applied to the backdrop rather than to the element, and held down because a reader who cannot make out what is underneath loses track of where she will come back to. ${dsTok("--nu-blur-lg")} is text arriving, where a word may be illegible for a moment and nothing is lost by it.`,
-      `Rozmycie mówi jedną z dwóch rzeczy: to jeszcze nie jest ostre albo to już nie jest to, co czytasz. Stopień wynika z tego, ile rzecz pod nim może stracić, a obraz może najmniej. ${dsTok("--nu-blur-sm")} to wchodząca okładka, która ma pozostać rozpoznawalna w drodze. ${dsTok("--nu-blur-md")} to cały widok odłożony za warstwę &ndash; jedyny stopień kładziony na tle, a nie na samym elemencie, i trzymany nisko, bo czytelniczka, która nie rozpoznaje, co jest pod spodem, traci orientację, dokąd wróci. ${dsTok("--nu-blur-lg")} to wchodzący tekst, gdzie słowo może być przez chwilę nieczytelne i nic na tym nie traci.`)}</p>
+      `Blur says one of two things: this is not in focus yet, or this is no longer what you are reading. The step follows from how much the thing under it can afford to lose, and a picture can afford least. ${dsTok("--nu-blur-sm")} is a cover arriving in the grid, which has to stay recognisable on the way in. ${dsTok("--nu-blur-md")} is a whole view put behind a layer &ndash; the only step applied to the backdrop rather than to the element, and held down because a reader who cannot make out what is underneath loses track of where she will come back to. ${dsTok("--nu-blur-lg")} is text arriving, where a word may be illegible for a moment and nothing is lost by it. ${dsTok("--nu-blur-xl")} is the top of the ramp under the block that stays at the top of the window, and it can go that far precisely because it is a strip and not a view: everything below it stays sharp, so nothing is asked of what passes behind except that it stop competing for the eye. That ramp is four layers, and it is deliberately uneven: through the lower half the blur barely moves, a cover on its way up still being a cover, and past the middle it quadruples in one step and doubles again, so the last stretch before the block is where everything goes. One layer cannot do any of it: a single blur is either on or off at a given point, and switching it on reads as a change of opacity rather than of focus.`,
+      `Rozmycie mówi jedną z dwóch rzeczy: to jeszcze nie jest ostre albo to już nie jest to, co czytasz. Stopień wynika z tego, ile rzecz pod nim może stracić, a obraz może najmniej. ${dsTok("--nu-blur-sm")} to wchodząca do siatki okładka, która ma pozostać rozpoznawalna w drodze. ${dsTok("--nu-blur-md")} to cały widok odłożony za warstwę &ndash; jedyny stopień kładziony na tle, a nie na samym elemencie, i trzymany nisko, bo czytelniczka, która nie rozpoznaje, co jest pod spodem, traci orientację, dokąd wróci. ${dsTok("--nu-blur-lg")} to wchodzący tekst, gdzie słowo może być przez chwilę nieczytelne i nic na tym nie traci. ${dsTok("--nu-blur-xl")} to szczyt pasa pod blokiem stojącym u góry okna i może sięgać tak daleko właśnie dlatego, że jest pasem, a nie widokiem: wszystko poniżej zostaje ostre, więc od tego, co przechodzi za nim, nie wymaga się niczego poza tym, żeby przestało zabiegać o wzrok. Pas składa się z czterech warstw i jest celowo nierówny: przez dolną połowę rozmycie prawie nie rośnie, bo okładka w drodze do góry nadal jest okładką, a za połową czterokrotnieje w jednym kroku i podwaja się jeszcze raz &ndash; cała robota dzieje się więc na ostatnim odcinku przed blokiem. Jedna warstwa nie zrobi z tego nic: pojedyncze rozmycie w danym punkcie albo jest, albo go nie ma, a włączanie go czyta się jako zmianę przezroczystości, nie ostrości.`)}</p>
 
     <h3>${L("Transitions","Przejścia")}</h3>
     <table><thead><tr><th>${L("Transition","Przejście")}</th><th>${L("Duration","Czas")}</th><th>${L("Curve","Krzywa")}</th><th>${L("Why","Po co")}</th></tr></thead><tbody>
