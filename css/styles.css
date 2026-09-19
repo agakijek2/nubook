@@ -280,6 +280,20 @@
     --nu-ease-slide:cubic-bezier(.32,.72,.27,1);
     --nu-ease-zoom:cubic-bezier(.22,.8,.2,1);
 
+    /* Blur. Three steps, named by their own measure like the colour and text
+       scales, because the job here is always the same one: something is not yet
+       in focus, or is no longer what the reader is looking at. How much a thing
+       can afford to lose is what sets the step, and a picture can afford least.
+       Small: a cover arriving, which has to stay recognisable on the way in.
+       Middle: a whole view put behind a layer - the only step applied to the
+       backdrop rather than to the element, and held down because a reader who
+       cannot tell what is underneath loses track of where she will come back to.
+       Large: text arriving, where a word may be illegible for a moment and
+       nothing is lost by it. */
+    --nu-blur-sm:6px;
+    --nu-blur-md:8px;
+    --nu-blur-lg:12px;
+
     /* layout */
     /* Icon sizes. Container is what the icon occupies on the page; inset is the
        margin the drawing keeps inside it, stroke included; stroke is measured in
@@ -694,12 +708,20 @@
   .co-bar{display:none}
   /* Sits below the drawers (90/100) but above the shop bar, so the bar keeps
      holding the control that opened the sheet. */
+  /* The tint says the view behind is out of reach; the blur says it is not what
+     the reader is reading. Both fade together over the same step, so the sheet
+     does not arrive over a page that snapped out of focus before it. */
   .sheet-backdrop{
     position:fixed;inset:0;z-index:70;
     background:var(--nu-bg-scrim);
-    opacity:0;pointer-events:none;transition:opacity var(--nu-motion-base) ease;
+    -webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);
+    opacity:0;pointer-events:none;
+    transition:opacity var(--nu-motion-base) ease, backdrop-filter var(--nu-motion-base) ease;
   }
-  .sheet-backdrop.open{opacity:1;pointer-events:auto}
+  .sheet-backdrop.open{
+    opacity:1;pointer-events:auto;
+    -webkit-backdrop-filter:blur(var(--nu-blur-md));backdrop-filter:blur(var(--nu-blur-md));
+  }
 
   /* ---------- shop body: filters column + grid ---------- */
   .shop{
@@ -814,9 +836,17 @@
     gap:var(--nu-space-nano);
   }
   .card{position:relative}
-  /* first-visit mosaic: cards dissolve in, in random order */
-  .grid.mosaic .card{opacity:0;animation:cardIn var(--nu-motion-slower) ease forwards;animation-delay:var(--d,0ms)}
-  @keyframes cardIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  /* first-visit mosaic: cards come into focus, in random order */
+  /* ease-out rather than --nu-ease-zoom: the zoom curve is built to put four
+     fifths of a journey behind it in the first quarter of the time, which is
+     right for a tile crossing the screen and wrong here - it spends the blur
+     before the eye has found the card. Spread evenly, the card is seen coming
+     into focus rather than seen already sharp. */
+  .grid.mosaic .card{opacity:0;animation:cardIn var(--nu-motion-slower) ease-out forwards;animation-delay:var(--d,0ms)}
+  @keyframes cardIn{
+    from{opacity:0;filter:blur(var(--nu-blur-sm));transform:translateY(var(--nu-space-nano))}
+    to{opacity:1;filter:blur(0);transform:none}
+  }
   @media (prefers-reduced-motion:reduce){
     .grid.mosaic .card{animation:none;opacity:1}
   }
@@ -939,9 +969,14 @@
   /* author drawer */
   .drawer-backdrop{
     position:fixed;inset:0;z-index:90;background:var(--nu-bg-scrim);
-    opacity:0;pointer-events:none;transition:opacity var(--nu-motion-slow) ease;
+    -webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);
+    opacity:0;pointer-events:none;
+    transition:opacity var(--nu-motion-slow) ease, backdrop-filter var(--nu-motion-slow) ease;
   }
-  .drawer-backdrop.open{opacity:1;pointer-events:auto}
+  .drawer-backdrop.open{
+    opacity:1;pointer-events:auto;
+    -webkit-backdrop-filter:blur(var(--nu-blur-md));backdrop-filter:blur(var(--nu-blur-md));
+  }
   .drawer{
     position:fixed;top:0;right:0;bottom:0;z-index:100;
     width:min(400px, 92vw);
@@ -1688,7 +1723,6 @@
      passage read as one thing coming in rather than as a stack of separate
      arrivals. inline-block because the rise is a transform, and a transform does
      nothing to a plain inline box. */
-  .bs-text{--bs-blur:12px}
   .bs-w{display:inline-block;opacity:0}
   .bs-w.is-in{animation:bsLineIn var(--nu-motion-slower) var(--nu-ease-zoom) both}
   /* A list marker is drawn by the item, not by the words, so it stood there in
@@ -1706,7 +1740,7 @@
      and then there is nothing for the marker to wait for either. */
   .bs-text li:not(:has(.bs-w))::before{opacity:1}
   @keyframes bsLineIn{
-    from{opacity:0;filter:blur(var(--bs-blur));transform:translateY(var(--nu-space-nano))}
+    from{opacity:0;filter:blur(var(--nu-blur-lg));transform:translateY(var(--nu-space-nano))}
     to{opacity:1;filter:blur(0);transform:none}
   }
 
