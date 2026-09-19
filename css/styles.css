@@ -896,9 +896,14 @@
      field leaves it room, so the text never runs under it. Full strength here,
      not the placeholder's grey: on a field without a box the glyph is what says
      a field is there at all. */
+  /* Centred by the box rather than by a transform. The glyph blends while the
+     field is idle, and a blending element is composited from the box it would
+     have had without the transform - the half that had been moved out of it was
+     being cut away. Anchoring top and bottom and letting the margins settle it
+     leaves the glyph where it was and takes the transform out of the question. */
   .search-wrap .ico-search{
-    position:absolute;left:0;top:50%;
-    transform:translateY(-50%);pointer-events:none;color:var(--nu-fg-primary);
+    position:absolute;left:0;top:0;bottom:0;margin-block:auto;
+    pointer-events:none;color:var(--nu-fg-primary);
   }
   /* Written on the two-class selector on purpose: .input.in-bar sets padding
      with the shorthand, so a padding-left declared at equal weight would be
