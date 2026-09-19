@@ -1169,10 +1169,21 @@ function captureProduct(id){
   if (!ptile) return;
   const rect = ptile.getBoundingClientRect();
   if (!rect.width || !rect.height) return;
-  const info = productEl.querySelector(".p-info");
+  /* The whole view, not the text alone: the way back stands where the reader
+     left it and fades, and everything the view held has to be in that - the way
+     out of it as much as the title. Anything left out of the ghost disappears in
+     one frame instead, which is the jump. The packshot is taken out because it
+     travels on its own. Ids go, so the copy cannot answer for the original while
+     both are on the page. */
+  const view = productEl.cloneNode(true);
+  view.removeAttribute("hidden");
+  view.removeAttribute("id");
+  view.querySelectorAll("[id]").forEach(n => n.removeAttribute("id"));
+  const held = view.querySelector(".p-tile");
+  if (held) held.style.visibility = "hidden";
   backFrom = {
     id, rect, node: ptile.cloneNode(true),
-    info: info ? { rect: info.getBoundingClientRect(), node: info.cloneNode(true) } : null
+    view: { rect: productEl.getBoundingClientRect(), node: view }
   };
 }
 
@@ -1214,12 +1225,27 @@ function playBackTransition(){
       .onfinish = ()=>{ tile.style.visibility = ""; clone.remove(); };
   };
 
-  if (!from.info){ flyTile(); return; }
-  const ghost = fixed(from.info.node, from.info.rect, 59);
-  ghost.style.height = "auto";
-  ghost.animate([{ opacity:1 }, { opacity:0 }],
-    { duration: motionMs("--nu-motion-quick"), easing:"ease", fill:"forwards" })
-    .onfinish = ()=>{ ghost.remove(); flyTile(); };
+  if (!from.view){ flyTile(); return; }
+  /* The view leaves on a sheet of the page's own colour, reaching from where the
+     product began down to the foot of the window. Without it the copy fades over
+     a grid that was already showing through it, and what the reader sees is
+     words evaporating rather than a page being put away. It starts below the
+     header, which belongs to both views and has no business blinking. */
+  const sheet = document.createElement("div");
+  Object.assign(sheet.style, {
+    position:"fixed", left:0, right:0, bottom:0, top: from.view.rect.top + "px",
+    zIndex:59, pointerEvents:"none", overflow:"hidden",
+    background:"var(--nu-bg-primary)"
+  });
+  Object.assign(from.view.node.style, {
+    position:"absolute", left: from.view.rect.left + "px", top:0,
+    width: from.view.rect.width + "px", margin:0
+  });
+  sheet.appendChild(from.view.node);
+  document.body.appendChild(sheet);
+  sheet.animate([{ opacity:1 }, { opacity:0 }],
+    { duration: motionMs("--nu-motion-base"), easing:"ease", fill:"forwards" })
+    .onfinish = ()=>{ sheet.remove(); flyTile(); };
 }
 
 /* --------------------------------------------------- product page + cart */
@@ -2688,7 +2714,7 @@ const DS_TOKEN_GROUPS = [
   ["type",   ["--nu-font","--nu-text","--nu-tracking","--nu-line","--nu-weight","--nu-type","--nu-underline"],
              [["primitive", false], ["style", true]]],
   ["space",  ["--nu-space"]],
-  ["layout", ["--nu-gutter","--nu-form-max","--nu-cover","--nu-thumb","--nu-avatar","--nu-control","--nu-field","--nu-mobar","--nu-cobar"],
+  ["layout", ["--nu-gutter","--nu-form-max","--nu-cover","--nu-thumb","--nu-avatar","--nu-control","--nu-field","--nu-bar","--nu-mobar","--nu-cobar"],
              [["scale", true], ["own", false]]],
   ["icon",   ["--nu-icon"]],
   ["motion", ["--nu-motion","--nu-ease"]],
@@ -3502,6 +3528,8 @@ const DS_SECTIONS = [
     <tbody>
       <tr><td class="spec"><code>--nu-gutter-column</code></td><td>${dsDecl("--nu-gutter-column")} &middot; ${dsVal("--nu-gutter-column")}</td>
           <td>${L("The gap between columns in every side-by-side layout: shop, product, checkout, these docs. One name, because how far apart two columns sit is a single decision.","Odstęp między kolumnami w każdym układzie dwukolumnowym: sklep, produkt, zamówienie, ta dokumentacja. Jedna nazwa, bo to, jak daleko od siebie stoją dwie kolumny, jest jedną decyzją.")}</td></tr>
+      <tr><td class="spec"><code>--nu-bar-height</code></td><td>${dsDecl("--nu-bar-height")}</td>
+          <td>${L("The height of the row standing above the content, before the reader reaches what she came for. Every view has one and each holds one control on the left: the filter toggle in the shop, the way back on a product. The height is built from the search field &ndash; its padding twice over, one line of text and the rule underneath &ndash; because the field is the tallest thing any of these rows holds and sets the height in the shop anyway. One name, because a control that keeps its job across two views has to keep its place as well, and two copies of a height drift the first time the field changes.","Wysokość rzędu stojącego nad treścią, zanim czytelniczka dojdzie do tego, po co przyszła. Każdy widok ma taki rząd i każdy trzyma w nim jedną kontrolkę po lewej: przełącznik filtrów w sklepie, powrót na karcie produktu. Wysokość zbudowana jest z pola wyszukiwania &ndash; jego wypełnienie dwa razy, jeden wiersz tekstu i kreska pod spodem &ndash; bo pole jest najwyższą rzeczą, jaka w takim rzędzie stoi, i tak czy inaczej ustala wysokość belki w sklepie. Jedna nazwa, bo kontrolka, która przez dwa widoki ma to samo zadanie, musi mieć też to samo miejsce, a dwie kopie wysokości rozjadą się przy pierwszej zmianie pola.")}</td></tr>
       <tr><td class="spec"><code>--nu-mobar-height</code><br><code>--nu-cobar-height</code></td><td>${dsDecl("--nu-mobar-height")} &middot; ${dsVal("--nu-mobar-height")}</td>
           <td>${L("The height of each mobile bar: filters and sorting on the product list, the total and the submit in checkout. The page reserves exactly this much room at its foot, and the filter sheet sits on top of it. The step is a starting value: once the bar is rendered, the script replaces it with the measured height rounded up to the 4px rhythm, so a longer sort label in another language, or the safe area on a phone with a gesture bar, is never cropped.","Wysokość każdej mobilnej belki: filtry i sortowanie na liście produktów, suma i złożenie zamówienia w kasie. Strona rezerwuje dokładnie tyle miejsca u dołu, a arkusz filtrów siada na belce. Stopień jest wartością wyjściową: po wyrenderowaniu belki skrypt zastępuje go zmierzoną wysokością, zaokrągloną w górę do rytmu 4px, więc dłuższa etykieta sortowania w innym języku ani pasek gestu na telefonie nie zostaną przycięte.")}</td></tr>
       <tr><td class="spec"><code>--nu-mobar-padding</code><br><code>--nu-mobar-gap</code></td><td>${dsDecl("--nu-mobar-padding")} &middot; ${dsVal("--nu-mobar-padding")}</td>
