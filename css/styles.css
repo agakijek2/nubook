@@ -73,6 +73,12 @@
        It is a wash, not a lid - the work is done by the blur underneath, and a
        solid ground would hide what the blur is there to soften. */
     --nu-bg-masthead:color-mix(in srgb, var(--nu-bg-primary) 70%, transparent);
+    /* The ground under the search field. Nearly the same wash as the block
+       above, and a separate name because the two answer different questions -
+       how much of the shelf shows through a bar, and how much may show through
+       the one control a reader types into. The field's is the stronger of the
+       two, words being harder to hold than a row of labels. */
+    --nu-bg-search:color-mix(in srgb, var(--nu-bg-primary) 75%, transparent);
     /* What a shadow is made of. The same value as the inverse ground while the
        page is light, and a separate name because the two roles part company the
        moment it is dark: the opposite of a dark page is light, but a shadow
@@ -151,16 +157,6 @@
 
     /* border – outlines and separators */
     --nu-border-neutral:light-dark(var(--nu-grey-100), var(--nu-grey-700));     /* hairlines, field borders, dividers */
-    /* A hairline that lets the page through instead of covering it. Where a rule
-       stands over something that keeps changing - a cover scrolling behind the
-       block at the top of the window - one solid value is right for one backdrop
-       and wrong for the next. This one takes a fifth of the ordinary ink and
-       leaves the rest to whatever is underneath, so it darkens over a dark cover
-       and lightens over a pale one without ever leaving the register of a
-       hairline. It cannot be done by inverting: the block is a stacking context
-       of its own, so anything mixing inside it mixes with the veil and not with
-       the shelf, and where the veil runs thin the raw value comes through. */
-    --nu-border-sheer:color-mix(in srgb, var(--nu-fg-secondary) 20%, transparent);
     --nu-border-primary:light-dark(var(--nu-grey-900), var(--nu-grey-100));     /* focus rings, selected chip, badge */
     --nu-border-muted:light-dark(var(--nu-grey-400), var(--nu-grey-600));       /* receded outline: unavailable badge */
     --nu-border-hover:light-dark(var(--nu-grey-400), var(--nu-grey-600));       /* an outline answering the pointer */
@@ -896,14 +892,36 @@
      field leaves it room, so the text never runs under it. Full strength here,
      not the placeholder's grey: on a field without a box the glyph is what says
      a field is there at all. */
-  /* Centred by the box rather than by a transform. The glyph blends while the
-     field is idle, and a blending element is composited from the box it would
-     have had without the transform - the half that had been moved out of it was
-     being cut away. Anchoring top and bottom and letting the margins settle it
-     leaves the glyph where it was and takes the transform out of the question. */
+  /* The field stands in the bar over the grid, so whatever the reader is
+     scrolling passes behind it. A ground of its own keeps the prompt readable
+     there, and it has no edges: the fill is full in the middle and gone by the
+     brim, so nothing draws a box around a control that is meant to read as a
+     line of text. It reaches a step past the field on each side to have room to
+     fade in. Two masks crossed, because one gradient leaves the corners hard.
+     Always on, not only while scrolling: over the page's own colour it cannot
+     be seen at all, so there is nothing to switch. */
+  .search-bed{
+    position:absolute;
+    inset:calc(-1 * var(--nu-space-micro)) calc(-1 * var(--nu-space-medium));
+    pointer-events:none;
+    background:var(--nu-bg-search);
+    -webkit-backdrop-filter:blur(var(--nu-blur-md));backdrop-filter:blur(var(--nu-blur-md));
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+    mask-image:
+      linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%),
+      linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-composite:intersect;
+  }
+  /* A positioned element paints over an unpositioned one whatever the order in
+     the markup, so the field takes a position of its own to stay above its
+     ground. The glyph is positioned already. */
+  .search-wrap .input.in-bar{position:relative}
   .search-wrap .ico-search{
-    position:absolute;left:0;top:0;bottom:0;margin-block:auto;
-    pointer-events:none;color:var(--nu-fg-primary);
+    position:absolute;left:0;top:50%;
+    transform:translateY(-50%);pointer-events:none;color:var(--nu-fg-primary);
   }
   /* Written on the two-class selector on purpose: .input.in-bar sets padding
      with the shorthand, so a padding-left declared at equal weight would be
@@ -1467,30 +1485,6 @@
      taking the focus or typing a word puts it back on the page's own colours,
      where a query has to read as text and not as an effect. The magnifier goes
      with them, being part of the same prompt. */
-  /* Two answers, because the two parts are asking different things. The words
-     have to be read, so they invert and keep their distance from anything behind
-     them. The rule only has to be noticed, so it goes sheer and lets the cover
-     through - inverted it would come out near-black down here, the veil being
-     thin at the foot of the block and a mix with nothing leaving the raw value
-     on screen. */
-  body.is-scrolled .search-wrap:not(:focus-within) .input.in-bar:placeholder-shown{
-    mix-blend-mode:difference;
-    color:var(--nu-fg-secondary);
-    border-bottom-color:transparent;
-  }
-  /* The rule moves up to the wrapper for the length of this state, because a
-     blend takes the whole element with it and the rule is not supposed to come.
-     It lands in the same place: the wrapper closes on the field, so its foot is
-     the field's foot. */
-  body.is-scrolled .search-wrap:not(:focus-within):has(.input:placeholder-shown){
-    border-bottom:1px solid var(--nu-border-sheer);
-  }
-  body.is-scrolled .search-wrap:not(:focus-within) .input.in-bar:placeholder-shown::placeholder{
-    color:inherit;
-  }
-  body.is-scrolled .search-wrap:not(:focus-within):has(.input:placeholder-shown) .ico-search{
-    mix-blend-mode:difference;color:var(--nu-fg-secondary);
-  }
   .input.in-bar{
     border:0;border-bottom:1px solid var(--nu-border-neutral);
     padding:var(--nu-space-milli) 0;

@@ -3271,6 +3271,7 @@ const DS_SECTIONS = [
       ["--nu-bg-secondary",L("Raised / recessed panel","Panel wyniesiony")],
       ["--nu-bg-inverse",L("Darkest surface","Powierzchnia najciemniejsza")],
       ["--nu-bg-masthead",L("Ground of the block that stays at the top","Tło bloku, który zostaje u góry")],
+      ["--nu-bg-search",L("Ground under the search field","Tło pod polem wyszukiwania")],
       ["--nu-bg-action",L("Primary action, body","Akcja główna, korpus")],
       ["--nu-bg-action-glow",L("Primary action, lift under the pointer","Akcja główna, rozjaśnienie pod kursorem")],
       ["--nu-bg-action-glow-deep",L("Primary action, cast aura","Akcja główna, aura rzucana")],
@@ -3312,7 +3313,6 @@ const DS_SECTIONS = [
     <thead><tr><th>Token</th><th>${L("Built from","Zbudowany z")}</th><th>${L("Meaning","Znaczenie")}</th></tr></thead>
     <tbody>${dsColorRows([
       ["--nu-border-neutral",L("Separation","Rozdzielenie")],
-      ["--nu-border-sheer",L("A hairline that lets the page through","Kreska przepuszczająca to, co za nią")],
       ["--nu-border-primary",L("Emphasis / selection","Podkreślenie / zaznaczenie")],
       ["--nu-border-muted",L("Receded","Wyciszony")],
       ["--nu-border-hover",L("Answering the pointer","Odpowiedź na kursor")],
