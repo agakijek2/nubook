@@ -1164,10 +1164,13 @@ function playOpenTransition(){
 }
 
 /* ---------------- packshot close transition ---------------- */
-/* The way out is the way in, run backwards: the words the book brought with it
-   leave first, then the packshot shrinks onto the card it came from. Both halves
-   are measured while the product view is still laid out - once it is hidden the
-   boxes are gone - so this runs in two parts, one either side of the switch. */
+/* The way out is the way in, run backwards: the packshot shrinks onto the card
+   it came from, and everything the book brought with it goes at the moment the
+   reader asks to leave. The words were given their own exit once, ahead of the
+   flight; it read as a wait rather than as a departure, the reader having
+   already said where she wants to be. The packshot is measured while the
+   product view is still laid out - once it is hidden the box is gone - so this
+   runs in two parts, one either side of the switch. */
 let backFrom = null;
 function captureProduct(id){
   backFrom = null;
@@ -1175,22 +1178,7 @@ function captureProduct(id){
   if (!ptile) return;
   const rect = ptile.getBoundingClientRect();
   if (!rect.width || !rect.height) return;
-  /* The whole view, not the text alone: the way back stands where the reader
-     left it and fades, and everything the view held has to be in that - the way
-     out of it as much as the title. Anything left out of the ghost disappears in
-     one frame instead, which is the jump. The packshot is taken out because it
-     travels on its own. Ids go, so the copy cannot answer for the original while
-     both are on the page. */
-  const view = productEl.cloneNode(true);
-  view.removeAttribute("hidden");
-  view.removeAttribute("id");
-  view.querySelectorAll("[id]").forEach(n => n.removeAttribute("id"));
-  const held = view.querySelector(".p-tile");
-  if (held) held.style.visibility = "hidden";
-  backFrom = {
-    id, rect, node: ptile.cloneNode(true),
-    view: { rect: productEl.getBoundingClientRect(), node: view }
-  };
+  backFrom = { id, rect, node: ptile.cloneNode(true) };
 }
 
 function playBackTransition(){
@@ -1211,9 +1199,8 @@ function playBackTransition(){
   };
 
   /* The packshot stands in from the first frame, exactly where the product view
-     left it. Putting it up only once the words have gone would take it off the
-     screen for the length of that fade and put it back to fly - which is not a
-     transition but a blink. Only the movement waits. */
+     left it, and sets off in the same one. Everything else the view held has
+     already gone with the switch. */
   tile.style.visibility = "hidden";
   const clone = from.node;
   clone.classList.add("fly-tile"); clone.classList.remove("p-tile");
@@ -1230,43 +1217,18 @@ function playBackTransition(){
     document.body.classList.remove("is-flying");
     tile.style.visibility = ""; clone.remove();
   };
-  /* The target is measured when the flight starts, not when it is planned. A
-     quarter of a second passes while the view leaves, and anything that moves
-     the page in that time - a late scroll, an image settling, the reader's own
-     wheel - would otherwise send the packshot to where the card used to be. */
-  const flyTile = ()=>{
-    const to = tile.getBoundingClientRect();
-    if (!to.width || !to.height){ koniec(); return; }
-    const s = to.width / from.rect.width;
-    const dx = to.left - from.rect.left, dy = to.top - from.rect.top;
-    clone.animate([
-      { transform:"translate(0,0) scale(1)" },
-      { transform:`translate(${dx}px,${dy}px) scale(${s})` }
-    ], { duration: motionMs("--nu-motion-slower"), easing: motionCurve("--nu-ease-zoom"), fill:"forwards" })
-      .onfinish = koniec;
-  };
-
-  if (!from.view){ flyTile(); return; }
-  /* The view leaves on a sheet of the page's own colour, reaching from where the
-     product began down to the foot of the window. Without it the copy fades over
-     a grid that was already showing through it, and what the reader sees is
-     words evaporating rather than a page being put away. It starts below the
-     header, which belongs to both views and has no business blinking. */
-  const sheet = document.createElement("div");
-  Object.assign(sheet.style, {
-    position:"fixed", left:0, right:0, bottom:0, top: from.view.rect.top + "px",
-    zIndex:59, pointerEvents:"none", overflow:"hidden",
-    background:"var(--nu-bg-primary)"
-  });
-  Object.assign(from.view.node.style, {
-    position:"absolute", left: from.view.rect.left + "px", top:0,
-    width: from.view.rect.width + "px", margin:0
-  });
-  sheet.appendChild(from.view.node);
-  document.body.appendChild(sheet);
-  sheet.animate([{ opacity:1 }, { opacity:0 }],
-    { duration: motionMs("--nu-motion-base"), easing:"ease", fill:"forwards" })
-    .onfinish = ()=>{ sheet.remove(); flyTile(); };
+  /* The target is measured here rather than in captureProduct, because between
+     the two the page has been switched over and scrolled back to where the grid
+     was left - and the card is only where it belongs once that has happened. */
+  const to = tile.getBoundingClientRect();
+  if (!to.width || !to.height){ koniec(); return; }
+  const s = to.width / from.rect.width;
+  const dx = to.left - from.rect.left, dy = to.top - from.rect.top;
+  clone.animate([
+    { transform:"translate(0,0) scale(1)" },
+    { transform:`translate(${dx}px,${dy}px) scale(${s})` }
+  ], { duration: motionMs("--nu-motion-slower"), easing: motionCurve("--nu-ease-zoom"), fill:"forwards" })
+    .onfinish = koniec;
 }
 
 /* --------------------------------------------------- product page + cart */
@@ -4468,8 +4430,8 @@ const DS_SECTIONS = [
       <tr><td>${L("Open a product","Otwarcie produktu")}</td><td>${dsTok("--nu-motion-slower")}</td><td>${dsTok("--nu-ease-zoom")}</td>
         <td>${L("The tile grows into the packshot, and once it settles the book details appear first, then the button","Kafel powiększa się do packshotu, a kiedy dojdzie na miejsce, pojawiają się najpierw informacje o książce, potem przycisk")}</td></tr>
       <tr><td>${L("Back to the grid","Powrót do siatki")}</td>
-        <td>${L("the words","słowa")} ${dsTok("--nu-motion-quick")}, ${L("then the packshot","potem packshot")} ${dsTok("--nu-motion-slower")}</td><td>${dsTok("--nu-ease-zoom")}</td>
-        <td>${L("The way in, run backwards: the words the book brought with it leave first, then the packshot shrinks onto the card it came from. A book that the filters no longer show has nothing to shrink onto, and the view simply changes","Wejście odtworzone wstecz: najpierw odchodzą słowa, które książka ze sobą przyniosła, potem packshot zmniejsza się do karty, z której wyszedł. Książka, której filtry już nie pokazują, nie ma do czego wracać i wtedy widok po prostu się zmienia")}</td></tr>
+        <td>${dsTok("--nu-motion-slower")}</td><td>${dsTok("--nu-ease-zoom")}</td>
+        <td>${L("The way in, run backwards: the packshot shrinks onto the card it came from, and everything the book brought with it goes the moment the reader asks to leave. The words were given an exit of their own once, ahead of the flight; it read as a wait, the reader having already said where she wants to be. A book that the filters no longer show has nothing to shrink onto, and the view simply changes","Wejście odtworzone wstecz: packshot zmniejsza się do karty, z której wyszedł, a wszystko, co książka ze sobą przyniosła, odchodzi w chwili, w której czytelniczka prosi o wyjście. Słowa miały kiedyś własne pożegnanie przed lotem; czytało się jako czekanie, skoro czytelniczka już powiedziała, gdzie chce być. Książka, której filtry już nie pokazują, nie ma do czego wracać i wtedy widok po prostu się zmienia")}</td></tr>
       <tr><td>${L("A view put behind a layer","Zasłonięcie widoku")}</td>
         <td>${L("the drawers","szuflady")} ${dsTok("--nu-motion-slow")}, ${L("the filter sheet","arkusz filtrów")} ${dsTok("--nu-motion-base")}</td><td>ease</td>
         <td>${L("The tint and the blur come up together over one step, so the layer does not arrive over a view that snapped out of focus before it. The tint says the view is out of reach, the blur says it is not what the reader is reading","Przyciemnienie i rozmycie wchodzą razem w jednym stopniu, więc warstwa nie zjawia się nad widokiem, który stracił ostrość przed nią. Przyciemnienie mówi, że widok jest poza zasięgiem, rozmycie &ndash; że nie jest tym, co czytelniczka czyta")}</td></tr>
