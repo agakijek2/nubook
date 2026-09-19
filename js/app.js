@@ -1055,7 +1055,7 @@ function render(rebuildChips = true){
   grid.innerHTML = list.map(b=>{
     const st = b.s ? STATUS[b.s] : null;
     return `
-    <article class="card ${b.s==="out"?"is-out":""}">
+    <article class="card ${b.s==="out"?"is-out":""}" data-id="${b.id}">
       ${EMBEDDED
         ? `<div class="cardlink" role="link" tabindex="0" aria-label="${titleOf(b)}, ${b.a}"
              onclick="location.hash='p${b.id}'"
@@ -1079,7 +1079,7 @@ function render(rebuildChips = true){
       cards[cardIdx].style.setProperty("--d", (slot*step) + "ms");
     });
     grid.classList.add("mosaic");
-    const total = order.length*step + 600;
+    const total = order.length*step + motionMs("--nu-motion-slower");
     setTimeout(()=>{
       grid.classList.remove("mosaic");
       cards.forEach(c=>c.style.removeProperty("--d"));
@@ -1155,6 +1155,71 @@ function playOpenTransition(){
     clone.remove();          // real tile is pixel-identical at this point – no reload/flash
     revealInfo();
   };
+}
+
+/* ---------------- packshot close transition ---------------- */
+/* The way out is the way in, run backwards: the words the book brought with it
+   leave first, then the packshot shrinks onto the card it came from. Both halves
+   are measured while the product view is still laid out - once it is hidden the
+   boxes are gone - so this runs in two parts, one either side of the switch. */
+let backFrom = null;
+function captureProduct(id){
+  backFrom = null;
+  const ptile = productEl.querySelector(".p-tile");
+  if (!ptile) return;
+  const rect = ptile.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  const info = productEl.querySelector(".p-info");
+  backFrom = {
+    id, rect, node: ptile.cloneNode(true),
+    info: info ? { rect: info.getBoundingClientRect(), node: info.cloneNode(true) } : null
+  };
+}
+
+function playBackTransition(){
+  const from = backFrom; backFrom = null;
+  if (!from || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const tile = gridEl.querySelector(`.card[data-id="${from.id}"] .tile`);
+  if (!tile) return;                       // filtered away since: nothing to fly back to
+  const to = tile.getBoundingClientRect();
+  if (!to.width || !to.height) return;
+
+  const fixed = (node, rect, z) => {
+    Object.assign(node.style, {
+      position:"fixed", left:rect.left+"px", top:rect.top+"px",
+      width:rect.width+"px", height:rect.height+"px",
+      margin:0, zIndex:z, pointerEvents:"none",
+      transformOrigin:"top left", willChange:"transform, opacity", aspectRatio:"auto"
+    });
+    document.body.appendChild(node);
+    return node;
+  };
+
+  /* The packshot stands in from the first frame, exactly where the product view
+     left it. Putting it up only once the words have gone would take it off the
+     screen for the length of that fade and put it back to fly - which is not a
+     transition but a blink. Only the movement waits. */
+  tile.style.visibility = "hidden";
+  const clone = from.node;
+  clone.classList.add("fly-tile"); clone.classList.remove("p-tile");
+  fixed(clone, from.rect, 60);
+
+  const flyTile = ()=>{
+    const s = to.width / from.rect.width;
+    const dx = to.left - from.rect.left, dy = to.top - from.rect.top;
+    clone.animate([
+      { transform:"translate(0,0) scale(1)" },
+      { transform:`translate(${dx}px,${dy}px) scale(${s})` }
+    ], { duration: motionMs("--nu-motion-slower"), easing: motionCurve("--nu-ease-zoom"), fill:"forwards" })
+      .onfinish = ()=>{ tile.style.visibility = ""; clone.remove(); };
+  };
+
+  if (!from.info){ flyTile(); return; }
+  const ghost = fixed(from.info.node, from.info.rect, 59);
+  ghost.style.height = "auto";
+  ghost.animate([{ opacity:1 }, { opacity:0 }],
+    { duration: motionMs("--nu-motion-quick"), easing:"ease", fill:"forwards" })
+    .onfinish = ()=>{ ghost.remove(); flyTile(); };
 }
 
 /* --------------------------------------------------- product page + cart */
@@ -2231,7 +2296,7 @@ document.getElementById("bsClose").onclick = bsShut;
 /* Pressing the mark reopens what was dismissed, or puts it away again. */
 bsAvaEl.onclick = () => bsPanel.hidden ? bsShow() : bsShut();
 
-let gridScroll = 0, lastView = null;
+let gridScroll = 0, lastView = null, lastProductId = null;
 
 function route(){
   const b = currentProduct();
@@ -2242,6 +2307,10 @@ function route(){
     : location.hash === "#done" && lastOrder ? "done"
     : "grid";
   if (lastView === "grid" && view !== "grid") gridScroll = window.scrollY;
+  /* Measured before anything is hidden: once the product view is gone so are its
+     boxes, and the way back needs both of them. */
+  const goingBack = lastView === "product" && view === "grid";
+  if (goingBack) captureProduct(lastProductId); else backFrom = null;
   /* She belongs to one view, so leaving it takes her with it. */
   bsSync(view === "product" ? b : null);
   dsEl.hidden = view !== "design";
@@ -2269,7 +2338,8 @@ function route(){
      may have opened the shop on an address that is not the grid. */
   else if (lastView && lastView !== "grid") window.scrollTo({top:gridScroll, behavior:"instant"});
   lastView = view;
-  if (view === "product") playOpenTransition();   // measure the target after scrolling
+  if (view === "product"){ lastProductId = b.id; playOpenTransition(); }  // measure the target after scrolling
+  if (goingBack) playBackTransition();            // and the way back, after the scroll is restored
 }
 window.addEventListener("hashchange", route);
 
@@ -2622,6 +2692,7 @@ const DS_TOKEN_GROUPS = [
              [["scale", true], ["own", false]]],
   ["icon",   ["--nu-icon"]],
   ["motion", ["--nu-motion","--nu-ease"]],
+  ["blur",   ["--nu-blur"]],
   ["focus",  ["--nu-focus"]],
   ["docs",   ["--ds-"]],
 ];
@@ -3017,7 +3088,8 @@ const DS_SECTIONS = [
     const names = {
       colour: L("Colour","Kolor"), type: L("Typography","Typografia"),
       space: L("Spacing","Odstępy"), layout: L("Layout and components","Układ i komponenty"),
-      icon: L("Icons","Ikony"), motion: L("Motion","Ruch"), focus: L("Focus","Fokus"),
+      icon: L("Icons","Ikony"), motion: L("Motion","Ruch"),
+      blur: L("Blur","Rozmycie"), focus: L("Focus","Fokus"),
       docs: L("Documentation","Dokumentacja"), other: L("Not sorted yet","Jeszcze nieprzypisane"),
       primitive: L("Primitives","Prymitywy"), semantic: L("Semantic","Semantyczne"),
       style: L("Styles","Style"),
@@ -4317,14 +4389,25 @@ const DS_SECTIONS = [
       "None of the three that answer an action starts slowly. A slow opening makes a click look ignored for the first tenth of a second, which reads as the interface stalling rather than as a style. The last two answer nothing and are free of the rule: <code>ease-in-out</code> carries movement that repeats, and <code>linear</code> a move measured from one place to another.",
       "Żadna z trzech odpowiadających na działanie nie zaczyna się powoli. Wolny start sprawia, że kliknięcie wygląda na zignorowane przez pierwszą dziesiątą sekundy, a to czyta się jako zacinanie interfejsu, nie jako styl. Dwie ostatnie na nic nie odpowiadają i ta zasada ich nie dotyczy: <code>ease-in-out</code> prowadzi ruch, który się powtarza, a <code>linear</code> ruch mierzony z jednego położenia do drugiego.")}</p>
 
+    <h3>${L("Blur","Rozmycie")}</h3>
+    <p>${L(
+      `Blur says one of two things: this is not in focus yet, or this is no longer what you are reading. The step follows from how much the thing under it can afford to lose, and a picture can afford least. ${dsTok("--nu-blur-sm")} is a cover arriving, which has to stay recognisable on the way in. ${dsTok("--nu-blur-md")} is a whole view put behind a layer &ndash; the only step applied to the backdrop rather than to the element, and held down because a reader who cannot make out what is underneath loses track of where she will come back to. ${dsTok("--nu-blur-lg")} is text arriving, where a word may be illegible for a moment and nothing is lost by it.`,
+      `Rozmycie mówi jedną z dwóch rzeczy: to jeszcze nie jest ostre albo to już nie jest to, co czytasz. Stopień wynika z tego, ile rzecz pod nim może stracić, a obraz może najmniej. ${dsTok("--nu-blur-sm")} to wchodząca okładka, która ma pozostać rozpoznawalna w drodze. ${dsTok("--nu-blur-md")} to cały widok odłożony za warstwę &ndash; jedyny stopień kładziony na tle, a nie na samym elemencie, i trzymany nisko, bo czytelniczka, która nie rozpoznaje, co jest pod spodem, traci orientację, dokąd wróci. ${dsTok("--nu-blur-lg")} to wchodzący tekst, gdzie słowo może być przez chwilę nieczytelne i nic na tym nie traci.`)}</p>
+
     <h3>${L("Transitions","Przejścia")}</h3>
     <table><thead><tr><th>${L("Transition","Przejście")}</th><th>${L("Duration","Czas")}</th><th>${L("Curve","Krzywa")}</th><th>${L("Why","Po co")}</th></tr></thead><tbody>
       <tr><td>${L("Open a product","Otwarcie produktu")}</td><td>${dsTok("--nu-motion-slower")}</td><td>${dsTok("--nu-ease-zoom")}</td>
         <td>${L("The tile grows into the packshot, and once it settles the book details appear first, then the button","Kafel powiększa się do packshotu, a kiedy dojdzie na miejsce, pojawiają się najpierw informacje o książce, potem przycisk")}</td></tr>
+      <tr><td>${L("Back to the grid","Powrót do siatki")}</td>
+        <td>${L("the words","słowa")} ${dsTok("--nu-motion-quick")}, ${L("then the packshot","potem packshot")} ${dsTok("--nu-motion-slower")}</td><td>${dsTok("--nu-ease-zoom")}</td>
+        <td>${L("The way in, run backwards: the words the book brought with it leave first, then the packshot shrinks onto the card it came from. A book that the filters no longer show has nothing to shrink onto, and the view simply changes","Wejście odtworzone wstecz: najpierw odchodzą słowa, które książka ze sobą przyniosła, potem packshot zmniejsza się do karty, z której wyszedł. Książka, której filtry już nie pokazują, nie ma do czego wracać i wtedy widok po prostu się zmienia")}</td></tr>
+      <tr><td>${L("A view put behind a layer","Zasłonięcie widoku")}</td>
+        <td>${L("the drawers","szuflady")} ${dsTok("--nu-motion-slow")}, ${L("the filter sheet","arkusz filtrów")} ${dsTok("--nu-motion-base")}</td><td>ease</td>
+        <td>${L("The tint and the blur come up together over one step, so the layer does not arrive over a view that snapped out of focus before it. The tint says the view is out of reach, the blur says it is not what the reader is reading","Przyciemnienie i rozmycie wchodzą razem w jednym stopniu, więc warstwa nie zjawia się nad widokiem, który stracił ostrość przed nią. Przyciemnienie mówi, że widok jest poza zasięgiem, rozmycie &ndash; że nie jest tym, co czytelniczka czyta")}</td></tr>
       <tr><td>${L("Toggle filters","Przełączenie filtrów")}</td><td>${L("tiles","kafle")} ${dsTok("--nu-motion-base")}, ${L("column","kolumna")} ${dsTok("--nu-motion-instant")}</td><td>linear</td>
         <td>${L("Tiles resize in place; the column clears first so nothing overlaps","Kafle skalują się w miejscu; kolumna znika pierwsza, żeby nic na siebie nie nachodziło")}</td></tr>
-      <tr><td>${L("First paint of the grid","Pierwsze wyświetlenie siatki")}</td><td>${dsTok("--nu-motion-slower")} ${L("a card, starts spread over","na kartę, starty rozłożone w")} ${dsTok("--nu-motion-stagger")}</td><td>ease</td>
-        <td>${L("Cards dissolve in a random order &ndash; a mosaic, shown once per visit","Karty pojawiają się w losowej kolejności &ndash; mozaika, raz na wizytę")}</td></tr>
+      <tr><td>${L("First paint of the grid","Pierwsze wyświetlenie siatki")}</td><td>${dsTok("--nu-motion-slower")} ${L("a card, starts spread over","na kartę, starty rozłożone w")} ${dsTok("--nu-motion-stagger")}</td><td>ease-out</td>
+        <td>${L("A card comes out of blur as it fades in and settles the last of the way up, in a random order &ndash; a mosaic coming into focus, shown once per visit. The same treatment the bookseller's lines take, at the weaker step, because a cover is a picture and has to stay recognisable on the way in. Not the zoom curve: it would spend the blur in the first quarter of the time, before the eye has found the card","Karta wychodzi z rozmycia, podnosząc się przy tym ostatni kawałek, w losowej kolejności &ndash; mozaika, która się wyostrza, raz na wizytę. To samo, co biorą linie księgarki, tylko w słabszym stopniu, bo okładka jest obrazem i ma pozostać rozpoznawalna w drodze. Nie na krzywej powiększenia: ta wydałaby rozmycie w pierwszej ćwiartce czasu, zanim oko znajdzie kartę")}</td></tr>
       <tr><td>${L("Add to cart","Dodanie do koszyka")}</td><td>${L("from","od")} ${dsTok("--nu-motion-quick")} ${L("to","do")} ${dsTok("--nu-motion-slow")}</td><td>${L("ease, the drawer on","ease, szuflada na")} ${dsTok("--nu-ease-slide")}</td>
         <td>${L("Label crossfades, counter fades in, drawer follows","Napis przenika, licznik się pojawia, potem wysuwa się szuflada")}</td></tr>
       <tr><td>${L("Search","Wyszukiwanie")}</td><td>${L("the field","pole")} ${dsTok("--nu-motion-base")}, ${L("the edge","krawędź")} ${dsTok("--nu-motion-quick")}</td><td>ease</td>
