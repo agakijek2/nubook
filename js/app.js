@@ -1219,7 +1219,17 @@ function playBackTransition(){
   clone.classList.add("fly-tile"); clone.classList.remove("p-tile");
   fixed(clone, from.rect, 60);
 
-  const koniec = ()=>{ tile.style.visibility = ""; clone.remove(); };
+  /* The filter column stands a step above the block so the ramp washes the
+     covers going past it and not the controls standing still. That step is also
+     above the packshot in flight, which would otherwise pass behind the column
+     and come out the other side. It gives the step up for the length of the
+     flight and takes it back afterwards: nothing is scrolling then, so there is
+     no ramp for it to need protecting from. */
+  document.body.classList.add("is-flying");
+  const koniec = ()=>{
+    document.body.classList.remove("is-flying");
+    tile.style.visibility = ""; clone.remove();
+  };
   /* The target is measured when the flight starts, not when it is planned. A
      quarter of a second passes while the view leaves, and anything that moves
      the page in that time - a late scroll, an image settling, the reader's own
