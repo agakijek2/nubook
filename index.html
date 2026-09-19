@@ -18,10 +18,13 @@
 <a class="skip-link" id="skipLink" href="#content">Przejdź do treści</a>
 
 <!-- Everything that stays at the top of the window while the reader scrolls:
-     the promotion, the header and, on the grid, the bar holding the filters and
-     the search. One element rather than three sticky ones, so the block's height
-     is whatever it happens to contain - the bar is hidden outside the grid and
-     the block simply gets shorter, with nothing to recalculate. -->
+     the promotion, the header and, on a product page, the way back out of it.
+     One element rather than three sticky ones, so the block's height is whatever
+     it happens to contain - the row is hidden off the product view and the block
+     simply gets shorter, with nothing to recalculate.
+     The controls over the grid are deliberately not here. A field is for typing
+     into, and it reads worst of all while the shelf slides behind it, so the bar
+     holding it stays with the shelf it narrows. -->
 <div class="masthead" id="masthead">
 
 <!-- The blur, in four layers. One layer can only be on or off at a given point,
@@ -80,6 +83,22 @@
   </div>
 </header>
 
+
+<!-- The same row on a product page, holding the one control that view offers
+     above its content. It stays in the block: on a product page there is no bar
+     over a grid, and the way out has to be reachable wherever the reader has
+     scrolled to. -->
+<div class="productbar" id="productbar" hidden>
+  <button type="button" class="back btn-tertiary has-icon" id="backBtn"></button>
+</div>
+
+</div><!-- /.masthead -->
+
+<!-- Where the skip link lands. It sits right after everything that repeats from
+     view to view, so the link skips the promotion and the navigation in one go
+     and lands on what the reader came for. -->
+<div id="content" tabindex="-1"></div>
+
 <div class="shopbar" id="shopbar">
   <button class="filter-toggle btn-tertiary has-icon" id="filterToggle" aria-expanded="true" aria-controls="filters">
     <svg class="ico-sm ico-filter" data-icon="filter" aria-hidden="true"></svg><span id="lblFilter">Filtry</span>
@@ -88,10 +107,6 @@
        what it is: a third way of narrowing the same list. The magnifier sits
        inside the field, on the terms the select already set for its chevron. -->
   <div class="search-wrap">
-    <!-- The ground the field reads against. Nothing to announce: it says nothing
-         the field does not already say, and only exists so the words hold when a
-         cover passes behind them. -->
-    <span class="search-bed" aria-hidden="true"></span>
     <svg class="ico-search ico-sm" data-icon="search" aria-hidden="true"></svg>
     <input type="search" class="input in-bar" id="searchInput" autocomplete="off" placeholder="Szukaj tytułu lub autorki" aria-label="Szukaj tytułu lub autorki">
     <button type="button" class="btn-tertiary search-clear" id="searchClear" hidden aria-label="Wyczyść"><svg class="ico-sm ico-close" data-icon="cross" aria-hidden="true"></svg></button>
@@ -108,20 +123,6 @@
     </div>
   </div>
 </div>
-
-<!-- The same row on a product page, holding the one control that view offers
-     above its content. Same class, so the height and the place of that control
-     are one decision rather than two that have to be kept equal. -->
-<div class="productbar" id="productbar" hidden>
-  <button type="button" class="back btn-tertiary has-icon" id="backBtn"></button>
-</div>
-
-</div><!-- /.masthead -->
-
-<!-- Where the skip link lands. It sits right after everything that repeats from
-     view to view, so the link skips the promotion, the navigation and the
-     controls over the grid in one go, and lands on what the reader came for. -->
-<div id="content" tabindex="-1"></div>
 
 <div class="shop" id="shop">
   <aside class="filters" id="filters">

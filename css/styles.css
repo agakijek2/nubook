@@ -73,12 +73,6 @@
        It is a wash, not a lid - the work is done by the blur underneath, and a
        solid ground would hide what the blur is there to soften. */
     --nu-bg-masthead:color-mix(in srgb, var(--nu-bg-primary) 70%, transparent);
-    /* The ground under the search field. Nearly the same wash as the block
-       above, and a separate name because the two answer different questions -
-       how much of the shelf shows through a bar, and how much may show through
-       the one control a reader types into. The field's is the stronger of the
-       two, words being harder to hold than a row of labels. */
-    --nu-bg-search:color-mix(in srgb, var(--nu-bg-primary) 75%, transparent);
     /* What a shadow is made of. The same value as the inverse ground while the
        page is light, and a separate name because the two roles part company the
        moment it is dark: the opposite of a dark page is light, but a shadow
@@ -356,11 +350,11 @@
        same height, because moving between the views leaves that control where it
        was - and it is the one thing on screen that does not change its job, so a
        reader notices it moving before she notices anything else.
-       Built from the search field, which is the tallest thing any of these rows
-       holds and therefore what sets the height in the shop anyway: its padding
-       twice over, one line of text, and the rule it draws underneath. Written
-       once here rather than restated wherever a row needs it, because two copies
-       of a height drift the first time the field changes. */
+       Built from the search field, which is the tallest thing either row holds
+       and therefore what sets the height over the grid anyway: its padding twice
+       over, one line of text, and the rule it draws underneath. Written once
+       here rather than restated wherever a row needs it, because two copies of a
+       height drift the first time the field changes. */
     --nu-bar-height:calc(var(--nu-space-milli) * 2 + var(--nu-line-normal) * 1em + 1px);
 
     /* The inset is the margin between the container and the safe area the drawing
@@ -475,11 +469,14 @@
   /* The landing spot takes focus from the link and gives it straight back to the
      page: it is a position, not a control, so it never draws a ring. */
   #content:focus{outline:none}
-  /* Everything that repeats from view to view stays at the top of the window:
-     the promotion, the navigation and, on the grid, the controls over it. One
-     sticky element instead of three, because three would each need to know how
-     tall the ones above them are, and this one is simply as tall as whatever it
-     holds - the bar is hidden outside the grid and the block gets shorter.
+  /* What stays at the top of the window: the promotion, the navigation and, on a
+     product page, the way out of it. One sticky element instead of three,
+     because three would each need to know how tall the ones above them are, and
+     this one is simply as tall as whatever it holds - the row is hidden off the
+     product view and the block gets shorter.
+     The controls over the grid are deliberately outside it. A field is for
+     typing into and reads worst of all while the shelf slides behind it, so the
+     bar holding it stays with the shelf it narrows.
      Not opaque: what passes behind it stays there, out of focus rather than out
      of sight, so the reader keeps seeing how much shelf is above her. The wash
      of page colour is only as much as the navigation needs to be legible over
@@ -892,23 +889,6 @@
      field leaves it room, so the text never runs under it. Full strength here,
      not the placeholder's grey: on a field without a box the glyph is what says
      a field is there at all. */
-  /* The field stands in the bar over the grid, so whatever the reader is
-     scrolling passes behind it. A ground of its own keeps the prompt readable
-     there: a wash of the page, thin enough to see the shelf through, blurring
-     what it covers so the words have something even to sit on.
-     Always on, not only while scrolling: over the page's own colour it cannot
-     be seen at all, so there is nothing to switch. */
-  .search-bed{
-    position:absolute;
-    inset:calc(-1 * var(--nu-space-micro)) calc(-1 * var(--nu-space-medium));
-    pointer-events:none;
-    background:var(--nu-bg-search);
-    -webkit-backdrop-filter:blur(var(--nu-blur-md));backdrop-filter:blur(var(--nu-blur-md));
-  }
-  /* A positioned element paints over an unpositioned one whatever the order in
-     the markup, so the field takes a position of its own to stay above its
-     ground. The glyph is positioned already. */
-  .search-wrap .input.in-bar{position:relative}
   .search-wrap .ico-search{
     position:absolute;left:0;top:50%;
     transform:translateY(-50%);pointer-events:none;color:var(--nu-fg-primary);
