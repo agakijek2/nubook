@@ -1192,8 +1192,6 @@ function playBackTransition(){
   if (!from || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const tile = gridEl.querySelector(`.card[data-id="${from.id}"] .tile`);
   if (!tile) return;                       // filtered away since: nothing to fly back to
-  const to = tile.getBoundingClientRect();
-  if (!to.width || !to.height) return;
 
   const fixed = (node, rect, z) => {
     Object.assign(node.style, {
@@ -1215,14 +1213,21 @@ function playBackTransition(){
   clone.classList.add("fly-tile"); clone.classList.remove("p-tile");
   fixed(clone, from.rect, 60);
 
+  const koniec = ()=>{ tile.style.visibility = ""; clone.remove(); };
+  /* The target is measured when the flight starts, not when it is planned. A
+     quarter of a second passes while the view leaves, and anything that moves
+     the page in that time - a late scroll, an image settling, the reader's own
+     wheel - would otherwise send the packshot to where the card used to be. */
   const flyTile = ()=>{
+    const to = tile.getBoundingClientRect();
+    if (!to.width || !to.height){ koniec(); return; }
     const s = to.width / from.rect.width;
     const dx = to.left - from.rect.left, dy = to.top - from.rect.top;
     clone.animate([
       { transform:"translate(0,0) scale(1)" },
       { transform:`translate(${dx}px,${dy}px) scale(${s})` }
     ], { duration: motionMs("--nu-motion-slower"), easing: motionCurve("--nu-ease-zoom"), fill:"forwards" })
-      .onfinish = ()=>{ tile.style.visibility = ""; clone.remove(); };
+      .onfinish = koniec;
   };
 
   if (!from.view){ flyTile(); return; }
@@ -2322,6 +2327,12 @@ document.getElementById("bsClose").onclick = bsShut;
 /* Pressing the mark reopens what was dismissed, or puts it away again. */
 bsAvaEl.onclick = () => bsPanel.hidden ? bsShow() : bsShut();
 
+/* The shop places the reader itself: the grid comes back to where she left it,
+   every other view starts at the top. Left on "auto" the browser does it a
+   second time, from its own memory and a beat later - after route() has already
+   measured where things are - so the page moved under a transition that had been
+   aimed at the old position. Taking it over means saying so. */
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 let gridScroll = 0, lastView = null, lastProductId = null;
 
 function route(){
