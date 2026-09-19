@@ -894,10 +894,8 @@
      a field is there at all. */
   /* The field stands in the bar over the grid, so whatever the reader is
      scrolling passes behind it. A ground of its own keeps the prompt readable
-     there, and it has no edges: the fill is full in the middle and gone by the
-     brim, so nothing draws a box around a control that is meant to read as a
-     line of text. It reaches a step past the field on each side to have room to
-     fade in. Two masks crossed, because one gradient leaves the corners hard.
+     there: a wash of the page, thin enough to see the shelf through, blurring
+     what it covers so the words have something even to sit on.
      Always on, not only while scrolling: over the page's own colour it cannot
      be seen at all, so there is nothing to switch. */
   .search-bed{
@@ -906,14 +904,6 @@
     pointer-events:none;
     background:var(--nu-bg-search);
     -webkit-backdrop-filter:blur(var(--nu-blur-md));backdrop-filter:blur(var(--nu-blur-md));
-    -webkit-mask-image:
-      linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%),
-      linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
-    mask-image:
-      linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%),
-      linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
-    -webkit-mask-composite:source-in;
-    mask-composite:intersect;
   }
   /* A positioned element paints over an unpositioned one whatever the order in
      the markup, so the field takes a position of its own to stay above its
