@@ -17,6 +17,20 @@
      element in the document, so it stands above the promotion bar. -->
 <a class="skip-link" id="skipLink" href="#content">Przejdź do treści</a>
 
+<!-- Everything that stays at the top of the window while the reader scrolls:
+     the promotion, the header and, on the grid, the bar holding the filters and
+     the search. One element rather than three sticky ones, so the block's height
+     is whatever it happens to contain - the bar is hidden outside the grid and
+     the block simply gets shorter, with nothing to recalculate. -->
+<div class="masthead" id="masthead">
+
+<!-- The blur, in four layers. One layer can only be on or off at a given point,
+     which reads as a change of opacity rather than of focus; four, each blurring
+     twice as much as the one below and each fading in higher up, give a ramp
+     that is clear at the bottom edge and thickest at the top. Purely visual, so
+     it is hidden from anything that reads the page aloud. -->
+<div class="masthead-veil" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
 <!-- Shop-wide promotion. Sits above the header so it is the first thing read,
      and it is the one place in the shop that runs on an inverse ground. -->
 <div class="promo" id="promo">
@@ -66,11 +80,6 @@
   </div>
 </header>
 
-<!-- Where the skip link lands. It sits right after the header, so it works on
-     every view without knowing which one is showing: everything below is the
-     content of whatever the reader is looking at. -->
-<div id="content" tabindex="-1"></div>
-
 <div class="shopbar" id="shopbar">
   <button class="filter-toggle btn-tertiary has-icon" id="filterToggle" aria-expanded="true" aria-controls="filters">
     <svg class="ico-sm ico-filter" data-icon="filter" aria-hidden="true"></svg><span id="lblFilter">Filtry</span>
@@ -95,6 +104,20 @@
     </div>
   </div>
 </div>
+
+<!-- The same row on a product page, holding the one control that view offers
+     above its content. Same class, so the height and the place of that control
+     are one decision rather than two that have to be kept equal. -->
+<div class="productbar" id="productbar" hidden>
+  <button type="button" class="back btn-tertiary has-icon" id="backBtn"></button>
+</div>
+
+</div><!-- /.masthead -->
+
+<!-- Where the skip link lands. It sits right after everything that repeats from
+     view to view, so the link skips the promotion, the navigation and the
+     controls over the grid in one go, and lands on what the reader came for. -->
+<div id="content" tabindex="-1"></div>
 
 <div class="shop" id="shop">
   <aside class="filters" id="filters">
@@ -142,7 +165,6 @@
 
 <section class="product" id="product" hidden>
   <!-- filled by renderProduct: the arrow is drawn, not typed, so it cannot live in the translated string -->
-  <button type="button" class="back btn-tertiary has-icon" id="backBtn"></button>
   <div class="p-grid" id="pGrid"></div>
 </section>
 
