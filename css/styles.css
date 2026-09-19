@@ -1058,13 +1058,27 @@
     position:relative;overflow:hidden;
   }
   .p-tile .badge{top:var(--nu-space-small);left:var(--nu-space-small)}
-  /* open transition: info + CTA dissolve in separately */
-  .p-info.p-enter{opacity:0;transform:translateY(6px)}
+  /* What the book has to say arrives the way anything made of words arrives in
+     this shop: out of blur, rising the last of the way. The packshot has just
+     finished its own journey and is already sharp, so the words come to meet it
+     rather than having been there all along. The button waits out the sentence
+     it belongs to and then does the same, a reader deciding to buy being a
+     reader answering what she has just read. */
+  .p-info.p-enter{opacity:0;filter:blur(var(--nu-blur-lg));transform:translateY(var(--nu-space-nano))}
   /* The 50ms is a delay, not a duration: a beat that lets the tile land before
      the text starts, too short to be a step on the scale. */
-  .p-info.p-enter-in{opacity:1;transform:none;transition:opacity var(--nu-motion-slower) ease .05s, transform var(--nu-motion-slower) ease .05s}
-  .p-cta.p-enter-cta{opacity:0}
-  .p-cta.p-enter-cta-in{opacity:1;transition:opacity var(--nu-motion-slow) ease var(--nu-motion-slow)}
+  .p-info.p-enter-in{
+    opacity:1;filter:blur(0);transform:none;
+    transition:opacity var(--nu-motion-slower) ease .05s,
+               filter var(--nu-motion-slower) ease .05s,
+               transform var(--nu-motion-slower) ease .05s;
+  }
+  .p-cta.p-enter-cta{opacity:0;filter:blur(var(--nu-blur-lg))}
+  .p-cta.p-enter-cta-in{
+    opacity:1;filter:blur(0);
+    transition:opacity var(--nu-motion-slow) ease var(--nu-motion-slow),
+               filter var(--nu-motion-slow) ease var(--nu-motion-slow);
+  }
   .fly-tile{overflow:hidden;background:var(--nu-bg-secondary)}
   .fly-tile .badge{display:none}
   .p-info{max-width:480px;padding-top:var(--nu-space-micro)}
