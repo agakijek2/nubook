@@ -1073,7 +1073,12 @@
                filter var(--nu-motion-slower) ease .05s,
                transform var(--nu-motion-slower) ease .05s;
   }
-  .p-cta.p-enter-cta{opacity:0;filter:blur(var(--nu-blur-lg))}
+  /* The button takes the weaker step, the one a cover takes. Text can afford to
+     be illegible for a moment; a filled shape cannot afford to be a smudge, and
+     at the step words use its ground and its shadow spread into one another
+     instead of softening. Same reason as the grid: what is a picture rather than
+     a sentence stays recognisable on the way in. */
+  .p-cta.p-enter-cta{opacity:0;filter:blur(var(--nu-blur-sm))}
   .p-cta.p-enter-cta-in{
     opacity:1;filter:blur(0);
     transition:opacity var(--nu-motion-slow) ease var(--nu-motion-slow),
