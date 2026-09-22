@@ -1,167 +1,168 @@
 # nubook.
 
-Księgarnia internetowa z powieściami o kobietach i płci, w której można
-przeglądać książki według tego, **o czym są** – a nie według gatunku, ceny
-czy daty wydania. Razem z nią powstaje system projektowy, którego
-dokumentacja mieszka wewnątrz sklepu i jest sprawdzana testami wobec kodu.
+*English · [polski](README.pl.md)*
 
-Dwujęzyczna (PL / EN), dwuwalutowa (PLN / EUR), bez frameworków: czysty
-HTML, CSS i JavaScript.
+An online bookshop for novels about women and gender, where books can be
+browsed by **what they are about** rather than by genre, price or
+publication date. A design system grows alongside it, documented inside the
+shop itself and checked against the code by tests.
+
+Bilingual (Polish / English), two currencies (PLN / EUR), no frameworks:
+plain HTML, CSS and JavaScript.
 
 | | |
 |---|---|
-| **Sklep** | `https://<domain>/` |
-| **System projektowy** | `https://<domain>/#design` |
-| **Roadmapa i dokumenty** | `https://<domain>/#design/roadmap` |
+| **The shop** | `https://<domain>/` |
+| **The design system** | `https://<domain>/#design` |
+| **Roadmap and documents** | `https://<domain>/#design/roadmap` |
 
-## Czym jest sklep
+## What the shop is
 
-Sklepy internetowe porządkują książki według tego, co łatwo policzyć.
-Żadna z tych rzeczy nie odpowiada na pytanie, z którym czytelniczka
-naprawdę przychodzi: czy ta książka jest o tym, co mnie obchodzi.
+Online bookshops sort books by what is easy to count. None of it answers the
+question a reader actually arrives with: is this book about the thing I care
+about?
 
-nubook odpowiada na nie **warstwą motywów**. Motyw to nie tag: to teza o
-książce, więc musi kogoś cytować. Piętnaście motywów – *wariatka na
-strychu*, *anioł domu*, *passing*, *zegar społeczny*, *kto patrzy* – każdy
-z krótkim wyjaśnieniem, nazwanym źródłem i rokiem. Książka niesie od dwóch
-do czterech. Ten sam motyw jest filtrem w sklepie, odznaką przy książce
-i krótkim esejem w szufladzie.
+nubook answers it with a **motif layer**. A motif is not a tag: it makes a
+claim about a book, so it has to cite someone. Fifteen motifs – *the
+madwoman*, *the angel in the house*, *passing*, *the social clock*, *who is
+looking* – each with a short explanation, a named source and a year. A book
+carries two to four. The same motif is a filter in the shop, a badge on a
+product page and a short essay in a drawer.
 
-Sklep działa od początku do końca: wyszukiwarka, filtry, sortowanie, widok
-produktu, koszyk, kasa z walidacją i potwierdzenie. W rogu stoi
-**księgarka**, która odzywa się tylko wtedy, gdy ma co powiedzieć –
-najwyraźniej przy tytule niedostępnym, gdzie proponuje dwie alternatywy
-i tłumaczy związek w języku samych motywów.
+The shop works end to end: search, filters, sort, product view, cart,
+checkout with validation and confirmation. In the corner stands the
+**bookseller**, who speaks only when she has something specific to say –
+most visibly when a title is unavailable, where she offers two alternatives
+and explains the connection in the motifs' own terms.
 
-## Czym jest system projektowy
+## What the design system is
 
-Nie leży obok sklepu – jest jego częścią: ten sam arkusz stylów, te same
-tokeny, jeden adres (`#design`). Dwadzieścia dwie zakładki opisują kolor,
-typografię, odstępy, ikonografię, dziesięć komponentów, ruch i zasady
-redakcyjne.
+It does not sit beside the shop – it is part of it: the same stylesheet, the
+same tokens, one address (`#design`). Twenty-two tabs cover colour,
+typography, spacing, iconography, ten components, motion and editorial
+rules.
 
-Dokumentacja **czyta żywy arkusz stylów**. Tabela tokenów, próbki, skale
-i tabela kontrastu powstają z tego, co naprawdę stoi w `:root`, a nie
-z liczb przepisanych ręcznie. Token dodany do arkusza pojawia się w spisie
-sam; taki, którego przedrostek do niczego nie pasuje, ląduje w widocznej
-grupie „nieposortowane", zamiast zniknąć.
+The documentation **reads the live stylesheet**. The token inventory, the
+specimens, the scales and the contrast table are generated from what
+actually stands in `:root`, not from numbers retyped by hand. A token added
+to the stylesheet appears in the inventory on its own; one whose prefix
+matches no category lands in a visible "not sorted yet" group rather than
+disappearing.
 
-To, czego nie da się wygenerować – zdania opisujące zasady – jest pilnowane
-[testami](#testy) i powtarzalnym audytem. Procedury obu leżą
-w [`docs/skills/`](docs/skills/).
+What cannot be generated – the sentences describing the rules – is guarded
+by [tests](#tests) and a repeatable audit. Both procedures live in
+[`docs/skills/en/`](docs/skills/en/).
 
-## Jak to powstało
+## How it was made
 
-Ten projekt powstaje we współpracy z modelem (Claude), i to jest część
-tego, czym jest.
+This project is built in collaboration with a model (Claude), and that is
+part of what it is.
 
-Podział pracy: decyzje projektowe, architektura tokenów, procedura audytu
-i wszystkie teksty – w obu językach – są moje. Model pisze kod pod tymi
-decyzjami. Case studies opisują to samo po angielsku: o
-[sklepie](docs/case-study-shop.md) i o [systemie
-projektowym](docs/case-study-design-system.md).
+The division of labour: the design decisions, the token architecture, the
+audit procedure and all the copy – in both languages – are mine. The model
+writes the code under those decisions. Two case studies describe it at
+length: [the shop](docs/case-study-shop.md) and [the design
+system](docs/case-study-design-system.md).
 
-Cała dyscyplina widoczna w tym repozytorium istnieje właśnie z tego powodu.
-Implementer pracujący w tym tempie chętnie dołoży piąty styl nagłówka
-i wartość wpisaną z ręki, więc system potrzebuje zasad, do których da się
-go przymusić – i testów, które go przy nich trzymają. Dziewięć zestawów
-testów i cztery spisane procedury nie są ozdobą procesu; są tym, co
-pozwala pracować szybko i nie stracić spójności.
+Every bit of discipline visible in this repository exists for that reason.
+An implementer working at that pace will happily add a fifth heading style
+and a hand-typed pixel value, so the system needs rules a machine can be
+held to – and tests that hold it there. Nine test suites and four written
+procedures are not decoration around the process; they are what makes it
+possible to move fast without losing coherence.
 
-Każdy zamknięty krok roadmapy zostawia dokument mówiący, co zostało
-postanowione, dlaczego i **które możliwości odpadły**. To ta odrzucona
-połowa zwykle ginie, i to ona powstrzymuje przed sięganiem po ten sam
-pomysł miesiąc później. Sześć takich zapisów leży w [`docs/`](docs/), plan
-dalszych kroków w [`docs/roadmap.md`](docs/roadmap.md).
+Every closed roadmap step leaves a document naming what was decided, why,
+and **which options were rejected**. The rejected half is the one that
+usually goes missing, and the one that stops the same idea being tried again
+a month later. Six such records sit in [`docs/`](docs/); the plan for the
+remaining steps is in [`docs/roadmap.md`](docs/roadmap.md).
 
-## Uruchomienie
+## Running it
 
-Otwórz `index.html` w przeglądarce. To wystarczy – nie ma kroku budowania
-ani zależności do zainstalowania.
+Open `index.html` in a browser. That is all – there is no build step and
+nothing to install.
 
-Jeśli przeglądarka blokuje wczytywanie plików lokalnych, uruchom serwer:
+If the browser blocks local files, serve the folder:
 
 ```bash
 python3 -m http.server 8000
-# potem otwórz http://localhost:8000
+# then open http://localhost:8000
 ```
 
-## Struktura
+## Structure
 
 ```
 nubook/
-├── index.html          szkielet strony i widoki
-├── css/styles.css      style + wszystkie tokeny (w bloku :root)
-├── js/app.js           dane katalogu, routing, koszyk, dokumentacja
-├── assets/covers/      okładki książek i portret autorki
-├── docs/               motywy, źródła, zapisy decyzji, roadmapa
-├── docs/skills/        procedury pracy nad projektem
-├── tests/              testy regresyjne
-├── build.py            składa preview.html z powyższych
-└── preview.html        wynik budowania (nie edytować)
+├── index.html          page skeleton and views
+├── css/styles.css      styles + every token (in the :root block)
+├── js/app.js           catalogue data, routing, cart, documentation
+├── assets/covers/      book covers and one author portrait
+├── docs/               motifs, sources, decision records, roadmap
+├── docs/skills/        procedures for working on the project
+├── tests/              regression tests
+├── build.py            assembles preview.html from the above
+└── preview.html        build output (do not edit)
 ```
 
-Cały wygląd wynika z tokenów zebranych na górze `css/styles.css`.
-Zmiana palety czy skali typograficznej to edycja tego jednego bloku –
-komponenty nigdy nie zawierają wartości wpisanych na sztywno.
+The whole appearance follows from the tokens gathered at the top of
+`css/styles.css`. Changing the palette or the type scale means editing that
+one block – components never hold hard-coded values.
 
-## Testy
+## Tests
 
 ```bash
 sh tests/uruchom.sh
 ```
 
-Wymaga node i npm; jsdom dociąga się sam przy pierwszym uruchomieniu.
-Przebieg wypisuje jedną linię na zestaw. Kiedy któryś zapali się na
-czerwono, szczegółów szuka się w jego własnym wypisie:
+Needs node and npm; jsdom installs itself on the first run. The run prints
+one line per suite. When one goes red, the detail is in its own output:
 `node tests/rozmycie.mjs`.
 
-Dziewięć zestawów, każdy pilnuje czegoś, co psuje się po cichu:
+Nine suites, each guarding something that breaks quietly:
 
-| Zestaw | Czego pilnuje |
+| Suite | What it guards |
 |---|---|
-| `arkusz` | arkusz jest składniowo cały – źle zamknięty komentarz nie wywala niczego głośno, tylko zjada regułę, która stoi po nim |
-| `tokeny` | każdy token ma swoje miejsce w tabelach dokumentacji, żaden nie leży w grupie „nieposortowane", a wartości w opisach zgadzają się z arkuszem |
-| `ikony` | ikony mieszczą się w polu bezpiecznym, mają dwa dopuszczone rozmiary i jedną regułę wypełnienia |
-| `zakladki` | każda zakładka renderuje się w obu językach, zaczyna się tytułem i akapitem wprowadzającym, nie gubi napisu w słowniku i nie przemyca długiego myślnika |
-| `ksiegarka` | księgarka mówi tylko wtedy, gdy ma co powiedzieć, i nie poleca książki, której sklep nie ma |
-| `ksiegarka-zwykla` | to samo w trybie bez podpowiedzi: cisza jest cicha |
-| `dostepnosc` | fokus jest widoczny wszędzie poza dwoma zapisanymi wyjątkami, szuflady są dialogami, a to, co pojawia się nieproszone, jest ogłaszane |
-| `rozmycie` | żadna siła rozmycia nie jest wpisana z ręki, a wejścia komponentów zgadzają się z regułami, które naprawdę działają |
-| `roadmapa` | drabina kroków w skrypcie i w `docs/roadmap.md` to ta sama drabina, każdy zamknięty krok ma istniejący zapis decyzji, a objętości w spisie dokumentów zgadzają się z plikami |
+| `arkusz` | the stylesheet is syntactically whole – a badly closed comment fails silently and eats the rule standing after it |
+| `tokeny` | every token has its place in the documentation tables, none sits in the "not sorted yet" group, and the values in the prose match the stylesheet |
+| `ikony` | icons fit the safe area, take one of two permitted sizes and follow one fill rule |
+| `zakladki` | every tab renders in both languages, opens with a title and a lede, loses no dictionary string and smuggles in no em-dash |
+| `ksiegarka` | the bookseller speaks only when she has something to say, and never recommends a book the shop does not stock |
+| `ksiegarka-zwykla` | the same without the hints: silence is silent |
+| `dostepnosc` | focus is visible everywhere but the two recorded exceptions, the drawers are dialogs, and anything that appears unasked is announced |
+| `rozmycie` | no blur strength is typed by hand, and the components' entrances match the rules that actually run |
+| `roadmapa` | the ladder of steps in the script and in `docs/roadmap.md` is the same ladder, every closed step has a decision record that exists, and the lengths in the documents list match the files |
 
-Każde sprawdzenie powstało **po** znalezieniu usterki, której dotyczy, i ma
-kontrolę negatywną: kod psuje się celowo dokładnie w ten sposób i test musi
-się zapalić. Test, który przechodzi, choć nie potrafi złapać tego, do czego
-został napisany, jest gorszy niż brak testu.
+Each check was written **after** the defect it is for was found, and each
+has a negative control: the code is broken deliberately in exactly that way
+and the test has to go red. A test that passes while unable to catch the
+thing it was written for is worse than no test.
 
-## Podgląd jednoplikowy
+## Single-file preview
 
-`preview.html` to wygenerowana wersja całego sklepu w jednym pliku – style,
-skrypt i okładki wklejone do środka. Przydaje się do szybkiego podglądu,
-wysłania komuś jednym załącznikiem albo otwarcia bez serwera. Odtwarza się
-go po każdej zmianie:
+`preview.html` is a generated version of the whole shop in one file –
+styles, script and covers inlined. Useful for a quick look, for sending as
+one attachment, or for opening without a server. Rebuild it after every
+change:
 
 ```bash
 python3 build.py
 ```
 
-Nie edytuj `preview.html` ręcznie – jest zawsze wynikiem, a nie źródłem.
+Do not edit `preview.html` by hand – it is always a result, never a source.
 
-## Fonty
+## Fonts
 
-Kroje DM Serif Display i Archivo wczytywane są z Google Fonts, więc przy
-pierwszym otwarciu potrzebne jest połączenie z siecią. Aby sklep działał
-w pełni offline, pobierz oba kroje, umieść je w `assets/fonts/`, zastąp
-odnośnik `<link>` w `index.html` regułami `@font-face` i zaktualizuj
-tokeny `--nu-font-display` i `--nu-font-text`.
+DM Serif Display and Archivo load from Google Fonts, so the first opening
+needs a connection. To run fully offline, download both, put them in
+`assets/fonts/`, replace the `<link>` in `index.html` with `@font-face`
+rules and update the `--nu-font-display` and `--nu-font-text` tokens.
 
-## Historia zmian
+## History
 
-**Jeden commit na jedną zatwierdzoną decyzję**, nie jeden na sesję. Dzięki
-temu da się cofnąć pojedynczą zmianę, nie tracąc reszty. Opis mówi, czego
-dotyczy i co się zmieniło – po polsku, w trybie oznajmującym, tak samo jak
-dokumentacja:
+**One commit per approved decision**, not one per session. That way a single
+change can be reverted without losing the rest. The message says what it
+concerns and what changed – in Polish, in the indicative, like the
+documentation:
 
 ```
 kolor: token --nu-border-hover zamiast wpisanego #bdbdbd
@@ -169,14 +170,14 @@ dostępność: fokus wchodzi do koszyka przy obu sposobach otwarcia
 ikonografia: filtry, plus, krzyżyk i strzałka selecta jako SVG
 ```
 
-## Uwagi
+## Notes
 
-Sklep jest prototypem: koszyk i zamówienie żyją w pamięci przeglądarki,
-nie ma płatności ani serwera. Kody rabatowe do testów: `ROOM5`, `ROOM10`,
-`SIOSTRA15`.
+The shop is a prototype: the cart and the order live in browser memory,
+there is no payment and no server. Discount codes for testing: `ROOM5`,
+`ROOM10`, `SIOSTRA15`.
 
-Dwie pary kolorów nie spełniają AA. Stoją w tabeli kontrastu z wynikiem
-negatywnym i są nazwane w zakładce Dostępność jako sprawa otwarta, zamiast
-po cichu wypaść z tabeli.
+Two colour pairs fall below AA. They stand in the contrast table with a
+failing verdict and are named in the Accessibility tab as an open item,
+rather than quietly dropping out of the table.
 
-Okładki i portret pochodzą od wydawców i posiadaczy praw.
+The covers and the portrait belong to their publishers and rights holders.
