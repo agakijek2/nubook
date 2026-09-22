@@ -1058,12 +1058,14 @@
     position:relative;overflow:hidden;
   }
   .p-tile .badge{top:var(--nu-space-small);left:var(--nu-space-small)}
-  /* What the book has to say arrives the way anything made of words arrives in
-     this shop: out of blur, rising the last of the way. The packshot has just
-     finished its own journey and is already sharp, so the words come to meet it
-     rather than having been there all along. The button waits out the sentence
-     it belongs to and then does the same, a reader deciding to buy being a
-     reader answering what she has just read. */
+  /* What the book has to say arrives the way anything arrives in this shop: out
+     of blur, rising the last of the way. The rise is the same step everywhere -
+     a line of the bookseller's, a card in the grid, a title here - so that one
+     distance means one thing: something settling into the place it was always
+     going to take. The packshot has just finished its own journey and is already
+     sharp, so the words come to meet it rather than having been there all along.
+     The button waits out the sentence it belongs to and then does the same, a
+     reader deciding to buy being a reader answering what she has just read. */
   .p-info.p-enter{opacity:0;filter:blur(var(--nu-blur-lg));transform:translateY(var(--nu-space-nano))}
   /* The 50ms is a delay, not a duration: a beat that lets the tile land before
      the text starts, too short to be a step on the scale. */
@@ -1078,11 +1080,12 @@
      at the step words use its ground and its shadow spread into one another
      instead of softening. Same reason as the grid: what is a picture rather than
      a sentence stays recognisable on the way in. */
-  .p-cta.p-enter-cta{opacity:0;filter:blur(var(--nu-blur-sm))}
+  .p-cta.p-enter-cta{opacity:0;filter:blur(var(--nu-blur-sm));transform:translateY(var(--nu-space-nano))}
   .p-cta.p-enter-cta-in{
-    opacity:1;filter:blur(0);
+    opacity:1;filter:blur(0);transform:none;
     transition:opacity var(--nu-motion-slow) ease var(--nu-motion-slow),
-               filter var(--nu-motion-slow) ease var(--nu-motion-slow);
+               filter var(--nu-motion-slow) ease var(--nu-motion-slow),
+               transform var(--nu-motion-slow) ease var(--nu-motion-slow);
   }
   .fly-tile{overflow:hidden;background:var(--nu-bg-secondary)}
   .fly-tile .badge{display:none}
@@ -1589,6 +1592,11 @@
     /* Named, because the panel above has to subtract it to work out how tall it
        may grow, and the value differs between the wide window and the phone. */
     --bs-bottom:calc(var(--nu-space-medium) + var(--bs-lift, 0px));
+    /* What she must not grow into at the top: the block that stays there, and a
+       step of air under it. Named, because the panel's ceiling is one decision
+       and the value differs between the wide window and the phone, where nothing
+       is pinned to the top at all. */
+    --bs-headroom:calc(var(--nu-masthead-height) + var(--nu-space-medium));
     position:fixed;right:var(--nu-space-medium);z-index:75;
     bottom:var(--bs-bottom);
     /* The mark keeps the corner and the offer opens upward from it, the way a
@@ -1606,16 +1614,17 @@
   .bs-panel{
     position:relative;
     max-width:46ch;
-    /* It never grows past the window. Anchored at the bottom, a panel taller than
-       the viewport climbs out through the top edge and takes its own close button
-       with it. What is left over after the mark, the gap under it and a step of
-       air at the top is all it may have; the list of proposals takes the overflow
-       and scrolls, so the offer and the way out stay put.
+    /* It never grows past what is left for it. Anchored at the bottom, a panel
+       taller than that climbs out through the top edge, takes its own close
+       button with it, and slides behind whatever is pinned up there. What is
+       left over after the mark, the gap under it and the headroom is all it may
+       have; the list of proposals takes the overflow and scrolls, so the offer
+       and the way out stay put.
 
        dvh rather than vh on a phone, where the address bar is part of the height
        and vh is the tallest the window ever gets rather than the current one. */
-    max-height:calc(100vh - var(--bs-bottom) - var(--nu-space-micro) - var(--nu-avatar-size-sm) - var(--nu-space-medium));
-    max-height:calc(100dvh - var(--bs-bottom) - var(--nu-space-micro) - var(--nu-avatar-size-sm) - var(--nu-space-medium));
+    max-height:calc(100vh - var(--bs-bottom) - var(--nu-space-micro) - var(--nu-avatar-size-sm) - var(--bs-headroom));
+    max-height:calc(100dvh - var(--bs-bottom) - var(--nu-space-micro) - var(--nu-avatar-size-sm) - var(--bs-headroom));
     display:flex;flex-direction:column;min-height:0;
     background:var(--nu-bg-primary);
     border:1px solid var(--nu-border-neutral);
@@ -1922,6 +1931,8 @@
     .bs{
       left:var(--nu-space-micro);right:var(--nu-space-micro);
       --bs-bottom:calc(var(--nu-space-micro) + var(--bs-lift, 0px));
+      /* Nothing is pinned to the top here, so the ceiling is the air alone. */
+      --bs-headroom:var(--nu-space-medium);
     }
     body.has-mobar .bs{
       --bs-bottom:calc(var(--nu-mobar-height) + var(--nu-space-micro) + var(--bs-lift, 0px));
