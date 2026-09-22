@@ -1,0 +1,11 @@
+{
+  "name": "nubook-tests",
+  "private": true,
+  "description": "Testy regresyjne sklepu i dokumentacji. Uruchamiane przez ./uruchom.sh",
+  "scripts": {
+    "test": "./uruchom.sh"
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  }
+}

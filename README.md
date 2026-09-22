@@ -38,6 +38,7 @@ nubook/
 ├── js/app.js           dane katalogu, routing, koszyk, dokumentacja
 ├── assets/covers/      okładki książek i portret autorki
 ├── docs/skills/        procedury pracy nad projektem (patrz niżej)
+├── tests/              testy regresyjne (patrz niżej)
 ├── build.py            składa preview.html z powyższych
 └── preview.html        wynik budowania (nie edytować)
 ```
@@ -53,6 +54,36 @@ w stopce albo adres `index.html#design`. Opisuje kolor, typografię, odstępy,
 ikonografię, komponenty, ruch i zasady redakcyjne. Próbki i wartości są
 odczytywane z żywego arkusza stylów, więc dokumentacja nie może rozjechać
 się z kodem.
+
+## Testy
+
+```bash
+sh tests/uruchom.sh
+```
+
+Wymaga node i npm; jsdom dociąga się sam przy pierwszym uruchomieniu.
+Przebieg wypisuje jedną linię na zestaw. Kiedy któryś zapali się na
+czerwono, szczegółów szuka się w jego własnym wypisie:
+`node tests/rozmycie.mjs`.
+
+Dziewięć zestawów, każdy pilnuje czegoś, co psuje się po cichu:
+
+| Zestaw | Czego pilnuje |
+|---|---|
+| `arkusz` | arkusz jest składniowo cały – źle zamknięty komentarz nie wywala niczego głośno, tylko zjada regułę, która stoi po nim |
+| `tokeny` | każdy token ma swoje miejsce w tabelach dokumentacji, żaden nie leży w grupie „nieposortowane", a wartości w opisach zgadzają się z arkuszem |
+| `ikony` | ikony mieszczą się w polu bezpiecznym, mają dwa dopuszczone rozmiary i jedną regułę wypełnienia |
+| `zakladki` | każda zakładka renderuje się w obu językach, zaczyna się tytułem i akapitem wprowadzającym, nie gubi napisu w słowniku i nie przemyca długiego myślnika |
+| `ksiegarka` | księgarka mówi tylko wtedy, gdy ma co powiedzieć, i nie poleca książki, której sklep nie ma |
+| `ksiegarka-zwykla` | to samo w trybie bez podpowiedzi: cisza jest cicha |
+| `dostepnosc` | fokus jest widoczny wszędzie poza dwoma zapisanymi wyjątkami, szuflady są dialogami, a to, co pojawia się nieproszone, jest ogłaszane |
+| `rozmycie` | żadna siła rozmycia nie jest wpisana z ręki, a wejścia komponentów zgadzają się z regułami, które naprawdę działają |
+| `roadmapa` | drabina kroków w skrypcie i w `docs/roadmap.md` to ta sama drabina, każdy zamknięty krok ma istniejący zapis decyzji, a objętości w spisie dokumentów zgadzają się z plikami |
+
+Każde sprawdzenie powstało **po** znalezieniu usterki, której dotyczy, i ma
+kontrolę negatywną: kod psuje się celowo dokładnie w ten sposób i test musi
+się zapalić. Test, który przechodzi, choć nie potrafi złapać tego, do czego
+został napisany, jest gorszy niż brak testu.
 
 ## Jak powstaje ten projekt
 
