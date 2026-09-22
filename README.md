@@ -1,8 +1,78 @@
 # nubook.
 
-Niezależna księgarnia internetowa z powieściami o kobietach i płci.
-Dwujęzyczna (PL / EN), dwuwalutowa (PLN / EUR), bez frameworków –
-czysty HTML, CSS i JavaScript.
+Księgarnia internetowa z powieściami o kobietach i płci, w której można
+przeglądać książki według tego, **o czym są** – a nie według gatunku, ceny
+czy daty wydania. Razem z nią powstaje system projektowy, którego
+dokumentacja mieszka wewnątrz sklepu i jest sprawdzana testami wobec kodu.
+
+Dwujęzyczna (PL / EN), dwuwalutowa (PLN / EUR), bez frameworków: czysty
+HTML, CSS i JavaScript.
+
+| | |
+|---|---|
+| **Sklep** | `https://<domain>/` |
+| **System projektowy** | `https://<domain>/#design` |
+| **Roadmapa i dokumenty** | `https://<domain>/#design/roadmap` |
+
+## Czym jest sklep
+
+Sklepy internetowe porządkują książki według tego, co łatwo policzyć.
+Żadna z tych rzeczy nie odpowiada na pytanie, z którym czytelniczka
+naprawdę przychodzi: czy ta książka jest o tym, co mnie obchodzi.
+
+nubook odpowiada na nie **warstwą motywów**. Motyw to nie tag: to teza o
+książce, więc musi kogoś cytować. Piętnaście motywów – *wariatka na
+strychu*, *anioł domu*, *passing*, *zegar społeczny*, *kto patrzy* – każdy
+z krótkim wyjaśnieniem, nazwanym źródłem i rokiem. Książka niesie od dwóch
+do czterech. Ten sam motyw jest filtrem w sklepie, odznaką przy książce
+i krótkim esejem w szufladzie.
+
+Sklep działa od początku do końca: wyszukiwarka, filtry, sortowanie, widok
+produktu, koszyk, kasa z walidacją i potwierdzenie. W rogu stoi
+**księgarka**, która odzywa się tylko wtedy, gdy ma co powiedzieć –
+najwyraźniej przy tytule niedostępnym, gdzie proponuje dwie alternatywy
+i tłumaczy związek w języku samych motywów.
+
+## Czym jest system projektowy
+
+Nie leży obok sklepu – jest jego częścią: ten sam arkusz stylów, te same
+tokeny, jeden adres (`#design`). Dwadzieścia dwie zakładki opisują kolor,
+typografię, odstępy, ikonografię, dziesięć komponentów, ruch i zasady
+redakcyjne.
+
+Dokumentacja **czyta żywy arkusz stylów**. Tabela tokenów, próbki, skale
+i tabela kontrastu powstają z tego, co naprawdę stoi w `:root`, a nie
+z liczb przepisanych ręcznie. Token dodany do arkusza pojawia się w spisie
+sam; taki, którego przedrostek do niczego nie pasuje, ląduje w widocznej
+grupie „nieposortowane", zamiast zniknąć.
+
+To, czego nie da się wygenerować – zdania opisujące zasady – jest pilnowane
+[testami](#testy) i powtarzalnym audytem. Procedury obu leżą
+w [`docs/skills/`](docs/skills/).
+
+## Jak to powstało
+
+Ten projekt powstaje we współpracy z modelem (Claude), i to jest część
+tego, czym jest.
+
+Podział pracy: decyzje projektowe, architektura tokenów, procedura audytu
+i wszystkie teksty – w obu językach – są moje. Model pisze kod pod tymi
+decyzjami. Case studies opisują to samo po angielsku: o
+[sklepie](docs/case-study-shop.md) i o [systemie
+projektowym](docs/case-study-design-system.md).
+
+Cała dyscyplina widoczna w tym repozytorium istnieje właśnie z tego powodu.
+Implementer pracujący w tym tempie chętnie dołoży piąty styl nagłówka
+i wartość wpisaną z ręki, więc system potrzebuje zasad, do których da się
+go przymusić – i testów, które go przy nich trzymają. Dziewięć zestawów
+testów i cztery spisane procedury nie są ozdobą procesu; są tym, co
+pozwala pracować szybko i nie stracić spójności.
+
+Każdy zamknięty krok roadmapy zostawia dokument mówiący, co zostało
+postanowione, dlaczego i **które możliwości odpadły**. To ta odrzucona
+połowa zwykle ginie, i to ona powstrzymuje przed sięganiem po ten sam
+pomysł miesiąc później. Sześć takich zapisów leży w [`docs/`](docs/), plan
+dalszych kroków w [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Uruchomienie
 
@@ -16,19 +86,6 @@ python3 -m http.server 8000
 # potem otwórz http://localhost:8000
 ```
 
-## Podgląd jednoplikowy
-
-`preview.html` to wygenerowana wersja całego sklepu w jednym pliku – style,
-skrypt i okładki wklejone do środka. Przydaje się do szybkiego podglądu,
-wysłania komuś jednym załącznikiem albo otwarcia bez serwera. Odtwarza się
-go po każdej zmianie:
-
-```bash
-python3 build.py
-```
-
-Nie edytuj `preview.html` ręcznie – jest zawsze wynikiem, a nie źródłem.
-
 ## Struktura
 
 ```
@@ -37,8 +94,9 @@ nubook/
 ├── css/styles.css      style + wszystkie tokeny (w bloku :root)
 ├── js/app.js           dane katalogu, routing, koszyk, dokumentacja
 ├── assets/covers/      okładki książek i portret autorki
-├── docs/skills/        procedury pracy nad projektem (patrz niżej)
-├── tests/              testy regresyjne (patrz niżej)
+├── docs/               motywy, źródła, zapisy decyzji, roadmapa
+├── docs/skills/        procedury pracy nad projektem
+├── tests/              testy regresyjne
 ├── build.py            składa preview.html z powyższych
 └── preview.html        wynik budowania (nie edytować)
 ```
@@ -46,14 +104,6 @@ nubook/
 Cały wygląd wynika z tokenów zebranych na górze `css/styles.css`.
 Zmiana palety czy skali typograficznej to edycja tego jednego bloku –
 komponenty nigdy nie zawierają wartości wpisanych na sztywno.
-
-## Design system
-
-Dokumentacja systemu projektowego jest częścią sklepu: link „Design system"
-w stopce albo adres `index.html#design`. Opisuje kolor, typografię, odstępy,
-ikonografię, komponenty, ruch i zasady redakcyjne. Próbki i wartości są
-odczytywane z żywego arkusza stylów, więc dokumentacja nie może rozjechać
-się z kodem.
 
 ## Testy
 
@@ -85,12 +135,18 @@ kontrolę negatywną: kod psuje się celowo dokładnie w ten sposób i test musi
 się zapalić. Test, który przechodzi, choć nie potrafi złapać tego, do czego
 został napisany, jest gorszy niż brak testu.
 
-## Jak powstaje ten projekt
+## Podgląd jednoplikowy
 
-Sklep i design system powstają we współpracy z Claude. Katalog
-[`docs/skills/`](docs/skills/) opisuje sposób pracy, który się przy tym
-wypracował: jak buduje się nowy widok, jak pisze się zakładkę dokumentacji
-i jak sprawdza się, czy dokumentacja nadal opisuje rzeczywistość.
+`preview.html` to wygenerowana wersja całego sklepu w jednym pliku – style,
+skrypt i okładki wklejone do środka. Przydaje się do szybkiego podglądu,
+wysłania komuś jednym załącznikiem albo otwarcia bez serwera. Odtwarza się
+go po każdej zmianie:
+
+```bash
+python3 build.py
+```
+
+Nie edytuj `preview.html` ręcznie – jest zawsze wynikiem, a nie źródłem.
 
 ## Fonty
 
@@ -102,12 +158,10 @@ tokeny `--nu-font-display` i `--nu-font-text`.
 
 ## Historia zmian
 
-Repozytorium jest założone i pierwszy commit obejmuje cały projekt.
-Zasada na dalej: **jeden commit na jedną zatwierdzoną decyzję**, nie jeden
-na sesję. Dzięki temu da się cofnąć pojedynczą zmianę, nie tracąc reszty.
-
-Opis commita mówi, czego dotyczy i co się zmieniło – po polsku, w trybie
-oznajmującym, tak samo jak dokumentacja:
+**Jeden commit na jedną zatwierdzoną decyzję**, nie jeden na sesję. Dzięki
+temu da się cofnąć pojedynczą zmianę, nie tracąc reszty. Opis mówi, czego
+dotyczy i co się zmieniło – po polsku, w trybie oznajmującym, tak samo jak
+dokumentacja:
 
 ```
 kolor: token --nu-border-hover zamiast wpisanego #bdbdbd
@@ -115,41 +169,14 @@ dostępność: fokus wchodzi do koszyka przy obu sposobach otwarcia
 ikonografia: filtry, plus, krzyżyk i strzałka selecta jako SVG
 ```
 
-Commity trzeba wykonywać z Terminala – środowisko, w którym Claude pracuje
-na tym folderze, potrafi pliki zapisywać, ale nie potrafi ich usuwać, a git
-kasuje własne pliki blokady po każdym zapisie. Claude może przygotować treść
-opisu; wykonanie należy do Ciebie:
-
-```bash
-git add -A
-git commit -m "opis decyzji"
-```
-
-Jeśli git odmawia z komunikatem `index.lock: File exists`, usuń zostawione
-blokady i powtórz:
-
-```bash
-rm -f .git/index.lock .git/HEAD.lock .git/objects/maintenance.lock
-find .git -name "tmp_obj_*" -delete
-```
-
-## GitHub
-
-```bash
-git branch -M main
-git branch -M main
-git remote add origin git@github.com:UZYTKOWNICZKA/nubook.git
-git push -u origin main
-```
-
-Publikacja przez GitHub Pages: Settings → Pages → Source: `main`, katalog `/`.
-Strona zadziała bez zmian, bo wszystkie ścieżki są względne.
-
 ## Uwagi
 
 Sklep jest prototypem: koszyk i zamówienie żyją w pamięci przeglądarki,
 nie ma płatności ani serwera. Kody rabatowe do testów: `ROOM5`, `ROOM10`,
 `SIOSTRA15`.
 
-Okładki i portret pochodzą od wydawców i posiadaczy praw – przed
-publicznym wdrożeniem zastąp je materiałami, do których masz licencję.
+Dwie pary kolorów nie spełniają AA. Stoją w tabeli kontrastu z wynikiem
+negatywnym i są nazwane w zakładce Dostępność jako sprawa otwarta, zamiast
+po cichu wypaść z tabeli.
+
+Okładki i portret pochodzą od wydawców i posiadaczy praw.
