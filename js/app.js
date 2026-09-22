@@ -104,7 +104,7 @@ const BOOKS = [
    q:"I took a deep breath and listened to the old brag of my heart. I am, I am, I am.", qby:"Esther Greenwood",
    dp:"Jedyna powieść Plath: błyskotliwe, duszne lato Esther Greenwood w Nowym Jorku i późniejszy upadek.",
    qp:"Wzięłam głęboki oddech i wsłuchałam się w stare przechwałki mojego serca. Jestem, jestem, jestem.", qbyp:"Esther Greenwood", a:"Sylvia Plath", gd:"f", ab:"Confessional poet, posthumous Pulitzer winner (1982). Her work voiced the suffocation of 1950s womanhood like no other.", abp:"Poetka konfesyjna, pośmiertna laureatka Pulitzera (1982). Jak nikt inny wyraziła duszność kobiecości lat 50.",                  g:"Classic",      p:10.50, pp:44.90, s:"last",
-   m:["madwoman","own-room","angel-in-house","social-clock"],
+   m:["madwoman","own-room","angel-in-house"],
    img:COVER_TBJ},
   {t:"Detransition, Baby", tp:"Detranzycja, kochanie", ed:"en", added:"2026-04-17", pub:2021,
    de:"Three women - trans and cis - and one unplanned pregnancy. A sharp, funny novel about gender, motherhood and modern family.",
