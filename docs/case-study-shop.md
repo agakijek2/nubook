@@ -45,9 +45,10 @@ and no back end.
 
 **It is in progress, and deliberately so.** The work runs on a written roadmap
 of numbered steps — nine of them, six closed, one in progress, the rest named
-rather than vague. The roadmap is not a private planning document: it is a tab
-in the shop's own documentation, reachable from the footer, with each closed
-step linking to the record of what was decided and what was turned down. I am
+rather than vague. The roadmap is not a private planning document: it is
+[a tab in the shop's own documentation](https://<domain>/#design/roadmap),
+reachable from the footer, with each closed step linking to the record of what
+was decided and what was turned down. I am
 publishing before it is finished on purpose — a roadmap someone can read is a
 more honest artefact than a project that only appears once it is perfect.
 

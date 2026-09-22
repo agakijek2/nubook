@@ -63,8 +63,9 @@ Components, three Patterns. Each component tab follows the same structure — sp
 variants table, specification, states, live preview — so comparing two
 components is a matter of looking, not reading.
 
-The roadmap and documents tabs are the newest, and they are here rather than in
-the shop for a reason about voice: a shop's footer is where a reader looks for
+The [roadmap](https://<domain>/#design/roadmap) and
+[documents](https://<domain>/#design/documents) tabs are the newest, and they are
+here rather than in the shop for a reason about voice: a shop's footer is where a reader looks for
 delivery and returns, not for a project plan. The documentation is already
 backstage, so the plan belongs in it. The ladder has one source in the code; the
 copy in `docs/roadmap.md` is compared to it by a test rather than kept in step by
@@ -104,7 +105,8 @@ class of defect, the procedure that finds that defect can be written down and
 handed to someone else — a person or a machine — because its findings are
 verifiable rather than a matter of opinion. That turned the audit from something
 I do into something the project *has*. Four written procedures now live in
-`docs/skills/`, in Polish and English:
+`docs/skills/`, in Polish and English — listed, with their reasons and their
+lengths, in the [Documents tab](https://<domain>/#design/documents):
 
 - **Documentation audit** — the three passes, plus the traps that make an audit
   lie to you: a regular expression that matches a comment instead of a selector,
