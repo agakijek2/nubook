@@ -2048,6 +2048,30 @@
   .ds .type-table td:nth-child(2){white-space:normal;overflow-wrap:anywhere}
   .ds .type-table td:nth-child(2) code{white-space:nowrap}
   /* semantic token tables: token + source columns never wrap */
+  /* The ladder. A step is a row, and the only thing drawn differently is where
+     the reader is in it: the one in progress carries the emphasis the whole
+     table is read for, everything after it recedes. Closed steps stay at full
+     strength, because what has been decided is the part that is worth reading. */
+  .ds .rm-n{font-variant-numeric:tabular-nums;color:var(--nu-fg-secondary)}
+  .ds .rm-state{color:var(--nu-fg-secondary)}
+  .ds .rm-step.is-now{background:var(--nu-bg-secondary)}
+  .ds .rm-step.is-now .rm-n,
+  .ds .rm-step.is-now .rm-state{color:var(--nu-fg-primary)}
+  .ds .rm-step.is-next td,
+  .ds .rm-step.is-later td{color:var(--nu-fg-secondary)}
+  .ds .rm-step.is-later{opacity:.72}
+
+  /* The name of a document is a name, not a heading and not a link. It takes the
+     weight of the text it labels and nothing else, so the column reads as a list
+     of what exists rather than a column of things to click. */
+  .ds .doc-table{table-layout:fixed}
+  .ds .doc-table td.doc-name{
+    white-space:normal;
+    font-weight:var(--nu-weight-medium);color:var(--nu-fg-primary);
+  }
+  .ds .doc-table td code{font-size:0.885em;word-break:break-all}
+  .ds .doc-table .rm-state{font-variant-numeric:tabular-nums;white-space:nowrap}
+
   .ds .tok-table{table-layout:fixed}
   .ds .tok-table col.c-token{width:32%}
   .ds .tok-table col.c-source{width:24%}

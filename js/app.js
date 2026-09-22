@@ -440,7 +440,7 @@ const I18N = {
     aboutAuthor:{f:"About the author", m:"About the author", nb:"About the author"},
     aria:{fav:"Favourites",account:"Account",cart:"Cart",
           close:"Close",langGroup:"Language",curGroup:"Currency",schemeGroup:"Theme"},
-    designSystem:"Design system",
+    designSystem:"Design system", aboutProject:"About this project",
   },
   pl: {
     docTitle:"nubook. — powieści o kobietach i płci",
@@ -506,7 +506,7 @@ const I18N = {
     aboutAuthor:{f:"O autorce", m:"O autorze", nb:"O osobie autorskiej"},
     aria:{fav:"Ulubione",account:"Konto",cart:"Koszyk",
           close:"Zamknij",langGroup:"Język",curGroup:"Waluta",schemeGroup:"Motyw"},
-    designSystem:"System projektowy",
+    designSystem:"System projektowy", aboutProject:"O tym projekcie",
   },
 };
 let LANG = "pl";
@@ -2429,6 +2429,7 @@ function applyLang(){
   document.querySelector("#swEUR")?.closest(".sw-group")
     ?.setAttribute("aria-label", t.aria.curGroup);
   document.getElementById("lnkDesign").textContent = t.designSystem;
+  document.getElementById("lnkAbout").textContent = t.aboutProject;
   document.getElementById("swEN").setAttribute("aria-pressed", LANG==="en");
   document.getElementById("swPL").setAttribute("aria-pressed", LANG==="pl");
   measureBars();   // a longer sort label can make the mobile bar taller
@@ -3017,6 +3018,136 @@ function dsColorRows(rows){
 /* Docs are bilingual like the rest of the shop: L(en, pl) picks by LANG. */
 function L(en, pl){ return LANG === "pl" ? pl : en; }
 
+/* The ladder of steps, and the one place it is written down. docs/roadmap.md
+   carries the same list in prose for anyone reading the repository, and a test
+   compares the two rather than trusting them to agree - two copies of a plan
+   drift the first week nobody looks.
+   `doc` is the decision record a finished step leaves behind. A step without one
+   is a step that has not finished, which is why the field is what the table
+   reads to decide whether there is anything to link to. */
+const DS_ROADMAP = [
+  { n:"01", state:"done", doc:"search-decision-architecture.md",
+    t:{en:"Catalogue search", pl:"Wyszukiwarka katalogu"},
+    d:{en:"One field over the grid, matching titles and authors in both languages, folding diacritics so a query typed without them still finds the book.",
+       pl:"Jedno pole nad siatką, szukające w tytułach i nazwiskach w obu językach i składające znaki diakrytyczne, żeby zapytanie wpisane bez nich też trafiało."} },
+  { n:"02", state:"done", doc:"empty-state-decision-architecture.md",
+    t:{en:"An honest empty state", pl:"Uczciwy stan pusty"},
+    d:{en:"A result that says which nothing it found - too short a query, a phrase behind the filters, or a phrase the shelf does not hold - and offers the way out that fits.",
+       pl:"Wynik, który mówi, jakiego nic znalazł - za krótkie zapytanie, fraza schowana za filtrami albo fraza, której półka nie ma - i podaje pasujące wyjście."} },
+  { n:"03", state:"done", doc:"motif-layer-decision-architecture.md",
+    t:{en:"The motif layer", pl:"Warstwa motywów"},
+    d:{en:"Fifteen recurring ideas, each with a short explanation and a named origin. The unit the whole shop is built to browse by.",
+       pl:"Piętnaście powracających idei, każda z krótkim wyjaśnieniem i nazwanym źródłem. Jednostka, po której cały sklep pozwala przeglądać."} },
+  { n:"04", state:"done", doc:"motifs-in-shop-decision-architecture.md",
+    t:{en:"Motifs on the shelf", pl:"Motywy na półce"},
+    d:{en:"The motif as a filter, as a chip on a product page and as an essay in a drawer - one object at three magnifications.",
+       pl:"Motyw jako filtr, jako chip na karcie produktu i jako esej w szufladzie - jeden obiekt w trzech powiększeniach."} },
+  { n:"05", state:"done", doc:"bookseller-brief-decision-architecture.md",
+    t:{en:"The bookseller's brief", pl:"Brief księgarki"},
+    d:{en:"What she may say, what she may never say, and where her sentences come from. Written before a line of her was built.",
+       pl:"Co wolno jej powiedzieć, czego nie wolno nigdy i skąd biorą się jej zdania. Napisane, zanim powstała choć linijka."} },
+  { n:"06", state:"done", doc:"bookseller-widget-decision-architecture.md",
+    t:{en:"The bookseller in the shop", pl:"Księgarka w sklepie"},
+    d:{en:"Her corner of the window: when she speaks, how the answer arrives a line at a time, and every view on which she stays quiet.",
+       pl:"Jej róg okna: kiedy się odzywa, jak odpowiedź przychodzi linia po linii i każdy widok, w którym milczy."} },
+  { n:"07", state:"now", doc:null,
+    t:{en:"Publish what exists", pl:"Opublikować to, co jest"},
+    d:{en:"A public address for the shop, for this documentation and for the source, each one readable by a stranger who arrives from a link.",
+       pl:"Publiczny adres dla sklepu, dla tej dokumentacji i dla źródła, każdy czytelny dla kogoś, kto przychodzi z linku."} },
+  { n:"08", state:"next", doc:null,
+    t:{en:"The model behind the bookseller", pl:"Model za księgarką"},
+    d:{en:"Her recommendations are written by hand against the catalogue today, which is honest and does not scale. Next: the model that produces them, and a written account of how.",
+       pl:"Dziś jej rekomendacje są pisane ręcznie pod katalog - uczciwie, ale bez szans na większą skalę. Dalej: model, który je wytwarza, i zapis tego, jak to robi."} },
+  { n:"09", state:"later", doc:null,
+    t:{en:"The case studies", pl:"Case studies"},
+    d:{en:"Two of them: one about the shop, one about this system, each linking to its own entry point and to the repository.",
+       pl:"Dwa: jedno o sklepie, jedno o tym systemie, każde linkujące do swojego wejścia i do repozytorium."} },
+];
+const DS_REPO = "https://github.com/<user>/<repo>";
+/* What is written down beside the code, and why anyone would open it. A folder
+   listing is something the repository already provides; what it cannot say is
+   which of these is worth an hour and which is worth a minute, so each entry
+   carries its own reason and its own weight. The word counts are checked against
+   the files by a test - a length nobody verifies is a length that quietly stops
+   being true, and a reader who opens four thousand words expecting a paragraph
+   does not come back.
+   The decision records are deliberately absent: they hang off the steps that
+   produced them, a few lines above, and a second list of the same six files
+   would be the kind of duplication this project spends its time removing. */
+const DS_DOCS = [
+  { cat:"sources", file:"motifs.md", words:4184,
+    t:{en:"The motifs", pl:"Motywy"},
+    d:{en:"All fifteen, each with its explanation, its named origin and the year. This is where the shop's claim to invent nothing is either kept or broken.",
+       pl:"Wszystkie piętnaście, każdy z wyjaśnieniem, nazwanym źródłem i rokiem. To tutaj obietnica sklepu, że nic nie wymyśla, albo się broni, albo nie."} },
+  { cat:"sources", file:"books.md", words:1777,
+    t:{en:"The catalogue", pl:"Katalog"},
+    d:{en:"Nineteen titles and where every description, quotation and motif assignment comes from.",
+       pl:"Dziewiętnaście tytułów i to, skąd wzięty jest każdy opis, cytat i przypisany motyw."} },
+  { cat:"bookseller", file:"bookseller-brief.md", words:4862,
+    t:{en:"The bookseller's brief", pl:"Brief księgarki"},
+    d:{en:"What she may say, what she may never say, how she is allowed to be wrong, and where every sentence of hers comes from. Written before she existed.",
+       pl:"Co wolno jej powiedzieć, czego nie wolno nigdy, jak wolno jej się mylić i skąd bierze się każde jej zdanie. Napisane, zanim powstała."} },
+  { cat:"procedures", file:"skills/en/design-system-doc-audit.md", filePl:"skills/audyt-dokumentacji-ds.md", words:3307, wordsPl:2768,
+    t:{en:"Auditing the documentation", pl:"Audyt dokumentacji"},
+    d:{en:"Three passes, and the traps that make an audit lie to you - including what to do when the script reports twenty violations in code that looks fine.",
+       pl:"Trzy przebiegi i pułapki, przez które audyt zaczyna kłamać &ndash; łącznie z tym, co robić, gdy skrypt zgłasza dwadzieścia naruszeń w kodzie, który wygląda dobrze."} },
+  { cat:"procedures", file:"skills/en/design-system-tab.md", filePl:"skills/zakladka-dokumentacji-ds.md", words:1397, wordsPl:1135,
+    t:{en:"Writing a documentation tab", pl:"Pisanie zakładki dokumentacji"},
+    d:{en:"The structure every tab shares, so a new one is comparable to the twenty already here rather than a dialect of its own.",
+       pl:"Struktura wspólna wszystkim zakładkom, żeby nowa dała się porównać z dwudziestoma istniejącymi, a nie była osobnym dialektem."} },
+  { cat:"procedures", file:"skills/en/new-view-in-the-shop.md", filePl:"skills/nowy-widok-w-sklepie.md", words:1012, wordsPl:850,
+    t:{en:"Building a new view", pl:"Budowa nowego widoku"},
+    d:{en:"Read the documentation and the tokens before the first line, use what exists instead of inventing near-duplicates, then audit - because a new component makes some existing sentence false.",
+       pl:"Przeczytać dokumentację i tokeny przed pierwszą linijką, użyć tego, co jest, zamiast wymyślać bliźniaki, a potem zrobić audyt &ndash; bo nowy komponent unieważnia jakieś istniejące zdanie."} },
+  { cat:"procedures", file:"skills/en/writing-in-polish.md", filePl:"skills/polszczyzna.md", words:2263, wordsPl:2090,
+    t:{en:"Writing in Polish", pl:"Polszczyzna"},
+    d:{en:"Against the specific way a bilingual project degrades: Polish that is grammatical, made of Polish words, and English underneath.",
+       pl:"Przeciwko temu, jak psuje się projekt dwujęzyczny: polszczyzna poprawna, zrobiona z polskich słów i angielska pod spodem."} },
+];
+/* One table shape for all three groups: what it is called, what is in it, how
+   long it is, and where it lives. The name is a name and not a link - a reader
+   scanning the column is reading labels, and a column of links reads as a column
+   of things to click rather than a list of what exists. The way in is the last
+   column, and it shows the path, so the reader knows what she is opening before
+   she opens it. */
+function dsDocTable(cat){
+  const pl = LANG === "pl";
+  const wiersze = DS_DOCS.filter(x => x.cat === cat).map(x => {
+    /* Polish says the same thing in fewer words, so a single figure would be
+       wrong in one language or the other. Each copy carries its own. */
+    const plik = pl && x.filePl ? x.filePl : x.file;
+    const ile  = pl && x.wordsPl ? x.wordsPl : x.words;
+    return `
+    <tr>
+      <td class="spec doc-name">${x.t[pl?"pl":"en"]}</td>
+      <td>${x.d[pl?"pl":"en"]}</td>
+      <td class="rm-state">${ile.toLocaleString(pl?"pl-PL":"en-GB")}&nbsp;${L("words","słów")}</td>
+      <td><a class="link in-text" href="${DS_REPO}/blob/main/docs/${plik}" target="_blank" rel="noopener"><code>${plik}</code></a></td>
+    </tr>`;
+  }).join("");
+  return `<table class="doc-table">
+    <colgroup><col style="width:170px"><col><col style="width:90px"><col style="width:200px"></colgroup>
+    <thead><tr>
+      <th>${L("Name","Nazwa")}</th><th>${L("What is in it","Co w nim jest")}</th>
+      <th>${L("Length","Objętość")}</th><th>${L("Repository","Repozytorium")}</th>
+    </tr></thead>
+    <tbody>${wiersze}</tbody></table>`;
+}
+function dsRoadmapRows(){
+  const stan = {
+    done: L("done","zamknięty"), now: L("in progress","w toku"),
+    next: L("next","następny"), later: L("later","później"),
+  };
+  return DS_ROADMAP.map(s => `
+    <tr class="rm-step is-${s.state}">
+      <td class="spec"><span class="rm-n">${s.n}</span></td>
+      <td><strong>${s.t[LANG === "pl" ? "pl" : "en"]}</strong><br>${s.d[LANG === "pl" ? "pl" : "en"]}</td>
+      <td class="rm-state">${stan[s.state]}${s.doc
+        ? `<br><a class="link in-text" href="${DS_REPO}/blob/main/docs/${s.doc}" target="_blank" rel="noopener">${L("decision record","zapis decyzji")}</a>`
+        : ""}</td>
+    </tr>`).join("");
+}
+
 const DS_SECTIONS = [
   { group:{en:"",pl:""}, id:"overview", label:{en:"Overview",pl:"Wprowadzenie"}, body: ()=>`
     <h1>${L("Design system","System projektowy")}</h1>
@@ -3045,6 +3176,57 @@ const DS_SECTIONS = [
           <td>${L("No string stays as the markup wrote it: every one passes through <code>I18N</code> in Polish and English, at start-up and on every change of language, including the labels only a screen reader reaches.",
                   "Żaden napis nie zostaje w postaci wpisanej w znacznikach: wszystkie przechodzą przez <code>I18N</code> po polsku i angielsku, przy starcie i przy każdej zmianie języka &ndash; łącznie z etykietami, do których dociera wyłącznie czytnik ekranu.")}</td></tr>
     </tbody></table>` },
+
+  { group:{en:"",pl:""}, id:"roadmap", label:{en:"Roadmap",pl:"Roadmapa"}, body: ()=>`
+    <h1>${L("Roadmap","Roadmapa")}</h1>
+    <p class="ds-lede">${L(
+      "This shop is not finished, and the order it is being built in is a design decision like any other. Each step is small enough to close, and closing one leaves a written record of what was decided and what was turned down.",
+      "Ten sklep nie jest skończony, a kolejność, w jakiej powstaje, jest decyzją projektową jak każda inna. Każdy krok jest na tyle mały, żeby dało się go zamknąć, a zamknięcie zostawia zapis tego, co zostało postanowione i co odrzucone.")}</p>
+    <table class="tok-table">
+    <colgroup><col style="width:54px"><col><col style="width:150px"></colgroup>
+    <thead><tr><th>${L("Step","Krok")}</th><th>${L("What it is","Czym jest")}</th><th>${L("State","Stan")}</th></tr></thead>
+    <tbody>${dsRoadmapRows()}</tbody></table>
+    <h3>${L("Why it is written down","Po co to spisane")}</h3>
+    <table><colgroup><col ${DS_COL_NAME}><col></colgroup><tbody>
+      <tr><td>${L("One decision, one record","Jedna decyzja, jeden zapis")}</td><td>${L(
+        "A finished step leaves a document naming what was decided, why, and which options were rejected. The rejected ones are the half that usually goes missing, and the half that stops the same idea being tried again a month later.",
+        "Zamknięty krok zostawia dokument mówiący, co zostało postanowione, dlaczego i które możliwości odpadły. To ta odrzucona połowa zwykle ginie, i to ona powstrzymuje przed sięganiem po ten sam pomysł miesiąc później.")}</td></tr>
+      <tr><td>${L("Order is a decision","Kolejność jest decyzją")}</td><td>${L(
+        "The motif layer came before anything that reads it, and the bookseller's brief came before the bookseller. Writing what a thing may say before building it is cheaper than discovering the answer in the interface.",
+        "Warstwa motywów powstała przed wszystkim, co ją czyta, a brief księgarki przed samą księgarką. Spisanie, co coś może mówić, zanim powstanie, kosztuje mniej niż odkrywanie odpowiedzi w interfejsie.")}</td></tr>
+      <tr><td>${L("Published unfinished","Opublikowane niegotowe")}</td><td>${L(
+        "Step 07 puts the work at a public address before the ladder is done. A roadmap a stranger can read is a more honest thing to show than a project that only appears once it is perfect.",
+        "Krok 07 stawia tę pracę pod publicznym adresem, zanim drabina się skończy. Roadmapa, którą ktoś obcy może przeczytać, jest uczciwsza niż projekt pokazywany dopiero wtedy, gdy jest idealny.")}</td></tr>
+    </tbody></table>
+    <p class="note">${L(
+      `The same ladder is in the repository as <code>docs/roadmap.md</code>, for anyone reading the source rather than the shop. It is not a second copy that has to be kept in step by hand: a test compares the two and fails when they part. The rest of what was written along the way &ndash; sources, the bookseller's brief, the procedures &ndash; is in <a class="link in-text" href="#design/documents">Documents</a>.`,
+      `Ta sama drabina leży w repozytorium jako <code>docs/roadmap.md</code>, dla czytających źródło, a nie sklep. Nie jest to druga kopia utrzymywana ręcznie: test porównuje obie i zapala się, kiedy się rozejdą. Reszta tego, co powstało po drodze &ndash; źródła, brief księgarki, procedury &ndash; leży w <a class="link in-text" href="#design/documents">Dokumentach</a>.`)}</p>`  },
+
+  { group:{en:"",pl:""}, id:"documents", label:{en:"Documents",pl:"Dokumenty"}, body: ()=>`
+    <h1>${L("Documents","Dokumenty")}</h1>
+
+    <p class="ds-lede">${L(
+      "Beside the code sit the documents it was built from. The repository lists them as a folder; what a folder cannot say is which of these is worth an hour and which is worth a minute, so each one here carries its reason and its length. The lengths are checked against the files by a test, because a number nobody verifies quietly stops being true.",
+      "Obok kodu leżą dokumenty, z których powstał. Repozytorium pokazuje je jako folder; czego folder nie powie, to który z nich jest wart godziny, a który minuty &ndash; więc każdy ma tu swój powód i swoją objętość. Objętości sprawdza test wobec plików, bo liczba, której nikt nie weryfikuje, po cichu przestaje być prawdziwa.")}</p>
+
+    <h3>${L("Where the meanings come from","Skąd biorą się znaczenia")}</h3>
+    <p>${L(
+      "The shop makes interpretive claims about novels. These two documents are what makes that checkable rather than merely asserted.",
+      "Sklep stawia interpretacyjne tezy o powieściach. Te dwa dokumenty sprawiają, że da się je sprawdzić, zamiast tylko w nie wierzyć.")}</p>
+    ${dsDocTable("sources")}
+
+    <h3>${L("The bookseller","Księgarka")}</h3>
+    ${dsDocTable("bookseller")}
+
+    <h3>${L("Procedures","Procedury")}</h3>
+    <p>${L(
+      "Four written procedures for keeping this system true. They exist because the tests exist: a procedure whose findings can be checked is a procedure that can be handed to someone else. Each is written in both languages; this list points at the copy in the language you are reading.",
+      "Cztery spisane procedury utrzymywania tego systemu w prawdzie. Istnieją, bo istnieją testy: procedurę, której wyniki da się sprawdzić, da się komuś przekazać. Każda jest w obu językach; ta lista wskazuje kopię w języku, w którym czytasz.")}</p>
+    ${dsDocTable("procedures")}
+
+    <p class="note">${L(
+      `The six decision records are not listed here &ndash; each one hangs off the step that produced it, in the <a class="link in-text" href="#design/roadmap">Roadmap</a>. Two more documents sit in the repository without a row of their own: the case studies these pages were written for.`,
+      `Sześć zapisów decyzji nie jest tu wymienionych &ndash; każdy wisi przy kroku, który go wytworzył, w <a class="link in-text" href="#design/roadmap">Roadmapie</a>. Dwa dokumenty leżą w repozytorium bez własnego wiersza: case studies, dla których te strony powstały.`)}</p>`  },
 
   { group:{en:"",pl:""}, id:"a11y", label:{en:"Accessibility",pl:"Dostępność"}, body: ()=>`
     <h1>${L("Accessibility","Dostępność")}</h1>
