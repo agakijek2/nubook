@@ -41,8 +41,8 @@ who has never seen the project.**
 
 | Link | Points at | Used by |
 |---|---|---|
-| `https://<domain>/` | the shop | the shop case study |
-| `https://<domain>/#design` | the design system | the design system case study |
+| `https://nubook.com/` | the shop | the shop case study |
+| `https://nubook.com/#design` | the design system | the design system case study |
 | `https://github.com/<user>/<repo>` | the source and the decision documents | both |
 
 Both hash routes already work as deep links, including one tab at a time
@@ -125,9 +125,16 @@ it ships.
 page, which is the wrong shop. Ours should say so in the shop's voice and offer
 the way back.
 
-**06 · Serve-path check.** Every path in the project is relative, so both a
-domain root and a `/nubook/` subpath work – but I will verify it served rather
-than assume it, because assuming is what this project keeps catching me doing.
+**06 · Serve-path check.** Done. The shop was served twice, once from a domain
+root and once from a `/nubook/` subpath, and every resource was requested at
+both: the stylesheet, the script, the three favicons, the link card, all twenty
+covers, and the two deep links. Every one answered 200 in both, because every
+path in the shop is relative &ndash; verified by grep as well as by request.
+
+`404.html` is the deliberate exception and behaves as designed: its paths run
+from the root, so under a subpath the stylesheet is not found and the page
+renders unstyled. On the apex domain this is correct; the note exists so the
+behaviour is recorded rather than discovered.
 
 **07 · A licence file**, once you have said what it should be. Without one,
 everything is reserved by default, which is a decision taken by silence rather

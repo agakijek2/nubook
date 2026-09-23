@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!-- Tę stronę ogląda się przez serwer, nie przez dwuklik. Wszystkie jej
+     odnośniki liczą się od korzenia, bo GitHub Pages podaje ją pod dowolnie
+     głębokim adresem - a pod file:// korzeniem jest korzeń dysku, więc arkusz
+     się nie znajdzie i strona wyświetli się bez stylów. Do obejrzenia:
+
+         python3 -m http.server 8000
+         http://localhost:8000/404.html
+-->
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nubook. — nie ma takiej strony</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+<style>
+  /* Ta strona nie jest widokiem sklepu, tylko osobnym plikiem, który GitHub
+     Pages podaje pod nieznanym adresem. Nagłówek i stopka są te same co w
+     sklepie; własne jest tylko to, co między nimi, bo takiego widoku sklep
+     nie ma. */
+  body{ display:flex; flex-direction:column; min-height:100dvh }
+  .nf{
+    flex:1;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:var(--nu-space-medium); text-align:center;
+    padding:var(--nu-space-max) var(--nu-space-small);
+  }
+  .nf h1{ font:var(--nu-type-h1); margin:0 }
+  /* Ta sama miara, co opis produktu: długość wiersza jest tu taką samą
+     decyzją jak tam, więc bierze tę samą wartość. */
+  /* Ten sam stopień i ta sama barwa co akapit wprowadzający w dokumentacji:
+     zdanie pod tytułem pełni tu tę samą rolę, więc wygląda tak samo. */
+  .nf p{ font:var(--nu-type-body-l); color:var(--nu-fg-secondary); margin:0; max-width:42ch }
+  .nf-akcje{ display:flex; align-items:center; gap:var(--nu-space-medium); flex-wrap:wrap; margin-top:var(--nu-space-micro) }
+</style>
+</head>
+<body>
+
+<!-- Nagłówek sklepu bez przełączników i ikon. Przełącznik języka, waluty czy
+     schematu żyje w skrypcie sklepu, a kontrolka, która nie działa, jest gorsza
+     niż jej brak: czytelniczka klika i nic się nie dzieje. Zostaje to, co na
+     stronie błędu ma sens - znak, podpis i droga do domu. -->
+<header>
+  <div class="logo">
+    <a class="mark" href="/" id="logoLink">nubook</a>
+    <span class="strap" id="strap">powieści o kobietach i płci</span>
+  </div>
+</header>
+
+<main class="nf">
+  <h1 id="tytul">Nie ma takiej strony.</h1>
+  <p id="opis">Wróć do sklepu, żeby poznać nasze tytuły.</p>
+  <div class="nf-akcje">
+    <a class="btn-primary" href="/" id="cta">Do sklepu</a>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="foot-left">
+    <span class="foot-mark">nubook<span class="foot-dot">.</span></span>
+    <span class="foot-copy" id="footCopy"></span>
+  </div>
+  <nav class="foot-links">
+    <a class="foot-link link" href="/#design/roadmap" id="lnkAbout">O tym projekcie</a>
+    <a class="foot-link link" href="/#design" id="lnkDesign">Design system</a>
+  </nav>
+</footer>
+
+<script>
+/* Czytelniczka wybrała już raz język i schemat; strona błędu nie jest powodem,
+   żeby pytać o to drugi raz. Klucz i kształt zapisu są te same co w sklepie,
+   a każda wartość jest sprawdzana, bo zapis może pochodzić z innej wersji
+   sklepu albo nie istnieć wcale. */
+(function(){
+  var tekst = document.getElementById.bind(document);
+  var p = {};
+  try { p = JSON.parse(localStorage.getItem("nubook.prefs.v1") || "{}") || {}; }
+  catch (e) { p = {}; }
+
+  if (p.scheme === "light" || p.scheme === "dark")
+    document.documentElement.setAttribute("data-scheme", p.scheme);
+
+  var rok = new Date().getFullYear();
+
+  if (p.lang !== "en"){                 // polski jest domyślny, tak jak w sklepie
+    tekst("footCopy").textContent = "© " + rok + " nubook. Wszelkie prawa zastrzeżone.";
+    return;
+  }
+
+  document.documentElement.lang = "en";
+  document.title = "nubook. — no such page";
+  tekst("strap").textContent = "novels on women & gender";
+  tekst("tytul").textContent = "No such page.";
+  tekst("opis").textContent = "Go back to the shop to see what we have.";
+  tekst("cta").textContent = "To the shop";
+  tekst("lnkAbout").textContent = "About this project";
+  tekst("lnkDesign").textContent = "Design system";
+  tekst("footCopy").textContent = "© " + rok + " nubook. All rights reserved.";
+})();
+</script>
+
+</body>
+</html>

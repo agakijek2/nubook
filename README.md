@@ -12,9 +12,9 @@ plain HTML, CSS and JavaScript.
 
 | | |
 |---|---|
-| **The shop** | `https://<domain>/` |
-| **The design system** | `https://<domain>/#design` |
-| **Roadmap and documents** | `https://<domain>/#design/roadmap` |
+| **The shop** | `https://nubook.com/` |
+| **The design system** | `https://nubook.com/#design` |
+| **Roadmap and documents** | `https://nubook.com/#design/roadmap` |
 
 ## What the shop is
 
@@ -67,7 +67,7 @@ system](docs/case-study-design-system.md).
 Every bit of discipline visible in this repository exists for that reason.
 An implementer working at that pace will happily add a fifth heading style
 and a hand-typed pixel value, so the system needs rules a machine can be
-held to – and tests that hold it there. Nine test suites and four written
+held to – and tests that hold it there. Eleven test suites and four written
 procedures are not decoration around the process; they are what makes it
 possible to move fast without losing coherence.
 
@@ -97,10 +97,15 @@ nubook/
 ├── css/styles.css      styles + every token (in the :root block)
 ├── js/app.js           catalogue data, routing, cart, documentation
 ├── assets/covers/      book covers and one author portrait
+├── assets/fonts/       the two typefaces, for drawing the link card
+├── assets/og.png       the link card (generated)
 ├── docs/               motifs, sources, decision records, roadmap
 ├── docs/skills/        procedures for working on the project
 ├── tests/              regression tests
 ├── build.py            assembles preview.html from the above
+├── build-og.py         draws the link card and the favicons
+├── 404.html            what an unknown address gets (open it over http)
+├── LICENSE.md          what is reserved, what is free to take
 └── preview.html        build output (do not edit)
 ```
 
@@ -118,7 +123,7 @@ Needs node and npm; jsdom installs itself on the first run. The run prints
 one line per suite. When one goes red, the detail is in its own output:
 `node tests/rozmycie.mjs`.
 
-Nine suites, each guarding something that breaks quietly:
+Eleven suites, each guarding something that breaks quietly:
 
 | Suite | What it guards |
 |---|---|
@@ -130,6 +135,8 @@ Nine suites, each guarding something that breaks quietly:
 | `ksiegarka-zwykla` | the same without the hints: silence is silent |
 | `dostepnosc` | focus is visible everywhere but the two recorded exceptions, the drawers are dialogs, and anything that appears unasked is announced |
 | `rozmycie` | no blur strength is typed by hand, and the components' entrances match the rules that actually run |
+| `karta` | the link card has every meta tag, its addresses are absolute, the image matches the dimensions it declares, and the claim on the picture is the claim in the tags |
+| `blad404` | the 404 page links from the root, not relatively – it is served at any depth, so a relative path gives a page with no styles – and its English half is complete |
 | `roadmapa` | the ladder of steps in the script and in `docs/roadmap.md` is the same ladder, every closed step has a decision record that exists, and the lengths in the documents list match the files |
 
 Each check was written **after** the defect it is for was found, and each
@@ -150,12 +157,25 @@ python3 build.py
 
 Do not edit `preview.html` by hand – it is always a result, never a source.
 
-## Fonts
+## Fonts and the link card
 
-DM Serif Display and Archivo load from Google Fonts, so the first opening
-needs a connection. To run fully offline, download both, put them in
-`assets/fonts/`, replace the `<link>` in `index.html` with `@font-face`
-rules and update the `--nu-font-display` and `--nu-font-text` tokens.
+The shop loads DM Serif Display and Archivo from Google Fonts, so the first
+opening needs a connection. The same two typefaces also sit in
+`assets/fonts/`, because the link card is a picture and cannot ask the
+browser for a font:
+
+```bash
+python3 build-og.py
+```
+
+That redraws `assets/og.png` and the favicons, reading its colours from
+`css/styles.css` rather than holding its own copies – a card that
+survives a palette change and still shows the old black is worse than no
+card. Rerun it after changing the claim or the palette.
+
+Having the files locally also means the shop could stop depending on Google
+Fonts: replace the `<link>` in `index.html` with `@font-face` rules pointing
+at `assets/fonts/`. Not done yet.
 
 ## History
 
@@ -169,6 +189,16 @@ kolor: token --nu-border-hover zamiast wpisanego #bdbdbd
 dostępność: fokus wchodzi do koszyka przy obu sposobach otwarcia
 ikonografia: filtry, plus, krzyżyk i strzałka selecta jako SVG
 ```
+
+## Licence
+
+Not one licence but four kinds of thing, set out in
+[`LICENSE.md`](LICENSE.md). In short: the shop, its writing and its
+documentation are **all rights reserved** – readable here, not reusable. The
+four procedures in [`docs/skills/`](docs/skills/) are **CC BY 4.0**: take
+them, adapt them, use them at work, credit the source. The covers and the
+quotations belong to their publishers, and the two typefaces to their authors
+under the OFL.
 
 ## Notes
 

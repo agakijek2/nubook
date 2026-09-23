@@ -12,9 +12,9 @@ HTML, CSS i JavaScript.
 
 | | |
 |---|---|
-| **Sklep** | `https://<domain>/` |
-| **System projektowy** | `https://<domain>/#design` |
-| **Roadmapa i dokumenty** | `https://<domain>/#design/roadmap` |
+| **Sklep** | `https://nubook.com/` |
+| **System projektowy** | `https://nubook.com/#design` |
+| **Roadmapa i dokumenty** | `https://nubook.com/#design/roadmap` |
 
 ## Czym jest sklep
 
@@ -66,7 +66,7 @@ projektowym](docs/case-study-design-system.md).
 Cała dyscyplina widoczna w tym repozytorium istnieje właśnie z tego powodu.
 Implementer pracujący w tym tempie chętnie dołoży piąty styl nagłówka i
 wartość wpisaną z ręki, więc system potrzebuje zasad, do których da się go
-przymusić – i testów, które go przy nich trzymają. Dziewięć zestawów testów
+przymusić – i testów, które go przy nich trzymają. Jedenaście zestawów testów
 i cztery spisane procedury nie są ozdobą procesu; są tym, co pozwala
 pracować szybko i nie stracić spójności.
 
@@ -96,10 +96,15 @@ nubook/
 ├── css/styles.css      style + wszystkie tokeny (w bloku :root)
 ├── js/app.js           dane katalogu, routing, koszyk, dokumentacja
 ├── assets/covers/      okładki książek i portret autorki
+├── assets/fonts/       oba kroje, do rysowania karty linku
+├── assets/og.png       karta linku (wynik budowania)
 ├── docs/               motywy, źródła, zapisy decyzji, roadmapa
 ├── docs/skills/        procedury pracy nad projektem
 ├── tests/              testy regresyjne
 ├── build.py            składa preview.html z powyższych
+├── build-og.py         rysuje kartę linku i favikony
+├── 404.html            co dostaje nieznany adres (oglądać przez serwer)
+├── LICENSE.md          co zastrzeżone, co wolno wziąć
 └── preview.html        wynik budowania (nie edytować)
 ```
 
@@ -118,7 +123,7 @@ Przebieg wypisuje jedną linię na zestaw. Kiedy któryś zapali się na
 czerwono, szczegółów szuka się w jego własnym wypisie: `node
 tests/rozmycie.mjs`.
 
-Dziewięć zestawów, każdy pilnuje czegoś, co psuje się po cichu:
+Jedenaście zestawów, każdy pilnuje czegoś, co psuje się po cichu:
 
 | Zestaw | Czego pilnuje |
 |---|---|
@@ -130,6 +135,8 @@ Dziewięć zestawów, każdy pilnuje czegoś, co psuje się po cichu:
 | `ksiegarka-zwykla` | to samo w trybie bez podpowiedzi: cisza jest cicha |
 | `dostepnosc` | fokus jest widoczny wszędzie poza dwoma zapisanymi wyjątkami, szuflady są dialogami, a to, co pojawia się nieproszone, jest ogłaszane |
 | `rozmycie` | żadna siła rozmycia nie jest wpisana z ręki, a wejścia komponentów zgadzają się z regułami, które naprawdę działają |
+| `karta` | karta linku ma komplet znaczników, adresy są pełne, obrazek ma wymiary, które deklaruje, a claim z rysunku to ten sam claim co w znacznikach |
+| `blad404` | strona 404 linkuje od korzenia, a nie względnie – podaje się ją pod dowolnie głębokim adresem, więc ścieżka względna daje stronę bez stylów – a jej angielska połowa jest kompletna |
 | `roadmapa` | drabina kroków w skrypcie i w `docs/roadmap.md` to ta sama drabina, każdy zamknięty krok ma istniejący zapis decyzji, a objętości w spisie dokumentów zgadzają się z plikami |
 
 Każde sprawdzenie powstało **po** znalezieniu usterki, której dotyczy, i ma
@@ -150,13 +157,25 @@ python3 build.py
 
 Nie edytuj `preview.html` ręcznie – jest zawsze wynikiem, a nie źródłem.
 
-## Fonty
+## Fonty i karta linku
 
-Kroje DM Serif Display i Archivo wczytywane są z Google Fonts, więc przy
-pierwszym otwarciu potrzebne jest połączenie z siecią. Aby sklep działał w
-pełni offline, pobierz oba kroje, umieść je w `assets/fonts/`, zastąp
-odnośnik `<link>` w `index.html` regułami `@font-face` i zaktualizuj tokeny
-`--nu-font-display` i `--nu-font-text`.
+Sklep wczytuje DM Serif Display i Archivo z Google Fonts, więc przy
+pierwszym otwarciu potrzebne jest połączenie z siecią. Te same dwa kroje
+leżą też w `assets/fonts/`, bo karta linku jest obrazkiem i nie może
+poprosić przeglądarki o font:
+
+```bash
+python3 build-og.py
+```
+
+Skrypt przerysowuje `assets/og.png` i favikony, biorąc barwy z
+`css/styles.css`, a nie ze swojej kopii – karta, która przeżyje zmianę
+palety i pokaże starą czerń, jest gorsza niż brak karty. Uruchamia się go po
+zmianie claimu albo palety.
+
+Skoro pliki są na miejscu, sklep mógłby przestać zależeć od Google Fonts:
+wystarczy zastąpić `<link>` w `index.html` regułami `@font-face`
+wskazującymi na `assets/fonts/`. Jeszcze nie zrobione.
 
 ## Historia zmian
 
@@ -170,6 +189,15 @@ kolor: token --nu-border-hover zamiast wpisanego #bdbdbd
 dostępność: fokus wchodzi do koszyka przy obu sposobach otwarcia
 ikonografia: filtry, plus, krzyżyk i strzałka selecta jako SVG
 ```
+
+## Licencja
+
+Nie jedna licencja, tylko cztery rodzaje rzeczy – rozpisane w
+[`LICENSE.md`](LICENSE.md). W skrócie: sklep, jego teksty i dokumentacja mają
+**wszelkie prawa zastrzeżone** – wolno czytać, nie wolno używać. Cztery
+procedury w [`docs/skills/`](docs/skills/) są na **CC BY 4.0**: bierz,
+przerabiaj, używaj w pracy, podaj źródło. Okładki i cytaty należą do
+wydawców, a oba kroje do ich autorów, na OFL.
 
 ## Uwagi
 

@@ -6,7 +6,7 @@ cd "$(dirname "$0")" || exit 1
   echo "Nie udało się zainstalować jsdom. Sprawdź, czy npm jest dostępny."; exit 1; }
 
 bad=0
-for t in arkusz tokeny ikony zakladki ksiegarka ksiegarka-zwykla dostepnosc rozmycie roadmapa; do
+for t in arkusz tokeny ikony zakladki ksiegarka ksiegarka-zwykla dostepnosc rozmycie roadmapa karta blad404; do
   printf "%-17s " "$t"
   if node "$t.mjs" >/dev/null 2>&1; then echo "OK"; else echo "BŁĄD"; bad=1; fi
 done
