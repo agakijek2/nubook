@@ -3220,13 +3220,13 @@ const DS_SECTIONS = [
 
     <h3>${L("Procedures","Procedury")}</h3>
     <p>${L(
-      "Four written procedures for keeping this system true. They exist because the tests exist: a procedure whose findings can be checked is a procedure that can be handed to someone else. Each is written in both languages; this list points at the copy in the language you are reading.",
-      "Cztery spisane procedury utrzymywania tego systemu w prawdzie. Istnieją, bo istnieją testy: procedurę, której wyniki da się sprawdzić, da się komuś przekazać. Każda jest w obu językach; ta lista wskazuje kopię w języku, w którym czytasz.")}</p>
+      "Four written procedures for keeping this system true. They exist because the tests exist: a procedure whose findings can be checked is a procedure that can be handed to someone else. Each is written in both languages; this list points at the copy in the language you are reading. They are also the one part of this repository released for reuse: CC BY 4.0, free to take and adapt, while the shop itself stays reserved.",
+      "Cztery spisane procedury utrzymywania tego systemu w prawdzie. Istnieją, bo istnieją testy: procedurę, której wyniki da się sprawdzić, da się komuś przekazać. Każda jest w obu językach; ta lista wskazuje kopię w języku, w którym czytasz. Są też jedyną częścią tego repozytorium wypuszczoną do reużycia: CC BY 4.0, wolno je brać i przerabiać, podczas gdy sam sklep zostaje zastrzeżony.")}</p>
     ${dsDocTable("procedures")}
 
     <p class="note">${L(
-      `The six decision records are not listed here &ndash; each one hangs off the step that produced it, in the <a class="link in-text" href="#design/roadmap">Roadmap</a>. Two more documents sit in the repository without a row of their own: the case studies these pages were written for.`,
-      `Sześć zapisów decyzji nie jest tu wymienionych &ndash; każdy wisi przy kroku, który go wytworzył, w <a class="link in-text" href="#design/roadmap">Roadmapie</a>. Dwa dokumenty leżą w repozytorium bez własnego wiersza: case studies, dla których te strony powstały.`)}</p>`  },
+      `The six decision records are not listed here &ndash; each one hangs off the step that produced it, in the <a class="link in-text" href="#design/roadmap">Roadmap</a>. Three more sit in the repository without a row of their own: the two case studies these pages were written for, and <code>LICENSE.md</code>, which says which of all this is reserved and which is free to take.`,
+      `Sześć zapisów decyzji nie jest tu wymienionych &ndash; każdy wisi przy kroku, który go wytworzył, w <a class="link in-text" href="#design/roadmap">Roadmapie</a>. Trzy kolejne leżą w repozytorium bez własnego wiersza: dwa case studies, dla których te strony powstały, i <code>LICENSE.md</code>, mówiący, co z tego wszystkiego jest zastrzeżone, a co wolno wziąć.`)}</p>`  },
 
   { group:{en:"",pl:""}, id:"a11y", label:{en:"Accessibility",pl:"Dostępność"}, body: ()=>`
     <h1>${L("Accessibility","Dostępność")}</h1>
