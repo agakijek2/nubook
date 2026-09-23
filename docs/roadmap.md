@@ -52,6 +52,12 @@ Both hash routes already work as deep links, including one tab at a time
 three are decided and recorded, not forgotten – the contrast gap ships as an open
 item that the Accessibility tab describes in its own words.
 
+**On step 09.** Both case studies are written and live in `docs/`, ahead of
+their place in the ladder: the shop needed something to link from, and writing
+them turned out to be the fastest way to find out which numbers in this project
+were wrong. The step stays open because what closes it is not the text but its
+decision record and the final addresses inside it.
+
 ---
 
 ## Yours · decisions and accounts
@@ -60,19 +66,18 @@ item that the Accessibility tab describes in its own words.
 studies carry, and it is the first word a stranger reads. `nubook` is the obvious
 one.
 
-**02 · The domain.** Buying it and pointing DNS at GitHub Pages: four A records,
-or an ALIAS if the registrar offers one. Then the domain goes into the repository
-settings and the certificate takes up to a day. I will write out the exact
-records once you have the registrar.
+**02 · The domain.** Settled: `nubook.com`, bought at GoDaddy. GoDaddy has no
+ALIAS at the apex, so it is four `A` records pointing at GitHub Pages, its own
+parking record removed, and a `CNAME` for `www`. They go in *after* the domain is
+entered in the repository settings – see the note on order at the end.
 
 **03 · Creating the repository and pushing.** Git in this folder is yours, so the
 push is too. I hand over the commands.
 
-**04 · How much the README says about how this was made.** The repository is
-public and linked from a portfolio, so its front page is part of the application.
-That the shop and the system were built in collaboration with a model is either
-the most interesting thing on the page or a footnote, and which one it is is your
-call, not mine. I will write whichever version you name.
+**04 · How much the README says about how this was made.** Settled: a section of
+its own, high on the page, stating the division of labour and why the discipline
+in this repository exists – not a footnote at the bottom, and not the first
+sentence either.
 
 **05 · The covers.** `assets/covers/` holds twenty real publisher covers and a
 photograph of a living author. On a local project that is nothing; on a public
@@ -98,32 +103,39 @@ either link goes into a case study.
 
 ## Mine · the repository and what a link shows
 
-**01 · Clear the root.** `podglad-linie.html` is a working file I left behind and
-cannot delete myself; the six `_*.html` diagnostics are already ignored but still
-on disk. The published repository should hold the project and nothing else.
+**01 · Clear the root.** Done. `podglad-linie.html` was tracked by oversight and
+is gone from the history; seventeen `_*.html` diagnostics were deleted from
+disk. The ignore pattern stays, because more of them will be built.
 
-**02 · Move the tests into the repository.** Six suites live in my scratch folder
-today, which means the repository a stranger opens has no tests in it – in a
-project whose whole argument is that documentation is checked against the code.
-They belong in `tests/`, with the one-line runner and a paragraph in the README
-saying what each one guards. This is the single largest gain in this step for
-what it costs.
+**02 · Move the tests into the repository.** Done. The suites now live in
+`tests/` with their runner, a `package.json` that pulls jsdom in on first use,
+and a table in the README saying what each one guards. Each test computes the
+project path from its own location instead of holding an absolute one, so the
+set runs on any machine – checked on a fresh copy with an empty `node_modules`.
 
-**03 · Rewrite the README for a stranger.** It is written for us: it explains how
-to run the project and where things are, and says nothing about what the project
-*is* in the two sentences someone will actually read. It should open with what
-the shop is, what the design system is, where to click for each, and only then
-the mechanics.
+**03 · Rewrite the README for a stranger.** Done. It opens with what the shop is,
+what the design system is and where to click for each; the mechanics moved
+below. Because both case studies are in English and lead here, the English
+version is now `README.md` and the Polish one sits beside it as
+`README.pl.md`, each linking to the other. A section high on the page states
+how the project is made and how the work is divided.
 
-**04 · What a pasted link looks like.** The page has a title and nothing else –
-no description, no card image, no favicon. A link dropped into a message or a CV
-shows a bare URL. I will add the meta description, the Open Graph and Twitter
-card, and a favicon drawn from the wordmark's dot, and show you the card before
-it ships.
+**04 · What a pasted link looks like.** Done. The page carries a description,
+Open Graph and Twitter tags, a canonical address and three favicons drawn from
+the wordmark's dot. `build-og.py` draws the card and the icons, reading its
+colours from the stylesheet rather than holding copies, and refuses to run if a
+token is missing.
 
-**05 · A `404.html`.** On GitHub Pages a wrong path lands on GitHub's own error
-page, which is the wrong shop. Ours should say so in the shop's voice and offer
-the way back.
+This is also where the shop got a claim: **Books, by what they are about.** It
+lives on the card and in the tags only. The masthead keeps saying *novels on
+women & gender*, because the card invites and the masthead names – a decision,
+not an unfinished change.
+
+**05 · A `404.html`.** Done. A wrong address now gets the shop's own header and
+footer, a line naming what happened and one button back. It reads the same
+preferences key as the shop, so it answers in the language and scheme already
+chosen. The switchers are deliberately absent: they live in the shop's script,
+and a control that does nothing is worse than no control.
 
 **06 · Serve-path check.** Done. The shop was served twice, once from a domain
 root and once from a `/nubook/` subpath, and every resource was requested at
@@ -136,22 +148,38 @@ from the root, so under a subpath the stylesheet is not found and the page
 renders unstyled. On the apex domain this is correct; the note exists so the
 behaviour is recorded rather than discovered.
 
-**07 · A licence file**, once you have said what it should be. Without one,
-everything is reserved by default, which is a decision taken by silence rather
-than on purpose.
+**07 · A licence file.** Done. `LICENSE.md` separates four kinds of thing. The
+shop, its writing and its documentation are reserved – readable, not reusable –
+with the rule stated as *kind of content, not file*, because the documentation
+sits inside `js/app.js`. The four procedures in `docs/skills/` are CC BY 4.0,
+free to take and adapt. The covers, the portrait and the quotations are named as
+nobody's to license here, and the typefaces carry their own OFL, now beside them
+as `assets/fonts/OFL.txt`.
 
-**08 · The last pass.** Six suites green, `preview.html` rebuilt, both deep links
-opened, the shop walked through once in each language and each scheme.
+**08 · The last pass.** Eleven suites green, `preview.html` rebuilt, the
+`<user>/<repo>` placeholders in both case studies filled with the real address,
+both deep links opened, and the shop walked through once in each language and
+each scheme. Waits on the repository existing.
 
 ---
 
 ## Order
 
-**Mine first, yours second, mine last.** Points 01 to 06 of my list do not need
-an account or a domain and can be done now. Then the repository, the push and the
-domain are yours. Then I run the last pass against the live address, because some
-of what point 06 checks can only be checked there.
+**Mine first, yours second, mine last.** Points 01 to 07 of my list are closed:
+none of them needed an account or a domain. What is left is yours – the
+repository, the push, then the DNS – and after that my point 08 against the live
+address, because some of what it checks can only be checked there.
 
-**The domain's certificate is the long pole** – up to a day after the DNS
-records, and nothing else waits on it. Worth starting the moment the registrar is
-chosen, even before the repository is clean.
+**Correction on the order.** An earlier version of this file said the DNS could
+be started first, in parallel, because the certificate is slow. That is wrong,
+and GitHub's own documentation says so: the custom domain goes into the
+repository settings *before* it is pointed at anything, or there is a window in
+which somebody else can host a site at that address. So the repository is the
+prerequisite for the slowest part, not something that can wait for it.
+
+The sequence: create the repository and push → Settings → Pages → Custom
+domain: `nubook.com` → then the four `A` records at GoDaddy, removing the
+parking record it inserts by default, plus a `CNAME` for `www` → then, once the
+certificate is issued, Enforce HTTPS. Propagation takes up to a day, and during
+that day `<user>.github.io/nubook/` is the working address &ndash; which is why
+point 06 checked that one too.

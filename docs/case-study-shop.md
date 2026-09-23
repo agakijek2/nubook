@@ -106,7 +106,7 @@ a mobile filter sheet that keeps the control that opened it visible.
 **How it was built.** I worked with an AI assistant as the implementer. Every
 design decision, every rejection, every piece of copy is mine; the assistant
 wrote the code under those decisions and was held to them by a regression suite
-(nine test files) and by documentation audits that check the written
+(eleven test files) and by documentation audits that check the written
 documentation against the actual stylesheet. That division let me move at a pace
 where a design decision could be seen running within minutes — and it made
 discipline mandatory, because a fast implementer with no constraints produces

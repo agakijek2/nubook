@@ -89,7 +89,7 @@ had never been. A Polish meaning that said "content on a dark background" where
 the English said "on an inverse background", a divergence that mattered the
 moment a button started inverting with the page.
 
-**Then I automated the audit.** Nine test files now check things that are
+**Then I automated the audit.** Eleven test files now check things that are
 invisible until someone breaks them: that no blur strength is typed by hand, that
 every token named in documentation prose exists in the stylesheet, that every
 colour token has a row in its table, that nothing sits in "not sorted yet", that
@@ -129,6 +129,11 @@ usually a set of components; what this one also has is a set of **written
 procedures for keeping itself true** — each one backed by tests that can tell
 whether the procedure was followed.
 
+They are also the one part of the repository released for reuse. The shop, its
+writing and its documentation are reserved; the four procedures are CC BY 4.0,
+free to take, adapt and use at work. That split is the point: what is specific
+to this shop stays here, and what is a way of working travels.
+
 **Bilingual, written from the fact.** Every string exists in Polish and English,
 each written from the thing being described rather than translated from the
 other. A separate editorial pass checks the Polish for calques and for
@@ -148,7 +153,7 @@ same stylesheet, the same tokens, one source. 137 tokens, 22 documented tabs,
 four button variants, a documented motion scale with reasoned curves.
 
 **Documentation that is provably current.** The generated parts cannot drift by
-construction. The written parts are covered by nine test suites and a repeatable
+construction. The written parts are covered by eleven test suites and a repeatable
 audit that has now been run on four tabs, with every finding either fixed in the
 text or fixed in the code.
 
