@@ -44,7 +44,7 @@ itself. It runs as a single page with hash routing, a light and a dark scheme,
 and no back end.
 
 **It is in progress, and deliberately so.** The work runs on a written roadmap
-of numbered steps – nine of them, six closed, one in progress, the rest named
+of numbered steps – nine of them, seven closed, one in progress, one named
 rather than vague. The roadmap is not a private planning document: it is
 [a tab in the shop's own documentation](https://nubook.eu/#design/roadmap),
 reachable from the footer, with each closed step linking to the record of what
@@ -72,8 +72,8 @@ Three constraints I set at the start and held to:
 
 **Every step ends in a written decision record.** The work runs as a numbered
 ladder of steps; each completed step closes with a decision-architecture
-document – what was decided, why, and which options were rejected. Six of these
-now sit in `docs/`. They are the reason the shop is
+document – what was decided, why, and which options were rejected. Seven of
+these now sit in `docs/`. They are the reason the shop is
 internally consistent: a decision made in step 03 is still findable in step 08,
 so later work extends earlier work instead of quietly contradicting it.
 
@@ -144,8 +144,8 @@ excluded from the table – the shop documents its own gaps.
 
 The roadmap is published with the shop – a tab in the documentation, linked
 from the footer – and mirrored in the repository as `docs/roadmap.md`, with a
-test comparing the two so they cannot quietly part. Six steps are closed, each
-with its own decision record. Two are named and waiting:
+test comparing the two so they cannot quietly part. Seven steps are closed, each
+with its own decision record. Two remain:
 
 - **08 · The model behind the bookseller.** Right now her recommendations are
   written against the catalogue by hand, which is honest but does not scale

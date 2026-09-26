@@ -16,9 +16,9 @@ describes. Each finished step leaves a decision document beside this file.
 | 04 | Motifs on the shelf | done · `motifs-in-shop-decision-architecture.md` |
 | 05 | The bookseller's brief | done · `bookseller-brief-decision-architecture.md` |
 | 06 | The bookseller in the shop | done · `bookseller-widget-decision-architecture.md` |
-| **07** | **Publish what exists** | **in progress** |
-| 08 | The model behind the bookseller | next |
-| 09 | The case studies | after 08 |
+| 07 | Publish what exists | done · `publish-decision-architecture.md` |
+| **08** | **The model behind the bookseller** | **in progress** |
+| 09 | The case studies | next |
 
 **What changed:** step 07 was *deploy*, a technical errand at the end. It is now
 *publish*, and it comes with a reason – the work needs a public address before it

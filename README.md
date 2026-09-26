@@ -74,7 +74,7 @@ possible to move fast without losing coherence.
 Every closed roadmap step leaves a document naming what was decided, why,
 and **which options were rejected**. The rejected half is the one that
 usually goes missing, and the one that stops the same idea being tried again
-a month later. Six such records sit in [`docs/`](docs/); the plan for the
+a month later. Seven such records sit in [`docs/`](docs/); the plan for the
 remaining steps is in [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Running it
