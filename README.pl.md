@@ -12,9 +12,9 @@ HTML, CSS i JavaScript.
 
 | | |
 |---|---|
-| **Sklep** | `https://nubook.com/` |
-| **System projektowy** | `https://nubook.com/#design` |
-| **Roadmapa i dokumenty** | `https://nubook.com/#design/roadmap` |
+| **Sklep** | `https://nubook.eu/` |
+| **System projektowy** | `https://nubook.eu/#design` |
+| **Roadmapa i dokumenty** | `https://nubook.eu/#design/roadmap` |
 
 ## Czym jest sklep
 

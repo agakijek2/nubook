@@ -41,8 +41,8 @@ who has never seen the project.**
 
 | Link | Points at | Used by |
 |---|---|---|
-| `https://nubook.com/` | the shop | the shop case study |
-| `https://nubook.com/#design` | the design system | the design system case study |
+| `https://nubook.eu/` | the shop | the shop case study |
+| `https://nubook.eu/#design` | the design system | the design system case study |
 | `https://github.com/agakijek2/nubook` | the source and the decision documents | both |
 
 Both hash routes already work as deep links, including one tab at a time
@@ -66,7 +66,7 @@ decision record and the final addresses inside it.
 studies carry, and it is the first word a stranger reads. `nubook` is the obvious
 one.
 
-**02 · The domain.** Settled: `nubook.com`, bought at GoDaddy. GoDaddy has no
+**02 · The domain.** Settled: `nubook.eu`, bought at GoDaddy. GoDaddy has no
 ALIAS at the apex, so it is four `A` records pointing at GitHub Pages, its own
 parking record removed, and a `CNAME` for `www`. They go in *after* the domain is
 entered in the repository settings – see the note on order at the end.
@@ -178,7 +178,7 @@ which somebody else can host a site at that address. So the repository is the
 prerequisite for the slowest part, not something that can wait for it.
 
 The sequence: create the repository and push → Settings → Pages → Custom
-domain: `nubook.com` → then the four `A` records at GoDaddy, removing the
+domain: `nubook.eu` → then the four `A` records at GoDaddy, removing the
 parking record it inserts by default, plus a `CNAME` for `www` → then, once the
 certificate is issued, Enforce HTTPS. Propagation takes up to a day, and during
 that day `agakijek2.github.io/nubook/` is the working address &ndash; which is why

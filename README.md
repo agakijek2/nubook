@@ -12,9 +12,9 @@ plain HTML, CSS and JavaScript.
 
 | | |
 |---|---|
-| **The shop** | `https://nubook.com/` |
-| **The design system** | `https://nubook.com/#design` |
-| **Roadmap and documents** | `https://nubook.com/#design/roadmap` |
+| **The shop** | `https://nubook.eu/` |
+| **The design system** | `https://nubook.eu/#design` |
+| **Roadmap and documents** | `https://nubook.eu/#design/roadmap` |
 
 ## What the shop is
 

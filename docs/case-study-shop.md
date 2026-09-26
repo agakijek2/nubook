@@ -5,7 +5,7 @@
 
 **Role:** product designer – research, IA, interaction design, UI, content design, QA
 **Type:** self-directed project
-**Live:** `https://nubook.com/` · **Source:** `https://github.com/agakijek2/nubook`
+**Live:** `https://nubook.eu/` · **Source:** `https://github.com/agakijek2/nubook`
 **Companion case study:** [the design system behind it](./case-study-design-system.md)
 
 ---
@@ -46,7 +46,7 @@ and no back end.
 **It is in progress, and deliberately so.** The work runs on a written roadmap
 of numbered steps – nine of them, six closed, one in progress, the rest named
 rather than vague. The roadmap is not a private planning document: it is
-[a tab in the shop's own documentation](https://nubook.com/#design/roadmap),
+[a tab in the shop's own documentation](https://nubook.eu/#design/roadmap),
 reachable from the footer, with each closed step linking to the record of what
 was decided and what was turned down. I am
 publishing before it is finished on purpose – a roadmap someone can read is a
