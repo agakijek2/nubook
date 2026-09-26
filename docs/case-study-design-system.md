@@ -6,7 +6,7 @@
 
 **Role:** product designer – token architecture, component specification, documentation, QA
 **Type:** self-directed project
-**Live:** `https://nubook.com/#design` · **Source:** `https://github.com/<user>/<repo>`
+**Live:** `https://nubook.com/#design` · **Source:** `https://github.com/agakijek2/nubook`
 **Companion case study:** [the shop it was built for](./case-study-shop.md)
 
 ---

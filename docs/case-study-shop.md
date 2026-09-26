@@ -5,7 +5,7 @@
 
 **Role:** product designer – research, IA, interaction design, UI, content design, QA
 **Type:** self-directed project
-**Live:** `https://nubook.com/` · **Source:** `https://github.com/<user>/<repo>`
+**Live:** `https://nubook.com/` · **Source:** `https://github.com/agakijek2/nubook`
 **Companion case study:** [the design system behind it](./case-study-design-system.md)
 
 ---

@@ -3063,7 +3063,7 @@ const DS_ROADMAP = [
     d:{en:"Two of them: one about the shop, one about this system, each linking to its own entry point and to the repository.",
        pl:"Dwa: jedno o sklepie, jedno o tym systemie, każde linkujące do swojego wejścia i do repozytorium."} },
 ];
-const DS_REPO = "https://github.com/<user>/<repo>";
+const DS_REPO = "https://github.com/agakijek2/nubook";
 /* What is written down beside the code, and why anyone would open it. A folder
    listing is something the repository already provides; what it cannot say is
    which of these is worth an hour and which is worth a minute, so each entry

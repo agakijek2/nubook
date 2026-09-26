@@ -70,8 +70,9 @@ chk(/aboutProject:"About this project"/.test(js) && /aboutProject:"O tym projekc
     'napis w stopce jest w obu jezykach');
 
 /* 7. adres repozytorium jest w jednym miejscu, a nie wklejony przy kazdym kroku */
-chk((js.match(/github\.com\/<user>\/<repo>/g)||[]).length===1,
+chk((js.match(/github\.com\/[\w.-]+\/[\w.-]+/g)||[]).length===1,
     'adres repozytorium stoi raz, a linki krokow sie z niego sklejaja');
+chk(!/<user>|<repo>/.test(js), 'zadna zaslepka adresu nie zostala w skrypcie');
 
 /* 8. spis dokumentow. Martwy link w sekcji, ktora ma dowodzic rzetelnosci, jest
    gorszy niz brak sekcji - wiec kazdy plik musi istniec, w obu jezykach.

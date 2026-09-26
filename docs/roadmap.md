@@ -43,7 +43,7 @@ who has never seen the project.**
 |---|---|---|
 | `https://nubook.com/` | the shop | the shop case study |
 | `https://nubook.com/#design` | the design system | the design system case study |
-| `https://github.com/<user>/<repo>` | the source and the decision documents | both |
+| `https://github.com/agakijek2/nubook` | the source and the decision documents | both |
 
 Both hash routes already work as deep links, including one tab at a time
 (`#design/button`), so nothing has to be built to make them linkable.
@@ -157,7 +157,7 @@ nobody's to license here, and the typefaces carry their own OFL, now beside them
 as `assets/fonts/OFL.txt`.
 
 **08 · The last pass.** Eleven suites green, `preview.html` rebuilt, the
-`<user>/<repo>` placeholders in both case studies filled with the real address,
+`agakijek2/nubook` placeholders in both case studies filled with the real address,
 both deep links opened, and the shop walked through once in each language and
 each scheme. Waits on the repository existing.
 
@@ -181,5 +181,5 @@ The sequence: create the repository and push → Settings → Pages → Custom
 domain: `nubook.com` → then the four `A` records at GoDaddy, removing the
 parking record it inserts by default, plus a `CNAME` for `www` → then, once the
 certificate is issued, Enforce HTTPS. Propagation takes up to a day, and during
-that day `<user>.github.io/nubook/` is the working address &ndash; which is why
+that day `agakijek2.github.io/nubook/` is the working address &ndash; which is why
 point 06 checked that one too.
