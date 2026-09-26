@@ -1,4 +1,4 @@
-/* Kazda zakladka dokumentacji renderuje sie w obu jezykach. */
+/* Every documentation tab renders in both languages. */
 import { JSDOM } from 'jsdom';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -16,19 +16,19 @@ for (const lang of ['pl','en']){
   w.__L(lang);
   for (const s of S){
     let out;
-    try{ out=s.body(); }catch(e){ console.log('BLAD', lang, s.id, e.message); bad++; continue; }
-    if (/undefined/.test(out)){ console.log('undefined w', lang, s.id); bad++; }
-    if (/—/.test(out)){ console.log('dlugi myslnik w', lang, s.id); bad++; }
+    try{ out=s.body(); }catch(e){ console.log('FAIL', lang, s.id, e.message); bad++; continue; }
+    if (/undefined/.test(out)){ console.log('undefined in', lang, s.id); bad++; }
+    if (/—/.test(out)){ console.log('em dash in', lang, s.id); bad++; }
     const el=d.createElement('div'); el.innerHTML=out;
     const h1=el.querySelector('h1');
-    if (!h1){ console.log('brak h1 w', lang, s.id); bad++; continue; }
-    /* Kazda zakladka zaczyna sie tak samo: tytul, a pod nim jedno zdanie
-       wprowadzajace w stylu ds-lede. Zakladka, ktora zaczyna sie zwyklym
-       akapitem, wyglada na pisana przez kogos innego. */
-    const pierwszy = h1.nextElementSibling;
-    if (!pierwszy || pierwszy.tagName!=='P' || !pierwszy.classList.contains('ds-lede')){
-      console.log('brak ds-lede pod h1 w', lang, s.id,
-                  '(jest: '+(pierwszy? pierwszy.tagName.toLowerCase()+'.'+pierwszy.className : 'nic')+')');
+    if (!h1){ console.log('no h1 in', lang, s.id); bad++; continue; }
+    /* Every tab opens the same way: a title, and under it one lede sentence in
+       the ds-lede style. A tab that opens with an ordinary paragraph looks as
+       though somebody else wrote it. */
+    const first = h1.nextElementSibling;
+    if (!first || first.tagName!=='P' || !first.classList.contains('ds-lede')){
+      console.log('no ds-lede under h1 in', lang, s.id,
+                  '(found: '+(first? first.tagName.toLowerCase()+'.'+first.className : 'nothing')+')');
       bad++;
     }
   }
@@ -36,11 +36,11 @@ for (const lang of ['pl','en']){
 w.__L('pl');
 const box=(id)=>{const e=d.createElement('div'); e.innerHTML=S.find(s=>s.id===id).body(); return e;};
 const m=box('motion'), t=[...m.querySelectorAll('table')];
-console.log('zakladek:', S.length);
-console.log('Ruch, wierszy w tabelach:', t.map(x=>x.querySelectorAll('tbody tr').length).join(' / '));
-console.log('Awatar, wierszy specyfikacji:', box('avatar').querySelectorAll('table')[1].querySelectorAll('tbody tr').length);
-const kol=box('colour');
-console.log('Kolor, tabele tokenow:', [...kol.querySelectorAll('table.tok-table')].map(x=>x.querySelectorAll('tbody tr').length).join(' / '));
-console.log('Kolor, prymitywow:', kol.querySelectorAll('table')[0].querySelectorAll('tbody tr').length);
-console.log(bad? 'BLEDOW: '+bad : 'WYNIK: wszystkie zakladki renderuja sie w obu jezykach');
+console.log('tabs:', S.length);
+console.log('Motion, rows per table:', t.map(x=>x.querySelectorAll('tbody tr').length).join(' / '));
+console.log('Avatar, specification rows:', box('avatar').querySelectorAll('table')[1].querySelectorAll('tbody tr').length);
+const col=box('colour');
+console.log('Colour, token tables:', [...col.querySelectorAll('table.tok-table')].map(x=>x.querySelectorAll('tbody tr').length).join(' / '));
+console.log('Colour, primitives:', col.querySelectorAll('table')[0].querySelectorAll('tbody tr').length);
+console.log(bad? 'FAILURES: '+bad : 'RESULT: every tab renders in both languages');
 process.exit(bad?1:0);

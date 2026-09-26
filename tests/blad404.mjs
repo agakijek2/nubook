@@ -1,98 +1,99 @@
-/* Strona pod nieznanym adresem jest jedynym widokiem, ktorego nikt nigdy nie
-   oglada celowo - wiec psuje sie i nikt tego nie zauwaza. Najgrozniejsze sa tu
-   sciezki wzgledne: 404 podaje sie pod dowolnie glebokim adresem, wiec
-   "css/styles.css" znajdzie arkusz tylko w korzeniu, a wszedzie indziej da
-   strone bez stylow. */
+/* The page served at an unknown address is the only view nobody ever opens on
+   purpose - so it breaks and nobody notices. The dangerous part here is
+   relative paths: a 404 is served at any depth, so "css/styles.css" finds the
+   stylesheet at the root and nowhere else, and everywhere else gives a page
+   with no styles. */
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 const D = fileURLToPath(new URL('../', import.meta.url));
 const html = fs.readFileSync(D+'404.html','utf8');
 
 let bad=0;
-const chk=(c,m)=>{ console.log((c?'  OK   ':'  BLAD ')+m); if(!c) bad++; };
+const chk=(c,m)=>{ console.log((c?'  OK   ':'  FAIL ')+m); if(!c) bad++; };
 
-/* 1. Kazdy wlasny odnosnik liczy sie od korzenia. Zewnetrzne (fonts.googleapis)
-   zostawiamy w spokoju. */
-const adresy = [...html.matchAll(/(?:href|src)="([^"#][^"]*)"/g)].map(m=>m[1])
+/* 1. Every link of our own runs from the root. External ones
+   (fonts.googleapis) are left alone. */
+const links = [...html.matchAll(/(?:href|src)="([^"#][^"]*)"/g)].map(m=>m[1])
   .filter(a => !/^https?:/.test(a));
-chk(adresy.length>0, `odnosnikow do sprawdzenia: ${adresy.length}`);
-for (const a of adresy)
-  chk(a.startsWith('/'), `${a} liczy sie od korzenia`);
+chk(links.length>0, `links to check: ${links.length}`);
+for (const a of links)
+  chk(a.startsWith('/'), `${a} runs from the root`);
 
-/* 2. ...i kazdy z nich wskazuje na plik, ktory istnieje. */
-for (const a of adresy.filter(a=>a!=='/'))
+/* 2. ...and every one of them points at a file that exists. */
+for (const a of links.filter(a=>a!=='/'))
   chk(fs.existsSync(D + a.replace(/^\//,'').split('#')[0]),
-      `${a} wskazuje na istniejacy plik`);
+      `${a} points at an existing file`);
 
-/* 3. Ten sam arkusz co sklep, a nie wlasna kopia regul. */
-chk(/href="\/css\/styles\.css"/.test(html), 'strona bierze arkusz sklepu');
+/* 3. The shop's stylesheet, not a private copy of its rules. */
+chk(/href="\/css\/styles\.css"/.test(html), 'the page takes the shop stylesheet');
 
-/* 4. Komponenty z systemu, nie wymyslone na te jedna strone. */
+/* 4. Components from the system, not invented for this one page. */
 for (const k of ['mark','btn-primary','foot-link link'])
-  chk(html.includes(`class="${k}"`), `uzywa komponentu .${k.split(' ')[0]}`);
-/* Jedna droga, jeden przycisk. Wyjscie do dokumentacji stoi w stopce, tak jak
-   w calym sklepie, wiec powtorzone przy tytule bylo drugim wyjsciem z tego
-   samego miejsca. */
+  chk(html.includes(`class="${k}"`), `uses the .${k.split(' ')[0]} component`);
+/* One way out, one button. The way to the documentation stands in the footer,
+   as everywhere else in the shop, so repeating it beside the title was a second
+   exit from the same place. */
 chk((html.match(/class="btn-primary"/g)||[]).length===1,
-    'przy tytule stoi dokladnie jeden przycisk');
+    'exactly one button stands beside the title');
 chk(!/class="link in-text"/.test(html),
-    'do dokumentacji prowadzi stopka, nie osobny link przy tytule');
+    'the footer leads to the documentation, not a separate link by the title');
 
-/* 5. Wlasne reguly tej strony nie moga wpisywac wartosci, ktore sa tokenami. */
-const styl = (html.match(/<style>([\s\S]*?)<\/style>/)||['',''])[1];
-const wpisane = [...styl.matchAll(/:\s*(\d+(?:\.\d+)?(?:px|rem))/g)]
+/* 5. This page's own rules must not type values that exist as tokens. */
+const style = (html.match(/<style>([\s\S]*?)<\/style>/)||['',''])[1];
+const typed = [...style.matchAll(/:\s*(\d+(?:\.\d+)?(?:px|rem))/g)]
   .map(m=>m[1]).filter(v => v!=='0px');
-chk(wpisane.length===0, `zadnej dlugosci wpisanej z reki${wpisane.length?` (${wpisane.join(', ')})`:''}`);
-chk(!/#[0-9a-fA-F]{3,6}\b/.test(styl), 'zadnej barwy wpisanej z reki');
+chk(typed.length===0, `no hand-typed length${typed.length?` (${typed.join(', ')})`:''}`);
+chk(!/#[0-9a-fA-F]{3,6}\b/.test(style), 'no hand-typed colour');
 
-/* 6. Oba jezyki. Polski stoi w markupie, angielski dokłada skrypt - wiec obie
-   wersje musza byc kompletne, inaczej czytelniczka po angielsku dostaje
-   pol strony po polsku. */
-const skryptBlok = (html.match(/<script>([\s\S]*?)<\/script>/)||['',''])[1];
-/* Skrypt siega po elementy skrotem `tekst("id")`, ale rownie dobrze moglby
-   wolac getElementById wprost - lapiemy oba zapisy. Bez tego zmiana skrotu
-   wyciszylaby ten test po cichu, zamiast go zepsuc. */
-const podmiany = [...new Set(
-  [...skryptBlok.matchAll(/(?:getElementById|tekst)\("(\w+)"\)/g)].map(m=>m[1])
+/* 6. Both languages. Polish stands in the markup, English is supplied by the
+   script - so both halves have to be complete, or an English reader gets half
+   a page in Polish. */
+const scriptBlock = (html.match(/<script>([\s\S]*?)<\/script>/)||['',''])[1];
+/* The script reaches for elements through the shorthand `el("id")`, but it
+   could as well call getElementById outright - we catch both spellings. Without
+   that, renaming the shorthand would silence this check rather than break it. */
+const swaps = [...new Set(
+  [...scriptBlock.matchAll(/(?:getElementById|\bel)\("(\w+)"\)/g)].map(m=>m[1])
 )];
-chk(podmiany.length >= 5,
-    `skrypt podmienia napisy w ${podmiany.length} miejscach (spodziewane co najmniej 5)`);
-for (const id of podmiany)
-  chk(new RegExp(`id="${id}"`).test(html), `element #${id} istnieje w markupie`);
-chk(/p\.lang !== "en"/.test(html), 'polski jest domyslny, tak jak w sklepie');
-chk(/nubook\.prefs\.v1/.test(html), 'czyta ten sam klucz preferencji co sklep');
-chk(/documentElement\.lang = "en"/.test(html), 'przelaczenie jezyka zmienia tez atrybut lang');
-chk(/data-scheme/.test(html), 'schemat jasny albo ciemny idzie za wyborem czytelniczki');
+chk(swaps.length >= 5,
+    `the script swaps strings in ${swaps.length} places (at least 5 expected)`);
+for (const id of swaps)
+  chk(new RegExp(`id="${id}"`).test(html), `element #${id} exists in the markup`);
+chk(/p\.lang !== "en"/.test(html), 'Polish is the default, as in the shop');
+chk(/nubook\.prefs\.v1/.test(html), 'reads the same preferences key as the shop');
+chk(/documentElement\.lang = "en"/.test(html), 'switching the language also sets the lang attribute');
+chk(/data-scheme/.test(html), 'light or dark follows the reader\'s choice');
 
-/* 6b. Naglowek i stopka sa te same co w sklepie: strona bledu ma byc czescia
-   sklepu, a nie osobna kartka. Przelaczniki zostaja poza nia - kontrolka, ktora
-   nie dziala, jest gorsza niz jej brak. */
+/* 6b. The header and the footer are the shop's own: an error page is part of
+   the shop rather than a separate sheet of paper. The switchers stay out of it
+   - a control that does nothing is worse than no control. */
 chk(/<header>[\s\S]*class="logo"[\s\S]*class="mark"[\s\S]*class="strap"[\s\S]*<\/header>/.test(html),
-    'naglowek niesie znak i podpis, tak jak w sklepie');
-chk(/<footer class="site-foot">/.test(html), 'stopka jest stopka sklepu');
-chk(/class="foot-link link"/.test(html), 'stopka ma oba linki zaplecza');
+    'the header carries the wordmark and the strapline, as in the shop');
+chk(/<footer class="site-foot">/.test(html), 'the footer is the shop footer');
+chk(/class="foot-link link"/.test(html), 'the footer has both backstage links');
 chk(!/class="chip"/.test(html) && !/btn-tertiary/.test(html),
-    'zadnej martwej kontrolki: przelaczniki i ikony zostaja w sklepie');
+    'no dead control: the switchers and the icons stay in the shop');
 
-/* 6c. Typografia z tokenow, a nie dobrana na oko. */
-chk(/\.nf h1\{[^}]*font:var\(--nu-type-h1\)/.test(styl), 'naglowek bierze --nu-type-h1');
-chk(/\.nf p\{[^}]*font:var\(--nu-type-body-l\)/.test(styl), 'tekst pod nim bierze --nu-type-body-l');
-/* Ta sama barwa co akapit wprowadzajacy w dokumentacji. Gdyby ktos zmienil ja
-   tam, to zdanie zostaloby samo - wiec porownujemy z arkuszem, a nie z pamiecia. */
-const arkusz = fs.readFileSync(D+'css/styles.css','utf8');
-const ledeBarwa = (arkusz.match(/\.ds \.ds-lede\{[^}]*color:(var\(--[\w-]+\))/)||[])[1];
-chk(!!ledeBarwa, `barwa akapitu wprowadzajacego odczytana z arkusza (${ledeBarwa})`);
-chk(!!ledeBarwa && new RegExp(`\\.nf p\\{[^}]*color:${ledeBarwa.replace(/[()]/g,'\\$&')}`).test(styl),
-    'zdanie pod tytulem ma te sama barwe co akapit wprowadzajacy w dokumentacji');
-chk(/text-align:center/.test(styl) && /align-items:center/.test(styl),
-    'tresc jest wysrodkowana');
+/* 6c. Typography from tokens rather than picked by eye. */
+chk(/\.nf h1\{[^}]*font:var\(--nu-type-h1\)/.test(style), 'the title takes --nu-type-h1');
+chk(/\.nf p\{[^}]*font:var\(--nu-type-body-l\)/.test(style), 'the line under it takes --nu-type-body-l');
+/* The same colour as the lede in the documentation. If somebody changed it
+   there, this sentence would be left behind - so we compare against the
+   stylesheet rather than against memory. */
+const sheet = fs.readFileSync(D+'css/styles.css','utf8');
+const ledeColour = (sheet.match(/\.ds \.ds-lede\{[^}]*color:(var\(--[\w-]+\))/)||[])[1];
+chk(!!ledeColour, `the lede colour read from the stylesheet (${ledeColour})`);
+chk(!!ledeColour && new RegExp(`\\.nf p\\{[^}]*color:${ledeColour.replace(/[()]/g,'\\$&')}`).test(style),
+    'the line under the title has the same colour as the lede in the documentation');
+chk(/text-align:center/.test(style) && /align-items:center/.test(style),
+    'the content is centred');
 
-/* 7. Strona bledu nie ma czego szukac w wynikach wyszukiwania. */
-chk(/<meta name="robots" content="noindex">/.test(html), 'noindex jest');
+/* 7. An error page has no business in search results. */
+chk(/<meta name="robots" content="noindex">/.test(html), 'noindex is present');
 
-/* 8. Bez dlugiego myslnika, jak reszta tekstow. */
-chk(!/—/.test(html.replace(/nubook\. — /g,'')), 'zadnego dlugiego myslnika w tresci');
+/* 8. No em dash, like the rest of the texts. */
+chk(!/—/.test(html.replace(/nubook\. — /g,'')), 'no em dash in the content');
 
 console.log();
-console.log(bad ? 'BLEDOW: '+bad : 'WYNIK: OK');
+console.log(bad ? 'FAILURES: '+bad : 'RESULT: OK');
 process.exit(bad?1:0);

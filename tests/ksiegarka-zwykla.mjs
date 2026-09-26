@@ -1,10 +1,10 @@
-/* Ksiegarka w trybie zwyklym, czyli bez ?bs=slow.
+/* The bookseller in the ordinary mode, that is without ?bs=slow.
 
-   ksiegarka.mjs otwiera strone w trybie slow i przez to sprawdzal wylacznie
-   sciezke ze szkieletem. Sciezka bez zwloki - ta, ktora widzi kazda
-   czytelniczka - wstawiala tekst w calosci, bez slow opakowanych w .bs-w,
-   a te sa tym, co odslania kolejne linie. Odpowiedz byla wiec pusta.
-   Ten test chodzi ta wlasnie sciezka. */
+   ksiegarka.mjs opens the page in slow mode and so checked only the path with
+   the skeleton. The path without the delay - the one every reader sees - put
+   the text in whole, with no words wrapped in .bs-w, and those are what reveals
+   the lines one by one. The answer was therefore empty. This suite walks that
+   path. */
 import { JSDOM } from 'jsdom';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -24,80 +24,81 @@ w.eval(fs.readFileSync(D+'js/app.js','utf8')
   +'window.__off=bsOffer;window.__slow=BS_SLOW;window.__lines=bsLines;');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let bad=0;
-const chk=(ok,co)=>{ console.log((ok?'  OK  ':'  BLAD'),co); if(!ok) bad++; };
+const chk=(ok,what)=>{ console.log((ok?'  OK  ':'  FAIL'),what); if(!ok) bad++; };
 
-chk(w.__slow===false, 'punkt wyjscia: strona otwarta bez ?bs=slow');
+chk(w.__slow===false, 'starting point: the page opened without ?bs=slow');
 
 const book=w.__B.find(b=>b.s==='out' && w.__off(b));
-chk(!!book, 'jest ksiazka niedostepna z propozycjami');
+chk(!!book, 'there is an unavailable title with proposals');
 w.__sync(book); w.__show(true);
 await sleep(50);
 
-const wiersze=[...d.querySelectorAll('.bs-why')];
-chk(wiersze.length>0, 'dymek ma wiersze "dlaczego akurat ta"');
+const rows=[...d.querySelectorAll('.bs-why')];
+chk(rows.length>0, 'the panel has "why this one" rows');
 
 w.__pick(0);
-/* Znak oddycha przez cala odpowiedz, takze wtedy, gdy nie ma na co czekac
-   i tekst od razu zaczyna sie skladac. */
+/* The mark breathes through the whole answer, including when there is nothing
+   to wait for and the text starts assembling straight away. */
 chk(d.querySelector('#bsAva .bs-dot').classList.contains('is-working'),
-    'znak oddycha od poczatku skladania tekstu, bez zadnej zwloki');
+    'the mark breathes from the start of the text, with no delay at all');
 const box=d.getElementById('bsText0');
-/* Pudelko ma pelna wysokosc od razu: slowa trzymaja swoje miejsce od poczatku,
-   wiec panel nie rozsuwa sie linia po linii, a pod tekstem jest puste pole. */
-chk((box.style.height||'')==='', 'pudelko nie ma wpisywanej wysokosci - stoi w swojej od razu');
-chk(!box.classList.contains('is-arriving'), 'i nie jest przycinane');
+/* The box has its full height at once: the words hold their place from the
+   start, so the panel does not push itself open line by line and there is empty
+   room under the text. */
+chk((box.style.height||'')==='', 'the box has no written height - it stands in its own from the start');
+chk(!box.classList.contains('is-arriving'), 'and it is not being cropped');
 await sleep(600);
-chk(box.hidden===false, 'pudelko odpowiedzi jest odkryte');
+chk(box.hidden===false, 'the answer box is revealed');
 chk(!d.querySelector('#bsAva .bs-dot').classList.contains('is-working'),
-    'po ostatniej linii znak przestaje oddychac');
+    'after the last line the mark stops breathing');
 
-const slowa=[...box.querySelectorAll('.bs-w')];
-chk(slowa.length>0, 'tekst jest rozbity na slowa (.bs-w)');
-chk(slowa.every(s=>s.classList.contains('is-in')), 'wszystkie slowa zostaly odsloniete');
+const words=[...box.querySelectorAll('.bs-w')];
+chk(words.length>0, 'the text is split into words (.bs-w)');
+chk(words.every(s=>s.classList.contains('is-in')), 'every word has been revealed');
 
-/* Nic nie zostaje poza widokiem po skonczonym wejsciu. */
-const akapity=[...box.querySelectorAll('p, li')];
-chk(akapity.length>0, 'odpowiedz ma akapity');
-const schowane=akapity.filter(p=>w.getComputedStyle(p).display==='none');
-chk(schowane.length===0, `zaden akapit nie jest schowany (schowanych: ${schowane.length} z ${akapity.length})`);
+/* Nothing is left out of sight once the entrance has finished. */
+const paras=[...box.querySelectorAll('p, li')];
+chk(paras.length>0, 'the answer has paragraphs');
+const hidden=paras.filter(p=>w.getComputedStyle(p).display==='none');
+chk(hidden.length===0, `no paragraph is hidden (hidden: ${hidden.length} of ${paras.length})`);
 
-/* Odpowiedz juz podana w tej wizycie wraca od razu: bez zwloki i bez
-   odslaniania, bo przygladanie sie drugi raz pisaniu tego samego to patrzenie
-   na czekanie, ktorego nie ma. */
+/* An answer already given in this visit comes back at once: no delay and no
+   revealing, because watching the same sentence being written a second time is
+   watching a wait that is not there. */
 w.__pick(0); w.__pick(0);
-const znowu=d.getElementById('bsText0');
-chk(znowu.textContent.trim().length>0, 'powtorne otwarcie pokazuje tekst natychmiast');
-chk(znowu.querySelectorAll('.bs-w').length===0, 'i nie rozbija go na slowa, bo nie ma czego odslaniac');
-chk(!znowu.querySelector('.bs-sk'), 'ani nie pokazuje szkieletu');
+const again=d.getElementById('bsText0');
+chk(again.textContent.trim().length>0, 'opening it again shows the text immediately');
+chk(again.querySelectorAll('.bs-w').length===0, 'and does not split it into words, because there is nothing to reveal');
+chk(!again.querySelector('.bs-sk'), 'nor does it show the skeleton');
 await sleep(600);
-chk(znowu.textContent.trim().length>0, 'i tekst nadal tam stoi');
+chk(again.textContent.trim().length>0, 'and the text is still standing there');
 
 
-/* Slowa grupuja sie w linie po zmierzonej gornej krawedzi.
+/* Words group into lines by their measured top edge.
 
-   Podstawiamy wlasna geometrie, bo jsdom nie liczy ukladu: piec slow, trzy
-   pierwsze na jednej wysokosci, dwa pozostale na drugiej. */
+   We substitute geometry of our own, because jsdom computes no layout: five
+   words, the first three at one height, the remaining two at another. */
 {
-  const gora=300, wys=20;
+  const top=300, h=20;
   const box=d.createElement('div');
   box.className='bs-text';
   d.body.appendChild(box);
-  box.getBoundingClientRect=()=>({top:gora, bottom:gora+2*wys, height:2*wys});
+  box.getBoundingClientRect=()=>({top, bottom:top+2*h, height:2*h});
   let n=0;
   Object.defineProperty(w.HTMLElement.prototype,'getBoundingClientRect',{configurable:true,
     value(){
       if (!this.classList || !this.classList.contains('bs-w')) return {top:0,bottom:0,height:0};
       if (this.__i===undefined) this.__i = n++;
-      const linia = this.__i < 3 ? 0 : 1;
-      return {top: gora + linia*wys, bottom: gora + (linia+1)*wys, height: wys};
+      const line = this.__i < 3 ? 0 : 1;
+      return {top: top + line*h, bottom: top + (line+1)*h, height: h};
     }});
   const ls=w.__lines(box, [...Array(5)].map(()=>{
     const s=d.createElement('span'); s.className='bs-w'; box.appendChild(s); return s;
   }));
-  chk(ls.length===2, `zmierzono dwie linie (jest ${ls.length})`);
-  chk(ls[0].length===3, `pierwsza linia ma trzy slowa (ma ${ls[0].length})`);
-  chk(ls[1].length===2, `druga ma dwa (ma ${ls[1].length})`);
+  chk(ls.length===2, `two lines measured (found ${ls.length})`);
+  chk(ls[0].length===3, `the first line has three words (has ${ls[0].length})`);
+  chk(ls[1].length===2, `the second has two (has ${ls[1].length})`);
 }
 
-console.log(bad ? '\nBLEDOW: '+bad : '\nWYNIK: odpowiedz widac takze bez trybu slow');
+console.log(bad ? '\nFAILURES: '+bad : '\nRESULT: the answer is visible without slow mode too');
 process.exit(bad?1:0);

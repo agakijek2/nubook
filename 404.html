@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!-- Tę stronę ogląda się przez serwer, nie przez dwuklik. Wszystkie jej
-     odnośniki liczą się od korzenia, bo GitHub Pages podaje ją pod dowolnie
-     głębokim adresem - a pod file:// korzeniem jest korzeń dysku, więc arkusz
-     się nie znajdzie i strona wyświetli się bez stylów. Do obejrzenia:
+<!-- Look at this page over a server, not by double-clicking it. Every link in
+     it runs from the root, because GitHub Pages serves it at any depth - and
+     under file:// the root is the root of the disk, so the stylesheet is not
+     found and the page renders unstyled. To see it:
 
          python3 -m http.server 8000
          http://localhost:8000/404.html
@@ -18,10 +18,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/styles.css">
 <style>
-  /* Ta strona nie jest widokiem sklepu, tylko osobnym plikiem, który GitHub
-     Pages podaje pod nieznanym adresem. Nagłówek i stopka są te same co w
-     sklepie; własne jest tylko to, co między nimi, bo takiego widoku sklep
-     nie ma. */
+  /* This is not a view of the shop but a separate file that GitHub Pages
+     serves at an unknown address. The header and the footer are the shop's own;
+     only what stands between them is local to this page, because the shop has
+     no such view. */
   body{ display:flex; flex-direction:column; min-height:100dvh }
   .nf{
     flex:1;
@@ -30,20 +30,21 @@
     padding:var(--nu-space-max) var(--nu-space-small);
   }
   .nf h1{ font:var(--nu-type-h1); margin:0 }
-  /* Ta sama miara, co opis produktu: długość wiersza jest tu taką samą
-     decyzją jak tam, więc bierze tę samą wartość. */
-  /* Ten sam stopień i ta sama barwa co akapit wprowadzający w dokumentacji:
-     zdanie pod tytułem pełni tu tę samą rolę, więc wygląda tak samo. */
+  /* The same measure as a product description: the line length is the same
+     decision here as it is there, so it takes the same value. */
+  /* The same step and the same colour as the lede in the documentation: the
+     sentence under the title does the same job here, so it looks the same. */
   .nf p{ font:var(--nu-type-body-l); color:var(--nu-fg-secondary); margin:0; max-width:42ch }
-  .nf-akcje{ display:flex; align-items:center; gap:var(--nu-space-medium); flex-wrap:wrap; margin-top:var(--nu-space-micro) }
+  .nf-actions{ display:flex; align-items:center; gap:var(--nu-space-medium); flex-wrap:wrap; margin-top:var(--nu-space-micro) }
 </style>
 </head>
 <body>
 
-<!-- Nagłówek sklepu bez przełączników i ikon. Przełącznik języka, waluty czy
-     schematu żyje w skrypcie sklepu, a kontrolka, która nie działa, jest gorsza
-     niż jej brak: czytelniczka klika i nic się nie dzieje. Zostaje to, co na
-     stronie błędu ma sens - znak, podpis i droga do domu. -->
+<!-- The shop's header without the switchers and the icons. Language, currency
+     and scheme live in the shop's script, and a control that does nothing is
+     worse than no control: the reader presses it and nothing happens. What is
+     left is what makes sense on an error page - the wordmark, the strapline and
+     the way home. -->
 <header>
   <div class="logo">
     <a class="mark" href="/" id="logoLink">nubook</a>
@@ -52,9 +53,9 @@
 </header>
 
 <main class="nf">
-  <h1 id="tytul">Nie ma takiej strony.</h1>
-  <p id="opis">Wróć do sklepu, żeby poznać nasze tytuły.</p>
-  <div class="nf-akcje">
+  <h1 id="nfTitle">Nie ma takiej strony.</h1>
+  <p id="nfLede">Wróć do sklepu, żeby poznać nasze tytuły.</p>
+  <div class="nf-actions">
     <a class="btn-primary" href="/" id="cta">Do sklepu</a>
   </div>
 </main>
@@ -71,12 +72,12 @@
 </footer>
 
 <script>
-/* Czytelniczka wybrała już raz język i schemat; strona błędu nie jest powodem,
-   żeby pytać o to drugi raz. Klucz i kształt zapisu są te same co w sklepie,
-   a każda wartość jest sprawdzana, bo zapis może pochodzić z innej wersji
-   sklepu albo nie istnieć wcale. */
+/* The reader has already chosen a language and a scheme once; an error page is
+   no reason to ask a second time. The key and the shape of the record are the
+   shop's own, and every value is checked, because the record may come from
+   another version of the shop or not exist at all. */
 (function(){
-  var tekst = document.getElementById.bind(document);
+  var el = document.getElementById.bind(document);
   var p = {};
   try { p = JSON.parse(localStorage.getItem("nubook.prefs.v1") || "{}") || {}; }
   catch (e) { p = {}; }
@@ -84,22 +85,22 @@
   if (p.scheme === "light" || p.scheme === "dark")
     document.documentElement.setAttribute("data-scheme", p.scheme);
 
-  var rok = new Date().getFullYear();
+  var year = new Date().getFullYear();
 
-  if (p.lang !== "en"){                 // polski jest domyślny, tak jak w sklepie
-    tekst("footCopy").textContent = "© " + rok + " nubook. Wszelkie prawa zastrzeżone.";
+  if (p.lang !== "en"){                 // Polish is the default, as in the shop
+    el("footCopy").textContent = "© " + year + " nubook. Wszelkie prawa zastrzeżone.";
     return;
   }
 
   document.documentElement.lang = "en";
   document.title = "nubook. — no such page";
-  tekst("strap").textContent = "novels on women & gender";
-  tekst("tytul").textContent = "No such page.";
-  tekst("opis").textContent = "Go back to the shop to see what we have.";
-  tekst("cta").textContent = "To the shop";
-  tekst("lnkAbout").textContent = "About this project";
-  tekst("lnkDesign").textContent = "Design system";
-  tekst("footCopy").textContent = "© " + rok + " nubook. All rights reserved.";
+  el("strap").textContent = "novels on women & gender";
+  el("nfTitle").textContent = "No such page.";
+  el("nfLede").textContent = "Go back to the shop to see what we have.";
+  el("cta").textContent = "To the shop";
+  el("lnkAbout").textContent = "About this project";
+  el("lnkDesign").textContent = "Design system";
+  el("footCopy").textContent = "© " + year + " nubook. All rights reserved.";
 })();
 </script>
 

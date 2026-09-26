@@ -382,10 +382,10 @@
        measured and written back by the script, so the page clearance is always
        exactly the bar, whatever the label length or the device safe area. */
     --nu-mobar-height:var(--nu-space-max);  /* shop bar: filters + sort */
-    /* Ta sama belka bez zaokrąglenia do siatki. Zaokrąglenie w górę jest po to,
-       żeby prześwit pod treścią nigdy nie był za mały &ndash; ale cokolwiek ma na
-       belce usiąść, musi znać jej prawdziwą wysokość, bo inaczej zostawia pod
-       sobą do czterech pikseli tła. Czyta to arkusz filtrów na telefonie. */
+    /* The same bar, without the rounding. Rounding up exists so the clearance
+       under the content is never too small - but anything that has to SIT on the
+       bar needs its true height, or it leaves up to four pixels of page showing
+       underneath. The filter sheet on mobile reads this one. */
     --nu-mobar-height-exact:var(--nu-space-max);
     --nu-cobar-height:var(--nu-space-max);  /* checkout bar: total + submit */
     /* The block that stays at the top of the window. Same contract as the two
@@ -2424,9 +2424,9 @@
       /* top:auto is load-bearing: the panel carries top:var(--nu-space-medium) for its sticky
          desktop column, and leaving it set here would over-constrain the box
          and stretch the sheet from the top of the screen instead. */
-      /* Przylega do belki: obie mają się czytać jako jeden blok kontrolek.
-         Dlatego wysokość niezaokrąglona - ta z siatki bywa do czterech pikseli
-         wyższa od prawdziwej belki i zostawia pod arkuszem pasek tła strony. */
+      /* Sits flush on the bar: the two read as one block of controls. Hence the
+         unrounded height - the one on the grid can be up to four pixels taller
+         than the bar really is, and leaves a strip of page under the sheet. */
       position:fixed;left:0;right:0;top:auto;z-index:80;
       bottom:var(--nu-mobar-height-exact);
       max-height:min(62vh,460px);overflow-y:auto;
@@ -2473,10 +2473,10 @@
     /* Back to its own width in the bar, so it is an inline button again and
        takes the shorter of the two heights. */
     .co-bar .order-btn{width:auto;margin-top:0;padding:var(--nu-space-micro) var(--nu-space-medium);flex-shrink:0}
-    /* Tylko w kasie: tam przycisk paska wysyła formularz, więc ten w
-       podsumowaniu byłby powtórzonym submitem. W koszyku żadnego formularza
-       nie ma, a paska na dole też nie - reguła bez tego zawężenia zostawiała
-       telefon bez jakiejkolwiek drogi dalej. */
+    /* Checkout only: there the bar's button submits the form, so the one in
+       the summary would be a second, redundant submit. The cart has no form and
+       no bottom bar, so without this narrowing the rule left a phone with no way
+       forward at all. */
     #checkout .co-side .order-btn{display:none}
   }
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}

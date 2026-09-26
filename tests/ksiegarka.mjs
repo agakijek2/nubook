@@ -1,5 +1,6 @@
-/* Przeplyw widgetu ksiegarki: oddech, wypisywanie, zamykanie. Czasy skrocone,
-   zeby test trwal sekunde - sprawdzamy przeplyw, nie tempo. */
+/* The bookseller widget's flow: the breath, the typing out, the closing.
+   Durations shortened so the suite takes a second - we check the flow, not the
+   pace. */
 import { JSDOM } from 'jsdom';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -20,103 +21,103 @@ const dot=()=>d.querySelector('#bsAva .bs-dot');
 const R=()=>[...d.querySelectorAll('.bs-why')];
 const B=n=>d.getElementById('bsText'+n);
 const sleep=ms=>new Promise(res=>setTimeout(res,ms));
-let bad=0; const chk=(c,m)=>{ console.log((c?'  OK   ':'  BLAD ')+m); if(!c) bad++; };
+let bad=0; const chk=(c,m)=>{ console.log((c?'  OK   ':'  FAIL ')+m); if(!c) bad++; };
 
-/* Aplikacja konczy wlasny start asynchronicznie, a route() przebudowuje panel.
-   Sterowanie wnetrzem przed koncem startu podstawia wezly, ktorych zaraz nie
-   bedzie - stad odczekanie, zanim test cokolwiek klika. */
+/* The app finishes its own start asynchronously, and route() rebuilds the
+   panel. Driving the inside before the start is over reaches for nodes that are
+   about to be replaced - hence the wait before the suite presses anything. */
 await sleep(300);
 const book=w.__B.find(b=>b.s==='out');
-console.log('ksiazka niedostepna:', book.t);
+console.log('unavailable title:', book.t);
 w.__sync(book);
-/* Otwarcie przez nacisniecie znaku, czyli ta sama droga co u czytelniczki. */
+/* Opened by pressing the mark, the same way a reader would. */
 w.__ava.click();
-chk(R().length===2, 'dwa wiersze z przyciskiem "dlaczego": '+R().length);
+chk(R().length===2, 'two rows with a "why" button: '+R().length);
 
 w.__pick(0);
-chk(dot().classList.contains('is-working'), 'znak oddycha od razu po klikniecu');
-chk(B(0).getAttribute('aria-busy')==='true' && B(0).querySelector('.bs-sk'), 'kreski stanu oczekiwania i aria-busy');
+chk(dot().classList.contains('is-working'), 'the mark breathes as soon as it is pressed');
+chk(B(0).getAttribute('aria-busy')==='true' && B(0).querySelector('.bs-sk'), 'waiting lines and aria-busy');
 
 await sleep(70);
 const words=[...B(0).querySelectorAll('.bs-w')];
-chk(words.length>20, 'tekst rozbity na slowa: '+words.length);
-chk(B(0).getAttribute('aria-busy')===null, 'aria-busy zdjete, gdy slowa zaczely wchodzic');
-chk(words.some(s=>!s.classList.contains('is-in')), 'wypisywanie jeszcze trwa');
-chk(dot().classList.contains('is-working'), 'znak oddycha NADAL, w trakcie wypisywania');
-chk(/<strong|<ul|<li/.test(B(0).innerHTML), 'znaczniki w tekscie nienaruszone');
+chk(words.length>20, 'the text is split into words: '+words.length);
+chk(B(0).getAttribute('aria-busy')===null, 'aria-busy lifted once the words start arriving');
+chk(words.some(s=>!s.classList.contains('is-in')), 'the typing out is still running');
+chk(dot().classList.contains('is-working'), 'the mark breathes STILL, while the text arrives');
+chk(/<strong|<ul|<li/.test(B(0).innerHTML), 'the markup inside the text is intact');
 
 await sleep(words.length*8+400);
-chk(words.length>0 && words.every(s=>s.classList.contains('is-in')), 'wszystkie slowa weszly');
-chk(!dot().classList.contains('is-working'), 'znak przestal oddychac po ostatnim slowie');
+chk(words.length>0 && words.every(s=>s.classList.contains('is-in')), 'every word has arrived');
+chk(!dot().classList.contains('is-working'), 'the mark stops breathing after the last word');
 
 w.__pick(1);
-chk(dot().classList.contains('is-working'), 'drugi wiersz: znak znow oddycha');
-chk(B(0).innerHTML==='' && B(0).hidden, 'pierwszy wiersz zamkniety i wyczyszczony');
-chk(R()[0].getAttribute('aria-expanded')==='false' && R()[1].getAttribute('aria-expanded')==='true', 'otwarty dokladnie jeden wiersz');
+chk(dot().classList.contains('is-working'), 'second row: the mark breathes again');
+chk(B(0).innerHTML==='' && B(0).hidden, 'the first row is closed and emptied');
+chk(R()[0].getAttribute('aria-expanded')==='false' && R()[1].getAttribute('aria-expanded')==='true', 'exactly one row open');
 w.__pick(1);
-chk(R()[1].getAttribute('aria-expanded')==='false', 'ponowne klikniecie zamyka');
-chk(!dot().classList.contains('is-working'), 'zamkniecie gasi znak');
+chk(R()[1].getAttribute('aria-expanded')==='false', 'pressing again closes it');
+chk(!dot().classList.contains('is-working'), 'closing puts the mark out');
 
 w.__pick(0);
-chk(!B(0).querySelector('.bs-sk'), 'odpowiedz juz podana: bez kresek');
-chk(!dot().classList.contains('is-working'), 'i bez oddychania');
-chk(B(0).innerHTML.length>100, 'tekst stoi od razu w calosci');
+chk(!B(0).querySelector('.bs-sk'), 'answer already given: no waiting lines');
+chk(!dot().classList.contains('is-working'), 'and no breathing');
+chk(B(0).innerHTML.length>100, 'the text stands whole straight away');
 w.__shut();
-chk(!dot().classList.contains('is-working'), 'zamkniecie panelu gasi znak');
+chk(!dot().classList.contains('is-working'), 'closing the panel puts the mark out');
 
-/* Zwloka po wejsciu na strone nie moze przebudowac panelu, ktory czytelniczka
-   otworzyla sama - przebudowa czysci liste i zabiera odpowiedz w polowie. */
+/* The delay after arriving on a page must not rebuild a panel the reader opened
+   herself - a rebuild clears the list and takes the answer away mid-sentence. */
 const b2=w.__B.filter(x=>x.s==='out')[0];
 w.__sync(null); w.__sync(b2);
 w.__ava.click();
 w.__pick(0);
-const przed=B(0).innerHTML.length;
+const before=B(0).innerHTML.length;
 await sleep(200);
-chk(B(0).innerHTML.length>=przed && !B(0).hidden, 'zwloka nie przebudowala otwartego panelu');
-chk(R()[0].getAttribute('aria-expanded')==='true', 'wiersz nadal otwarty po uplywie zwloki');
+chk(B(0).innerHTML.length>=before && !B(0).hidden, 'the delay did not rebuild the open panel');
+chk(R()[0].getAttribute('aria-expanded')==='true', 'the row is still open once the delay has passed');
 
-/* Oddech nalezy do oferty, ktora przychodzi sama. Przywolanie schowanej to
-   sprawka czytelniczki i nic sie nie wylicza, a znak jest wtedy pod jej
-   kursorem i juz swieci. */
-const mysli=()=>dot().classList.contains('is-thinking');
+/* The breath belongs to an offer that arrives unasked. Calling back a dismissed
+   one is the reader's doing and nothing is being worked out; the mark is under
+   her cursor by then and already lit. */
+const thinking=()=>dot().classList.contains('is-thinking');
 w.__shut();
-chk(!mysli(), 'zamkniecie zdejmuje stan myslenia ze znacznika');
+chk(!thinking(), 'closing takes the thinking state off the mark');
 w.__ava.click();
-chk(!mysli(), 'przywolanie dymka przez znak nie uruchamia oddechu');
-chk(d.getElementById('bsPanel').hidden===false, 'ale dymek sie otwiera');
+chk(!thinking(), 'calling the panel back by the mark starts no breath');
+chk(d.getElementById('bsPanel').hidden===false, 'but the panel does open');
 
-/* Ta sama ksiazka, ale widziana pierwszy raz: dymek otwiera sie sam. */
+/* The same book, seen for the first time: the panel opens on its own. */
 w.__shut(); w.__sync(null); w.__seen.clear();
 w.__sync(book);
-chk(!mysli(), 'przed uplywem zwloki znak nie oddycha');
+chk(!thinking(), 'before the delay has passed the mark does not breathe');
 await sleep(120);
-chk(d.getElementById('bsPanel').hidden===false, 'dymek otworzyl sie sam po zwloce');
-chk(mysli(), 'i wzial jeden oddech');
+chk(d.getElementById('bsPanel').hidden===false, 'the panel opened on its own after the delay');
+chk(thinking(), 'and took one breath');
 await sleep(120);
-chk(!mysli(), 'stan myslenia schodzi po skonczonym oddechu');
+chk(!thinking(), 'the thinking state goes once the breath is finished');
 
-/* Lista propozycji jest stanem domyslnym: dymek otwiera sie z nia, bez
-   zadnego przycisku rozwijajacego po drodze. */
+/* The list of proposals is the default state: the panel opens with it, with no
+   expanding button on the way. */
 w.__shut(); w.__sync(null); w.__seen.clear(); w.__sync(book);
-await sleep(120);            // dymek otwiera sie sam i bierze oddech
-const lista=d.getElementById('bsList');
-chk(!d.getElementById('bsPanel').hidden, 'dymek jest otwarty');
-chk(lista.hidden===false, 'lista propozycji jest widoczna od razu');
-chk(lista.querySelectorAll('.bs-why').length>0, 'i ma w sobie propozycje');
-chk(!d.getElementById('bsMore'), 'przycisku rozwijajacego nie ma w ogole');
-chk(!('bsMore' in w.__i18n.pl) && !('bsMore' in w.__i18n.en), 'ani jego napisu w slownikach');
-chk(!('bsLess' in w.__i18n.pl) && !('bsLess' in w.__i18n.en), 'ani napisu zwijania');
-await sleep(120);            // oddech dobiega konca
-chk(!mysli(), 'punkt wyjscia: znak nie oddycha');
+await sleep(120);            // the panel opens on its own and takes a breath
+const list=d.getElementById('bsList');
+chk(!d.getElementById('bsPanel').hidden, 'the panel is open');
+chk(list.hidden===false, 'the list of proposals is visible straight away');
+chk(list.querySelectorAll('.bs-why').length>0, 'and has proposals in it');
+chk(!d.getElementById('bsMore'), 'there is no expanding button at all');
+chk(!('bsMore' in w.__i18n.pl) && !('bsMore' in w.__i18n.en), 'nor its label in the dictionaries');
+chk(!('bsLess' in w.__i18n.pl) && !('bsLess' in w.__i18n.en), 'nor a collapsing label');
+await sleep(120);            // the breath runs out
+chk(!thinking(), 'starting point: the mark is not breathing');
 
-/* Wiersz odpowiedzi: oddech przy otwarciu, a gdy odpowiedz sie oblicza,
-   oddychanie bez konca ma pierwszenstwo. */
-w.__said.clear();            // odpowiedz jeszcze nie padla w tej wizycie
+/* A row of answers: a breath on opening, and while the answer is being worked
+   out the endless breathing takes precedence. */
+w.__said.clear();            // the answer has not been given in this visit yet
 w.__pick(0);
-chk(dot().classList.contains('is-working'), 'otwarcie odpowiedzi: oddychanie bez konca');
-chk(mysli(), 'stan myslenia tez jest ustawiony, ale nie on rzadzi');
+chk(dot().classList.contains('is-working'), 'opening an answer: endless breathing');
+chk(thinking(), 'the thinking state is set too, but it does not govern');
 w.__pick(0);
-chk(!dot().classList.contains('is-working') && !mysli(), 'zamkniecie wiersza zdejmuje oba stany');
+chk(!dot().classList.contains('is-working') && !thinking(), 'closing the row takes both states off');
 
-console.log(bad? '\nBLEDOW: '+bad : '\nWYNIK: OK');
+console.log(bad? '\nFAILURES: '+bad : '\nRESULT: OK');
 process.exit(bad?1:0);

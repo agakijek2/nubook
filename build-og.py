@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Rysuje kartę linku i favikony z krojów i tokenów sklepu.
+"""Draws the link card and the favicons from the shop's own typefaces and tokens.
 
-Karta wklejonego linku jest obrazkiem, więc nie może czytać arkusza stylów tak
-jak dokumentacja. Zamiast przepisywać wartości z pamięci, ten skrypt wyjmuje je
-z `css/styles.css` i przewraca się, kiedy któregoś nie znajdzie: karta, która
-po zmianie palety pokazuje starą czerń, jest gorsza niż brak karty.
+The card is a picture, so it cannot read the stylesheet the way the
+documentation does. Rather than retyping values from memory, this script pulls
+them out of `css/styles.css` and refuses to run when one is missing: a card that
+still shows the old black after a palette change is worse than no card.
 
     python3 build-og.py
 
-Wynik: assets/og.png (1200x630), assets/favicon-32.png, assets/favicon-180.png,
+Output: assets/og.png (1200x630), assets/favicon-32.png, assets/favicon-180.png,
 assets/favicon-512.png.
 """
 
@@ -19,101 +19,102 @@ from pathlib import Path
 try:
     from PIL import Image, ImageDraw, ImageFont
 except ImportError:
-    sys.exit("Potrzebny jest Pillow: pip3 install Pillow")
+    sys.exit("Pillow is required: pip3 install Pillow")
 
-KORZEN = Path(__file__).parent
-ARKUSZ = (KORZEN / "css" / "styles.css").read_text(encoding="utf-8")
-FONTY = KORZEN / "assets" / "fonts"
+ROOT = Path(__file__).parent
+SHEET = (ROOT / "css" / "styles.css").read_text(encoding="utf-8")
+FONTS = ROOT / "assets" / "fonts"
 
-# --- wartości z arkusza, nie z pamięci -------------------------------------
+# --- values from the stylesheet, not from memory ----------------------------
 
-def token(nazwa):
-    """Wartość prymitywu z bloku :root. Prymitywy trzymają gotowe barwy, więc
-       nie trzeba rozwijać light-dark() ani color-mix()."""
-    m = re.search(rf"{re.escape(nazwa)}\s*:\s*([^;]+);", ARKUSZ)
+def token(name):
+    """A primitive's value from the :root block. Primitives hold finished
+       colours, so neither light-dark() nor color-mix() has to be resolved."""
+    m = re.search(rf"{re.escape(name)}\s*:\s*([^;]+);", SHEET)
     if not m:
-        sys.exit(f"Nie ma {nazwa} w css/styles.css - karta nie powstanie.")
+        sys.exit(f"{name} is not in css/styles.css - the card will not be drawn.")
     return m.group(1).strip()
 
-BIALY = token("--nu-white")
-GRAF = token("--nu-grey-900")
-SZARY = token("--nu-grey-600")
+WHITE = token("--nu-white")
+INK = token("--nu-grey-900")
+GREY = token("--nu-grey-600")
 
-# --- kroje ------------------------------------------------------------------
+# --- typefaces --------------------------------------------------------------
 
-def krój(plik, px):
-    sciezka = FONTY / plik
-    if not sciezka.exists():
-        sys.exit(f"Brakuje {sciezka}. Kroje pobiera się z fonts.google.com.")
-    return ImageFont.truetype(str(sciezka), px)
+def face(file, px):
+    path = FONTS / file
+    if not path.exists():
+        sys.exit(f"{path} is missing. Both typefaces come from fonts.google.com.")
+    return ImageFont.truetype(str(path), px)
 
-serif = lambda px: krój("DMSerifDisplay-Regular.ttf", px)
-sans = lambda px: krój("Archivo-Regular.ttf", px)
+serif = lambda px: face("DMSerifDisplay-Regular.ttf", px)
+sans = lambda px: face("Archivo-Regular.ttf", px)
 
-# --- treść ------------------------------------------------------------------
+# --- content ----------------------------------------------------------------
 
-# Claim żyje tylko tutaj i w znacznikach strony. Do samego sklepu nie wchodzi:
-# pod znakiem stoi dalej „novels on women & gender". To jest decyzja, a nie
-# niedokończona zmiana - karta zachęca, nagłówek nazywa. Zapisane, żeby nikt
-# nie „naprawiał" tej różnicy.
+# The claim lives here and in the page's meta tags, and nowhere else. It does
+# not go into the shop itself: the strapline under the wordmark still reads
+# "novels on women & gender". That is a decision rather than an unfinished
+# change - the card invites, the masthead names. Written down so that nobody
+# "fixes" the difference.
 CLAIM = ("Books, by what", "they are about.")
-MOTYWY = ("the madwoman  ·  the angel in the house  ·  passing  ·",
+MOTIFS = ("the madwoman  ·  the angel in the house  ·  passing  ·",
           "who is looking  ·  a room of one's own  ·  doing gender")
 
-SZER, WYS, MARGINES = 1200, 630, 96
+WIDTH, HEIGHT, MARGIN = 1200, 630, 96
 
-def znak(d, x, linia_pisma, px, kolor=GRAF):
-    """Znak marki z kropką. Proporcje jak w nagłówku sklepu: średnica .2em,
-       odstęp .09em, kropka siedzi na linii pisma."""
+def wordmark(d, x, baseline, px, colour=INK):
+    """The wordmark with its dot. Same proportions as in the shop's masthead:
+       .2em across, .09em of space before it, sitting on the baseline."""
     f = serif(px)
-    d.text((x, linia_pisma), "nubook", font=f, fill=kolor, anchor="ls")
-    szer = d.textlength("nubook", font=f)
+    d.text((x, baseline), "nubook", font=f, fill=colour, anchor="ls")
+    width = d.textlength("nubook", font=f)
     r = px * 0.2 / 2
-    cx = x + szer + px * 0.09 + r
-    d.ellipse([cx - r, linia_pisma - 2 * r, cx + r, linia_pisma], fill=kolor)
+    cx = x + width + px * 0.09 + r
+    d.ellipse([cx - r, baseline - 2 * r, cx + r, baseline], fill=colour)
 
-def karta():
-    im = Image.new("RGB", (SZER, WYS), BIALY)
+def card():
+    im = Image.new("RGB", (WIDTH, HEIGHT), WHITE)
     d = ImageDraw.Draw(im)
-    znak(d, MARGINES, 196, 64)
+    wordmark(d, MARGIN, 196, 64)
     f = serif(68)
-    d.text((MARGINES, 236), CLAIM[0], font=f, fill=GRAF, anchor="la")
-    d.text((MARGINES, 318), CLAIM[1], font=f, fill=GRAF, anchor="la")
+    d.text((MARGIN, 236), CLAIM[0], font=f, fill=INK, anchor="la")
+    d.text((MARGIN, 318), CLAIM[1], font=f, fill=INK, anchor="la")
     fm = sans(24)
-    d.text((MARGINES, 452), MOTYWY[0], font=fm, fill=SZARY, anchor="la")
-    d.text((MARGINES, 490), MOTYWY[1], font=fm, fill=SZARY, anchor="la")
+    d.text((MARGIN, 452), MOTIFS[0], font=fm, fill=GREY, anchor="la")
+    d.text((MARGIN, 490), MOTIFS[1], font=fm, fill=GREY, anchor="la")
 
-    # Blok motywów stoi świadomie szerzej niż claim - warstwa motywów rozciąga
-    # kompozycję w prawo, zamiast chować się pod zdaniem. Odstęp jest wybrany,
-    # więc pilnujemy go: gdyby urósł albo zniknął, znaczy to, że ktoś zmienił
-    # treść i nie spojrzał na wynik.
-    claim_szer = max(d.textlength(w, font=f) for w in CLAIM)
-    for wiersz in MOTYWY:
-        odchyl = d.textlength(wiersz, font=fm) - claim_szer
-        if not 70 <= odchyl <= 130:
-            print(f"  uwaga: wiersz motywów wychodzi poza claim o {odchyl:.0f} px,"
-                  f" a ma o 70-130")
-    # Oba wiersze claimu są tej samej szerokości co do piksela i stąd bierze się
-    # zwartość tego bloku. Zmiana treści łatwo to psuje.
-    rozjazd = abs(d.textlength(CLAIM[0], font=f) - d.textlength(CLAIM[1], font=f))
-    if rozjazd > 12:
-        print(f"  uwaga: wiersze claimu różnią się o {rozjazd:.0f} px")
+    # The block of motifs deliberately runs wider than the claim - the motif
+    # layer stretches the composition to the right instead of hiding under the
+    # sentence. The overhang is chosen, so it is watched: if it grew or vanished,
+    # somebody changed the text and did not look at the result.
+    claim_width = max(d.textlength(line, font=f) for line in CLAIM)
+    for line in MOTIFS:
+        over = d.textlength(line, font=fm) - claim_width
+        if not 70 <= over <= 130:
+            print(f"  warning: the motif line overhangs the claim by {over:.0f} px,"
+                  f" and should by 70-130")
+    # Both lines of the claim are the same width to the pixel, and that is where
+    # this block's tightness comes from. Changing the text breaks it easily.
+    drift = abs(d.textlength(CLAIM[0], font=f) - d.textlength(CLAIM[1], font=f))
+    if drift > 12:
+        print(f"  warning: the claim's two lines differ by {drift:.0f} px")
     return im
 
-def favikona(px):
-    """Sama kropka w kwadracie. Litera w tym rozmiarze i tak się nie przeczyta,
-       a kropka jest tym, co odróżnia ten znak od dowolnego innego szeryfu."""
-    im = Image.new("RGB", (px, px), BIALY)
+def favicon(px):
+    """The dot alone, in a square. A letter at this size cannot be read anyway,
+       and the dot is what tells this wordmark from any other serif."""
+    im = Image.new("RGB", (px, px), WHITE)
     d = ImageDraw.Draw(im)
     r = px * 0.22
     s = px / 2
-    d.ellipse([s - r, s - r, s + r, s + r], fill=GRAF)
+    d.ellipse([s - r, s - r, s + r, s + r], fill=INK)
     return im
 
 if __name__ == "__main__":
-    wyjscie = KORZEN / "assets"
-    karta().save(wyjscie / "og.png")
-    print(f"assets/og.png  {SZER}x{WYS}")
+    out = ROOT / "assets"
+    card().save(out / "og.png")
+    print(f"assets/og.png  {WIDTH}x{HEIGHT}")
     for px in (32, 180, 512):
-        favikona(px).save(wyjscie / f"favicon-{px}.png")
+        favicon(px).save(out / f"favicon-{px}.png")
         print(f"assets/favicon-{px}.png")

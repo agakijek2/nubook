@@ -954,11 +954,11 @@ function measureBars(){
   const grid = px => Math.ceil(px / 4) * 4 + "px";
   if (!bar.hidden){
     root.setProperty("--nu-mobar-height", grid(bar.offsetHeight));
-    /* Ta sama belka, ale bez zaokrąglenia. Zaokrąglenie w górę jest dobre dla
-       prześwitu pod treścią i złe dla czegokolwiek, co ma na belce usiąść: arkusz
-       filtrów sadzany na wartości z siatki zostawiał pod sobą do czterech pikseli
-       tła strony, choć ma przylegać. Wysokość liczona z prostokąta, a nie z
-       offsetHeight, bo ta druga jest już zaokrąglona do pełnych pikseli. */
+    /* The same bar, unrounded. Rounding up is right for the clearance under the
+       content and wrong for anything that has to sit on the bar: the filter sheet
+       placed on the grid value left up to four pixels of page beneath it, where it
+       is meant to be flush. Measured from the rectangle rather than offsetHeight,
+       because that one is already rounded to whole pixels. */
     root.setProperty("--nu-mobar-height-exact", bar.getBoundingClientRect().height + "px");
   }
   if (!co.hidden)  root.setProperty("--nu-cobar-height", grid(co.offsetHeight));
@@ -1221,7 +1221,7 @@ function playBackTransition(){
      flight and takes it back afterwards: nothing is scrolling then, so there is
      no ramp for it to need protecting from. */
   document.body.classList.add("is-flying");
-  const koniec = ()=>{
+  const done = ()=>{
     document.body.classList.remove("is-flying");
     tile.style.visibility = ""; clone.remove();
   };
@@ -1229,14 +1229,14 @@ function playBackTransition(){
      the two the page has been switched over and scrolled back to where the grid
      was left - and the card is only where it belongs once that has happened. */
   const to = tile.getBoundingClientRect();
-  if (!to.width || !to.height){ koniec(); return; }
+  if (!to.width || !to.height){ done(); return; }
   const s = to.width / from.rect.width;
   const dx = to.left - from.rect.left, dy = to.top - from.rect.top;
   clone.animate([
     { transform:"translate(0,0) scale(1)" },
     { transform:`translate(${dx}px,${dy}px) scale(${s})` }
   ], { duration: motionMs("--nu-motion-slower"), easing: motionCurve("--nu-ease-zoom"), fill:"forwards" })
-    .onfinish = koniec;
+    .onfinish = done;
 }
 
 /* --------------------------------------------------- product page + cart */
@@ -3120,17 +3120,17 @@ const DS_DOCS = [
    she opens it. */
 function dsDocTable(cat){
   const pl = LANG === "pl";
-  const wiersze = DS_DOCS.filter(x => x.cat === cat).map(x => {
+  const rows = DS_DOCS.filter(x => x.cat === cat).map(x => {
     /* Polish says the same thing in fewer words, so a single figure would be
        wrong in one language or the other. Each copy carries its own. */
-    const plik = pl && x.filePl ? x.filePl : x.file;
-    const ile  = pl && x.wordsPl ? x.wordsPl : x.words;
+    const file  = pl && x.filePl ? x.filePl : x.file;
+    const words = pl && x.wordsPl ? x.wordsPl : x.words;
     return `
     <tr>
       <td class="spec doc-name">${x.t[pl?"pl":"en"]}</td>
       <td>${x.d[pl?"pl":"en"]}</td>
-      <td class="rm-state">${ile.toLocaleString(pl?"pl-PL":"en-GB")}&nbsp;${L("words","słów")}</td>
-      <td><a class="link in-text" href="${DS_REPO}/blob/main/docs/${plik}" target="_blank" rel="noopener"><code>${plik}</code></a></td>
+      <td class="rm-state">${words.toLocaleString(pl?"pl-PL":"en-GB")}&nbsp;${L("words","słów")}</td>
+      <td><a class="link in-text" href="${DS_REPO}/blob/main/docs/${file}" target="_blank" rel="noopener"><code>${file}</code></a></td>
     </tr>`;
   }).join("");
   return `<table class="doc-table">
@@ -3139,7 +3139,7 @@ function dsDocTable(cat){
       <th>${L("Name","Nazwa")}</th><th>${L("What is in it","Co w nim jest")}</th>
       <th>${L("Length","Objętość")}</th><th>${L("Repository","Repozytorium")}</th>
     </tr></thead>
-    <tbody>${wiersze}</tbody></table>`;
+    <tbody>${rows}</tbody></table>`;
 }
 function dsRoadmapRows(){
   const stan = {

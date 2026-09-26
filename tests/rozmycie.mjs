@@ -1,8 +1,8 @@
-/* Trzy zmiany designowe naraz: skala rozmycia, rozmycie pod warstwa modalna,
-   wejscie kafli z rozmyciem i powrot ze szczegolow jako odwrocone otwarcie.
-   Test pilnuje rzeczy, ktorych nie widac az do chwili, gdy ktos je zepsuje:
-   ze zadna sila rozmycia nie jest wpisana recznie, ze oba tla modalne robia
-   to samo, i ze powrot ma wszystkie trzy zabezpieczenia. */
+/* Three design changes at once: the blur scale, the blur under a modal layer,
+   the tiles arriving blurred, and the return from a product page as the opening
+   played backwards. This suite watches the things nobody sees until somebody
+   breaks them: that no blur strength is typed by hand, that both modal
+   backdrops do the same thing, and that the return has all three safeguards. */
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 const D = fileURLToPath(new URL('../', import.meta.url));
@@ -12,220 +12,225 @@ const nocom=css.replace(/\/\*[\s\S]*?\*\//g,'');
 const root=nocom.match(/:root\s*\{([\s\S]*?)\n\}/)[1];
 
 let bad=0;
-const chk=(c,m)=>{ console.log((c?'  OK   ':'  BLAD ')+m); if(!c) bad++; };
+const chk=(c,m)=>{ console.log((c?'  OK   ':'  FAIL ')+m); if(!c) bad++; };
 
-/* regula szuka selektora i klamry bez wzgledu na lamanie linii, bo selektory
-   w tym arkuszu bywaja rozpisane na kilka wierszy */
-const regula = sel => {
+/* the helper looks for a selector and its brace regardless of line breaks,
+   because selectors in this sheet are sometimes written across several lines */
+const rule = sel => {
   const re=new RegExp('(^|[},])\\s*'+sel.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\s*\\{([^}]*)\\}','m');
   const m=nocom.match(re);
   return m ? m[2].replace(/\s+/g,' ').trim() : null;
 };
 
-/* 1. skala istnieje i jest trzystopniowa */
-const stopnie=['--nu-blur-sm','--nu-blur-md','--nu-blur-lg','--nu-blur-xl'];
-const wartosci={};
-for (const t of stopnie){
+/* 1. the scale exists and has its steps */
+const steps=['--nu-blur-sm','--nu-blur-md','--nu-blur-lg','--nu-blur-xl'];
+const values={};
+for (const t of steps){
   const m=root.match(new RegExp(t+'\\s*:\\s*([^;]+);'));
-  chk(!!m, `stopien ${t} zadeklarowany`);
-  if (m) wartosci[t]=m[1].trim();
+  chk(!!m, `step ${t} declared`);
+  if (m) values[t]=m[1].trim();
 }
-const px=t=>parseFloat(wartosci[t]);
-const rosnie=stopnie.every((t,i)=>i===0 || px(stopnie[i-1])<px(t));
-chk(rosnie, `skala rosnie: ${stopnie.map(t=>wartosci[t]).join(' < ')}`);
+const px=t=>parseFloat(values[t]);
+const rising=steps.every((t,i)=>i===0 || px(steps[i-1])<px(t));
+chk(rising, `the scale rises: ${steps.map(t=>values[t]).join(' < ')}`);
 
-/* 2. zadna sila rozmycia nie jest wpisana recznie. blur(0) to zero, nie sila. */
-const reczne=[...nocom.matchAll(/blur\(\s*([0-9.]+)(px|rem|em)\s*\)/g)].filter(m=>parseFloat(m[1])!==0);
-chk(reczne.length===0, `zadna sila rozmycia nie jest wpisana recznie${reczne.length?' ('+reczne.map(m=>m[0]).join(', ')+')':''}`);
-chk(!/--bs-blur/.test(css), 'lokalna zmienna --bs-blur zdjeta na rzecz tokenu');
+/* 2. no blur strength is typed by hand. blur(0) is zero, not a strength. */
+const typed=[...nocom.matchAll(/blur\(\s*([0-9.]+)(px|rem|em)\s*\)/g)].filter(m=>parseFloat(m[1])!==0);
+chk(typed.length===0, `no blur strength is typed by hand${typed.length?' ('+typed.map(m=>m[0]).join(', ')+')':''}`);
+chk(!/--bs-blur/.test(css), 'the local --bs-blur variable is gone in favour of the token');
 
-/* 3. kazdy stopien ma uzycie: skala bez uzycia to martwy token */
-for (const t of stopnie)
-  chk(new RegExp('blur\\(var\\('+t+'\\)\\)').test(nocom), `${t} jest uzyty`);
+/* 3. every step has a use: a scale with no use is a dead token */
+for (const t of steps)
+  chk(new RegExp('blur\\(var\\('+t+'\\)\\)').test(nocom), `${t} is used`);
 
-/* 4. oba tla modalne zaslaniaja tak samo: rozmycie dochodzi razem z przyciemnieniem,
-   a nie skokiem pod przezroczystym jeszcze tlem */
+/* 4. both modal backdrops cover the same way: the blur arrives together with the
+   dimming rather than jumping in under a still-transparent ground */
 for (const sel of ['.sheet-backdrop','.drawer-backdrop']){
-  const spoczynek=regula(sel), otwarte=regula(sel+'.open');
-  chk(/backdrop-filter\s*:\s*blur\(\s*0\s*\)/.test(spoczynek||''), `${sel} startuje bez rozmycia`);
-  chk(/transition\s*:[^;]*backdrop-filter/.test(spoczynek||''),     `${sel} przechodzi rozmyciem, nie skokiem`);
-  chk(/backdrop-filter\s*:\s*blur\(var\(--nu-blur-md\)\)/.test(otwarte||''), `${sel}.open bierze --nu-blur-md`);
-  chk(/-webkit-backdrop-filter/.test(otwarte||''), `${sel}.open ma odmiane webkit`);
+  const rest=rule(sel), open=rule(sel+'.open');
+  chk(/backdrop-filter\s*:\s*blur\(\s*0\s*\)/.test(rest||''), `${sel} starts with no blur`);
+  chk(/transition\s*:[^;]*backdrop-filter/.test(rest||''),     `${sel} arrives by transition, not by jump`);
+  chk(/backdrop-filter\s*:\s*blur\(var\(--nu-blur-md\)\)/.test(open||''), `${sel}.open takes --nu-blur-md`);
+  chk(/-webkit-backdrop-filter/.test(open||''), `${sel}.open has the webkit spelling`);
 }
 
-/* 5. wejscie kafli: rozmycie w klatce poczatkowej, ustepuje przy reduced motion */
-const klatki=nocom.match(/@keyframes cardIn\s*\{([\s\S]*?)\n\s*\}/);
-chk(!!klatki && /blur\(var\(--nu-blur-sm\)\)/.test(klatki[1]), 'cardIn zaczyna od --nu-blur-sm');
-chk(!!klatki && /blur\(0\)/.test(klatki[1]),                   'cardIn konczy sie na ostrym');
-chk(!!klatki && !/translateY\(\s*\d/.test(klatki[1]),          'cardIn nie ma odleglosci wpisanej recznie');
-const redukcja=nocom.match(/@media\s*\(prefers-reduced-motion:reduce\)\s*\{([^}]*\.grid\.mosaic[^}]*)\}/);
-chk(!!redukcja && /animation\s*:\s*none/.test(redukcja[1]), 'mozaika ustepuje przy reduced motion');
-/* krzywa powiekszenia ma cztery piate drogi za soba w pierwszej cwiartce czasu:
-   dobra dla kafla lecacego przez ekran, zla dla rozmycia, ktore ma byc widziane */
-const mozaika=regula('.grid.mosaic .card');
-chk(!!mozaika, 'regula mozaiki znaleziona');
-chk(/animation\s*:[^;]*ease-out/.test(mozaika||''), 'mozaika idzie krzywa ease-out');
-chk(!/--nu-ease-zoom/.test(mozaika||''),            'mozaika nie idzie krzywa powiekszenia');
+/* 5. the tiles' entrance: blur in the opening frame, gone under reduced motion */
+const frames=nocom.match(/@keyframes cardIn\s*\{([\s\S]*?)\n\s*\}/);
+chk(!!frames && /blur\(var\(--nu-blur-sm\)\)/.test(frames[1]), 'cardIn starts from --nu-blur-sm');
+chk(!!frames && /blur\(0\)/.test(frames[1]),                   'cardIn ends sharp');
+chk(!!frames && !/translateY\(\s*\d/.test(frames[1]),          'cardIn has no hand-typed distance');
+const reduced=nocom.match(/@media\s*\(prefers-reduced-motion:reduce\)\s*\{([^}]*\.grid\.mosaic[^}]*)\}/);
+chk(!!reduced && /animation\s*:\s*none/.test(reduced[1]), 'the mosaic stands down under reduced motion');
+/* the zoom curve has four fifths of the way behind it in the first quarter of
+   the time: right for a tile flying across the screen, wrong for a blur that is
+   meant to be seen */
+const mosaic=rule('.grid.mosaic .card');
+chk(!!mosaic, 'the mosaic rule was found');
+chk(/animation\s*:[^;]*ease-out/.test(mosaic||''), 'the mosaic takes the ease-out curve');
+chk(!/--nu-ease-zoom/.test(mosaic||''),            'the mosaic does not take the zoom curve');
 
 const mos=js.match(/if \(firstVisit\)\{([\s\S]*?)\n  \}/);
 chk(!!mos && /motionMs\("--nu-motion-stagger"\)/.test(mos[1]),
-    'starty kart nadal rozkladaja sie w --nu-motion-stagger');
-chk(!!mos && !/\+ \d{2,}/.test(mos[1]), 'domkniecie mozaiki nie ma liczby wpisanej recznie');
+    'the cards still start spread over --nu-motion-stagger');
+chk(!!mos && !/\+ \d{2,}/.test(mos[1]), 'closing the mosaic carries no hand-typed number');
 
-/* 5b. karta ksiazki: to, co ksiazka ma do powiedzenia, wchodzi z rozmycia tak
-   samo jak linie ksiegarki - tym samym stopniem, bo to tez sa slowa */
-/* Slowa biora stopien slow, a przycisk stopien obrazu: pelny ksztalt rozmyty
-   tak mocno jak zdanie rozlewa sie w plame zamiast miekngc. */
-chk(/filter:blur\(var\(--nu-blur-lg\)\)/.test(regula('.p-info.p-enter')||''),
-    'informacje o ksiazce: wejscie ze stopnia slow');
-chk(/filter:blur\(var\(--nu-blur-sm\)\)/.test(regula('.p-cta.p-enter-cta')||''),
-    'przycisk: wejscie ze stopnia obrazu, bo jest ksztaltem, nie zdaniem');
-for (const [sel, nazwa] of [['.p-info.p-enter-in','informacje'],
-                            ['.p-cta.p-enter-cta-in','przycisk']]){
-  const r=regula(sel);
+/* 5b. the product page: what the book has to say arrives out of a blur the same
+   way the bookseller's lines do - at the same step, because these are words too */
+/* Words take the step for words and the button the step for a shape: a whole
+   shape blurred as hard as a sentence spreads into a stain instead of softening. */
+chk(/filter:blur\(var\(--nu-blur-lg\)\)/.test(rule('.p-info.p-enter')||''),
+    'the book information: entrance at the step for words');
+chk(/filter:blur\(var\(--nu-blur-sm\)\)/.test(rule('.p-cta.p-enter-cta')||''),
+    'the button: entrance at the step for an image, because it is a shape, not a sentence');
+for (const [sel, name] of [['.p-info.p-enter-in','the information'],
+                            ['.p-cta.p-enter-cta-in','the button']]){
+  const r=rule(sel);
   chk(/filter:blur\(0\)/.test(r||'') && /transition:[\s\S]*filter/.test(r||''),
-      `${nazwa}: wyostrzenie przejsciem, nie skokiem`);
+      `${name}: sharpens by transition, not by jump`);
 }
-/* Jedna odleglosc na cale wejscie: linia ksiegarki, karta w siatce, tytul
-   i przycisk podnosza sie o ten sam stopien, wiec jedna odleglosc znaczy jedno. */
+/* One distance for the whole entrance: a bookseller's line, a card in the grid,
+   the title and the button all rise by the same step, so one distance means one
+   thing. */
 for (const sel of ['.p-info.p-enter','.p-cta.p-enter-cta']){
-  const r=regula(sel)||'';
-  chk(/transform:translateY\(var\(--nu-space-nano\)\)/.test(r), `${sel}: podnosi sie o stopien ze skali`);
+  const r=rule(sel)||'';
+  chk(/transform:translateY\(var\(--nu-space-nano\)\)/.test(r), `${sel}: rises by a step from the scale`);
 }
 for (const sel of ['.p-info.p-enter-in','.p-cta.p-enter-cta-in']){
-  const r=regula(sel)||'';
+  const r=rule(sel)||'';
   chk(/transform:none/.test(r) && /transition:[\s\S]*transform/.test(r),
-      `${sel}: dochodzi na miejsce przejsciem`);
+      `${sel}: arrives in place by transition`);
 }
 
-/* 6. blok u gory okna: rampa siega w tresc tylko wtedy, gdy cos za nia
-   przechodzi, a kolumna filtrow zatrzymuje sie na krawedzi bloku i stoi nad
-   rampa, zamiast pod nia wpadac */
-const zaslona=regula('.masthead-veil'), zaslonaPo=regula('body.is-scrolled .masthead-veil');
-chk(/bottom:\s*0/.test(zaslona||''),  'w spoczynku rampa nie siega ponizej bloku');
-chk(/bottom:\s*calc\(-1 \* var\(--nu-space-max\)\)/.test(zaslonaPo||''),
-    'rampa otwiera sie dopiero, gdy strona jest przewinieta');
-chk(/transition:\s*bottom/.test(zaslona||''), 'otwarcie rampy jest przejsciem, nie skokiem');
+/* 6. the block at the top of the window: the ramp reaches into the content only
+   while something is passing behind it, and the filters column stops at the
+   block's edge and stands above the ramp instead of falling under it */
+const veil=rule('.masthead-veil'), veilScrolled=rule('body.is-scrolled .masthead-veil');
+chk(/bottom:\s*0/.test(veil||''),  'at rest the ramp does not reach below the block');
+chk(/bottom:\s*calc\(-1 \* var\(--nu-space-max\)\)/.test(veilScrolled||''),
+    'the ramp opens only once the page is scrolled');
+chk(/transition:\s*bottom/.test(veil||''), 'the ramp opens by transition, not by jump');
 chk(/markScroll/.test(js) && /addEventListener\("scroll", markScroll/.test(js),
-    'stan przewiniecia jest odczytywany, a nie zgadywany');
-const filtry=regula('.filters');
-chk(/top:\s*var\(--nu-masthead-height\)/.test(filtry||''),
-    'filtry zatrzymuja sie na krawedzi bloku, w jednej linii z siatka');
-chk(!/masthead-height\)\s*\+/.test(filtry||''),
-    'filtry nie sa spychane nizej niz ich wlasne miejsce w ukladzie');
-chk(/z-index:\s*81/.test(filtry||''), 'filtry stoja nad rampa, wiec ich nie rozmywa');
+    'the scrolled state is read rather than guessed');
+const filters=rule('.filters');
+chk(/top:\s*var\(--nu-masthead-height\)/.test(filters||''),
+    'the filters stop at the block\'s edge, in line with the grid');
+chk(!/masthead-height\)\s*\+/.test(filters||''),
+    'the filters are not pushed below their own place in the layout');
+chk(/z-index:\s*81/.test(filters||''), 'the filters stand above the ramp, so it does not blur them');
 
-/* 6b. dymek ksiegarki nie wchodzi pod to, co przyklejone u gory. Rosnie od dolu,
-   wiec bez pulapu wyjezdza gorna krawedzia za blok razem z wlasnym zamknieciem. */
-chk(/--bs-headroom:\s*calc\(var\(--nu-masthead-height\)/.test(regula('.bs')||''),
-    'pulap dymka liczy sie z blokiem u gory');
-chk(/var\(--bs-headroom\)/.test(regula('.bs-panel')||''),
-    'i dymek ten pulap stosuje');
+/* 6b. the bookseller's panel does not slide under what is pinned at the top. It
+   grows from the bottom, so without a ceiling its top edge leaves the screen
+   along with its own close button. */
+chk(/--bs-headroom:\s*calc\(var\(--nu-masthead-height\)/.test(rule('.bs')||''),
+    'the panel\'s ceiling is computed from the block at the top');
+chk(/var\(--bs-headroom\)/.test(rule('.bs-panel')||''),
+    'and the panel applies that ceiling');
 chk(/--bs-headroom:\s*var\(--nu-space-medium\)/.test(nocom),
-    'na telefonie pulap to samo powietrze, bo nic nie jest tam przypiete');
-chk(/overflow-y:\s*auto/.test(regula('.bs-list')||''),
-    'nadmiar bierze lista propozycji, a nie gorna krawedz');
+    'on a phone the ceiling is plain air, because nothing is pinned there');
+chk(/overflow-y:\s*auto/.test(rule('.bs-list')||''),
+    'the overflow is taken by the list of proposals, not by the top edge');
 
-/* 7. odwracanie napisu i wyszukiwarki pod blokiem. Dziala tylko przy
-   przewinieciu i tylko na bezczynnym polu: wpisane zapytanie ma sie czytac jako
-   tekst, a nie jako efekt. */
-const napis=regula('body.is-scrolled .logo .strap');
-chk(/mix-blend-mode:\s*difference/.test(napis||''), 'napis przy znaku odwraca sie przy przewinieciu');
-chk(/color:\s*var\(--nu-fg-secondary\)/.test(napis||''),
-    'odwraca sie ta sama wartoscia, ktora ma w spoczynku');
-chk(!regula('.logo .strap')?.includes('mix-blend-mode'),
-    'w spoczynku napis nie odwraca sie wcale');
-/* Wyszukiwarka celowo nie reaguje na przewiniecie. Probowalismy odwracania
-   i kreski przepuszczajacej; ani jedno, ani drugie nie dalo czytelnosci, ktorej
-   to pole potrzebuje, a kazda proba dokladala regule do komponentu, ktory ma byc
-   prosty. Kolor ikony, podpowiedzi i kreski jest jeden, przewiniete czy nie. */
+/* 7. the strapline inverting under the block, and the search field that does
+   not. It works only while scrolled and only on an idle field: a typed query
+   has to read as text rather than as an effect. */
+const strap=rule('body.is-scrolled .logo .strap');
+chk(/mix-blend-mode:\s*difference/.test(strap||''), 'the strapline inverts while scrolled');
+chk(/color:\s*var\(--nu-fg-secondary\)/.test(strap||''),
+    'it inverts with the same value it has at rest');
+chk(!rule('.logo .strap')?.includes('mix-blend-mode'),
+    'at rest the strapline does not invert at all');
+/* The search field deliberately does not answer scrolling. We tried inverting
+   and a see-through rule; neither gave the legibility this field needs, and each
+   attempt added a rule to a component that is meant to be simple. The colour of
+   the icon, the placeholder and the rule is one, scrolled or not. */
 chk(!/is-scrolled[^{]*search-wrap/.test(nocom),
-    'wyszukiwarka nie ma osobnych regul na przewiniecie');
-chk(!/--nu-border-sheer/.test(css), 'token kreski przepuszczajacej zdjety razem z nia');
-/* Probowalismy tez wlasnego podloza pod polem. Zdjete razem z reszta: pole
-   wyszukiwania nie ma niczego, co odpowiada na przewijanie ani na to, co za nim
-   przechodzi. */
+    'the search field has no separate rules for scrolling');
+chk(!/--nu-border-sheer/.test(css), 'the see-through border token went with it');
+/* We also tried a bed of its own under the field. Taken off with the rest: the
+   search field holds nothing that answers scrolling or what passes behind it. */
 const html=fs.readFileSync(D+'index.html','utf8');
-chk(!/search-bed/.test(css) && !/search-bed/.test(html), 'podloze pola zdjete');
-chk(!/--nu-bg-search/.test(css), 'token podloza zdjety razem z nim');
-/* Belka nad siatka - filtry, wyszukiwarka, sortowanie - zostaje na swoim miejscu
-   w ukladzie, ale poza przyklejonym blokiem: pole sluzy do pisania, a pole jadace
-   nad ruchoma trescia walczy o kazde slowo, ktore pokazuje. Przyklejone zostaja
-   promocja, naglowek i powrot z karty ksiazki. */
-const blok=html.slice(html.indexOf('<div class="masthead"'), html.indexOf('/.masthead'));
-chk(!/id="shopbar"/.test(blok), 'belka nad siatka stoi poza przyklejonym blokiem');
-chk(/id="productbar"/.test(blok), 'belka powrotu zostaje w bloku');
-chk(/class="promo"/.test(blok) && /<header>/.test(blok), 'promocja i naglowek zostaja w bloku');
+chk(!/search-bed/.test(css) && !/search-bed/.test(html), 'the field\'s bed is gone');
+chk(!/--nu-bg-search/.test(css), 'and its token with it');
+/* The bar over the grid - filters, search, sorting - keeps its place in the
+   layout but stays outside the pinned block: a field is for typing into, and a
+   field riding over moving content fights for every word it shows. What stays
+   pinned is the promotion, the header and the way back from a product page. */
+const block=html.slice(html.indexOf('<div class="masthead"'), html.indexOf('/.masthead'));
+chk(!/id="shopbar"/.test(block), 'the bar over the grid stands outside the pinned block');
+chk(/id="productbar"/.test(block), 'the way-back bar stays in the block');
+chk(/class="promo"/.test(block) && /<header>/.test(block), 'the promotion and the header stay in the block');
 chk(/class="shopbar"[\s\S]{0,700}search-wrap/.test(html),
-    'wyszukiwarka stoi w belce tam, gdzie stala');
+    'the search field stands in the bar where it stood');
 chk(html.indexOf('id="shopbar"') < html.indexOf('class="shop" id="shop"'),
-    'belka stoi nad siatka');
+    'the bar stands above the grid');
 
-/* 8. powrot do siatki */
-chk(/data-id="\$\{b\.id\}"/.test(js), 'karta w siatce niesie data-id, po ktorym powrot ja znajduje');
-chk(/\.card\[data-id="\$\{from\.id\}"\]\s*\.tile/.test(js), 'powrot szuka kafla po tym samym atrybucie');
-const powrot=js.match(/function playBackTransition\(\)\{([\s\S]*?)\n\}/);
-chk(!!powrot, 'playBackTransition istnieje');
-if (powrot){
-  chk(/prefers-reduced-motion/.test(powrot[1]), 'powrot ustepuje przy reduced motion');
-  chk(/if \(!tile\) return/.test(powrot[1]),    'powrot odpuszcza, gdy ksiazki nie ma juz w siatce');
-  chk(/motionMs\("--nu-motion-slower"\)/.test(powrot[1]), 'lot bierze czas ze skali, nie z liczby');
-  /* Tekst i tlo znikaja razem z przelaczeniem widoku, a nie wlasnym wyjsciem
-     przed lotem: czytelniczka powiedziala juz, gdzie chce byc, wiec osobne
-     zegnanie sie karty czyta sie jako czekanie, nie jako odejscie. */
-  chk(!/const sheet/.test(powrot[1]) && !/from\.view/.test(js),
-      'karta nie ma wlasnego wyjscia przed lotem');
-  chk(!/motionMs\("--nu-motion-base"\)/.test(powrot[1]),
-      'i nie ma juz drugiego czasu na to wyjscie');
-  chk(/const to = tile\.getBoundingClientRect\(\)/.test(powrot[1]),
-      'cel mierzony po przelaczeniu widoku i przywroceniu przewiniecia');
-  chk(/if \(!to\.width \|\| !to\.height\)/.test(powrot[1]),
-      'lot odpuszcza, gdy cel zdazyl zniknac');
-  chk(/motionCurve\("--nu-ease-zoom"\)/.test(powrot[1]), 'powrot leci ta sama krzywa co otwarcie');
-  /* packshot musi stac na ekranie od pierwszej klatki. Postawiony dopiero po
-     zgasnieciu tekstu znika na czas tego zgasniecia i wraca, zeby polecziec -
-     i to wlasnie widac jako skok. */
-  /* Kolumna filtrow stoi o stopien nad blokiem, wiec stoi tez nad lotem.
-     Na czas powrotu oddaje ten stopien - inaczej packshot leci za nia. */
-  chk(/classList\.add\("is-flying"\)/.test(powrot[1]), 'na czas lotu kolumna filtrow ustepuje');
-  chk(/classList\.remove\("is-flying"\)/.test(powrot[1]), 'i odzyskuje swoje miejsce po locie');
-  chk(powrot[1].indexOf('add("is-flying")') < powrot[1].indexOf('clone.animate'),
-      'ustepuje zanim lot ruszy');
-  chk(/z-index:auto/.test(regula('body.is-flying .filters')||''),
-      'arkusz wie, co znaczy lot dla kolumny filtrow');
+/* 8. the return to the grid */
+chk(/data-id="\$\{b\.id\}"/.test(js), 'a card in the grid carries the data-id the return finds it by');
+chk(/\.card\[data-id="\$\{from\.id\}"\]\s*\.tile/.test(js), 'the return looks for the tile by that same attribute');
+const back=js.match(/function playBackTransition\(\)\{([\s\S]*?)\n\}/);
+chk(!!back, 'playBackTransition exists');
+if (back){
+  chk(/prefers-reduced-motion/.test(back[1]), 'the return stands down under reduced motion');
+  chk(/if \(!tile\) return/.test(back[1]),    'the return gives up when the book is no longer in the grid');
+  chk(/motionMs\("--nu-motion-slower"\)/.test(back[1]), 'the flight takes its duration from the scale, not from a number');
+  /* The text and the ground go with the change of view rather than exiting on
+     their own before the flight: the reader has already said where she wants to
+     be, so a separate farewell from the page reads as waiting, not as leaving. */
+  chk(!/const sheet/.test(back[1]) && !/from\.view/.test(js),
+      'the page has no exit of its own before the flight');
+  chk(!/motionMs\("--nu-motion-base"\)/.test(back[1]),
+      'and no second duration for that exit');
+  chk(/const to = tile\.getBoundingClientRect\(\)/.test(back[1]),
+      'the target is measured after the view has changed and the scroll restored');
+  chk(/if \(!to\.width \|\| !to\.height\)/.test(back[1]),
+      'the flight gives up when the target has vanished');
+  chk(/motionCurve\("--nu-ease-zoom"\)/.test(back[1]), 'the return flies the same curve as the opening');
+  /* The packshot has to be on screen from the first frame. Put there only after
+     the text has faded, it disappears for the length of that fade and comes back
+     to fly - and that is what reads as a jump. */
+  /* The filters column stands a step above the block, so it stands above the
+     flight too. For the length of the return it gives that step up - otherwise
+     the packshot flies behind it. */
+  chk(/classList\.add\("is-flying"\)/.test(back[1]), 'the filters column stands down for the flight');
+  chk(/classList\.remove\("is-flying"\)/.test(back[1]), 'and takes its place back afterwards');
+  chk(back[1].indexOf('add("is-flying")') < back[1].indexOf('clone.animate'),
+      'it stands down before the flight starts');
+  chk(/z-index:auto/.test(rule('body.is-flying .filters')||''),
+      'the stylesheet knows what a flight means for the filters column');
 }
-/* Sklep sam stawia czytelniczke w widoku, wiec przywracanie przewiniecia przez
-   przegladarke jest drugim, pozniejszym skokiem - i pada juz po tym, jak route
-   zmierzyl, gdzie co stoi. */
+/* The shop puts the reader into a view itself, so the browser restoring the
+   scroll is a second, later jump - and it lands after route has measured where
+   everything stands. */
 chk(/history\.scrollRestoration = "manual"/.test(js),
-    'przywracanie przewiniecia nalezy do sklepu, nie do przegladarki');
-/* Pomiar bierze sam packshot: reszta widoku nie odchodzi osobno, wiec nie ma
-   czego kopiowac. */
-const pomiar=js.match(/function captureProduct\(id\)\{([\s\S]*?)\n\}/);
-chk(!!pomiar, 'captureProduct istnieje');
-if (pomiar){
-  chk(/\.p-tile/.test(pomiar[1]) && /cloneNode\(true\)/.test(pomiar[1]),
-      'pomiar bierze packshot i jego kopie');
-  chk(!/productEl\.cloneNode/.test(pomiar[1]),
-      'i nic poza nim, bo reszta widoku nie odchodzi osobno');
+    'restoring the scroll belongs to the shop, not to the browser');
+/* The measurement takes the packshot alone: the rest of the view does not leave
+   separately, so there is nothing else to copy. */
+const capture=js.match(/function captureProduct\(id\)\{([\s\S]*?)\n\}/);
+chk(!!capture, 'captureProduct exists');
+if (capture){
+  chk(/\.p-tile/.test(capture[1]) && /cloneNode\(true\)/.test(capture[1]),
+      'the measurement takes the packshot and a copy of it');
+  chk(!/productEl\.cloneNode/.test(capture[1]),
+      'and nothing else, because the rest of the view does not leave separately');
 }
-/* pomiar musi paść przed schowaniem widoku produktu - inaczej nie ma czego mierzyc */
-const trasa=js.match(/function route\(\)\{([\s\S]*?)\n\}/);
-if (trasa){
-  const iPomiar=trasa[1].indexOf('captureProduct');
-  const iSchow=trasa[1].indexOf('productEl.hidden');
-  chk(iPomiar>-1 && iSchow>-1 && iPomiar<iSchow, 'pomiar karty produktu pada przed jej schowaniem');
-  chk(trasa[1].indexOf('playBackTransition') > trasa[1].indexOf('scrollTo'),
-      'lot wraca dopiero po przywroceniu przewiniecia siatki');
+/* the measurement has to land before the product view is hidden - otherwise
+   there is nothing left to measure */
+const route=js.match(/function route\(\)\{([\s\S]*?)\n\}/);
+if (route){
+  const iCapture=route[1].indexOf('captureProduct');
+  const iHide=route[1].indexOf('productEl.hidden');
+  chk(iCapture>-1 && iHide>-1 && iCapture<iHide, 'the product page is measured before it is hidden');
+  chk(route[1].indexOf('playBackTransition') > route[1].indexOf('scrollTo'),
+      'the flight comes back only after the grid scroll has been restored');
 }
 
-/* 7. dokumentacja nadaza: kazdy stopien opisany, oba nowe przejscia w tabeli */
+/* 9. the documentation keeps up: every step described, both new transitions in
+   the table */
 chk(/--nu-blur-sm/.test(js) && /--nu-blur-md/.test(js) && /--nu-blur-lg/.test(js),
-    'wszystkie trzy stopnie wymienione w dokumentacji');
-chk(/Powrót do siatki/.test(js),    'zakladka Ruch ma wiersz o powrocie');
-chk(/Zasłonięcie widoku/.test(js),  'zakladka Ruch ma wiersz o zaslonieciu widoku');
-chk(/\["blur",\s*\["--nu-blur"\]\]/.test(js), 'spis tokenow ma wlasna kategorie na rozmycie');
+    'all three steps are named in the documentation');
+chk(/Powrót do siatki/.test(js),    'the Motion tab has a row about the return');
+chk(/Zasłonięcie widoku/.test(js),  'the Motion tab has a row about covering the view');
+chk(/\["blur",\s*\["--nu-blur"\]\]/.test(js), 'the token inventory has its own category for blur');
 
 console.log();
-console.log(bad ? 'BLEDOW: '+bad : 'WYNIK: OK');
+console.log(bad ? 'FAILURES: '+bad : 'RESULT: OK');
 process.exit(bad?1:0);
