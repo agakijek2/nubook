@@ -73,7 +73,7 @@ pracować szybko i nie stracić spójności.
 Każdy zamknięty krok roadmapy zostawia dokument mówiący, co zostało
 postanowione, dlaczego i **które możliwości odpadły**. To ta odrzucona
 połowa zwykle ginie, i to ona powstrzymuje przed sięganiem po ten sam pomysł
-miesiąc później. Siedem takich zapisów leży w [`docs/`](docs/), plan dalszych
+miesiąc później. Osiem takich zapisów leży w [`docs/`](docs/), plan dalszych
 kroków w [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Uruchomienie

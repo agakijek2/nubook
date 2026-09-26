@@ -18,7 +18,7 @@ describes. Each finished step leaves a decision document beside this file.
 | 06 | The bookseller in the shop | done · `bookseller-widget-decision-architecture.md` |
 | 07 | Publish what exists | done · `publish-decision-architecture.md` |
 | **08** | **The model behind the bookseller** | **in progress** |
-| 09 | The case studies | next |
+| 09 | The case studies | done · `case-studies-decision-architecture.md` |
 
 **What changed:** step 07 was *deploy*, a technical errand at the end. It is now
 *publish*, and it comes with a reason – the work needs a public address before it

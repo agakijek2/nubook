@@ -3066,7 +3066,7 @@ const DS_ROADMAP = [
     t:{en:"The model behind the bookseller", pl:"Model za księgarką"},
     d:{en:"Her recommendations are written by hand against the catalogue today, which is honest and does not scale. Next: the model that produces them, and a written account of how.",
        pl:"Dziś jej rekomendacje są pisane ręcznie pod katalog - uczciwie, ale bez szans na większą skalę. Dalej: model, który je wytwarza, i zapis tego, jak to robi."} },
-  { n:"09", state:"next", doc:null,
+  { n:"09", state:"done", doc:"case-studies-decision-architecture.md",
     t:{en:"The case studies", pl:"Case studies"},
     d:{en:"Two of them: one about the shop, one about this system, each linking to its own entry point and to the repository.",
        pl:"Dwa: jedno o sklepie, jedno o tym systemie, każde linkujące do swojego wejścia i do repozytorium."} },
@@ -3233,8 +3233,8 @@ const DS_SECTIONS = [
     ${dsDocTable("procedures")}
 
     <p class="note">${L(
-      `The seven decision records are not listed here &ndash; each one hangs off the step that produced it, in the <a class="link in-text" href="#design/roadmap">Roadmap</a>. Three more sit in the repository without a row of their own: the two case studies these pages were written for, and <code>LICENSE.md</code>, which says which of all this is reserved and which is free to take.`,
-      `Siedem zapisów decyzji nie jest tu wymienionych &ndash; każdy wisi przy kroku, który go wytworzył, w <a class="link in-text" href="#design/roadmap">Roadmapie</a>. Trzy kolejne leżą w repozytorium bez własnego wiersza: dwa case studies, dla których te strony powstały, i <code>LICENSE.md</code>, mówiący, co z tego wszystkiego jest zastrzeżone, a co wolno wziąć.`)}</p>`  },
+      `The eight decision records are not listed here &ndash; each one hangs off the step that produced it, in the <a class="link in-text" href="#design/roadmap">Roadmap</a>. Three more sit in the repository without a row of their own: the two case studies these pages were written for, and <code>LICENSE.md</code>, which says which of all this is reserved and which is free to take.`,
+      `Osiem zapisów decyzji nie jest tu wymienionych &ndash; każdy wisi przy kroku, który go wytworzył, w <a class="link in-text" href="#design/roadmap">Roadmapie</a>. Trzy kolejne leżą w repozytorium bez własnego wiersza: dwa case studies, dla których te strony powstały, i <code>LICENSE.md</code>, mówiący, co z tego wszystkiego jest zastrzeżone, a co wolno wziąć.`)}</p>`  },
 
   { group:{en:"",pl:""}, id:"a11y", label:{en:"Accessibility",pl:"Dostępność"}, body: ()=>`
     <h1>${L("Accessibility","Dostępność")}</h1>
