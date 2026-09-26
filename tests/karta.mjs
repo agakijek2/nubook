@@ -74,6 +74,7 @@ chk(!/#[0-9a-fA-F]{6}/.test(skrypt.replace(/^\s*#.*$/gm,'')),
     'build-og.py nie ma zadnej barwy wpisanej z reki');
 chk(/token\("--nu-/.test(skrypt), 'build-og.py bierze barwy z arkusza');
 
+
 console.log();
 console.log(bad ? 'BLEDOW: '+bad : 'WYNIK: OK');
 process.exit(bad?1:0);
