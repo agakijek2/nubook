@@ -156,7 +156,7 @@ free to take and adapt. The covers, the portrait and the quotations are named as
 nobody's to license here, and the typefaces carry their own OFL, now beside them
 as `assets/fonts/OFL.txt`.
 
-**08 · The last pass.** Eleven suites green, `preview.html` rebuilt, the
+**08 · The last pass.** Twelve suites green, `preview.html` rebuilt, the
 `agakijek2/nubook` placeholders in both case studies filled with the real address,
 both deep links opened, and the shop walked through once in each language and
 each scheme. Waits on the repository existing.

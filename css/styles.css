@@ -382,6 +382,11 @@
        measured and written back by the script, so the page clearance is always
        exactly the bar, whatever the label length or the device safe area. */
     --nu-mobar-height:var(--nu-space-max);  /* shop bar: filters + sort */
+    /* Ta sama belka bez zaokrąglenia do siatki. Zaokrąglenie w górę jest po to,
+       żeby prześwit pod treścią nigdy nie był za mały &ndash; ale cokolwiek ma na
+       belce usiąść, musi znać jej prawdziwą wysokość, bo inaczej zostawia pod
+       sobą do czterech pikseli tła. Czyta to arkusz filtrów na telefonie. */
+    --nu-mobar-height-exact:var(--nu-space-max);
     --nu-cobar-height:var(--nu-space-max);  /* checkout bar: total + submit */
     /* The block that stays at the top of the window. Same contract as the two
        above: a starting value the script replaces with the measured height, and
@@ -2419,8 +2424,11 @@
       /* top:auto is load-bearing: the panel carries top:var(--nu-space-medium) for its sticky
          desktop column, and leaving it set here would over-constrain the box
          and stretch the sheet from the top of the screen instead. */
-      /* sits flush on the bar: the two read as one block of controls */
-      position:fixed;left:0;right:0;top:auto;bottom:var(--nu-mobar-height);z-index:80;
+      /* Przylega do belki: obie mają się czytać jako jeden blok kontrolek.
+         Dlatego wysokość niezaokrąglona - ta z siatki bywa do czterech pikseli
+         wyższa od prawdziwej belki i zostawia pod arkuszem pasek tła strony. */
+      position:fixed;left:0;right:0;top:auto;z-index:80;
+      bottom:var(--nu-mobar-height-exact);
       max-height:min(62vh,460px);overflow-y:auto;
       /* filters-hidden is set while the sheet is up (it collapses the inline
          copy), and that rule also parks pointer-events – hand them back, or the
@@ -2465,8 +2473,11 @@
     /* Back to its own width in the bar, so it is an inline button again and
        takes the shorter of the two heights. */
     .co-bar .order-btn{width:auto;margin-top:0;padding:var(--nu-space-micro) var(--nu-space-medium);flex-shrink:0}
-    /* the summary's button would be a second, redundant submit */
-    .co-side .order-btn{display:none}
+    /* Tylko w kasie: tam przycisk paska wysyła formularz, więc ten w
+       podsumowaniu byłby powtórzonym submitem. W koszyku żadnego formularza
+       nie ma, a paska na dole też nie - reguła bez tego zawężenia zostawiała
+       telefon bez jakiejkolwiek drogi dalej. */
+    #checkout .co-side .order-btn{display:none}
   }
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
   @media (prefers-reduced-motion:reduce){

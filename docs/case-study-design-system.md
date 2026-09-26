@@ -89,7 +89,7 @@ had never been. A Polish meaning that said "content on a dark background" where
 the English said "on an inverse background", a divergence that mattered the
 moment a button started inverting with the page.
 
-**Then I automated the audit.** Eleven test files now check things that are
+**Then I automated the audit.** Twelve test files now check things that are
 invisible until someone breaks them: that no blur strength is typed by hand, that
 every token named in documentation prose exists in the stylesheet, that every
 colour token has a row in its table, that nothing sits in "not sorted yet", that
@@ -153,7 +153,7 @@ same stylesheet, the same tokens, one source. 137 tokens, 22 documented tabs,
 four button variants, a documented motion scale with reasoned curves.
 
 **Documentation that is provably current.** The generated parts cannot drift by
-construction. The written parts are covered by eleven test suites and a repeatable
+construction. The written parts are covered by twelve test suites and a repeatable
 audit that has now been run on four tabs, with every finding either fixed in the
 text or fixed in the code.
 

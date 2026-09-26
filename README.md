@@ -67,7 +67,7 @@ system](docs/case-study-design-system.md).
 Every bit of discipline visible in this repository exists for that reason.
 An implementer working at that pace will happily add a fifth heading style
 and a hand-typed pixel value, so the system needs rules a machine can be
-held to – and tests that hold it there. Eleven test suites and four written
+held to – and tests that hold it there. Twelve test suites and four written
 procedures are not decoration around the process; they are what makes it
 possible to move fast without losing coherence.
 
@@ -123,7 +123,7 @@ Needs node and npm; jsdom installs itself on the first run. The run prints
 one line per suite. When one goes red, the detail is in its own output:
 `node tests/rozmycie.mjs`.
 
-Eleven suites, each guarding something that breaks quietly:
+Twelve suites, each guarding something that breaks quietly:
 
 | Suite | What it guards |
 |---|---|
@@ -137,6 +137,7 @@ Eleven suites, each guarding something that breaks quietly:
 | `rozmycie` | no blur strength is typed by hand, and the components' entrances match the rules that actually run |
 | `karta` | the link card has every meta tag, its addresses are absolute, the image matches the dimensions it declares, and the claim on the picture is the claim in the tags |
 | `blad404` | the 404 page links from the root, not relatively – it is served at any depth, so a relative path gives a page with no styles – and its English half is complete |
+| `mobil` | the cart keeps a way forward on a phone, and the filter sheet sits on the bar's real height rather than the rounded one |
 | `roadmapa` | the ladder of steps in the script and in `docs/roadmap.md` is the same ladder, every closed step has a decision record that exists, and the lengths in the documents list match the files |
 
 Each check was written **after** the defect it is for was found, and each

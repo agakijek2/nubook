@@ -66,7 +66,7 @@ projektowym](docs/case-study-design-system.md).
 Cała dyscyplina widoczna w tym repozytorium istnieje właśnie z tego powodu.
 Implementer pracujący w tym tempie chętnie dołoży piąty styl nagłówka i
 wartość wpisaną z ręki, więc system potrzebuje zasad, do których da się go
-przymusić – i testów, które go przy nich trzymają. Jedenaście zestawów testów
+przymusić – i testów, które go przy nich trzymają. Dwanaście zestawów testów
 i cztery spisane procedury nie są ozdobą procesu; są tym, co pozwala
 pracować szybko i nie stracić spójności.
 
@@ -123,7 +123,7 @@ Przebieg wypisuje jedną linię na zestaw. Kiedy któryś zapali się na
 czerwono, szczegółów szuka się w jego własnym wypisie: `node
 tests/rozmycie.mjs`.
 
-Jedenaście zestawów, każdy pilnuje czegoś, co psuje się po cichu:
+Dwanaście zestawów, każdy pilnuje czegoś, co psuje się po cichu:
 
 | Zestaw | Czego pilnuje |
 |---|---|
@@ -137,6 +137,7 @@ Jedenaście zestawów, każdy pilnuje czegoś, co psuje się po cichu:
 | `rozmycie` | żadna siła rozmycia nie jest wpisana z ręki, a wejścia komponentów zgadzają się z regułami, które naprawdę działają |
 | `karta` | karta linku ma komplet znaczników, adresy są pełne, obrazek ma wymiary, które deklaruje, a claim z rysunku to ten sam claim co w znacznikach |
 | `blad404` | strona 404 linkuje od korzenia, a nie względnie – podaje się ją pod dowolnie głębokim adresem, więc ścieżka względna daje stronę bez stylów – a jej angielska połowa jest kompletna |
+| `mobil` | koszyk na telefonie ma czym przejść dalej, a arkusz filtrów siada na prawdziwej wysokości belki, nie na zaokrąglonej |
 | `roadmapa` | drabina kroków w skrypcie i w `docs/roadmap.md` to ta sama drabina, każdy zamknięty krok ma istniejący zapis decyzji, a objętości w spisie dokumentów zgadzają się z plikami |
 
 Każde sprawdzenie powstało **po** znalezieniu usterki, której dotyczy, i ma
