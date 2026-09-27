@@ -112,14 +112,6 @@ where a design decision could be seen running within minutes – and it made
 discipline mandatory, because a fast implementer with no constraints produces
 drift, not progress.
 
-**What the suite cannot see.** The tests read rules; they do not render. Putting
-the shop at a public address produced four defects in an afternoon that no test
-could have caught – a blur ramp that worked in Safari and not in Chrome, a cart
-with no way forward on a phone, a four-pixel gap under a panel, a button that
-grew taller mid-animation – and every one of them was found by opening the shop
-and clicking. Each has a check now. None of those checks would have existed
-without somebody looking first.
-
 ## Outcomes
 
 **A shop that is actually usable end to end.** Grid, search, motif and genre

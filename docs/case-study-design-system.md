@@ -100,24 +100,18 @@ the check is meant to catch, and the check has to go red. A test that passes
 without being able to catch the thing it is for is worse than no test, because it
 buys confidence it has not earned.
 
-**And a section on what the tests cannot reach.** They read rules; they do not
-render. The suites run in jsdom, which computes no layout, knows no screen width
-and is not a browser, so a whole class of defect is invisible to every one of
-them. Publishing the shop produced four in an afternoon, all found by a person
-clicking: a blur ramp that worked in Safari and rendered as a plain white wash
-in Chrome, because Chrome does not compute `backdrop-filter` for an element on a
-negative step inside a stacking context; a cart with no way forward on a phone,
-because a rule written for the checkout view matched the cart as well; a filter
-sheet leaving four pixels of page under it, because a height rounded up for
-clearance was reused for seating; and a button that grew taller for a moment
-mid-animation, because a frozen width let the longest label wrap.
 
-Each of those now has a check, and each check reads the rule rather than the
-pixels – which is honest about what it can promise. **The conclusion I would
-bring to a team is not that tests replace looking.** It is that a test is worth
-writing the moment a defect has a rule behind it, and that the looking has to be
-done deliberately, on the devices and in the browsers the work will actually
-meet, rather than left to whoever happens to notice.
+**And a section on what the tests cannot reach.** They read rules; they do not
+render. The suites run in jsdom, which computes no layout, so a whole class of
+defect is invisible to every one of them. Publishing the shop produced four in
+an afternoon, all found by a person clicking.
+
+Each of discovered defects now has a check, and each check reads the rule rather
+than the pixels – which is honest about what it can promise. The conclusion I
+would bring to a team is not that tests replace looking. It is that a test is
+worth writing the moment a defect has a rule behind it, and that the looking has
+to be done deliberately, on the devices and in the browsers the work will
+actually meet, rather than left to whoever happens to notice.
 
 **The tests are what made the procedures reusable.** Once a check exists for a
 class of defect, the procedure that finds that defect can be written down and
