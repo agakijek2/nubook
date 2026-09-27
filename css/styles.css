@@ -490,9 +490,18 @@
      Above the filter sheet's backdrop and below the drawers, which are meant to
      cover it. */
   .masthead{position:sticky;top:0;z-index:80}
-  /* Behind everything the block holds and in front of the page moving under it:
-     a negative step inside the block's own stacking context. Reaches one step of
-     the scale below the block, which is where the ramp runs out. */
+  /* Behind everything the block holds and in front of the page moving under it.
+     The obvious way to write that is a negative step inside the block's own
+     stacking context, and that is how it was written - in Safari it looks
+     right. Chrome does not compute backdrop-filter for an element sitting on a
+     negative step inside a stacking context: the ramp rendered as a plain white
+     wash with nothing blurred behind it, on two thirds of the traffic, for as
+     long as nobody opened the shop in Chrome.
+     So the veil stays on the natural step and the block's own rows are lifted
+     over it instead. The painted result is the same in both browsers; the
+     difference is that this version is computed in both. Found by taking the
+     ramp apart one property at a time, not by reading the cascade - the reading
+     said the negative step was fine, and an isolated copy of it was. */
   /* At rest the veil is the block and nothing more: behind the block there is
      only the page, so there is nothing to blur, and a ramp reaching into the
      content would soften the first row of covers for no reason. The reach opens
@@ -501,11 +510,17 @@
   .masthead-veil{
     position:absolute;left:0;right:0;top:0;bottom:0;
     transition:bottom var(--nu-motion-quick) ease;
-    z-index:-1;pointer-events:none;
+    z-index:0;pointer-events:none;
     background:linear-gradient(to top, transparent 0%, transparent 45%, var(--nu-bg-masthead) 88%);
   }
   body.is-scrolled .masthead-veil{bottom:calc(-1 * var(--nu-space-max))}
   .masthead-veil span{position:absolute;inset:0}
+  /* Every row the block holds stands over the veil. One step is enough:
+     the veil is on the natural step, so anything positioned above zero
+     clears it, and nothing inside the block competes with anything else. */
+  .masthead > .promo,
+  .masthead > header,
+  .masthead > .productbar{position:relative;z-index:1}
   /* Four layers, and the ramp between them is not even. Through the lower half
      the blur barely moves - a cover on its way up is still a cover, and softening
      it early would only make the shelf look out of focus. Past the middle it

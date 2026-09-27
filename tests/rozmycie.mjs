@@ -110,6 +110,18 @@ chk(/bottom:\s*calc\(-1 \* var\(--nu-space-max\)\)/.test(veilScrolled||''),
 chk(/transition:\s*bottom/.test(veil||''), 'the ramp opens by transition, not by jump');
 chk(/markScroll/.test(js) && /addEventListener\("scroll", markScroll/.test(js),
     'the scrolled state is read rather than guessed');
+/* The veil must not sit on a negative step. Chrome does not compute
+   backdrop-filter for an element on a negative step inside a stacking context,
+   and the ramp then renders as a plain wash with nothing blurred behind it -
+   silently, and only in Chrome. The rows of the block are lifted over the veil
+   instead, which paints the same and computes in both browsers. */
+chk(!/z-index:\s*-/.test(veil||''), 'the veil does not sit on a negative step');
+chk(/z-index:\s*0/.test(veil||''), 'the veil sits on the natural step');
+const lifted=nocom.match(/\.masthead > \.promo,\s*\.masthead > header,\s*\.masthead > \.productbar\{([^}]*)\}/);
+chk(!!lifted, 'the rows of the block have a rule of their own');
+chk(/position:relative/.test(lifted?.[1]||'') && /z-index:1/.test(lifted?.[1]||''),
+    'and they stand one step over the veil');
+
 const filters=rule('.filters');
 chk(/top:\s*var\(--nu-masthead-height\)/.test(filters||''),
     'the filters stop at the block\'s edge, in line with the grid');
