@@ -42,5 +42,34 @@ console.log('Avatar, specification rows:', box('avatar').querySelectorAll('table
 const col=box('colour');
 console.log('Colour, token tables:', [...col.querySelectorAll('table.tok-table')].map(x=>x.querySelectorAll('tbody tr').length).join(' / '));
 console.log('Colour, primitives:', col.querySelectorAll('table')[0].querySelectorAll('tbody tr').length);
+/* English and euro are the shop's starting point, because the first reader
+   usually arrives from a portfolio link written in English. The markup carries
+   the English strings too, so there is no flash of the wrong language before the
+   script runs, and the pressed switch matches the state it describes. */
+const js=fs.readFileSync(D+'js/app.js','utf8');
+const html=fs.readFileSync(D+'index.html','utf8');
+const dflt=(k)=>(js.match(new RegExp('let '+k+' = "(\\w+)"'))||[])[1];
+const say=(ok,m)=>{ console.log((ok?'  OK   ':'  FAIL ')+m); if(!ok) bad++; };
+say(dflt('LANG')==='en', `LANG starts at en (${dflt('LANG')})`);
+say(dflt('CUR')==='eur', `CUR starts at eur (${dflt('CUR')})`);
+say(/id="swEN" aria-pressed="true"/.test(html) && /id="swPL" aria-pressed="false"/.test(html),
+    'the language switch in the markup shows EN pressed');
+say(/id="swEUR" aria-pressed="true"/.test(html) && /id="swPLN" aria-pressed="false"/.test(html),
+    'the currency switch in the markup shows EUR pressed');
+say(!/[żźćńółęąśŻŹĆĄŚĘŁÓŃ]/.test(html.replace(/<!--[\s\S]*?-->/g,'').replace(/<title>[\s\S]*?<\/title>/g,'')),
+    'no Polish string is left in the markup to flash before the script runs');
+
+/* Right language is not enough: the markup has to carry the same words the
+   dictionary does, or the first paint is replaced by a different wording a
+   moment later. Compared against a copy of the page that never ran the script. */
+const surowy = new JSDOM(html).window.document;
+for (const id of ['skipLink','strap','promoCopy','lblFilter','sortLbl','lnkAbout','lnkDesign']){
+  const a = (surowy.getElementById(id)||{}).textContent;
+  const b = (d.getElementById(id)||{}).textContent;
+  say(a===b, `#${id}: the markup says what the dictionary says` + (a===b?'':` (${JSON.stringify(a)} vs ${JSON.stringify(b)})`));
+}
+say(surowy.getElementById('searchInput').placeholder === d.getElementById('searchInput').placeholder,
+    'the search placeholder in the markup matches the dictionary');
+
 console.log(bad? 'FAILURES: '+bad : 'RESULT: every tab renders in both languages');
 process.exit(bad?1:0);

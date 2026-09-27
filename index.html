@@ -41,7 +41,7 @@
 <!-- The first thing the Tab key finds on every view: a way past the promotion
      and the header, straight to the content. It has to be the first focusable
      element in the document, so it stands above the promotion bar. -->
-<a class="skip-link" id="skipLink" href="#content">Przejdź do treści</a>
+<a class="skip-link" id="skipLink" href="#content">Skip to content</a>
 
 <!-- Everything that stays at the top of the window while the reader scrolls:
      the promotion, the header and, on a product page, the way back out of it.
@@ -64,7 +64,7 @@
      and it is the one place in the shop that runs on an inverse ground. -->
 <div class="promo" id="promo">
   <p>
-    <span id="promoCopy">10% rabatu na wszystkie tytuły z kodem</span>
+    <span id="promoCopy">10% off every title with the code</span>
     <button type="button" class="btn-tertiary has-icon" id="promoCode">
       <span class="lbl" id="promoCodeLabel">ROOM10</span>
       <svg class="ico-copy ico-sm" data-icon="sheets" aria-hidden="true"></svg>
@@ -80,7 +80,7 @@
          documentation, where this header stays visible. An address, so an anchor:
          the same "#" the documentation footer already goes home by. -->
     <a class="mark" href="#" id="logoLink">nubook</a>
-    <span class="strap" id="strap">powieści o kobietach i płci</span>
+    <span class="strap" id="strap">novels on women &amp; gender</span>
   </div>
   <div class="head-right">
     <div class="switchers">
@@ -88,17 +88,17 @@
            answers one about the surface. Two blocks, a step apart. -->
       <div class="sw-content">
       <div class="sw-group" role="group" aria-label="Language">
-        <button type="button" class="chip" id="swEN" aria-pressed="false"><span class="chip-t">EN</span></button><span>/</span><button type="button" class="chip" id="swPL" aria-pressed="true"><span class="chip-t">PL</span></button>
+        <button type="button" class="chip" id="swEN" aria-pressed="true"><span class="chip-t">EN</span></button><span>/</span><button type="button" class="chip" id="swPL" aria-pressed="false"><span class="chip-t">PL</span></button>
       </div>
       <div class="sw-group" role="group" aria-label="Currency">
-        <button type="button" class="chip" id="swEUR" aria-pressed="false"><span class="chip-t">EUR</span></button><span>/</span><button type="button" class="chip" id="swPLN" aria-pressed="true"><span class="chip-t">PLN</span></button>
+        <button type="button" class="chip" id="swEUR" aria-pressed="true"><span class="chip-t">EUR</span></button><span>/</span><button type="button" class="chip" id="swPLN" aria-pressed="false"><span class="chip-t">PLN</span></button>
       </div>
       </div>
       <!-- A third pair on the same terms as the two before it. Neither chip is
            pressed until somebody chooses: until then the shop follows the
            reader's system, which is a setting they already made. -->
       <div class="sw-group" role="group" aria-label="Motyw">
-        <button type="button" class="chip" id="swLight" aria-pressed="false"><span class="chip-t">Jasny</span></button><span>/</span><button type="button" class="chip" id="swDark" aria-pressed="false"><span class="chip-t">Ciemny</span></button>
+        <button type="button" class="chip" id="swLight" aria-pressed="false"><span class="chip-t">Light</span></button><span>/</span><button type="button" class="chip" id="swDark" aria-pressed="false"><span class="chip-t">Dark</span></button>
       </div>
     </div>
     <div class="head-icons">
@@ -127,19 +127,19 @@
 
 <div class="shopbar" id="shopbar">
   <button class="filter-toggle btn-tertiary has-icon" id="filterToggle" aria-expanded="true" aria-controls="filters">
-    <svg class="ico-sm ico-filter" data-icon="filter" aria-hidden="true"></svg><span id="lblFilter">Filtry</span>
+    <svg class="ico-sm ico-filter" data-icon="filter" aria-hidden="true"></svg><span id="lblFilter">Filter</span>
   </button>
   <!-- Search stands with the other two controls over the grid, because that is
        what it is: a third way of narrowing the same list. The magnifier sits
        inside the field, on the terms the select already set for its chevron. -->
   <div class="search-wrap">
     <svg class="ico-search ico-sm" data-icon="search" aria-hidden="true"></svg>
-    <input type="search" class="input in-bar" id="searchInput" autocomplete="off" placeholder="Szukaj tytułu lub autorki" aria-label="Szukaj tytułu lub autorki">
-    <button type="button" class="btn-tertiary search-clear" id="searchClear" hidden aria-label="Wyczyść"><svg class="ico-sm ico-close" data-icon="cross" aria-hidden="true"></svg></button>
+    <input type="search" class="input in-bar" id="searchInput" autocomplete="off" placeholder="Search by title or author" aria-label="Search by title or author">
+    <button type="button" class="btn-tertiary search-clear" id="searchClear" hidden aria-label="Clear"><svg class="ico-sm ico-close" data-icon="cross" aria-hidden="true"></svg></button>
   </div>
   <div class="sort" id="sort">
     <button class="sort-btn btn-tertiary has-icon" id="sortBtn" aria-haspopup="menu" aria-expanded="false">
-      <span id="lblSort">Sortuj:</span> <span id="sortLbl">Nasze rekomendacje</span> <svg class="ico-sm ico-plus" data-icon="plus" aria-hidden="true"></svg>
+      <span id="lblSort">Sort by:</span> <span id="sortLbl">Our recommendations</span> <svg class="ico-sm ico-plus" data-icon="plus" aria-hidden="true"></svg>
     </button>
     <div class="sort-menu" role="menu" id="sortMenu">
       <button type="button" role="menuitemradio" tabindex="-1" data-sort="featured" aria-checked="true"><span class="lbl">Our recommendations</span></button>
@@ -154,11 +154,11 @@
   <aside class="filters" id="filters">
     <!-- only rendered when this same panel is raised as a bottom sheet on mobile -->
     <div class="fsheet-head">
-      <span id="lblFilterSheet">Filtry</span>
+      <span id="lblFilterSheet">Filter</span>
       <button type="button" class="btn-tertiary" id="fsheetClose" aria-label="Zamknij"><svg class="ico-sm ico-close" data-icon="cross" aria-hidden="true"></svg></button>
     </div>
     <div class="filter-row" role="group" aria-labelledby="lblGenre">
-      <span class="filter-label" id="lblGenre">Gatunek</span>
+      <span class="filter-label" id="lblGenre">Genre</span>
       <div class="chip-row" id="genreRow"></div>
     </div>
     <div class="filter-row" role="group" aria-labelledby="lblTag">
@@ -166,7 +166,7 @@
       <div class="chip-row" id="statusRow"></div>
     </div>
     <div class="filter-row" role="group" aria-labelledby="lblLang">
-      <span class="filter-label" id="lblLang">Język</span>
+      <span class="filter-label" id="lblLang">Language</span>
       <div class="chip-row" id="langRow"></div>
     </div>
   </aside>
@@ -185,7 +185,7 @@
 <div class="drawer-backdrop" id="cartBg"></div>
 <aside class="drawer cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-hidden="true">
   <button class="drawer-close btn-tertiary" id="cartClose" aria-label="Zamknij"><svg class="ico-sm ico-close" data-icon="cross" aria-hidden="true"></svg></button>
-  <h2 id="cartTitle">Koszyk</h2>
+  <h2 id="cartTitle">Cart</h2>
   <div id="cartBody"></div>
 </aside>
 
@@ -234,7 +234,7 @@
        announcing itself as a roadmap: a shop's footer is where a reader looks
        for delivery and returns, so the label is the one a reader would use. -->
   <nav class="foot-links">
-    <a class="foot-link link" id="lnkAbout" href="#design/roadmap">O tym projekcie</a>
+    <a class="foot-link link" id="lnkAbout" href="#design/roadmap">About this project</a>
     <a class="foot-link link" id="lnkDesign" href="#design">Design system</a>
   </nav>
 </footer>

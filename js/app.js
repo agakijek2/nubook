@@ -509,8 +509,13 @@ const I18N = {
     designSystem:"System projektowy", aboutProject:"O tym projekcie",
   },
 };
-let LANG = "pl";
-let CUR = "pln";
+/* English and euro are the defaults, and the reason is who arrives. The shop is
+   linked from a portfolio and from two case studies written in English, so the
+   first reader is more often somebody who cannot read Polish than somebody who
+   can. Both switches sit in the header and a saved choice overrides these on the
+   next visit, so this is a starting point rather than a position. */
+let LANG = "en";
+let CUR = "eur";
 /* "auto" until somebody chooses: the shop then follows the reader's system. */
 let SCHEME = "auto";
 /* The search field introduces itself once and then stops. A demonstration

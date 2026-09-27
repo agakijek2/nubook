@@ -7,11 +7,11 @@
          python3 -m http.server 8000
          http://localhost:8000/404.html
 -->
-<html lang="pl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>nubook. — nie ma takiej strony</title>
+<title>nubook. — no such page</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,15 +48,15 @@
 <header>
   <div class="logo">
     <a class="mark" href="/" id="logoLink">nubook</a>
-    <span class="strap" id="strap">powieści o kobietach i płci</span>
+    <span class="strap" id="strap">novels on women &amp; gender</span>
   </div>
 </header>
 
 <main class="nf">
-  <h1 id="nfTitle">Nie ma takiej strony.</h1>
-  <p id="nfLede">Wróć do sklepu, żeby poznać nasze tytuły.</p>
+  <h1 id="nfTitle">No such page.</h1>
+  <p id="nfLede">Go back to the shop to see what we have.</p>
   <div class="nf-actions">
-    <a class="btn-primary" href="/" id="cta">Do sklepu</a>
+    <a class="btn-primary" href="/" id="cta">To the shop</a>
   </div>
 </main>
 
@@ -66,7 +66,7 @@
     <span class="foot-copy" id="footCopy"></span>
   </div>
   <nav class="foot-links">
-    <a class="foot-link link" href="/#design/roadmap" id="lnkAbout">O tym projekcie</a>
+    <a class="foot-link link" href="/#design/roadmap" id="lnkAbout">About this project</a>
     <a class="foot-link link" href="/#design" id="lnkDesign">Design system</a>
   </nav>
 </footer>
@@ -87,20 +87,20 @@
 
   var year = new Date().getFullYear();
 
-  if (p.lang !== "en"){                 // Polish is the default, as in the shop
-    el("footCopy").textContent = "© " + year + " nubook. Wszelkie prawa zastrzeżone.";
+  if (p.lang !== "pl"){                 // English is the default, as in the shop
+    el("footCopy").textContent = "\u00a9 " + year + " nubook. All rights reserved.";
     return;
   }
 
-  document.documentElement.lang = "en";
-  document.title = "nubook. — no such page";
-  el("strap").textContent = "novels on women & gender";
-  el("nfTitle").textContent = "No such page.";
-  el("nfLede").textContent = "Go back to the shop to see what we have.";
-  el("cta").textContent = "To the shop";
-  el("lnkAbout").textContent = "About this project";
-  el("lnkDesign").textContent = "Design system";
-  el("footCopy").textContent = "© " + year + " nubook. All rights reserved.";
+  document.documentElement.lang = "pl";
+  document.title = "nubook. — nie ma takiej strony";
+  el("strap").textContent = "powieści o kobietach i płci";
+  el("nfTitle").textContent = "Nie ma takiej strony.";
+  el("nfLede").textContent = "Wróć do sklepu, żeby poznać nasze tytuły.";
+  el("cta").textContent = "Do sklepu";
+  el("lnkAbout").textContent = "O tym projekcie";
+  el("lnkDesign").textContent = "System projektowy";
+  el("footCopy").textContent = "\u00a9 " + year + " nubook. Wszelkie prawa zastrzeżone.";
 })();
 </script>
 

@@ -45,9 +45,9 @@ const typed = [...style.matchAll(/:\s*(\d+(?:\.\d+)?(?:px|rem))/g)]
 chk(typed.length===0, `no hand-typed length${typed.length?` (${typed.join(', ')})`:''}`);
 chk(!/#[0-9a-fA-F]{3,6}\b/.test(style), 'no hand-typed colour');
 
-/* 6. Both languages. Polish stands in the markup, English is supplied by the
-   script - so both halves have to be complete, or an English reader gets half
-   a page in Polish. */
+/* 6. Both languages. English stands in the markup, Polish is supplied by the
+   script - so both halves have to be complete, or a Polish reader gets half a
+   page in English. */
 const scriptBlock = (html.match(/<script>([\s\S]*?)<\/script>/)||['',''])[1];
 /* The script reaches for elements through the shorthand `el("id")`, but it
    could as well call getElementById outright - we catch both spellings. Without
@@ -59,9 +59,9 @@ chk(swaps.length >= 5,
     `the script swaps strings in ${swaps.length} places (at least 5 expected)`);
 for (const id of swaps)
   chk(new RegExp(`id="${id}"`).test(html), `element #${id} exists in the markup`);
-chk(/p\.lang !== "en"/.test(html), 'Polish is the default, as in the shop');
+chk(/p\.lang !== "pl"/.test(html), 'English is the default, as in the shop');
 chk(/nubook\.prefs\.v1/.test(html), 'reads the same preferences key as the shop');
-chk(/documentElement\.lang = "en"/.test(html), 'switching the language also sets the lang attribute');
+chk(/documentElement\.lang = "pl"/.test(html), 'switching the language also sets the lang attribute');
 chk(/data-scheme/.test(html), 'light or dark follows the reader\'s choice');
 
 /* 6b. The header and the footer are the shop's own: an error page is part of
