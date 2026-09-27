@@ -9,7 +9,7 @@ const w=dom.window, d=w.document;
 w.matchMedia=q=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});
 w.scrollTo=()=>{}; w.Element.prototype.scrollTo=()=>{};
 w.HTMLElement.prototype.animate=function(){return{finished:Promise.resolve(),cancel(){},addEventListener(){}};};
-w.eval(fs.readFileSync(D+'js/app.js','utf8')+'\n;window.__S=DS_SECTIONS;window.__L=l=>{LANG=l};');
+w.eval(fs.readFileSync(D+'js/app.js','utf8')+'\n;window.__S=DS_SECTIONS;window.__L=l=>{LANG=l};window.__I=I18N;');
 const S=w.__S;
 let bad=0;
 for (const lang of ['pl','en']){
@@ -33,6 +33,33 @@ for (const lang of ['pl','en']){
     }
   }
 }
+/* The specimens on a component tab are written by hand next to the dictionary
+   the shop reads from, so the two drift apart without anything breaking: the
+   Badge tab showed "Last copies" and "Unavailable" while the shop said "Last
+   pieces" and "Not available". Polish matched, so the rot was invisible to a
+   Polish reader - and English is what the shop now opens in. The specimen is
+   supposed to be the shop's own badge, so it has to carry the shop's own word. */
+{
+  const say0=(ok,m)=>{ console.log((ok?'  OK   ':'  FAIL ')+m); if(!ok) bad++; };
+  const cls = {'':'new', soon:'soon', last:'last', out:'out', award:'pulitzer'};
+  for (const lang of ['en','pl']){
+    w.__L(lang);
+    const e=d.createElement('div');
+    e.innerHTML=S.find(s=>s.id==='badge').body();
+    const specimens=[...e.querySelectorAll('.ds-badges .badge')];
+    say0(specimens.length===Object.keys(cls).length,
+         `${lang}: badge specimens on the tab: ${specimens.length}`);
+    for (const sp of specimens){
+      const variant=[...sp.classList].filter(c=>c!=='badge')[0]||'';
+      const key=cls[variant];
+      const want=key && w.__I[lang].status[key];
+      say0(!!want && sp.textContent===want,
+           `${lang}: .${variant||'badge'} says what the shop says`
+           + (sp.textContent===want?'':` (${JSON.stringify(sp.textContent)} vs ${JSON.stringify(want)})`));
+    }
+  }
+}
+
 w.__L('pl');
 const box=(id)=>{const e=d.createElement('div'); e.innerHTML=S.find(s=>s.id===id).body(); return e;};
 const m=box('motion'), t=[...m.querySelectorAll('table')];

@@ -392,7 +392,7 @@ const I18N = {
     searchPh:"Search by title or author", searchClear:"Clear",
     all:"All",
     sorts:{featured:"Our recommendations",newest:"Newest first","price-asc":"Price, low to high","pub-asc":"First published: oldest"},
-    status:{new:"New",soon:"Coming soon",last:"Last pieces",out:"Not available",pulitzer:"Pulitzer Winner"},
+    status:{new:"New",soon:"Coming soon",last:"Last pieces",out:"Not available",pulitzer:"Pulitzer Prize"},
     genres:{}, /* English genre names are the data keys */
     editions:{en:"English", pl:"Polish"},
     empty:"No novels match these criteria.",
@@ -3846,9 +3846,9 @@ const DS_SECTIONS = [
         <figcaption>${L("Default","Domyślna")}</figcaption></figure>
       <figure><div class="tile"><span class="badge soon">${L("Coming soon","Wkrótce")}</span></div>
         <figcaption><code>.soon</code></figcaption></figure>
-      <figure><div class="tile"><span class="badge last">${L("Last copies","Ostatnie sztuki")}</span></div>
+      <figure><div class="tile"><span class="badge last">${L("Last pieces","Ostatnie sztuki")}</span></div>
         <figcaption><code>.last</code></figcaption></figure>
-      <figure><div class="tile"><span class="badge out">${L("Unavailable","Niedostępna")}</span></div>
+      <figure><div class="tile"><span class="badge out">${L("Not available","Niedostępna")}</span></div>
         <figcaption><code>.out</code></figcaption></figure>
       <figure><div class="tile"><span class="badge award">${L("Pulitzer Prize","Nagroda Pulitzera")}</span></div>
         <figcaption><code>.award</code></figcaption></figure>
