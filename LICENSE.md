@@ -62,7 +62,7 @@ Some of what this repository displays is not mine to license:
 
 ## 4. The typefaces
 
-DM Serif Display and Archivo, in `assets/fonts/`, are licensed by their
+DM Serif Display and Inter, in `assets/fonts/`, are licensed by their
 authors under the **SIL Open Font License 1.1**, not by this document. The
 full text and the copyright notices are in
 [`assets/fonts/OFL.txt`](assets/fonts/OFL.txt), which the licence requires to

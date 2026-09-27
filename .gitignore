@@ -1,9 +1,9 @@
 .DS_Store
 Thumbs.db
-# bez ukośnika, żeby wzorzec złapał też dowiązanie o tej nazwie
+# no trailing slash, so the pattern catches a symlink of that name too
 node_modules
 *.log
 preview.html
-# pliki robocze do oglądania usterek: budowane na chwilę, kasowane po sprawdzeniu
+# scratch files for looking at a defect: built for a moment, deleted after
 _*.html
 

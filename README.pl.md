@@ -160,10 +160,12 @@ Nie edytuj `preview.html` ręcznie – jest zawsze wynikiem, a nie źródłem.
 
 ## Fonty i karta linku
 
-Sklep wczytuje DM Serif Display i Archivo z Google Fonts, więc przy
-pierwszym otwarciu potrzebne jest połączenie z siecią. Te same dwa kroje
-leżą też w `assets/fonts/`, bo karta linku jest obrazkiem i nie może
-poprosić przeglądarki o font:
+Sklep wczytuje DM Serif Display i Inter z Google Fonts, więc przy pierwszym
+otwarciu potrzebne jest połączenie z siecią. Te same dwa kroje leżą też w
+`assets/fonts/`, bo karta linku jest obrazkiem i nie może poprosić
+przeglądarki o font. Inter jest tam w odmianie 18pt: ma oś rozmiaru
+optycznego, przeglądarka sama wybiera na niej punkt, a plik musi jeden
+wskazać — a karta składa bezszeryfową drobno:
 
 ```bash
 python3 build-og.py

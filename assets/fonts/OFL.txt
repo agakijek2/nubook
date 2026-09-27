@@ -1,9 +1,10 @@
-Oba kroje w tym katalogu są udostępnione na SIL Open Font License 1.1.
-Ten plik towarzyszy im, bo licencja tego wymaga przy każdym rozprowadzaniu.
+Both typefaces in this directory are released under the SIL Open Font
+License 1.1. This file accompanies them, because the licence requires it of
+every redistribution.
 
-Archivo (Archivo-Regular.ttf, Archivo-Medium.ttf, Archivo-Italic.ttf)
-Copyright 2020 The Archivo Project Authors
-(https://github.com/Omnibus-Type/Archivo)
+Inter (Inter_18pt-Regular.ttf)
+Copyright 2020 The Inter Project Authors
+(https://github.com/rsms/inter)
 
 DM Serif Display (DMSerifDisplay-Regular.ttf)
 Copyright 2014 - 2017 Adobe Systems Incorporated (http://www.adobe.com/),

@@ -48,7 +48,10 @@ def face(file, px):
     return ImageFont.truetype(str(path), px)
 
 serif = lambda px: face("DMSerifDisplay-Regular.ttf", px)
-sans = lambda px: face("Archivo-Regular.ttf", px)
+# The 18pt cut, not the 24 or 28: those are optical sizes, and the sans on this
+# card sets the two motif lines at 24px on a 1200x630 picture that a feed shows
+# at around 500px wide. That is small type, whatever the number says.
+sans = lambda px: face("Inter_18pt-Regular.ttf", px)
 
 # --- content ----------------------------------------------------------------
 
@@ -80,7 +83,11 @@ def card():
     f = serif(68)
     d.text((MARGIN, 236), CLAIM[0], font=f, fill=INK, anchor="la")
     d.text((MARGIN, 318), CLAIM[1], font=f, fill=INK, anchor="la")
-    fm = sans(24)
+    # 23, not the 24 this was drawn at while the sans was Archivo: Inter sets
+    # these two lines wider, and at 24 the block overhung the claim by 131 and
+    # 142 px, outside the band below. The overhang is the composition; the size
+    # is what gives way to it.
+    fm = sans(23)
     d.text((MARGIN, 452), MOTIFS[0], font=fm, fill=GREY, anchor="la")
     d.text((MARGIN, 490), MOTIFS[1], font=fm, fill=GREY, anchor="la")
 

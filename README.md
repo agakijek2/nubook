@@ -160,10 +160,12 @@ Do not edit `preview.html` by hand – it is always a result, never a source.
 
 ## Fonts and the link card
 
-The shop loads DM Serif Display and Archivo from Google Fonts, so the first
+The shop loads DM Serif Display and Inter from Google Fonts, so the first
 opening needs a connection. The same two typefaces also sit in
 `assets/fonts/`, because the link card is a picture and cannot ask the
-browser for a font:
+browser for a font. Inter is there as its 18pt cut: Inter carries an optical
+size axis, the browser picks a point on it by itself, and a file has to name
+one - and the card sets the sans small:
 
 ```bash
 python3 build-og.py

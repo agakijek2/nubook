@@ -160,7 +160,13 @@
 
     /* ---- type ---- */
     --nu-font-display:"DM Serif Display",Georgia,serif;   /* identity & headings */
-    --nu-font-text:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+    /* Inter carries an optical size axis, so the font link asks for a range
+       (14-32) rather than fixed weights: the browser draws small type with
+       wider letters and more space than a heading, which is what the uppercase
+       labels and the badges needed. The display family stays a serif, so the
+       old division holds - the serif says who this is, the sans says what you
+       can do. */
+    --nu-font-text:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
 
     /* Size on its own, named by size. A step says how big, never what for –
        what for is the business of a style, which points at one of these. Two
