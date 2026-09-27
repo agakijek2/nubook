@@ -2024,18 +2024,10 @@
       padding:0 0 var(--nu-space-small);
     }
     .ds-nav-group{display:none}
-    /* On a phone the fixed columns would leave the note a few characters wide.
-       The bar is the one cell the number beside it already tells you, so it
-       goes, and the rest is left to the browser to apportion. */
-    .ds .space-table{table-layout:auto}
-    .ds .space-table col.c-token,
-    .ds .space-table col.c-scale{width:auto}
+    /* The bar is the one cell the number beside it already tells you, so on a
+       phone it goes. The rest of what this tab does when it narrows stands
+       further down, after the rules it answers. */
     .ds .space-table .sc .space-bar{display:none}
-    .ds .sp-figs{grid-template-columns:1fr}
-    .ds .ds-badges,
-    .ds .ds-fields,
-    .ds .ds-links,
-    .ds .ds-buttons{grid-template-columns:repeat(2,1fr)}
     .ds-nav-item{margin-left:0;padding-left:0;border-left:0;border-bottom:2px solid transparent}
     .ds-nav-item.is-active{border-left-color:transparent;border-bottom-color:var(--nu-border-primary)}
   }
@@ -2074,12 +2066,6 @@
     line-height:var(--nu-line-normal);
     border-bottom:1px solid var(--nu-border-neutral);
   }
-  /* A table nested inside a cell already ends where the parent row's rule falls,
-     so its own last rule lands a hair above it and the two read as a mistake.
-     Its bottom margin has to go for the same reason: inherited from .ds table it
-     would push the parent row's rule further down than every other row's. */
-  .ds td table{margin:var(--nu-space-micro) 0 0}
-  .ds td table tr:last-child > td{border-bottom:0}
   .ds th{color:var(--nu-fg-secondary);font:var(--nu-type-body-s);
     letter-spacing:var(--nu-tracking-caps);text-transform:uppercase}
   /* typography scale table: style + token columns never wrap */
@@ -2255,6 +2241,7 @@
      by name, as the sort panel is, rather than taken off every avatar. */
   .ds .ds-avatars{justify-content:center}
   .ds .ds-avatars .d-ava{margin:0}
+
   .ds .ds-select,
   .ds .ds-group{justify-content:center}
   /* The panel is positioned against the trigger and hidden until asked for. In a
@@ -2525,6 +2512,35 @@
        no bottom bar, so without this narrowing the rule left a phone with no way
        forward at all. */
     #checkout .co-side .order-btn{display:none}
+
+    /* ---------- the documentation's specimens on a phone ----------
+       These stand here, at the end of the sheet, and not in the narrow-screen
+       block beside the rest of the documentation. A media query raises no
+       weight: a selector written inside one loses to the same selector written
+       outside it further down, and loses in silence. Written up there, the
+       badge and field rows stayed three across on a 320px screen, and the
+       spacing table kept its fixed columns, for as long as nobody measured. */
+    .ds .ds-badges,
+    .ds .ds-fields,
+    .ds .ds-links,
+    .ds .ds-buttons{grid-template-columns:repeat(2,1fr)}
+    /* On a phone the fixed columns would leave the note a few characters wide,
+       so the widths go back to the browser to apportion. */
+    .ds .space-table{table-layout:auto}
+    .ds .space-table col.c-token,
+    .ds .space-table col.c-scale{width:auto}
+    .ds .sp-figs{grid-template-columns:1fr}
+    /* Two of these side by side leave a column narrower than the open panel,
+       which is as wide as its longest option by design. In the shop the panel
+       is absolute and cannot widen anything; standing in the flow so that the
+       specimen can hold it still, it can. So this row unwinds. */
+    .ds .ds-sorts{grid-template-columns:1fr}
+    /* The style's name and the line set in it stop being a row: a label column
+       fixed at 190px leaves the specimen beside it narrower than the words it
+       is showing, and the pair runs off the side of the page. Stacked, each
+       gets the full measure. */
+    .ds .ds-style-row{display:block}
+    .ds .ds-style-row .lbl{display:block;width:auto;margin-bottom:var(--nu-space-nano)}
   }
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
   @media (prefers-reduced-motion:reduce){
@@ -2534,6 +2550,11 @@
     .sheet-backdrop{transition:none}
   }
   @media (max-width:380px){
+    /* The field specimens go one to a row before the shop itself changes here:
+       the search field is 13rem wide by a decision made for the bar it stands
+       in, and two of those do not fit across a small phone. */
+    .ds .ds-fields,
+    .ds .ds-badges{grid-template-columns:1fr}
     :root{--nu-cover-width:58%}
     .grid{grid-template-columns:1fr}
 

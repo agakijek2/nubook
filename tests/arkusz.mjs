@@ -42,5 +42,51 @@ for (const sel of ['.btn-primary','.btn-secondary']){
   chk(bodies.some(b=>/padding\s*:[^;]*\s[^;]+/.test(b)), `${sel} has padding with both values`);
 }
 
+/* A narrow-screen rule that never runs.
+
+   A media query raises no weight. A selector written inside one loses to the
+   same selector written outside it further down the sheet, and losing is
+   silent: the phone simply keeps the wide-screen value. That is how the badge
+   and field specimens stayed three across on a 320px screen - the rule asking
+   for two was there, read fine, and had been dead since the day it was written.
+
+   So: for every declaration inside a max-width query, look for the same
+   selector setting the same property later in the sheet at the top level.
+   Comments go first, because a comment standing before a rule would otherwise
+   be swallowed into its selector, and the selector is taken as everything up to
+   the brace however many lines it runs across. */
+{
+  const src = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const norm = s => s.replace(/\s+/g, ' ').trim();
+  const props = body => [...body.matchAll(/(?:^|;)\s*([a-z-]+)\s*:/g)].map(m => m[1]);
+
+  /* Top-level rules: walk the sheet and keep only what is not inside a query. */
+  const outside = [];   /* {sel, prop, at} */
+  const inside  = [];   /* {sel, prop, at, query} */
+  const re = /@media([^{]*)\{|([^{}@]+)\{([^{}]*)\}|\}/g;
+  let m, query = null, depth = 0;
+  while ((m = re.exec(src))){
+    if (m[0][0] === '@'){ query = norm(m[1]); depth = 1; continue; }
+    if (m[0] === '}'){ if (depth){ depth = 0; query = null; } continue; }
+    if (!m[2]) continue;
+    for (const sel of m[2].split(',')){
+      const s = norm(sel);
+      if (!s) continue;
+      for (const p of props(m[3]))
+        (query ? inside : outside).push({sel:s, prop:p, at:m.index, query});
+    }
+  }
+  chk(inside.length > 20 && outside.length > 200,
+      `declarations read: ${inside.length} inside a query, ${outside.length} outside`);
+
+  const dead = inside.filter(i =>
+    /max-width/.test(i.query || '') &&
+    outside.some(o => o.sel === i.sel && o.prop === i.prop && o.at > i.at));
+  chk(dead.length === 0, dead.length
+    ? `narrow-screen rules overridden later in the sheet: ${
+        dead.slice(0,4).map(d=>`${d.sel} { ${d.prop} }`).join('; ')}`
+    : 'every narrow-screen rule stands after the rule it answers');
+}
+
 console.log(bad ? '\nFAILURES: '+bad : '\nRESULT: the stylesheet is whole');
 process.exit(bad?1:0);
