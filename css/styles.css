@@ -2016,6 +2016,15 @@
   .ds-nav-item.is-active{color:var(--nu-fg-primary);border-left-color:var(--nu-border-primary)}
   .ds-nav-item:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   .ds-body{max-width:720px;min-width:0}
+  /* The way from one tab to the next along the foot of the page. It exists only
+     on a phone, where the row of tab buttons has scrolled far out of reach by
+     the time the reader gets here; beside a navigation column that never leaves
+     the screen it would be a second way to the same place. Declared closed and
+     opened further down, so the narrow-screen rule stands after this one. */
+  .ds-pager{display:none}
+  /* The arrow that points the other way is the back arrow turned, so nothing is
+     added to the icon registry - the same move the cross makes on the plus. */
+  .ico-forward{transform:rotate(180deg)}
   @media (max-width:820px){
     .ds-layout{grid-template-columns:1fr;gap:var(--nu-space-medium)}
     .ds-nav{
@@ -2572,6 +2581,28 @@
     /* A name reads as one thing, so it is given room not to break rather than
        being broken across lines a few characters wide. */
     .ds .ds-scroll td.doc-name{min-width:18ch}
+
+    /* ---------- one tab to the next, along the foot ----------
+       A rule above it, because it belongs to the page it ends rather than to
+       the page it leads to. The empty span holds the side: on the first tab
+       there is nothing before and on the last nothing after, and the one link
+       left has to stay where it was rather than slide across. */
+    /* Centred, not aligned on the baseline: each link is an inline-flex box that
+       takes its baseline from its first child, and the two have different first
+       children - an arrow on one side, a word on the other. On the baseline the
+       two names sat 2.2px apart, which reads as a mistake rather than as a
+       measurement. Both boxes are one line tall, so centring them is the same
+       decision made where it works. */
+    .ds-pager{
+      display:flex;justify-content:space-between;align-items:center;
+      gap:var(--nu-space-medium);
+      margin-top:var(--nu-space-large);padding-top:var(--nu-space-medium);
+      border-top:1px solid var(--nu-border-neutral);
+    }
+    .ds-pager-gap{flex:0 1 auto}
+    /* The one going back reads from its arrow to its name, the one going on from
+       its name to its arrow, so each points away from the page being left. */
+    .ds-pager-next{text-align:right}
   }
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
   @media (prefers-reduced-motion:reduce){

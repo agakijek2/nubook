@@ -1398,6 +1398,10 @@ const ICON_MINUS   = icon("minus",   "ico-sm ico-minus");
 const ICON_PLUS    = icon("plus",    "ico-sm ico-plus");
 const ICON_CHECK   = icon("check",   "ico-check ico-sm");
 const ICON_CHEVRON = icon("chevron", "ico-chevron ico-sm");
+/* The same drawing as the back arrow, turned - as the cross is the plus turned.
+   A second arrow in the registry would be a second thing to keep looking like
+   the first. */
+const ICON_FORWARD = icon("back",    "ico-back ico-sm ico-forward");
 /* A link that names where it goes is an <a>: it announces as a link, opens in a
    new tab on a middle click and hands its address to the context menu. Hash
    routing already listens for the address changing, so no handler is needed.
@@ -2964,6 +2968,39 @@ function dsHighlight(root){
    Wrapping happens here rather than in the templates because the tabs hold well
    over a hundred tables, and a wrapper written by hand is a wrapper somebody
    leaves off the next one. */
+/* On a phone the row of tab buttons is the only way through the documentation,
+   and it stands at the top: reaching the next tab meant scrolling the whole way
+   back up. So the tabs are read as a sequence as well as a list, and the foot of
+   one carries the one before it and the one after. The order is the order of
+   DS_SECTIONS, which is the order the navigation itself shows, so there is no
+   second ordering to keep in step.
+   Only on a phone, and the stylesheet decides that rather than this function:
+   on a wider screen the navigation column stands beside the text the whole way
+   down and never leaves the screen, so a second way to the same place would be
+   a second thing to maintain for no gain. Built in both cases so that what is
+   shown does not depend on the width the page happened to load at.
+   The arrow is aria-hidden like every icon here, so the direction is carried by
+   the link's own name instead: the accessible name says which way it goes, and
+   the visible words are part of it. */
+function dsPager(){
+  const i = DS_SECTIONS.findIndex(s => s.id === dsCurrent);
+  if (i < 0) return "";
+  const step = (s, dir) => {
+    if (!s) return `<span class="ds-pager-gap"></span>`;
+    const name = L(s.label.en, s.label.pl);
+    const way = dir === "prev" ? L("Previous", "Poprzednia") : L("Next", "Następna");
+    return `<a class="link has-icon ds-pager-${dir}" href="#design/${s.id}"
+               aria-label="${way}: ${name}">`
+      + (dir === "prev" ? ICON_BACK : "")
+      + `<span class="lbl">${name}</span>`
+      + (dir === "next" ? ICON_FORWARD : "")
+      + `</a>`;
+  };
+  return `<nav class="ds-pager" aria-label="${L("Tabs of the documentation","Zakładki dokumentacji")}">`
+    + step(DS_SECTIONS[i - 1], "prev")
+    + step(DS_SECTIONS[i + 1], "next")
+    + `</nav>`;
+}
 function dsScrollTables(root){
   root.querySelectorAll(".ds-body table").forEach(t => {
     /* A table inside a cell is carried by the table around it and must not get a
@@ -4866,7 +4903,7 @@ function renderDesignSystem(){
     </div>
     <div class="ds-layout">
       <aside class="ds-nav">${nav}</aside>
-      <div class="ds-body">${section.body()}</div>
+      <div class="ds-body">${section.body()}${dsPager()}</div>
     </div>`;
 
   dsMeasure(dsEl);

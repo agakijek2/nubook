@@ -10,7 +10,8 @@ w.matchMedia=q=>({matches:false,addEventListener(){},removeEventListener(){},add
 w.scrollTo=()=>{}; w.Element.prototype.scrollTo=()=>{};
 w.HTMLElement.prototype.animate=function(){return{finished:Promise.resolve(),cancel(){},addEventListener(){}};};
 w.eval(fs.readFileSync(D+'js/app.js','utf8')
-  +'\n;window.__S=DS_SECTIONS;window.__L=l=>{LANG=l};window.__I=I18N;window.__WRAP=dsScrollTables;');
+  +'\n;window.__S=DS_SECTIONS;window.__L=l=>{LANG=l};window.__I=I18N;window.__WRAP=dsScrollTables;'
+  +'window.__PAGER=id=>{dsCurrent=id;return dsPager()};');
 const S=w.__S;
 let bad=0;
 for (const lang of ['pl','en']){
@@ -109,6 +110,62 @@ for (const lang of ['pl','en']){
        'the table drops its own margins inside the scroller, so the rhythm is not scrolled away');
   say0(/\.ds \.ds-scroll:focus-visible\{/.test(css),
        'a scroller that takes focus shows it');
+}
+
+/* One tab to the next along the foot of the page. It is the only way through
+   the documentation on a phone once the row of tab buttons has scrolled away,
+   so a wrong link here is a dead end rather than a blemish: the sequence has to
+   match the navigation's own order, both ends have to stop, and the direction
+   has to reach a reader who cannot see which way the arrow points. */
+{
+  const say0=(ok,m)=>{ console.log((ok?'  OK   ':'  FAIL ')+m); if(!ok) bad++; };
+  const css=fs.readFileSync(D+'css/styles.css','utf8');
+  for (const lang of ['en','pl']){
+    w.__L(lang);
+    let ok=0, named=0;
+    for (let i=0;i<S.length;i++){
+      const e=d.createElement('div');
+      e.innerHTML=w.__PAGER(S[i].id);
+      const nav=e.querySelector('nav.ds-pager');
+      if (!nav){ say0(false, `${lang}: ${S[i].id} has no pager`); continue; }
+      const prev=nav.querySelector('.ds-pager-prev'), next=nav.querySelector('.ds-pager-next');
+      const wantPrev = i>0 ? 'design/'+S[i-1].id : null;
+      const wantNext = i<S.length-1 ? 'design/'+S[i+1].id : null;
+      const got = a => a ? a.getAttribute('href').replace('#','') : null;
+      if (got(prev)===wantPrev && got(next)===wantNext) ok++;
+      else say0(false, `${lang}: ${S[i].id} points at ${got(prev)}/${got(next)}, expected ${wantPrev}/${wantNext}`);
+      /* The arrow is hidden from the reader who is listening, so the name has to
+         say the direction - and has to contain the words on screen, or the two
+         part company for anyone using speech to drive the page. */
+      for (const a of [prev,next].filter(Boolean)){
+        const label=a.getAttribute('aria-label')||'';
+        const seen=(a.querySelector('.lbl')||{}).textContent||'';
+        if (label.includes(seen) && label.length>seen.length && !/undefined/.test(label)) named++;
+        else say0(false, `${lang}: ${S[i].id} gives a link the name ${JSON.stringify(label)} over ${JSON.stringify(seen)}`);
+      }
+      if ([...nav.querySelectorAll('svg')].some(s=>s.getAttribute('aria-hidden')!=='true'))
+        say0(false, `${lang}: an arrow on ${S[i].id} is not aria-hidden`);
+    }
+    say0(ok===S.length, `${lang}: every tab points at its neighbours (${ok}/${S.length})`);
+    say0(named===(S.length-1)*2, `${lang}: every link says which way it goes (${named})`);
+    /* Both ends stop. */
+    const first=d.createElement('div'); first.innerHTML=w.__PAGER(S[0].id);
+    const last=d.createElement('div');  last.innerHTML=w.__PAGER(S[S.length-1].id);
+    say0(!first.querySelector('.ds-pager-prev') && !!first.querySelector('.ds-pager-next'),
+         `${lang}: the first tab has nothing before it`);
+    say0(!last.querySelector('.ds-pager-next') && !!last.querySelector('.ds-pager-prev'),
+         `${lang}: the last tab has nothing after it`);
+    say0(!!first.querySelector('.ds-pager-gap') && !!last.querySelector('.ds-pager-gap'),
+         `${lang}: the missing side is held, so the one link left does not slide across`);
+  }
+  w.__PAGER(S[0].id);
+  say0(/\.ds-pager\{display:none\}/.test(css), 'the pager is closed by default');
+  say0(/\.ds-pager\{\s*display:flex/.test(css.replace(/\/\*[\s\S]*?\*\//g,'')),
+       'and opened on a narrow screen');
+  say0(/\.ico-forward\{transform:rotate\(180deg\)\}/.test(css),
+       'the forward arrow is the back arrow turned, not a second drawing');
+  const js2=fs.readFileSync(D+'js/app.js','utf8');
+  say0(!/forward:\s*\{vb:/.test(js2), 'and nothing was added to the icon registry');
 }
 
 w.__L('pl');
