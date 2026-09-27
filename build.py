@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-Buduje pojedynczy, samowystarczalny plik z rozbitego projektu.
+Builds one self-contained file out of the split project.
 
     python3 build.py            -> preview.html
     python3 build.py nubook.html
 
-Wkleja do środka style, skrypt i wszystkie obrazy (jako base64), więc
-wynik działa bez sieci lokalnej i da się go otworzyć albo wysłać jako
-jeden plik. Folder projektu pozostaje źródłem prawdy - ten plik jest
-zawsze wynikiem, nigdy nie edytuj go ręcznie.
+Pastes the styles, the script and every image (as base64) inside, so the
+result works with no local server and can be opened or sent as a single
+file. The project folder stays the source of truth: this file is always a
+result, never edit it by hand.
 """
 import base64, mimetypes, re, sys
 from pathlib import Path
@@ -34,7 +34,7 @@ def main() -> None:
     def inline(m):
         rel = m.group(1)
         if not (ROOT / rel).exists():
-            print(f"  uwaga: pominięto brakujący plik {rel}")
+            print(f"  warning: skipped missing file {rel}")
             return m.group(0)
         return '"' + data_uri(rel) + '"'
 
@@ -53,7 +53,7 @@ def main() -> None:
 
     (ROOT / OUT).write_text(html)
     size = (ROOT / OUT).stat().st_size / 1e6
-    print(f"{OUT} zbudowany - {size:.2f} MB")
+    print(f"{OUT} built - {size:.2f} MB")
 
 
 if __name__ == "__main__":

@@ -79,7 +79,7 @@ its own, high on the page, stating the division of labour and why the discipline
 in this repository exists – not a footnote at the bottom, and not the first
 sentence either.
 
-**05 · The covers.** `assets/covers/` holds twenty real publisher covers and a
+**05 · The covers.** `assets/covers/` holds nineteen real publisher covers and a
 photograph of a living author. On a local project that is nothing; on a public
 domain linked from a job application it is a decision worth taking knowingly. I
 am not a lawyer and this is not advice – the options as I understand them:

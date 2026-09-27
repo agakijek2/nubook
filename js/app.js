@@ -17,13 +17,13 @@ const COVER_HMT = "assets/covers/handmaids-tale.jpg";
 
 const COVER_SBB = "assets/covers/stone-butch-blues.jpg";
 
-const COVER_BEL = "assets/covers/bell-jar.jpg";
+const COVER_BEL = "assets/covers/beloved.jpg";
 
 const COVER_KJY = "assets/covers/kim-jiyoung.jpg";
 
 const COVER_PWR = "assets/covers/the-power.jpg";
 
-const COVER_TBJ = "assets/covers/their-eyes-were-watching-god.jpg";
+const COVER_TBJ = "assets/covers/the-bell-jar.jpg";
 
 const COVER_DTB = "assets/covers/detransition-baby.jpg";
 
@@ -39,13 +39,13 @@ const COVER_TCP = "assets/covers/the-color-purple.jpg";
 
 const COVER_JE = "assets/covers/jane-eyre.jpg";
 
-const COVER_CSW = "assets/covers/a-room-of-ones-own.jpg";
+const COVER_CSW = "assets/covers/convenience-store-woman.jpg";
 
 const COVER_MDX = "assets/covers/middlesex.jpg";
 
 const COVER_HBP = "assets/covers/her-body-and-other-parties.jpg";
 
-const COVER_WRC = "assets/covers/we-should-all-be-feminists.jpg";
+const COVER_WRC = "assets/covers/women-race-and-class.jpg";
 
 const PHOTO_ATWOOD = "assets/covers/atwood-portrait.jpg";
 
