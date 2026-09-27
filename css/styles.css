@@ -2541,6 +2541,37 @@
        gets the full measure. */
     .ds .ds-style-row{display:block}
     .ds .ds-style-row .lbl{display:block;width:auto;margin-bottom:var(--nu-space-nano)}
+
+    /* ---------- and the tables inside their scrollers ----------
+       A table in a scroller no longer has to fit the window, so it stops being
+       squeezed into one. Fixed layout and percentage columns are a way of
+       sharing a width wide enough to share; a phone has no such width, and what
+       came of it was columns a few characters across, with the cells that must
+       not wrap running out over their neighbours. So the width goes back to the
+       content, with a floor under the two kinds of column that suffered most:
+       the one naming a token, which must not break, and the one explaining it,
+       which needs a measure it can be read at.
+       The table is then wider than the window on purpose. That is what the
+       scroller is for, and a longer reach sideways is the cheaper of the two
+       costs: a column too narrow to read cannot be fixed by scrolling. */
+    .ds .ds-scroll table{table-layout:auto;width:max-content;min-width:100%}
+    .ds .ds-scroll col{width:auto}
+    .ds .ds-scroll th,
+    .ds .ds-scroll td{min-width:9ch}
+    /* Running text, as opposed to a name or a number. The ceiling is the part
+       that matters: the width comes from the content here, so without one a
+       column of sentences stretches to the longest of them unbroken - measured
+       at 375px, one table on Tokens ran to 2105px, six screens of dragging.
+       At 42ch it comes to 590. The floor is low on purpose. It is there to stop
+       a column shrinking to a few characters, not to give every column the same
+       width: raised to a measure, it padded short columns out to 246px and
+       pushed the sentence beside them off the screen. A column of three-word
+       answers is allowed to be narrow; only a squeezed one is a defect. */
+    .ds .ds-scroll td:not(.spec):not(.doc-name):not(.rm-state):not(.rm-n):not(.ico-cell),
+    .ds .ds-scroll th:not(.spec){min-width:16ch;max-width:42ch}
+    /* A name reads as one thing, so it is given room not to break rather than
+       being broken across lines a few characters wide. */
+    .ds .ds-scroll td.doc-name{min-width:18ch}
   }
   @keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
   @media (prefers-reduced-motion:reduce){
