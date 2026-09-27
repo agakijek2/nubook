@@ -2424,6 +2424,13 @@
          The desktop bar has none either, so the two layouts agree. */
       padding:0 var(--nu-space-small) calc(var(--nu-mobar-padding) + env(safe-area-inset-bottom));
       gap:var(--nu-space-small);
+      /* Opaque, and that is a decision rather than a step nobody got to. This
+         is the element content passes under here, so the masthead's ramp would
+         work: mirrored, strongest at the bar and fading upward. It is not here
+         because the search field sits directly on this bar, and a blurred
+         ground behind something meant to be read costs more legibility than
+         the effect is worth. The block at the top of the page has nothing
+         standing on it, which is why it can carry the ramp and this cannot. */
       background:var(--nu-bg-primary);
       border-top:1px solid var(--nu-border-neutral);
       box-shadow:0 -6px 18px color-mix(in srgb, var(--nu-bg-shadow) 5%, transparent);
