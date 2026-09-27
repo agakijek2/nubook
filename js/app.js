@@ -982,6 +982,9 @@ window.addEventListener("resize", ()=>{
   /* the example's marks are absolute boxes measured once, so they have to be
      taken again whenever the text they were measured against can reflow */
   if (!dsEl.hidden) dsHighlight(dsEl);
+  /* Whether a table still overflows depends on the width, so the keyboard reach
+     is decided again here rather than once at render. */
+  if (!dsEl.hidden) dsScrollReach(dsEl);
 });
 /* the display face arrives after first paint and changes the quote's height */
 if (document.fonts && document.fonts.ready){
@@ -2952,6 +2955,46 @@ function dsHighlight(root){
   mark(q.top, q.left + edge, num(qs.paddingLeft), q.height);                   // rule to text
   mark(q.bottom, q.left, q.width, num(qs.marginBottom));                       // block to next block
 }
+/* A table in the documentation is a grid of values, and some of those grids are
+   wider than a phone. Left alone, a table wider than the window widens the page
+   beneath it, so the whole tab scrolls sideways - by however much that tab's
+   widest table overhangs, which differs from tab to tab. That is why the tabs
+   looked as though each one scaled differently: it was never the scaling, it was
+   one table pushing the page out.
+   Wrapping happens here rather than in the templates because the tabs hold well
+   over a hundred tables, and a wrapper written by hand is a wrapper somebody
+   leaves off the next one. */
+function dsScrollTables(root){
+  root.querySelectorAll(".ds-body table").forEach(t => {
+    /* A table inside a cell is carried by the table around it and must not get a
+       scroller of its own: two nested scrollers on one axis trap the gesture. */
+    if (t.parentElement.closest("table")) return;
+    if (t.parentElement.classList.contains("ds-scroll")) return;
+    const box = document.createElement("div");
+    box.className = "ds-scroll";
+    t.replaceWith(box);
+    box.appendChild(t);
+  });
+  dsScrollReach(root);
+}
+/* A region that scrolls has to be reachable from the keyboard, or its right-hand
+   columns exist for a pointer only. The attributes go on only while the box
+   actually scrolls, so a table that fits does not become a tab stop for nothing -
+   and they come off again when the window is widened, which is why this is its
+   own function rather than a line inside the one above. */
+function dsScrollReach(root){
+  root.querySelectorAll(".ds-scroll").forEach(box => {
+    if (box.scrollWidth > box.clientWidth + 1){
+      box.tabIndex = 0;
+      box.setAttribute("role", "region");
+      box.setAttribute("aria-label", L("Table, scrolls sideways", "Tabela, przewija się w poziomie"));
+    } else {
+      box.removeAttribute("tabindex");
+      box.removeAttribute("role");
+      box.removeAttribute("aria-label");
+    }
+  });
+}
 function dsMeasure(root){
   const steps = dsSpaceSteps().map(([token, val]) => [token, val]);
   root.querySelectorAll("[data-measure]").forEach(cell => {
@@ -4827,6 +4870,7 @@ function renderDesignSystem(){
     </div>`;
 
   dsMeasure(dsEl);
+  dsScrollTables(dsEl);
   dsHighlight(dsEl);
   dsPlay(dsEl);
   /* The chip row is the one specimen that works: toggling it is the quickest way

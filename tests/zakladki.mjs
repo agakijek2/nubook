@@ -9,7 +9,8 @@ const w=dom.window, d=w.document;
 w.matchMedia=q=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});
 w.scrollTo=()=>{}; w.Element.prototype.scrollTo=()=>{};
 w.HTMLElement.prototype.animate=function(){return{finished:Promise.resolve(),cancel(){},addEventListener(){}};};
-w.eval(fs.readFileSync(D+'js/app.js','utf8')+'\n;window.__S=DS_SECTIONS;window.__L=l=>{LANG=l};window.__I=I18N;');
+w.eval(fs.readFileSync(D+'js/app.js','utf8')
+  +'\n;window.__S=DS_SECTIONS;window.__L=l=>{LANG=l};window.__I=I18N;window.__WRAP=dsScrollTables;');
 const S=w.__S;
 let bad=0;
 for (const lang of ['pl','en']){
@@ -58,6 +59,56 @@ for (const lang of ['pl','en']){
            + (sp.textContent===want?'':` (${JSON.stringify(sp.textContent)} vs ${JSON.stringify(want)})`));
     }
   }
+}
+
+/* Every table stands in a scroller of its own, and every nested one does not.
+   jsdom computes no layout, so this cannot prove a table stops widening the
+   page - that was measured in a browser at 375px, where the widest tab went
+   from 396px of sideways page scroll to none. What is checked here is the part
+   a rename or a refactor breaks: that the wrapping happens at all, that it
+   reaches every tab, and that a table inside a cell is left alone, because two
+   scrollers nested on one axis trap the gesture between them. */
+{
+  const say0=(ok,m)=>{ console.log((ok?'  OK   ':'  FAIL ')+m); if(!ok) bad++; };
+  let wrapped=0, nested=0, loose=0, nestedWrapped=0;
+  for (const s of S){
+    const host=d.createElement('div');
+    host.className='ds-body';
+    host.innerHTML=s.body();
+    const holder=d.createElement('div');
+    holder.appendChild(host);
+    w.__WRAP(holder);
+    for (const t of holder.querySelectorAll('table')){
+      const inCell = !!t.parentElement.closest('table');
+      const inBox  = t.parentElement.classList.contains('ds-scroll');
+      if (inCell){ nested++; if (inBox) nestedWrapped++; }
+      else { if (inBox) wrapped++; else loose++; }
+    }
+  }
+  say0(wrapped>50, `tables put in a scroller across every tab: ${wrapped}`);
+  say0(loose===0, `no table left outside one (${loose})`);
+  /* No tab nests a table inside a cell today, so the rule that leaves those
+     alone has nothing to act on in the real content. It is built here instead,
+     rather than trusted: the day somebody writes one, this is what says whether
+     it was handled. */
+  {
+    const holder=d.createElement('div');
+    holder.innerHTML='<div class="ds-body"><table><tr><td><table id="inner"><tr><td>x</td></tr></table></td></tr></table></div>';
+    w.__WRAP(holder);
+    const inner=holder.querySelector('#inner');
+    say0(!inner.parentElement.classList.contains('ds-scroll'),
+         'a table inside a cell is left alone, so two scrollers cannot nest on one axis');
+    say0(holder.querySelectorAll('.ds-scroll').length===1,
+         'and the table around it gets exactly one');
+  }
+  say0(nested===0 && nestedWrapped===0,
+       `no tab nests a table in a cell today (${nested})`);
+  const css=fs.readFileSync(D+'css/styles.css','utf8');
+  say0(/\.ds \.ds-scroll\{[^}]*overflow-x:auto/.test(css), 'the scroller rule exists in the stylesheet');
+  say0(/\.ds \.ds-scroll > table\{margin:0\}/.test(css),
+       'the table drops its own margins inside the scroller, so the rhythm is not scrolled away');
+  say0(/\.ds \.ds-scroll:focus-visible\{/.test(css),
+       'a scroller that takes focus shows it');
 }
 
 w.__L('pl');

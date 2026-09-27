@@ -2055,6 +2055,17 @@
      thing a worked example must never do. */
   .ds p:not([class]){max-width:62ch;margin-bottom:var(--nu-space-milli)}
   .ds table{width:100%;border-collapse:collapse;margin:var(--nu-space-milli) 0 var(--nu-space-medium);font-size:var(--nu-text-size-md)}
+  /* Every table stands in a box of its own that scrolls sideways, so a table
+     wider than the window overflows its own edge instead of widening the page.
+     The script puts the box there; the rhythm moves with it, because the table's
+     own margins inside a scroller would be scrolled away along with the table. */
+  .ds .ds-scroll{overflow-x:auto;margin:var(--nu-space-milli) 0 var(--nu-space-medium)}
+  .ds .ds-scroll > table{margin:0}
+  /* It takes focus only while it actually scrolls, and then it has to show it. */
+  .ds .ds-scroll:focus-visible{
+    outline:var(--nu-focus-ring) solid var(--nu-border-primary);
+    outline-offset:var(--nu-focus-offset);
+  }
   .ds th,.ds td{
     /* Equal air above and below: the rule underneath a row reads as the end of
        that row, not as an underline stuck to its last line of text. */
