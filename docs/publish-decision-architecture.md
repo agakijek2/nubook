@@ -338,6 +338,18 @@ and it did fail. The tab suite caught a half-finished rename that would have
 emptied a documentation table on the live site. Both are the argument for
 negative controls, made by the tests themselves.
 
+**Four defects appeared the day the shop went to a public address, and no test
+could have caught any of them.** The blur ramp rendering as a plain white wash
+in Chrome; the cart with no way forward on a phone; four pixels of page under
+the filter sheet; a button growing taller mid-animation. The suites run in
+jsdom, which computes no layout and is not a browser, so this whole class is
+invisible to them by construction. Each has a check now, and each check reads
+the rule rather than the pixels, which is the honest thing a check can promise.
+**The conclusion is not that the tests were inadequate.** It is that looking has
+to be a scheduled step rather than a thing that happens when somebody notices -
+on the devices and in the browsers the work will actually meet, and before the
+address goes anywhere near a portfolio rather than after.
+
 **One claim in this project was false and a test now prevents it.** The card's
 composition was praised here for an alignment it did not have: the motif block
 was said to match the claim's width, and it does not – the two *claim lines*
