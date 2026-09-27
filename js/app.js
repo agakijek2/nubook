@@ -1470,7 +1470,12 @@ function addToCart(id, btn){
   if (btn){
     const label = btn.querySelector(".cta-label") || btn;
     const orig = label.innerHTML;
-    btn.style.width = btn.offsetWidth + "px";   // freeze width for the whole sequence
+    /* Frozen for the whole sequence, so a shorter word does not shrink the
+       button mid-animation. Measured from the rectangle: offsetWidth is an
+       integer, and half a pixel of slack is the difference between a label
+       that fits and one that does not. The label carries white-space:nowrap
+       for the same reason - that is what keeps the height still. */
+    btn.style.width = btn.getBoundingClientRect().width + "px";
     btn.classList.add("is-adding");             // stays visually active; clicks blocked in CSS
     const swap = (html, done) => {
       btn.classList.add("swap-out");

@@ -1339,8 +1339,16 @@
      edge and then reserves the font's descender space below it. The button grew
      taller the moment the icon appeared. Out of the inline flow there is no line
      box to sit in, so the height is the row's height and nothing else. */
+  /* The label does not wrap, and that is load-bearing rather than tidy. The
+     sequence freezes the button's width for its whole length, so that a short
+     word like "Added" does not shrink it mid-animation. Under a fixed width the
+     longest label in the shop - the Polish "Zamów przedpremierowo" - breaks onto
+     a second line, and the button grows taller for the moment before the word
+     changes. Freezing the width at a fractional value instead of a rounded one
+     does not help: the wrap happens either way. */
   .p-cta .cta-label{
     display:flex;align-items:center;justify-content:center;gap:var(--nu-space-micro);
+    white-space:nowrap;
     transition:opacity var(--nu-motion-quick) ease, transform var(--nu-motion-quick) ease;
   }
   .p-cta.swap-out .cta-label{opacity:0;transform:translateY(-6px)}

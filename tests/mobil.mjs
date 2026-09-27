@@ -65,6 +65,21 @@ chk(/--nu-mobar-height-exact:var\(--nu-space-max\)/.test(bare),
 chk(/body\.has-mobar\{padding-bottom:var\(--nu-mobar-height\)\}/.test(bare),
     'the clearance still takes the grid value');
 
+/* --- 3. The add-to-cart button keeps its size ---------------------------
+   Found by clicking it, in both browsers. The sequence freezes the button's
+   width so a shorter word does not shrink it; under a fixed width the longest
+   label in the shop breaks onto a second line and the button grows taller for
+   the moment before the word changes. Two properties hold it still and both
+   have to stay. */
+const label = (bare.match(/\.p-cta \.cta-label\{([^}]*)\}/)||['',''])[1];
+chk(!!label, 'the CTA label rule exists');
+chk(/white-space:nowrap/.test(label),
+    'the label does not wrap, so a frozen width cannot make the button taller');
+chk(/btn\.style\.width = btn\.getBoundingClientRect\(\)\.width/.test(js),
+    'the width is frozen from the rectangle, not from the rounded offsetWidth');
+chk(!/btn\.style\.width = btn\.offsetWidth/.test(js),
+    'the rounded measurement is gone');
+
 console.log();
 console.log(bad ? 'FAILURES: '+bad : 'RESULT: OK');
 process.exit(bad?1:0);
