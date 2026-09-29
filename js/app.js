@@ -3866,11 +3866,11 @@ const DS_SECTIONS = [
     <thead><tr><th>${L("Container","Kontener")}</th><th>${L("Safe area","Pole bezpieczne")}</th><th>${L("Margin","Margines")}</th><th>${L("Stroke","Obrys")}</th></tr></thead>
     <tbody>${dsIconRows()}</tbody></table>
     <p>${L(
-      "Icons are linear: an outline, no fill. The colour comes from the control through <code>currentColor</code>, so an icon takes that control's colour along with its states. On its own it takes <code>--nu-fg-primary</code>.",
-      "Ikony są liniowe: kontur bez wypełnienia. Kolor biorą z kontrolki przez <code>currentColor</code>, więc ikona przyjmuje jej barwę razem ze stanami. Samodzielnie stojąca ikona ma <code>--nu-fg-primary</code>.")}</p>
+      "Icons are linear: an outline, no fill. The colour comes from the control through <code>currentColor</code>, so an icon takes that control's colour along with its states. An icon standing on its own inherits the page's own text colour, <code>--nu-fg-primary</code>.",
+      "Ikony są liniowe: kontur bez wypełnienia. Kolor biorą z kontrolki przez <code>currentColor</code>, więc ikona przyjmuje jej barwę razem ze stanami. Ikona stojąca sama dziedziczy kolor tekstu strony, <code>--nu-fg-primary</code>.")}</p>
     <p>${L(
       `An icon drawn at the larger size moves to the smaller one by scaling the drawing down to ${dsIconRatio()} of its size, which turns one safe area into the other. The stroke is set separately, so it keeps a visible weight rather than thinning with the drawing.`,
-      `Ikonę narysowaną w większym rozmiarze przenosi się na mniejszy przez pomniejszenie rysunku do ${dsIconRatio()} jego wielkości &ndash; jedno pole bezpieczne przechodzi wtedy w drugie. Obrys ustawiany jest osobno, żeby zachował widoczną grubość, zamiast cienieć razem z rysunkiem.`)}</p>
+      `Ikonę narysowaną w większym rozmiarze przenosi się na mniejszy przez pomniejszenie rysunku do ${dsIconRatio()} jego wielkości &ndash; jedno pole bezpieczne przechodzi wtedy w drugie. Obrys ustawia się osobno, żeby zachował widoczną grubość, zamiast cienieć razem z rysunkiem.`)}</p>
 
     <h3>${L("An icon beside a word","Ikona przy słowie")}</h3>
     <p>${L(
@@ -3883,7 +3883,7 @@ const DS_SECTIONS = [
     <h3>${L("An icon inside a field","Ikona wewnątrz pola")}</h3>
     <p>${L(
       `The second arrangement, and a different one: the glyph stands inside the field rather than beside a word. It is positioned against the field, takes no pointer events and carries no name, because it says what the field is for rather than doing anything. The field leaves it room with padding on the side it stands on, so the value never runs under it.`,
-      `Drugi układ i inny co do zasady: znak stoi wewnątrz pola, a nie obok słowa. Pozycjonowany jest względem pola, nie przyjmuje kliknięć i nie ma nazwy, bo mówi, do czego pole służy, a nie robi czegokolwiek. Pole zostawia mu miejsce wypełnieniem od tej strony, po której stoi, żeby wartość nigdy pod niego nie wchodziła.`)}</p>
+      `Drugi układ i inny co do zasady: znak stoi wewnątrz pola, a nie obok słowa. Pozycjonuje się względem pola, nie przyjmuje kliknięć i nie ma nazwy, bo mówi, do czego pole służy, a nie robi niczego. Pole zostawia mu miejsce wypełnieniem od tej strony, po której stoi, żeby wartość nigdy pod niego nie wchodziła.`)}</p>
 
     <h3>${L("The set","Zestaw")}</h3>
     <table><thead><tr><th>${L("Icon","Ikona")}</th><th>${L("Name","Nazwa")}</th><th>${L("Meaning","Znaczenie")}</th></tr></thead><tbody>
@@ -3895,6 +3895,8 @@ const DS_SECTIONS = [
         <td>${L("Bag","Torba")}</td><td>${L("The cart. The only icon that carries a counter.","Koszyk. Jedyna ikona, która nosi licznik.")}</td></tr>
       <tr><td class="ico-cell">${ICON_BACK}</td>
         <td>${L("Back arrow","Strzałka wstecz")}</td><td>${L("Return to where the reader came from.","Powrót tam, skąd czytelniczka przyszła.")}</td></tr>
+      <tr><td class="ico-cell">${ICON_FORWARD}</td>
+        <td>${L("Forward arrow","Strzałka dalej")}</td><td>${L("On to the next page of a sequence. The same drawing as the back arrow, turned.","Dalej, do następnej strony w ciągu. Ten sam rysunek co strzałka wstecz, obrócony.")}</td></tr>
       <tr><td class="ico-cell">${icon("sheets","ico-sm")}</td>
         <td>${L("Sheets","Kartki")}</td><td>${L("Copy to the clipboard.","Skopiuj do schowka.")}</td></tr>
       <tr><td class="ico-cell">${icon("search","ico-sm ico-search")}</td>

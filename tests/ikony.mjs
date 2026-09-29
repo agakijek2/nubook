@@ -67,7 +67,59 @@ for (const sv of inTab){
   const matches=Object.entries(REG).filter(([n,it])=>shape(it.d)===k).map(([n])=>n);
   chk(matches.length>0, `the specimen comes from the registry: ${matches.join('/')||sv.getAttribute('class')}`);
 }
-chk(inTab.length===Object.keys(REG).length, `the table shows all ${Object.keys(REG).length} icons: ${inTab.length}`);
+/* Every drawing in the registry is shown. Not one row per drawing, though: the
+   table lists what an icon means, and one drawing can mean two things. The cross
+   is the plus turned, and it has a row of its own; so does the forward arrow,
+   which is the back arrow turned. */
+const shown=new Set(inTab.flatMap(sv=>{
+  const k=shape(sv.innerHTML);
+  return Object.entries(REG).filter(([n,it])=>shape(it.d)===k).map(([n])=>n);
+}));
+for (const n of Object.keys(REG))
+  chk(shown.has(n), `the table shows the ${n} drawing`);
+
+/* And every turned form is shown as itself. A class that rotates a drawing
+   outright changes what it depicts - a plus becomes a cross, an arrow points
+   the other way - so it is a second meaning and needs its own row. This is the
+   check that was missing when the forward arrow went into the pager and onto no
+   row at all. A rotation that only happens under a state (the plus while its
+   panel is open) is not one of these: it is the same icon answering, and the
+   plus row says so in words. */
+const css=fs.readFileSync(D+'css/styles.css','utf8').replace(/\/\*[\s\S]*?\*\//g,'');
+const turned=[...css.matchAll(/(^|\})\s*\.(ico-[a-z]+)\{[^}]*transform:rotate\(/g)].map(m=>m[2]);
+chk(turned.length>0, `classes that turn a drawing outright: ${turned.join(', ')||'none found'}`);
+for (const cls of turned)
+  chk(inTab.some(sv=>sv.getAttribute('class').split(/\s+/).includes(cls)),
+      `the table shows the turned form .${cls}`);
+/* .has-icon carries the arrangement it is named for. The tab and the Link tab
+   both say the class lays the control out as a row; it used to lay out nothing,
+   because the row and the gap were declared on .link.has-icon and on the
+   tertiary button, and a component with neither would have taken the lift alone
+   and stood the glyph on the next line. Checked on the bare class, so a rule
+   that only reaches links goes red. */
+{
+  const rule=(css.match(/(^|\})\s*\.has-icon\{([^}]*)\}/)||['','',''])[2];
+  chk(!!rule, 'a rule on the bare .has-icon exists');
+  chk(/display:inline-flex/.test(rule), '.has-icon lays the control out as a row');
+  chk(/align-items:center/.test(rule), '.has-icon centres the glyph on the word');
+  chk(/gap:var\(--nu-space-micro\)/.test(rule), '.has-icon sets the gap the documentation names');
+  chk(/\.has-icon svg\{margin-bottom:var\(--nu-icon-lift\)\}/.test(css),
+      'and lifts the glyph onto the middle of the word');
+  chk(!/\.link\.has-icon\{/.test(css),
+      'the layout is not declared a second time for links alone');
+}
+
+/* The colour of an icon standing on its own is inherited, not declared, and the
+   tab says so. A sentence claiming the token is taken would be describing a rule
+   that is not in the sheet. */
+{
+  const body=tab.body();
+  chk(/inherits the page|dziedziczy kolor/.test(body),
+      'the tab says a lone icon inherits its colour rather than taking a token');
+  const declared=/\.ico-(?:lg|sm)\{[^}]*color:var\(--nu-fg-primary\)/.test(css);
+  chk(!declared, 'and no rule declares that colour on the icon itself');
+}
+
 console.log();
 console.log(bad? 'FAILURES: '+bad : 'RESULT: OK');
 process.exit(bad?1:0);

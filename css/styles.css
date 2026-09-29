@@ -765,12 +765,19 @@
   .link:hover{color:var(--nu-fg-secondary)}
   .link.in-text{border-bottom:1px solid currentColor;padding-bottom:var(--nu-underline-offset)}
   .link:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
-  /* A link with an icon is built exactly as a ghost with one: the underline moves
-     onto the label so it does not run under the glyph, and the icon is a drawn
-     SVG rather than a typed arrow, so it follows the colour and the size of the
-     control instead of the font. The two differ only where they already differ -
-     the ghost's underline is standing, the link's is transparent until hover. */
-  .link.has-icon{
+  /* .has-icon is the name of one arrangement - a glyph beside a word - and it
+     carries that arrangement itself, whichever control it is written on. It used
+     to set only the lift, and the row and the gap came from the components that
+     happened to declare them: the tertiary button declares both for every
+     instance, with an icon or without, and the link declared them in its own
+     .link.has-icon rule. So the class described in the documentation as the one
+     that lays the control out laid nothing out, and a component without a row of
+     its own would have taken the lift and stood the glyph on the next line.
+     A link with an icon is otherwise built exactly as a ghost with one: the
+     underline moves onto the label so it does not run under the glyph, and the
+     icon is a drawn SVG rather than a typed arrow, so it follows the colour and
+     the size of the control instead of the font. */
+  .has-icon{
     display:inline-flex;align-items:center;gap:var(--nu-space-micro);
     /* An inline-flex box takes its baseline from its first child, and an SVG has
        none - so with a leading icon the browser invents one at the glyph's bottom
@@ -779,8 +786,7 @@
        so the two arrangements - icon first, icon last - behave alike. */
     vertical-align:middle;
   }
-  /* Wherever an icon stands beside a word - and .has-icon is the name of that
-     arrangement, whichever control carries it - the icon is lifted off the
+  /* The lift is the second half of the same arrangement: the icon comes off the
      centre of the text's box onto the centre of the word itself. */
   .has-icon svg{margin-bottom:var(--nu-icon-lift)}
   /* Every control that answers the pointer with colour answers over one step,
