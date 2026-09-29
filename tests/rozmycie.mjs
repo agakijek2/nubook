@@ -129,17 +129,20 @@ chk(!/masthead-height\)\s*\+/.test(filters||''),
     'the filters are not pushed below their own place in the layout');
 chk(/z-index:\s*81/.test(filters||''), 'the filters stand above the ramp, so it does not blur them');
 
-/* 6b. the bookseller's panel does not slide under what is pinned at the top. It
-   grows from the bottom, so without a ceiling its top edge leaves the screen
-   along with its own close button. */
-chk(/--bs-headroom:\s*calc\(var\(--nu-masthead-height\)/.test(rule('.bs')||''),
-    'the panel\'s ceiling is computed from the block at the top');
-chk(/var\(--bs-headroom\)/.test(rule('.bs-panel')||''),
-    'and the panel applies that ceiling');
-chk(/--bs-headroom:\s*var\(--nu-space-medium\)/.test(nocom),
-    'on a phone the ceiling is plain air, because nothing is pinned there');
-chk(/overflow-y:\s*auto/.test(rule('.bs-list')||''),
-    'the overflow is taken by the list of proposals, not by the top edge');
+/* 6b. the bookseller stands in the product column, not over the page. The
+   ceiling, the floor measured against the footer and the list's own scroll were
+   all there to keep a floating panel on screen; a section in the flow has
+   nothing to be kept inside, and leaving any of that behind would be a measure
+   taken for a box that no longer exists. */
+chk(!/position:\s*fixed/.test(rule('.bs')||''), 'the bookseller is not pinned to the window');
+chk(!/--bs-headroom/.test(nocom), 'no ceiling is computed for her any more');
+chk(!/--bs-lift/.test(nocom), 'and no floor is measured against the footer');
+chk(/background:var\(--nu-bg-tertiary\)/.test(rule('.bs')||''),
+    'she is set off by a ground of her own, which is another voice and not another paragraph');
+chk(!/border/.test(rule('.bs')||''),
+    'and by that alone: a fill and an outline together would make a box of it');
+chk(!/overflow-y:\s*auto/.test(rule('.bs-list')||''),
+    'the list has no scroll of its own: the page is what scrolls now');
 
 /* 7. the strapline inverting under the block, and the search field that does
    not. It works only while scrolled and only on an idle field: a typed query

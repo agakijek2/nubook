@@ -168,6 +168,43 @@ for (const lang of ['pl','en']){
   say0(!/forward:\s*\{vb:/.test(js2), 'and nothing was added to the icon registry');
 }
 
+/* A specimen shows the reader the real component, so every class it puts on the
+   page has to be a class the stylesheet knows. A component removed from the shop
+   leaves its documentation rendering an unstyled box that still claims to be the
+   thing - and nothing else catches it, because the tab renders, the suite passes
+   and only a reader looking at that one tab ever sees it. Which is how the
+   bookseller's avatar stood in the Avatar tab after the corner it lived in was
+   taken out of the shop. */
+{
+  const say0=(ok,m)=>{ console.log((ok?'  OK   ':'  FAIL ')+m); if(!ok) bad++; };
+  const css=fs.readFileSync(D+'css/styles.css','utf8').replace(/\/\*[\s\S]*?\*\//g,'');
+  const known=new Set([...css.matchAll(/\.([a-zA-Z][\w-]*)/g)].map(m=>m[1]));
+  /* Names the stylesheet has no rule for, and does not need one for. Recorded
+     here rather than passed over, so that the next one has to be argued for:
+     .ico-back and .ico-minus are how the script spells two of the icon
+     constants, and .bar-top is the filter icon's upper stroke, named only so
+     that the one below it - which does move - is not a lone labelled path.
+     .bs-ava is different: it is debt. The bookseller's avatar was taken out of
+     the shop when she became a section in the product column, and the Avatar tab
+     still documents it in a specimen and in six rows of its specification. The
+     tab has not been rewritten yet, and this line is what stops that being
+     forgotten. */
+  ['ico-back','ico-minus','bar-top','bs-ava'].forEach(c=>known.add(c));
+  const seen=new Map();
+  w.__L('en');
+  for (const s of S){
+    const e=d.createElement('div');
+    e.innerHTML=s.body();
+    for (const el of e.querySelectorAll('.demo *, .ds-specimens *'))
+      for (const c of el.classList)
+        if (!known.has(c) && !seen.has(c)) seen.set(c, s.id);
+  }
+  say0(seen.size===0, seen.size
+    ? `classes in a specimen that the stylesheet does not know: ${
+        [...seen].map(([c,id])=>`.${c} (${id})`).join(', ')}`
+    : 'every class a specimen puts on the page exists in the stylesheet');
+}
+
 w.__L('pl');
 const box=(id)=>{const e=d.createElement('div'); e.innerHTML=S.find(s=>s.id===id).body(); return e;};
 const m=box('motion'), t=[...m.querySelectorAll('table')];

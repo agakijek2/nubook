@@ -66,6 +66,18 @@
     /* background – surfaces an element sits on */
     --nu-bg-primary:light-dark(var(--nu-white), var(--nu-grey-900));            /* the page, drawers, menus */
     --nu-bg-secondary:light-dark(var(--nu-grey-100), var(--nu-grey-800));       /* raised panels: tiles, thumbnails */
+    /* A third step, quieter than the second, for a block that has to read as
+       set apart without reading as a panel laid on the page. Mixed from the two
+       grounds it sits between rather than drawn from a new grey: the palette
+       keeps its size, and the step lands exactly halfway wherever the two ends
+       are, so a change to either carries. The sheet already builds the masthead
+       veil, the scrim and the secondary action this way.
+       Halfway in both schemes and by the same reasoning, though it means the
+       opposite direction: lighter than the panel in the light scheme, darker in
+       the dark one, because both are steps towards the page. */
+    --nu-bg-tertiary:light-dark(
+        color-mix(in srgb, var(--nu-grey-100) 50%, var(--nu-white)),
+        color-mix(in srgb, var(--nu-grey-800) 50%, var(--nu-grey-900)));        /* a block set apart inside a column of text */
     --nu-bg-inverse:light-dark(var(--nu-grey-900), var(--nu-grey-100));         /* filled actions */
     /* The ground of the block that stays at the top of the window. The page's
        own colour, thinned: enough for the navigation to hold against whatever
@@ -1620,95 +1632,46 @@
   .done-back{display:inline-block;margin-top:var(--nu-space-medium)}
 
   /* ---------- the bookseller ----------
-     A corner of the page rather than a layer over it. She sits above the sort
-     menu and the checkout bar, and below the filter sheet, the shop bar and both
-     drawers: everything the reader opened on purpose outranks something that
-     spoke without being asked. */
-  .bs{
-    /* The corner belongs to the reader while the page is under it, and to the
-       page once the footer arrives. --bs-lift is how much of the footer is on
-       screen, measured on scroll: at the bottom of a view she stands on the last
-       line of content instead of on the colophon. */
-    /* Named, because the panel above has to subtract it to work out how tall it
-       may grow, and the value differs between the wide window and the phone. */
-    --bs-bottom:calc(var(--nu-space-medium) + var(--bs-lift, 0px));
-    /* What she must not grow into at the top: the block that stays there, and a
-       step of air under it. Named, because the panel's ceiling is one decision
-       and the value differs between the wide window and the phone, where nothing
-       is pinned to the top at all. */
-    --bs-headroom:calc(var(--nu-masthead-height) + var(--nu-space-medium));
-    position:fixed;right:var(--nu-space-medium);z-index:75;
-    bottom:var(--bs-bottom);
-    /* The mark keeps the corner and the offer opens upward from it, the way a
-       speech bubble stands over whoever is speaking. Beside it, the panel pushed
-       the mark off the corner every time it appeared. */
-    display:flex;flex-direction:column;align-items:flex-end;gap:var(--nu-space-micro);
-  }
-  /* Room for the panel to be as wide as it needs and no wider. A measure, not a
-     spacing step: this is how long a line may run before it stops being easy to
-     read, which the scale has nothing to say about. */
-  /* One width, because the panel always holds the same thing: two sentences and
-     the proposals they name, with covers, titles, prices and prose, all of which
-     want room. The panel is anchored to the right, so it grows leftward into the
-     page rather than pushing the mark. */
-  .bs-panel{
-    position:relative;
-    max-width:46ch;
-    /* It never grows past what is left for it. Anchored at the bottom, a panel
-       taller than that climbs out through the top edge, takes its own close
-       button with it, and slides behind whatever is pinned up there. What is
-       left over after the mark, the gap under it and the headroom is all it may
-       have; the list of proposals takes the overflow and scrolls, so the offer
-       and the way out stay put.
+     A section in the product column, not a corner of the window. She used to
+     stand over the page in a panel of her own, and everything that cost: a
+     fixed position negotiated against six other layers, a ceiling worked out
+     from the block at the top, a floor measured against the footer on every
+     scroll, a height in dvh for the address bar on a phone, and a walk between
+     two sizes whenever an answer opened. A block in the flow needs none of it.
 
-       dvh rather than vh on a phone, where the address bar is part of the height
-       and vh is the tallest the window ever gets rather than the current one. */
-    max-height:calc(100vh - var(--bs-bottom) - var(--nu-space-micro) - var(--nu-avatar-size-sm) - var(--bs-headroom));
-    max-height:calc(100dvh - var(--bs-bottom) - var(--nu-space-micro) - var(--nu-avatar-size-sm) - var(--bs-headroom));
-    display:flex;flex-direction:column;min-height:0;
-    background:var(--nu-bg-primary);
-    border:1px solid var(--nu-border-neutral);
-    /* One step on all four sides. The panel row of the spacing table asks for
-       --nu-space-medium, and that belongs to a drawer or an order summary; this
-       one is a third of a drawer's width and the same air would leave too narrow
-       a measure. The sort menu already sets the precedent for a floating panel
-       taking less than a docked one. */
+     A ground of her own rather than a rule above her. The column is one voice
+     from the title to the motifs, and this is another one speaking at the end of
+     it; a hairline said only that something had ended, and left the two reading
+     as one piece of text in two parts.
+     The quietest of the three grounds, not the panel colour: a panel is a
+     surface laid on the page and this is a passage inside a column of text, so
+     it is set apart by the smallest step that still reads as set apart. The
+     covers of the proposals sit on it, and on the panel colour they were grey
+     on the same grey. */
+  .bs{
+    background:var(--nu-bg-tertiary);
     padding:var(--nu-space-small);
-    box-shadow:0 8px 24px color-mix(in srgb, var(--nu-bg-shadow) 8%, transparent);
-    animation:bsIn var(--nu-motion-slow) var(--nu-ease-slide);
+    margin-top:var(--nu-space-medium);
   }
-  @keyframes bsIn{from{opacity:0;transform:translateY(var(--nu-space-micro))}to{opacity:1;transform:none}}
-  /* An answer opening changes how much room the panel needs, in both directions
-     at once, and arriving at the new size in one frame reads as a second panel
-     replacing the first. It walks there instead: the script pins the size it had
-     and sets the one it needs, and this is what carries it between the two. The
-     clip is for the moment in between, while the content is larger than the box
-     on its way to fitting it. */
-  .bs-panel.is-resizing{
-    overflow:hidden;
-    transition:width var(--nu-motion-base) var(--nu-ease-slide),
-               height var(--nu-motion-base) var(--nu-ease-slide);
+  /* Who is speaking, said in words. The panel could leave that to a face in the
+     corner; a section in the flow of a page has no corner to point at. */
+  .bs-head{
+    display:flex;align-items:center;gap:var(--nu-space-micro);
+    margin-bottom:var(--nu-space-micro);
   }
-  /* She arrives without travelling for a reader who asked for less motion: the
-     panel still appears, it just stops sliding. */
-  @media (prefers-reduced-motion:reduce){
-    .bs-panel{animation:none}
+  .bs-who{
+    font:var(--nu-type-body-s);letter-spacing:var(--nu-tracking-caps);
+    text-transform:uppercase;color:var(--nu-fg-secondary);
   }
-  /* The close sits where it does on both drawers, so the way out of anything
-     that opened over the page is always in the same corner of it. */
-  .bs-close{
-    position:absolute;top:var(--nu-space-micro);right:var(--nu-space-micro);
-  }
-  /* Room for the close, so a two-line offer never runs under it. */
-  .bs-say{padding-right:var(--nu-space-large)}
   /* A button is centred by the browser and a flex child is stretched by default,
      and the two together put the label in the middle of a panel-wide control.
      The ghost here shrinks to its own words and starts at the left edge, the
      way it does everywhere else in the shop. */
   .bs-why{align-self:flex-start;text-align:left}
-  /* The one part that gives way. Everything above it is the offer and the way
-     out, and both have to stay where the reader last saw them. */
-  .bs-list{margin-top:var(--nu-space-small);overflow-y:auto;min-height:0}
+  /* No scroll of its own any more: the panel had a ceiling and the list was the
+     part that gave way under it. A section grows down the column instead, and a
+     scrolling box inside a scrolling page is a box the reader has to aim at. */
+  .bs-list{margin-top:var(--nu-space-small)}
   /* One proposal: the cover, the title and what it costs. The same three things
      a cart line shows, at the same thumbnail size, because a reader deciding
      between two books wants exactly what she wants when deciding to keep one. */
@@ -1772,16 +1735,6 @@
      so it borrows the shop's own sign rather than inventing a face for someone
      who deliberately has no name. Still, because the one in the header is the
      one that moves and two of them pulsing would compete. */
-  /* The mark stays on the page after the panel is dismissed, and pressing it
-     brings the offer back. Closing an offer is not the same as refusing the
-     bookseller, so the second act needs a way back that the first one does not
-     take away. */
-  .bs-ava{
-    width:var(--nu-avatar-size-sm);height:var(--nu-avatar-size-sm);flex-shrink:0;
-    border-radius:50%;background:var(--nu-bg-secondary);border:1px solid var(--nu-border-neutral);
-    display:inline-flex;align-items:center;justify-content:center;
-  }
-  .bs-ava:focus-visible{outline:var(--nu-focus-ring) solid var(--nu-border-primary);outline-offset:var(--nu-focus-offset)}
   /* Its own pair of names rather than the wordmark's, carrying the wordmark's
      pair of values: the mark looks drawn from the logotype's colour, and a
      change to the logo does not reach the corner afterwards.
@@ -1850,13 +1803,6 @@
                0 0 20px color-mix(in srgb, var(--nu-bg-glow-cool) 80%, transparent),
                0 0 26px color-mix(in srgb, var(--nu-bg-glow-dusk) 80%, transparent);
   }
-  /* Coming in: the breath's rise, on both layers. */
-  .bs-ava:hover .bs-dot::before,
-  .bs-ava:hover .bs-dot::after{
-    transition:opacity var(--nu-motion-slower) var(--nu-ease-zoom);
-  }
-  .bs-ava:hover .bs-dot::before{opacity:1}
-  .bs-ava:hover .bs-dot::after{opacity:.5}
   /* Light rather than size. The mark answers by brightening the way the logotype
      accent does - the core goes to its bloom colour and the halo opens out until
      it fills the ground behind it - so the one thing that glows in the shop and
@@ -1884,11 +1830,6 @@
     30% {opacity:1; animation-timing-function:ease-in-out}
     100%{opacity:0}
   }
-  /* Once, whenever something in the panel opens - the only moment the shop is
-     putting an answer together. The curve comes from the keyframes themselves,
-     so the shorthand sets none. */
-  .bs-dot.is-thinking::before,
-  .bs-dot.is-thinking::after{animation:bsBreath var(--nu-motion-hold)}
   /* Without end: from the moment an answer is asked for until its last word has
      arrived. Waiting for the words and setting them down are one stretch of work
      as far as the reader is concerned, and the mark stops when the work does. */
@@ -1953,40 +1894,11 @@
   }
 
   @media (prefers-reduced-motion:reduce){
-    .bs-dot.is-thinking::before,.bs-dot.is-thinking::after,
     .bs-dot.is-working::before,.bs-dot.is-working::after,
     .bs-sk span{animation:none}
     .bs-w,.bs-w.is-in{opacity:1;animation:none}
     .bs-text li::before,.bs-text li:has(.bs-w.is-in)::before{opacity:1;animation:none}
-    .bs-panel.is-resizing{transition:none}
   }
-  @media (max-width:820px){
-    /* The corner is where the shop bar lives on a phone, so she sits on top of
-       it rather than over it, and spans the width instead of floating in a
-       corner there is no room for. */
-    /* The corner is where the shop bar lives on a phone, but only on the views
-       that have one. The product page has none, so the clearance is asked for by
-       the same class that reserves room for the bar everywhere else, instead of
-       being assumed - a mark hovering above an absent bar reads as misplaced. */
-    .bs{
-      left:var(--nu-space-micro);right:var(--nu-space-micro);
-      --bs-bottom:calc(var(--nu-space-micro) + var(--bs-lift, 0px));
-      /* Nothing is pinned to the top here, so the ceiling is the air alone. */
-      --bs-headroom:var(--nu-space-medium);
-    }
-    body.has-mobar .bs{
-      --bs-bottom:calc(var(--nu-mobar-height) + var(--nu-space-micro) + var(--bs-lift, 0px));
-    }
-    /* Narrower here than the room allows. Edge to edge, an offer stops reading
-       as something said in the corner and starts reading as a banner across the
-       page. The measure is shorter than on a wide window, and the container's
-       own edges cap it on a narrow phone.
-
-       The panel keeps to the right, above the mark, and everything inside it
-       stays flush left, exactly as on a wide window. */
-    .bs-panel{max-width:34ch;min-width:0}
-  }
-
   /* ---------- site footer ---------- */
   .site-foot{
     display:flex;align-items:center;justify-content:space-between;gap:var(--nu-space-medium);

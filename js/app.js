@@ -386,7 +386,6 @@ const I18N = {
     strap:"novels on women & gender", logoHome:"nubook \u2014 home",
     motifs:"Motifs", motif:"Motif", motifOrigin:"Where the term comes from", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
     bsGone:"We do not have “%s” in stock at the moment.", bsOffer:"But if that is the book you came for, there are two here I would put beside it.",
-    bsClose:"Dismiss",
     bsAva:"The bookseller", bsWhy:"Why this one",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
     searchPh:"Search by title or author", searchClear:"Clear",
@@ -452,7 +451,6 @@ const I18N = {
        leaves the quoted title standing beside it, so no book needs a second
        form of its own name. */
     bsGone:"Niestety, tytułu „%s” nie mamy dziś na stanie.", bsOffer:"Ale skoro interesuje Cię ten tytuł, gorąco polecam dwa inne, o podobnych motywach.",
-    bsClose:"Zamknij",
     bsAva:"Księgarka", bsWhy:"Dlaczego akurat ta",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
     searchPh:"Szukaj tytułu lub autorki", searchClear:"Wyczyść",
@@ -919,26 +917,11 @@ function syncFilterToggle(){
   const open = inlineFiltersInView() && !shopEl.classList.contains("filters-hidden");
   filterToggle.setAttribute("aria-expanded", String(open));
 }
-/* How much of the footer is on screen. The bookseller is fixed to the corner of
-   the viewport, and the footer is the one thing that arrives underneath her with
-   a claim to it: it is the page's own last word, and a mark sitting on top of it
-   reads as a control that failed to get out of the way. She is lifted by exactly
-   the overlap, so she comes to rest on the last line of content.
-
-   Measured rather than watched for a threshold: an observer fires at the moments
-   it was told about, and this has to hold at every scroll position in between. */
-function liftOverFooter(){
-  const foot = document.getElementById("siteFoot");
-  const lift = foot && !foot.hidden
-    ? Math.max(0, window.innerHeight - foot.getBoundingClientRect().top)
-    : 0;
-  document.documentElement.style.setProperty("--bs-lift", Math.round(lift) + "px");
-}
 let syncPending = false;
 window.addEventListener("scroll", ()=>{
   if (syncPending) return;
   syncPending = true;
-  requestAnimationFrame(()=>{ syncPending = false; syncFilterToggle(); liftOverFooter(); });
+  requestAnimationFrame(()=>{ syncPending = false; syncFilterToggle(); });
 }, {passive:true});
 
 fsheetBg.onclick = closeFilterSheet;
@@ -978,7 +961,6 @@ window.addEventListener("resize", ()=>{
   if (!isMobile()) closeFilterSheet();
   measureBars();
   syncFilterToggle();
-  liftOverFooter();
   /* the example's marks are absolute boxes measured once, so they have to be
      taken again whenever the text they were measured against can reflow */
   if (!dsEl.hidden) dsHighlight(dsEl);
@@ -1956,8 +1938,13 @@ function renderProduct(b){
   const t = T();
   document.getElementById("backBtn").innerHTML = ICON_BACK + t.back;
   const st = b.s ? STATUS[b.s] : null;
-  const cta = b.s === "out"
-    ? `<button class="btn-primary p-cta" disabled><span class="cta-label">${t.notAvail}</span></button>`
+  /* A title that cannot be bought gets no button at all. A disabled primary said
+     the same thing the badge on the packshot already says, and said it at the
+     foot of the page, where a reader arrives after everything else - a control
+     that does nothing, standing in the place kept for the one thing this view
+     offers. The bookseller's section answers that dead end higher up, where the
+     price is, so the answer arrives with the news rather than a page later. */
+  const cta = b.s === "out" ? ""
     : `<button class="btn-primary p-cta" id="ctaBtn"><span class="cta-label">${b.s === "soon" ? t.preorder : t.addToCart}</span></button>`;
   document.getElementById("pGrid").innerHTML = `
     ${tileHTML(b, "product")}
@@ -1974,6 +1961,7 @@ function renderProduct(b){
         <div><dt>${t.dLang}</dt><dd>${t.editions[b.ed]}</dd></div>
       </dl>
       ${cta}
+      ${bsSection(b)}
     </div>`;
   const btn = document.getElementById("ctaBtn");
   if (btn) btn.onclick = ()=>addToCart(b.id, btn);
@@ -1994,16 +1982,13 @@ function renderProduct(b){
    reach by browsing, and a rule nobody can see is a rule nobody can check. */
 const BS_ALL = /[?&]bs=all\b/.test(location.search);
 const bookByTitle = t => BOOKS.find(b => b.t === t);
-/* Once per visit. An assistant that returns with the same offer is not attentive,
-   it is stuck. */
-const bsSeen = new Set();
-let bsBook = null, bsTimer = null, bsThinkTimer = null;
-
-const bsEl    = document.getElementById("bookseller"),
-      bsPanel = document.getElementById("bsPanel"),
-      bsAvaEl = document.getElementById("bsAva"),
-      bsSayEl = document.getElementById("bsSay"),
-      bsListEl= document.getElementById("bsList");
+/* The title the section on screen is about. Read by the row that opens an
+   answer, which has to know whose offer it belongs to. */
+let bsBook = null;
+/* The mark, looked up when it is needed rather than held: the section is written
+   fresh with each product view, so a reference taken once would point at markup
+   that has been replaced. */
+const bsDot = () => document.querySelector(".bs-dot");
 
 /* The offer for a title, resolved against the shelf as it stands: a book she
    cannot sell is never proposed instead of another book she cannot sell. A
@@ -2016,74 +2001,25 @@ function bsOffer(b){
   return out.length ? out : null;
 }
 
-/* Two different acts, and conflating them was the defect: dismissing an offer
-   put the bookseller away for good. Closing the panel leaves her on the page;
-   only leaving the view takes her off it. */
-function bsShut(){
-  bsIdle();
-  bsPanel.hidden = true;
-  bsAvaEl.setAttribute("aria-expanded", "false");
-  bsListEl.innerHTML = "";
-}
-function bsHide(){
-  clearTimeout(bsTimer);
-  bsBook = null;
-  bsShut();
-  bsEl.hidden = true;
-}
-/* The mark takes one breath whenever something in the panel opens. Purely decorative:
-   the change it accompanies is already announced by the panel's own live region,
-   so nothing here is a reader's only notice of anything.
+/* The section, written into the product column by renderProduct. It closes the
+   column, in the place the button used to hold, and that position is an argument
+   rather than a convenience: what she offers is two books about the same motifs,
+   and a reader who has not yet read what this book is about, or seen its motifs
+   named, has no way of knowing why those two. Standing under the price the offer
+   arrived before the thing that makes it mean anything, and split the book's own
+   description in half to do it. At the foot of the column the reader has been
+   brought to it: the description, the quotation and the list of motifs are
+   behind her, and the proposals follow from them.
 
-   Reading offsetWidth between removing and adding the class is what restarts an
-   animation already running - the browser recomputes layout at that point and
-   treats the second class as a new start rather than a continuation. Without it
-   a second click inside half a second does nothing at all. */
-function bsThink(){
-  const dot = bsAvaEl.querySelector(".bs-dot");
-  if (!dot) return;
-  clearTimeout(bsThinkTimer);
-  dot.classList.remove("is-thinking");
-  void dot.offsetWidth;
-  dot.classList.add("is-thinking");
-  /* Taken off again when the breath is over. The animation stops on its own and
-     leaves nothing behind, so the class changed nothing by staying - but it said
-     the mark was thinking for the rest of the visit, and a state written in the
-     markup is read by more than the stylesheet. */
-  bsThinkTimer = setTimeout(() => dot.classList.remove("is-thinking"),
-                            motionMs("--nu-motion-hold"));
-}
-
-/* The one way the panel opens, whoever opens it. Both things at the top are
-   about the offer that would otherwise arrive by itself a moment later: the
-   waiting one is called off, and the book is marked as having been offered, so
-   it is not offered again on the way back.
-
-   Without them, a reader who pressed the mark herself within the delay had the
-   panel rebuilt underneath her when the delay ran out - and a rebuild empties
-   the list, so an answer being set down word by word disappeared mid-sentence. */
-function bsShow(unprompted){
-  clearTimeout(bsTimer);
-  if (bsBook) bsSeen.add(bsBook.id);
-  bsFill();
-  bsPanel.hidden = false;
-  bsAvaEl.setAttribute("aria-expanded", "true");
-  /* The breath belongs to the offer arriving of its own accord. Bringing back
-     something that was put away is the reader's doing and nothing is being
-     worked out, so the mark stays as it is - and it is under her pointer at that
-     moment, already lit, so a breath there would start by putting the light out
-     and read as a flinch rather than as an answer. */
-  if (unprompted) bsThink();
-}
-
-function bsFill(){
-  if (!bsBook) return;
-  const t = T(), offer = bsOffer(bsBook);
-  if (!offer) return;
-  bsSayEl.innerHTML = escHTML(t.bsGone.replace("%s", titleOf(bsBook))) + " " + escHTML(t.bsOffer);
-  document.getElementById("bsClose").setAttribute("aria-label", t.bsClose);
-  bsAvaEl.setAttribute("aria-label", t.bsAva);
-  bsListEl.innerHTML = offer.map((o, i) => {
+   Two hairlines and no ground of its own. A box would read as an advertisement
+   dropped into an article; the rules say the same thing the list of details
+   below says, which is that one part of the column has ended and another has
+   begun. */
+function bsSection(b){
+  const t = T(), offer = bsOffer(b);
+  if (!offer) return "";
+  bsBook = b;
+  const items = offer.map((o, i) => {
     const st = o.book.s ? STATUS[o.book.s] : null;
     /* Price and availability arrive together, as two short clauses rather than
        a sales close: a recommendation that hides a preorder sends the reader to
@@ -2101,9 +2037,19 @@ function bsFill(){
         <div class="bs-text" id="bsText${i}" hidden></div>
       </div>`;
   }).join("");
+  /* Named by whose voice it is, and the name is on screen rather than in an
+     attribute: the panel could rely on a face in the corner to say who was
+     speaking, and a section in the flow of a page cannot. The mark beside it is
+     the same dot, at rest - it breathes while an answer is arriving and at no
+     other time, which is the whole of what the breath means. */
+  return `<section class="bs" aria-labelledby="bsWho">
+      <p class="bs-head"><span class="bs-dot" aria-hidden="true"></span><span class="bs-who" id="bsWho">${t.bsAva}</span></p>
+      <p class="bs-say">${escHTML(t.bsGone.replace("%s", titleOf(b)))} ${escHTML(t.bsOffer)}</p>
+      <div class="bs-list">${items}</div>
+    </section>`;
 }
 
-/* One book at a time: two open texts in a corner panel is a page, not an offer. */
+/* One book at a time: two open texts in one section is a page, not an offer. */
 /* How long the shop waits before it can answer. Zero, because the answer about a
    book on this shelf was written in advance and read before it shipped - there is
    nothing to wait for, and making a reader wait for text that is already here
@@ -2208,13 +2154,12 @@ function bsLines(box, words){
 const bsSaid = new Set();
 
 /* Stops whatever the last answer was still doing. Called before a new one starts
-   and whenever the panel closes, so the mark never goes on breathing over a box
+   and whenever a row closes, so the mark never goes on breathing over a box
    nobody is waiting for. */
 function bsIdle(){
   clearTimeout(bsTypeTimer);
-  clearTimeout(bsThinkTimer);
-  const dot = bsAvaEl.querySelector(".bs-dot");
-  if (dot) dot.classList.remove("is-working", "is-thinking");
+  const dot = bsDot();
+  if (dot) dot.classList.remove("is-working");
 }
 
 function bsDeliver(box, html, key){
@@ -2230,7 +2175,7 @@ function bsDeliver(box, html, key){
   }
   bsSaid.add(key);
   const wait = bsWait();
-  const dot = bsAvaEl.querySelector(".bs-dot");
+  const dot = bsDot();
   const say = () => {
     box.removeAttribute("aria-busy");
     bsType(box, html, () => { if (dot) dot.classList.remove("is-working"); });
@@ -2251,85 +2196,31 @@ function bsDeliver(box, html, key){
 }
 
 /* Closing first, opening second, and the order is the point: both passes touch
-   the one mark in the corner, so opening a row inside the same loop that closes
+   the one mark in the section, so opening a row inside the same loop that closes
    its neighbours meant the neighbour's closing put out the breath the chosen row
    had just started. */
 function bsPick(i){
   const offer = bsOffer(bsBook); if (!offer) return;
-  const rows = [...bsListEl.querySelectorAll(".bs-why")];
+  const list = document.querySelector(".bs-list"); if (!list) return;
+  const rows = [...list.querySelectorAll(".bs-why")];
   const open = rows[i].getAttribute("aria-expanded") === "true";
   bsIdle();
-  bsGrow(() => {
-    rows.forEach((r, n) => {
-      r.setAttribute("aria-expanded", "false");
-      const box = document.getElementById("bsText" + n);
-      box.hidden = true; box.innerHTML = ""; box.removeAttribute("aria-busy");
-    });
-    if (open) return;
-    rows[i].setAttribute("aria-expanded", "true");
-    const box = document.getElementById("bsText" + i);
-    box.hidden = false;
-    bsDeliver(box, offer[i].text[LANG], bsBook.t + "|" + offer[i].title + "|" + LANG);
+  /* No walk between two sizes any more. A floating panel changing height was a
+     box moving over the page, and landing on the new size in one frame read as a
+     second panel replacing the first. This block is in the flow: opening a row
+     pushes what is under it down the column, which is what every expander on the
+     page already does and what a reader expects of one. */
+  rows.forEach((r, n) => {
+    r.setAttribute("aria-expanded", "false");
+    const box = document.getElementById("bsText" + n);
+    box.hidden = true; box.innerHTML = ""; box.removeAttribute("aria-busy");
   });
-  if (!open) bsThink();
+  if (open) return;
+  rows[i].setAttribute("aria-expanded", "true");
+  const box = document.getElementById("bsText" + i);
+  box.hidden = false;
+  bsDeliver(box, offer[i].text[LANG], bsBook.t + "|" + offer[i].title + "|" + LANG);
 }
-
-/* The panel needs a different amount of room the moment an answer is put in or
-   taken out, in both directions at once, and landing on the new size in a single
-   frame reads as a second panel replacing the first. So it walks there: the size
-   it had is pinned, the change is made, and the size it needs is set on the next
-   frame for the stylesheet to carry it between the two.
-
-   The pin comes off on a timer rather than on transitionend, because two
-   properties are moving and the first to finish would take the pin with it. */
-let bsGrowTimer = null;
-function bsGrow(zmiana){
-  const przed = bsPanel.getBoundingClientRect();
-  zmiana();
-  if (bsPanel.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const po = bsPanel.getBoundingClientRect();
-  if (Math.abs(po.width - przed.width) < 1 && Math.abs(po.height - przed.height) < 1) return;
-  clearTimeout(bsGrowTimer);
-  bsPanel.classList.remove("is-resizing");
-  bsPanel.style.width = przed.width + "px";
-  bsPanel.style.height = przed.height + "px";
-  void bsPanel.offsetWidth;
-  bsPanel.classList.add("is-resizing");
-  bsPanel.style.width = po.width + "px";
-  bsPanel.style.height = po.height + "px";
-  bsGrowTimer = setTimeout(() => {
-    bsPanel.classList.remove("is-resizing");
-    bsPanel.style.width = bsPanel.style.height = "";
-  }, motionMs("--nu-motion-base"));
-}
-
-/* The one place that decides she appears at all. */
-function bsSync(b){
-  const speaks = b && (BS_ALL || b.s === "out") && bsOffer(b);
-  if (!speaks) return bsHide();
-  if (bsBook && bsBook.id === b.id) return;
-  clearTimeout(bsTimer);
-  bsBook = b;
-  bsShut();
-  bsFill();
-  bsEl.hidden = false;
-  /* A view can open already scrolled to its foot, so the clearance is taken on
-     arrival rather than waiting for the reader to move. */
-  liftOverFooter();
-  /* The mark arrives with the view; the offer waits. A reader who has just
-     opened a page is reading it, and a shop that speaks into that moment is
-     interrupting rather than helping. Only once per book, so returning to a
-     title she has already been offered leaves her alone. */
-  if (!bsSeen.has(b.id)){
-    const id = b.id;
-    bsTimer = setTimeout(() => { if (bsBook && bsBook.id === id){ bsSeen.add(id); bsShow(true); } },
-                         motionMs("--nu-motion-hold"));
-  }
-}
-
-document.getElementById("bsClose").onclick = bsShut;
-/* Pressing the mark reopens what was dismissed, or puts it away again. */
-bsAvaEl.onclick = () => bsPanel.hidden ? bsShow() : bsShut();
 
 /* The shop places the reader itself: the grid comes back to where she left it,
    every other view starts at the top. Left on "auto" the browser does it a
@@ -2361,7 +2252,6 @@ function route(){
   const goingBack = lastView === "product" && view === "grid";
   if (goingBack) captureProduct(lastProductId); else backFrom = null;
   /* She belongs to one view, so leaving it takes her with it. */
-  bsSync(view === "product" ? b : null);
   dsEl.hidden = view !== "design";
   if (view === "design"){ dsCurrent = dsFromHash(); renderDesignSystem(); }
   document.getElementById("siteFoot").hidden = view === "design";
@@ -2522,7 +2412,7 @@ document.getElementById("swLight").onclick = ()=>{ SCHEME = SCHEME==="light" ? "
 document.getElementById("swDark").onclick  = ()=>{ SCHEME = SCHEME==="dark"  ? "auto" : "dark";  applyScheme(); };
 
 const _applyLang = applyLang;
-applyLang = function(){ _applyLang(); const b = currentProduct(); if (b) renderProduct(b); fillDrawer(); if (!bsEl.hidden) bsFill(); if (cartOpen) renderCart(); if (!cartPageEl.hidden) renderCartPage(); if (!checkoutEl.hidden) renderCheckout(); if (!doneEl.hidden) renderDone(); };
+applyLang = function(){ _applyLang(); const b = currentProduct(); if (b) renderProduct(b); fillDrawer(); if (cartOpen) renderCart(); if (!cartPageEl.hidden) renderCartPage(); if (!checkoutEl.hidden) renderCheckout(); if (!doneEl.hidden) renderDone(); };
 const _applyCur = applyCur;
 applyCur = function(){ _applyCur(); const b = currentProduct(); if (b) renderProduct(b); if (cartOpen) renderCart(); if (!cartPageEl.hidden) renderCartPage(); if (!checkoutEl.hidden) renderCheckout(); };
 
@@ -3521,6 +3411,7 @@ const DS_SECTIONS = [
     <tbody>${dsColorRows([
       ["--nu-bg-primary",L("Default surface","Powierzchnia domyślna")],
       ["--nu-bg-secondary",L("Raised / recessed panel","Panel wyniesiony")],
+      ["--nu-bg-tertiary",L("A block set apart inside a column of text","Blok wydzielony wewnątrz kolumny tekstu")],
       ["--nu-bg-inverse",L("Darkest surface","Powierzchnia najciemniejsza")],
       ["--nu-bg-masthead",L("Ground of the block that stays at the top","Tło bloku, który zostaje u góry")],
       ["--nu-bg-action",L("Primary action, body","Akcja główna, korpus")],

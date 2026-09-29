@@ -1,6 +1,8 @@
-/* The bookseller widget's flow: the breath, the typing out, the closing.
+/* The bookseller: where she stands, and how an answer arrives.
    Durations shortened so the suite takes a second - we check the flow, not the
-   pace. */
+   pace. Opened with ?bs=slow, which is the only way to see the waiting state:
+   the texts are written in advance, so in the ordinary mode there is nothing to
+   wait for. */
 import { JSDOM } from 'jsdom';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -16,26 +18,63 @@ const r=d.documentElement.style;
  ['--nu-motion-slow','4ms'],['--nu-motion-slower','4ms'],['--nu-motion-hold','60ms'],
  ['--nu-motion-stagger','20ms']].forEach(([k,v])=>r.setProperty(k,v));
 w.eval(fs.readFileSync(D+'js/app.js','utf8')
-  +'\n;window.__B=BOOKS;window.__pick=bsPick;window.__sync=bsSync;window.__shut=bsShut;window.__fill=bsFill;window.__show=bsShow;window.__ava=bsAvaEl;window.__seen=bsSeen;window.__said=bsSaid;window.__i18n=I18N;');
-const dot=()=>d.querySelector('#bsAva .bs-dot');
+  +'\n;window.__B=BOOKS;window.__pick=bsPick;window.__render=renderProduct;window.__said=bsSaid;window.__i18n=I18N;');
+const dot=()=>d.querySelector('.bs-dot');
 const R=()=>[...d.querySelectorAll('.bs-why')];
 const B=n=>d.getElementById('bsText'+n);
 const sleep=ms=>new Promise(res=>setTimeout(res,ms));
 let bad=0; const chk=(c,m)=>{ console.log((c?'  OK   ':'  FAIL ')+m); if(!c) bad++; };
 
-/* The app finishes its own start asynchronously, and route() rebuilds the
-   panel. Driving the inside before the start is over reaches for nodes that are
-   about to be replaced - hence the wait before the suite presses anything. */
+/* The app finishes its own start asynchronously and route() rebuilds the product
+   column. Driving the inside before the start is over reaches for nodes that are
+   about to be replaced. */
 await sleep(300);
 const book=w.__B.find(b=>b.s==='out');
+const inStock=w.__B.find(b=>b.s!=='out');
 console.log('unavailable title:', book.t);
-w.__sync(book);
-/* Opened by pressing the mark, the same way a reader would. */
-w.__ava.click();
+
+/* 1. Where she stands. The section closes the product column. What she offers
+   is two books about the same motifs, so the reader has to have read what this
+   book is about and seen its motifs named before the proposals can mean
+   anything: the description, the quotation and the list of details come first,
+   and she follows from them. Higher up the offer arrived before its own reason
+   and cut the description in half to do it. */
+w.__render(book);
+const sec=d.querySelector('.p-info .bs');
+chk(!!sec, 'the bookseller is a section inside the product column');
+const kol=[...d.querySelector('.p-info').children];
+chk(sec && kol[kol.length-1]===sec, 'and closes it: nothing of the book\'s own comes after her');
+chk(kol.findIndex(e=>e.classList.contains('p-details')) < kol.indexOf(sec),
+    'the motifs the proposals are drawn from are read before them');
+chk(kol.findIndex(e=>e.classList.contains('p-desc')) < kol.indexOf(sec),
+    'and so is the description, whole rather than split around her');
+/* The status stays on the packshot, where it is on a card in the grid too. The
+   column is already carrying the title, the author, the price, the description,
+   the quotation, the motifs and her: a badge at the head of it was one more
+   thing happening in a place that had enough. */
+chk(!!d.querySelector('.p-tile .badge'), 'the status is on the packshot, as in the grid');
+chk(!kol.some(e=>e.classList.contains('badge')), 'and not in the column of text');
+chk(!d.getElementById('bookseller') && !d.getElementById('bsPanel') && !d.getElementById('bsAva'),
+    'nothing of hers is left standing in the markup');
+chk(sec && !!sec.querySelector('.bs-who') && (sec.querySelector('.bs-who').textContent||'').trim().length>3,
+    'she says who is speaking in words, not only in an attribute');
+chk(sec && !!sec.querySelector('.bs-dot'), 'and the mark stands beside the name');
+
+/* 2. A title that cannot be bought gets no button. The badge on the packshot
+   already says so, and a disabled control at the foot of the column was the
+   place kept for the one thing this view offers, holding something that does
+   nothing. */
+chk(!d.querySelector('.p-cta'), 'an unavailable title has no button at all');
+w.__render(inStock);
+chk(!!d.querySelector('.p-cta'), 'a title in stock still has one');
+chk(!d.querySelector('.p-info .bs'), 'and the bookseller says nothing there');
+
+/* 3. An answer arrives. */
+w.__render(book);
 chk(R().length===2, 'two rows with a "why" button: '+R().length);
 
 w.__pick(0);
-chk(dot().classList.contains('is-working'), 'the mark breathes as soon as it is pressed');
+chk(dot().classList.contains('is-working'), 'the mark breathes as soon as a row is opened');
 chk(B(0).getAttribute('aria-busy')==='true' && B(0).querySelector('.bs-sk'), 'waiting lines and aria-busy');
 
 await sleep(70);
@@ -50,6 +89,7 @@ await sleep(words.length*8+400);
 chk(words.length>0 && words.every(s=>s.classList.contains('is-in')), 'every word has arrived');
 chk(!dot().classList.contains('is-working'), 'the mark stops breathing after the last word');
 
+/* 4. One answer at a time. */
 w.__pick(1);
 chk(dot().classList.contains('is-working'), 'second row: the mark breathes again');
 chk(B(0).innerHTML==='' && B(0).hidden, 'the first row is closed and emptied');
@@ -58,66 +98,27 @@ w.__pick(1);
 chk(R()[1].getAttribute('aria-expanded')==='false', 'pressing again closes it');
 chk(!dot().classList.contains('is-working'), 'closing puts the mark out');
 
+/* 5. Once a visit. Watching a passage be written a second time is watching a
+   wait that is not happening. */
 w.__pick(0);
 chk(!B(0).querySelector('.bs-sk'), 'answer already given: no waiting lines');
 chk(!dot().classList.contains('is-working'), 'and no breathing');
 chk(B(0).innerHTML.length>100, 'the text stands whole straight away');
-w.__shut();
-chk(!dot().classList.contains('is-working'), 'closing the panel puts the mark out');
 
-/* The delay after arriving on a page must not rebuild a panel the reader opened
-   herself - a rebuild clears the list and takes the answer away mid-sentence. */
-const b2=w.__B.filter(x=>x.s==='out')[0];
-w.__sync(null); w.__sync(b2);
-w.__ava.click();
-w.__pick(0);
-const before=B(0).innerHTML.length;
-await sleep(200);
-chk(B(0).innerHTML.length>=before && !B(0).hidden, 'the delay did not rebuild the open panel');
-chk(R()[0].getAttribute('aria-expanded')==='true', 'the row is still open once the delay has passed');
-
-/* The breath belongs to an offer that arrives unasked. Calling back a dismissed
-   one is the reader's doing and nothing is being worked out; the mark is under
-   her cursor by then and already lit. */
-const thinking=()=>dot().classList.contains('is-thinking');
-w.__shut();
-chk(!thinking(), 'closing takes the thinking state off the mark');
-w.__ava.click();
-chk(!thinking(), 'calling the panel back by the mark starts no breath');
-chk(d.getElementById('bsPanel').hidden===false, 'but the panel does open');
-
-/* The same book, seen for the first time: the panel opens on its own. */
-w.__shut(); w.__sync(null); w.__seen.clear();
-w.__sync(book);
-chk(!thinking(), 'before the delay has passed the mark does not breathe');
-await sleep(120);
-chk(d.getElementById('bsPanel').hidden===false, 'the panel opened on its own after the delay');
-chk(thinking(), 'and took one breath');
-await sleep(120);
-chk(!thinking(), 'the thinking state goes once the breath is finished');
-
-/* The list of proposals is the default state: the panel opens with it, with no
+/* 6. The proposals are the default state: the section arrives with them, with no
    expanding button on the way. */
-w.__shut(); w.__sync(null); w.__seen.clear(); w.__sync(book);
-await sleep(120);            // the panel opens on its own and takes a breath
-const list=d.getElementById('bsList');
-chk(!d.getElementById('bsPanel').hidden, 'the panel is open');
-chk(list.hidden===false, 'the list of proposals is visible straight away');
-chk(list.querySelectorAll('.bs-why').length>0, 'and has proposals in it');
+w.__render(book);
+const list=d.querySelector('.bs-list');
+chk(!!list && list.querySelectorAll('.bs-why').length>0, 'the proposals are there from the start');
 chk(!d.getElementById('bsMore'), 'there is no expanding button at all');
 chk(!('bsMore' in w.__i18n.pl) && !('bsMore' in w.__i18n.en), 'nor its label in the dictionaries');
 chk(!('bsLess' in w.__i18n.pl) && !('bsLess' in w.__i18n.en), 'nor a collapsing label');
-await sleep(120);            // the breath runs out
-chk(!thinking(), 'starting point: the mark is not breathing');
 
-/* A row of answers: a breath on opening, and while the answer is being worked
-   out the endless breathing takes precedence. */
-w.__said.clear();            // the answer has not been given in this visit yet
-w.__pick(0);
-chk(dot().classList.contains('is-working'), 'opening an answer: endless breathing');
-chk(thinking(), 'the thinking state is set too, but it does not govern');
-w.__pick(0);
-chk(!dot().classList.contains('is-working') && !thinking(), 'closing the row takes both states off');
+/* 7. The breath means one thing, and nothing is left of the states that belonged
+   to a panel opening and closing over the page. */
+chk(!dot().classList.contains('is-working'), 'a section just written is not breathing');
+chk(!/is-thinking/.test(fs.readFileSync(D+'js/app.js','utf8')),
+    'the single breath that announced a panel opening is gone with the panel');
 
 console.log(bad? '\nFAILURES: '+bad : '\nRESULT: OK');
 process.exit(bad?1:0);

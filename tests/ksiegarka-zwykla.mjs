@@ -20,7 +20,7 @@ const r=d.documentElement.style;
 [['--nu-motion-instant','2ms'],['--nu-motion-quick','4ms'],['--nu-motion-base','4ms'],
  ['--nu-motion-slower','4ms'],['--nu-motion-hold','60ms']].forEach(([k,v])=>r.setProperty(k,v));
 w.eval(fs.readFileSync(D+'js/app.js','utf8')
-  +'\n;window.__B=BOOKS;window.__pick=bsPick;window.__sync=bsSync;window.__show=bsShow;'
+  +'\n;window.__B=BOOKS;window.__pick=bsPick;window.__render=renderProduct;'
   +'window.__off=bsOffer;window.__slow=BS_SLOW;window.__lines=bsLines;');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let bad=0;
@@ -30,26 +30,26 @@ chk(w.__slow===false, 'starting point: the page opened without ?bs=slow');
 
 const book=w.__B.find(b=>b.s==='out' && w.__off(b));
 chk(!!book, 'there is an unavailable title with proposals');
-w.__sync(book); w.__show(true);
+w.__render(book);
 await sleep(50);
 
 const rows=[...d.querySelectorAll('.bs-why')];
-chk(rows.length>0, 'the panel has "why this one" rows');
+chk(rows.length>0, 'the section has "why this one" rows');
 
 w.__pick(0);
 /* The mark breathes through the whole answer, including when there is nothing
    to wait for and the text starts assembling straight away. */
-chk(d.querySelector('#bsAva .bs-dot').classList.contains('is-working'),
+chk(d.querySelector('.bs-dot').classList.contains('is-working'),
     'the mark breathes from the start of the text, with no delay at all');
 const box=d.getElementById('bsText0');
 /* The box has its full height at once: the words hold their place from the
-   start, so the panel does not push itself open line by line and there is empty
+   start, so the column does not push itself open line by line and there is empty
    room under the text. */
 chk((box.style.height||'')==='', 'the box has no written height - it stands in its own from the start');
 chk(!box.classList.contains('is-arriving'), 'and it is not being cropped');
 await sleep(600);
 chk(box.hidden===false, 'the answer box is revealed');
-chk(!d.querySelector('#bsAva .bs-dot').classList.contains('is-working'),
+chk(!d.querySelector('.bs-dot').classList.contains('is-working'),
     'after the last line the mark stops breathing');
 
 const words=[...box.querySelectorAll('.bs-w')];

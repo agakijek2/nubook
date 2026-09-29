@@ -213,19 +213,10 @@
      go on using the page with it open, which is why there is no scrim, no inert
      and no focus trap. The panel is announced politely rather than interrupting,
      because nothing here has to be read before anything else. -->
-<aside class="bs" id="bookseller" hidden>
-  <div class="bs-panel" id="bsPanel" role="status" aria-live="polite" hidden>
-    <button type="button" class="bs-close btn-tertiary" id="bsClose"><svg class="ico-sm ico-close" data-icon="cross" aria-hidden="true"></svg></button>
-    <p class="bs-say" id="bsSay"></p>
-    <!-- The proposals are what she opened the panel to show, so they stand
-         there from the start: the sentence above names two books and the two
-         books are under it, with nothing to press in between. -->
-    <div class="bs-list" id="bsList"></div>
-  </div>
-  <!-- She stays on the page once the offer is dismissed, so this is a control
-       rather than a decoration: pressing it brings the panel back. -->
-  <button type="button" class="bs-ava" id="bsAva" aria-expanded="false" aria-controls="bsPanel"><span class="bs-dot" aria-hidden="true"></span></button>
-</aside>
+<!-- The bookseller has no element of her own here any more. She used to stand in
+     the corner of every view as a panel over the page; she is now a section
+     inside the one view she ever had anything to say about, written by
+     renderProduct into the column it belongs to. -->
 
 <footer class="site-foot" id="siteFoot">
   <div class="foot-left">
