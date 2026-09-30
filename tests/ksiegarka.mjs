@@ -18,7 +18,7 @@ const r=d.documentElement.style;
  ['--nu-motion-slow','4ms'],['--nu-motion-slower','4ms'],['--nu-motion-hold','60ms'],
  ['--nu-motion-stagger','20ms']].forEach(([k,v])=>r.setProperty(k,v));
 w.eval(fs.readFileSync(D+'js/app.js','utf8')
-  +'\n;window.__B=BOOKS;window.__pick=bsPick;window.__render=renderProduct;window.__said=bsSaid;window.__i18n=I18N;window.__OFF=bsOffer;window.__L=l=>{LANG=l};');
+  +'\n;window.__B=BOOKS;window.__pick=bsPick;window.__render=renderProduct;window.__said=bsSaid;window.__i18n=I18N;window.__OFF=bsOffer;window.__L=l=>{LANG=l};window.__BS=BOOKSELLER;');
 const dot=()=>d.querySelector('.bs-dot');
 const R=()=>[...d.querySelectorAll('.bs-why')];
 const B=n=>d.getElementById('bsText'+n);
@@ -166,6 +166,26 @@ chk(!('bsLess' in w.__i18n.pl) && !('bsLess' in w.__i18n.en), 'nor a collapsing 
 chk(!dot().classList.contains('is-working'), 'a section just written is not breathing');
 chk(!/is-thinking/.test(fs.readFileSync(D+'js/app.js','utf8')),
     'the single breath that announced a panel opening is gone with the panel');
+
+/* 8. She does not propose a book that cannot be bought either. Nothing in the
+   catalogue exercises this today - every proposal happens to be in stock - so
+   the branch is reached by putting one out and putting it back. Without this
+   the rule lives only in the documentation. */
+{
+  const set=w.__BS[book.t];
+  const p1=w.__B.find(b=>b.t===set[0].title), p2=w.__B.find(b=>b.t===set[1].title);
+  chk(!!p1 && !!p2, 'both proposals for '+book.t+' are titles the shop holds');
+  const s1=p1.s, s2=p2.s;
+  p1.s='out';
+  w.__render(book);
+  chk([...d.querySelectorAll('.bs-why')].length===1, 'a proposal that has gone out of stock drops out of the list');
+  p2.s='out';
+  w.__render(book);
+  chk(!d.querySelector('.p-info .bs'), 'and with both out there is no section, however much was written');
+  p1.s=s1; p2.s=s2;
+  w.__render(book);
+  chk([...d.querySelectorAll('.bs-why')].length===2, 'put back, both return');
+}
 
 console.log(bad? '\nFAILURES: '+bad : '\nRESULT: OK');
 process.exit(bad?1:0);

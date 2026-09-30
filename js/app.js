@@ -2034,9 +2034,9 @@ function bsOffer(b){
 
 /* The section, written into the product column by renderProduct. It closes the
    column, in the place the button used to hold, and that position is an argument
-   rather than a convenience: what she offers is two books about the same motifs,
-   and a reader who has not yet read what this book is about, or seen its motifs
-   named, has no way of knowing why those two. Standing under the price the offer
+   rather than a convenience: what she offers is two books, each carrying one of
+   the motifs this one carries, and a reader who has not yet read what this book
+   is about, or seen its motifs named, has no way of knowing why those two. Standing under the price the offer
    arrived before the thing that makes it mean anything, and split the book's own
    description in half to do it. At the foot of the column the reader has been
    brought to it: the description, the quotation and the list of motifs are
@@ -4268,19 +4268,19 @@ const DS_SECTIONS = [
   { group:{en:"Components",pl:"Komponenty"}, id:"bookseller", label:{en:"Bookseller",pl:"Księgarka"}, body: ()=>`
     <h1>${L("Bookseller","Księgarka")}</h1>
     <p class="ds-lede">${L(
-      "A second voice inside a page: the shop saying something the page cannot say for itself. It stands as a block in the flow, at the point where the view has a question it cannot answer.",
-      "Drugi głos wewnątrz strony: sklep mówiący to, czego strona nie powie sama. Stoi jako blok w przepływie treści, tam, gdzie widok ma pytanie, na które sam nie odpowiada.")}</p>
+      "A second voice inside a page: the shop saying something the page cannot say for itself. It is a block in the column of text rather than a layer over it, and it comes where the page has said what it can and the shelf has something to add.",
+      "Drugi głos wewnątrz strony: sklep mówi coś, czego strona sama nie powie. Jest blokiem w kolumnie tekstu, a nie warstwą nad nią, i staje tam, gdzie strona powiedziała już swoje, a półka ma jeszcze coś do dodania.")}</p>
 
-    <h3>${L("Where it stands","Gdzie stoi")}</h3>
+    <h3>${L("Where it stands","Miejsce na stronie")}</h3>
     <p>${L(
-      "At the foot of the product column. The position is the argument: what it offers is two books about the same motifs, so it comes after the description and the list of motifs, where the reader has been brought to the reason before the offer. Higher up the offer arrives before anything that would make it mean something.",
-      "Na końcu kolumny z opisem. Położenie jest argumentem: proponuje dwie książki o tych samych motywach, więc stoi za opisem i listą motywów, gdzie czytelniczka została doprowadzona do powodu przed ofertą. Wyżej oferta przychodzi przed tym, co czyni ją zrozumiałą.")}</p>
+      "At the foot of the product column, and the place follows from what it offers: two books, each carrying one of the motifs this one carries. The reader has to read the description and see those motifs named before the proposals can mean anything, so the section comes after both. Put higher, it would arrive before its own reason.",
+      "Na końcu kolumny z opisem, a to miejsce wynika z tego, co sekcja proponuje: dwie książki, z których każda niesie któryś z motywów tej oglądanej. Czytelniczka musi najpierw przeczytać opis i zobaczyć wypisane motywy, żeby propozycje cokolwiek znaczyły, więc sekcja idzie za jednym i drugim. Postawiona wyżej, przyszłaby przed własnym uzasadnieniem.")}</p>
     <p>${L(
-      "What decides whether it appears is whether anything has been written about that title, not whether the title is in stock. A title that is out has no button and the section closes the column alone; a title on the shelf keeps its button and the section follows it, one step of spacing below, the same step the button keeps from the list of details above it.",
-      "O tym, czy się pojawia, decyduje to, czy o danym tytule coś napisano, a nie to, czy tytuł jest na stanie. Przy tytule niedostępnym przycisku nie ma i sekcja zamyka kolumnę sama; przy tytule na półce przycisk zostaje, a sekcja idzie pod nim, o jeden stopień odstępu niżej &ndash; ten sam, który przycisk trzyma od listy szczegółów nad sobą.")}</p>
+      "A section appears where something has been written about the title; the status of the title has nothing to do with it. A proposal whose own book has gone out of stock drops out of the list, and where both drop out there is no section, however much was written. A title that is out has no button, so the section closes the column by itself; a title on the shelf keeps its button, and the section stands under it at the same distance the button stands from the list of details.",
+      "Sekcja pojawia się tam, gdzie o tytule coś napisano &ndash; status tytułu nie ma z tym nic wspólnego. Propozycja, której książki nie ma na stanie, wypada z listy, a kiedy wypadną obie, sekcji nie ma, choćby tekst był napisany. Przy tytule niedostępnym nie ma przycisku, więc to sekcja zamyka kolumnę; przy tytule na półce przycisk zostaje, a sekcja stoi pod nim w takim samym odstępie, w jakim przycisk stoi od listy szczegółów.")}</p>
     <p>${L(
       "It arrives with the button rather than after it, and takes the weaker of the two entrance blurs for the reason the button takes it: a block with a ground of its own, softened as hard as a sentence, loses its edge before it has one.",
-      "Wchodzi razem z przyciskiem, a nie po nim, i bierze słabszy z dwóch stopni rozmycia, z tego samego powodu co przycisk: blok z własnym tłem, rozmyty tak mocno jak zdanie, gubi krawędź, zanim ją zyska.")}</p>
+      "Na kartę wchodzi razem z przyciskiem, a nie po nim, i bierze słabszy z dwóch stopni rozmycia &ndash; z tego samego powodu co przycisk: blok z własnym tłem, rozmyty tak mocno jak zdanie, gubi krawędź, zanim ją zyska.")}</p>
 
     <h3>${L("The parts","Części")}</h3>
     <table><thead><tr><th ${DS_COL_NAME}>${L("Part","Część")}</th><th>${L("What it does","Co robi")}</th></tr></thead><tbody>
@@ -4288,8 +4288,8 @@ const DS_SECTIONS = [
         `The block. A ground of its own in ${dsTok("--nu-bg-tertiary")} and no outline: a fill and an outline together would make a box of it, and a box inside a column of text reads as an advertisement dropped into an article.`,
         `Blok. Własne tło w kolorze ${dsTok("--nu-bg-tertiary")} i żadnego obrysu: wypełnienie razem z obrysem robi z tego pudełko, a pudełko wewnątrz kolumny tekstu czyta się jak reklama wstawiona w artykuł.`)}</td></tr>
       <tr><td class="spec"><code>.bs-head</code></td><td>${L(
-        "The mark and the name of whoever is speaking. The name is on the page rather than in an attribute: a block standing in the flow of a page has no corner to point at, so it says who it is.",
-        "Znak i nazwa tego, kto mówi. Nazwa stoi na stronie, a nie w atrybucie: blok w przepływie treści nie ma rogu, na który mógłby wskazać, więc mówi, kim jest.")}</td></tr>
+        "The mark and the name of whoever is speaking. The name is on the page rather than in an attribute: a block standing in a column of text has no corner to point at, so it says who it is.",
+        "Znak i nazwa tego, kto mówi. Nazwa stoi na stronie, a nie w atrybucie: blok w kolumnie tekstu nie ma rogu, na który mógłby wskazać, więc mówi, kim jest.")}</td></tr>
       <tr><td class="spec"><code>.bs-say</code></td><td>${L(
         "The opening, and there are two of them. On a title that is out: what is missing, and that there are two others near it. On a title on the shelf: only the offer, because telling a reader that a book is missing when it is not would be worse than saying nothing. Short either way, this being the last thing in a column she has just read through. A title of a work is set in italic here as everywhere the shop writes one in English; Polish puts it in quotation marks.",
         "Zdanie otwierające, a są dwa. Przy tytule niedostępnym: czego brakuje i że są przy tym dwie inne książki. Przy tytule na półce: sama oferta, bo powiedzenie czytelniczce, że książki nie ma, kiedy ją mamy, byłoby gorsze niż milczenie. W obu wypadkach krótko, bo to ostatnia rzecz w kolumnie, którą właśnie przeczytała. Tytuł dzieła składany jest kursywą, tak jak wszędzie, gdzie sklep pisze go po angielsku; polszczyzna stawia go w cudzysłowie.")}</td></tr>
