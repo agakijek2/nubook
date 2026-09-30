@@ -3160,7 +3160,7 @@ const DS_DOCS = [
     t:{en:"The catalogue", pl:"Katalog"},
     d:{en:"Nineteen titles and where every description, quotation and motif assignment comes from.",
        pl:"Dziewiętnaście tytułów i to, skąd wzięty jest każdy opis, cytat i przypisany motyw."} },
-  { cat:"bookseller", file:"bookseller-brief.md", words:4862,
+  { cat:"bookseller", file:"bookseller-brief.md", words:5232,
     t:{en:"The bookseller's brief", pl:"Brief księgarki"},
     d:{en:"What she may say, what she may never say, how she is allowed to be wrong, and where every sentence of hers comes from. Written before she existed.",
        pl:"Co wolno jej powiedzieć, czego nie wolno nigdy, jak wolno jej się mylić i skąd bierze się każde jej zdanie. Napisane, zanim powstała."} },
@@ -4273,11 +4273,14 @@ const DS_SECTIONS = [
 
     <h3>${L("Where it stands","Gdzie stoi")}</h3>
     <p>${L(
-      "At the foot of the product column, on a title that is out of stock, and nowhere else. The position is the argument: what it offers is two books about the same motifs, so it comes after the description and the list of motifs, where the reader has been brought to the reason before the offer. Higher up the offer arrives before anything that would make it mean something.",
-      "Na końcu kolumny z opisem, na karcie tytułu, którego nie ma na stanie &ndash; i nigdzie indziej. Położenie jest argumentem: proponuje dwie książki o tych samych motywach, więc stoi za opisem i listą motywów, gdzie czytelniczka została doprowadzona do powodu przed ofertą. Wyżej oferta przychodzi przed tym, co czyni ją zrozumiałą.")}</p>
+      "At the foot of the product column. The position is the argument: what it offers is two books about the same motifs, so it comes after the description and the list of motifs, where the reader has been brought to the reason before the offer. Higher up the offer arrives before anything that would make it mean something.",
+      "Na końcu kolumny z opisem. Położenie jest argumentem: proponuje dwie książki o tych samych motywach, więc stoi za opisem i listą motywów, gdzie czytelniczka została doprowadzona do powodu przed ofertą. Wyżej oferta przychodzi przed tym, co czyni ją zrozumiałą.")}</p>
     <p>${L(
-      "It takes the place the primary button holds on every other product page, and that is the whole of what it is for: the one thing a view with nothing to sell can still offer.",
-      "Zajmuje miejsce, które na każdej innej karcie książki trzyma przycisk główny, i na tym polega cała jego rola: jedyne, co może zaproponować widok, który nie ma czego sprzedać.")}</p>
+      "What decides whether it appears is whether anything has been written about that title, not whether the title is in stock. A title that is out has no button and the section closes the column alone; a title on the shelf keeps its button and the section follows it, one step of spacing below, the same step the button keeps from the list of details above it.",
+      "O tym, czy się pojawia, decyduje to, czy o danym tytule coś napisano, a nie to, czy tytuł jest na stanie. Przy tytule niedostępnym przycisku nie ma i sekcja zamyka kolumnę sama; przy tytule na półce przycisk zostaje, a sekcja idzie pod nim, o jeden stopień odstępu niżej &ndash; ten sam, który przycisk trzyma od listy szczegółów nad sobą.")}</p>
+    <p>${L(
+      "It arrives with the button rather than after it, and takes the weaker of the two entrance blurs for the reason the button takes it: a block with a ground of its own, softened as hard as a sentence, loses its edge before it has one.",
+      "Wchodzi razem z przyciskiem, a nie po nim, i bierze słabszy z dwóch stopni rozmycia, z tego samego powodu co przycisk: blok z własnym tłem, rozmyty tak mocno jak zdanie, gubi krawędź, zanim ją zyska.")}</p>
 
     <h3>${L("The parts","Części")}</h3>
     <table><thead><tr><th ${DS_COL_NAME}>${L("Part","Część")}</th><th>${L("What it does","Co robi")}</th></tr></thead><tbody>
@@ -4288,8 +4291,8 @@ const DS_SECTIONS = [
         "The mark and the name of whoever is speaking. The name is on the page rather than in an attribute: a block standing in the flow of a page has no corner to point at, so it says who it is.",
         "Znak i nazwa tego, kto mówi. Nazwa stoi na stronie, a nie w atrybucie: blok w przepływie treści nie ma rogu, na który mógłby wskazać, więc mówi, kim jest.")}</td></tr>
       <tr><td class="spec"><code>.bs-say</code></td><td>${L(
-        "Two sentences: what is missing, and that there are two others near it. Two and not four, because this is the last thing in a column the reader has just read through.",
-        "Dwa zdania: czego brakuje i że są przy tym dwie inne. Dwa, a nie cztery, bo to ostatnia rzecz w kolumnie, którą czytelniczka właśnie przeczytała.")}</td></tr>
+        "The opening, and there are two of them. On a title that is out: what is missing, and that there are two others near it. On a title on the shelf: only the offer, because telling a reader that a book is missing when it is not would be worse than saying nothing. Short either way, this being the last thing in a column she has just read through. A title of a work is set in italic here as everywhere the shop writes one in English; Polish puts it in quotation marks.",
+        "Zdanie otwierające, a są dwa. Przy tytule niedostępnym: czego brakuje i że są przy tym dwie inne książki. Przy tytule na półce: sama oferta, bo powiedzenie czytelniczce, że książki nie ma, kiedy ją mamy, byłoby gorsze niż milczenie. W obu wypadkach krótko, bo to ostatnia rzecz w kolumnie, którą właśnie przeczytała. Tytuł dzieła składany jest kursywą, tak jak wszędzie, gdzie sklep pisze go po angielsku; polszczyzna stawia go w cudzysłowie.")}</td></tr>
       <tr><td class="spec"><code>.bs-item</code></td><td>${L(
         "One proposal: the cover and the title as one link, the price and availability beside them, and the reason behind a control of its own. Going somewhere and reading more are two different acts.",
         "Jedna propozycja: okładka i tytuł jako jeden link, obok cena i dostępność, a uzasadnienie za osobną kontrolką. Przejście gdzieś i doczytanie to dwie różne czynności.")}</td></tr>

@@ -102,26 +102,34 @@ to speak.**
 Our code decides, on two conditions and no others, and hands the model a title.
 All of section 2a is *structure*.
 
-**She speaks on exactly two events.**
+**She speaks on exactly three events.**
 
 | Event | What she adds that the page cannot |
 |---|---|
 | A search that returns nothing, where the title is not stocked at all | The guess at which title was meant, and a book that carries the same motifs |
 | A product page for a title that is out of stock | A book on the shelf that is actually buyable and does the same thing |
+| A product page for a title on the shelf | Which other books here carry a motif this one carries, and what they do with it |
 
-**She stays silent everywhere else**, and four of those silences are decisions
+**What the third event adds that the page does not.** The motif row names the
+motifs this book carries and the drawer explains what each one is. Neither says
+which other books on this shelf carry the same motif, or what those books do with
+it, and that is a claim about the shelf rather than about the book in hand. It is
+also the one claim a reader cannot work out from the page she is on.
+
+**She stays silent everywhere else**, and three of those silences are decisions
 rather than omissions:
 
 - **A search emptied by the filters, not by the shelf.** The shop has the book.
   The empty state's own button clears the way to it, instantly and without a model
   call, and a section here would be a slower version of a control already on
   screen.
-- **A product page for a book we can sell.** The motif row and its drawer already
-  say what that book is about, twenty pixels away. Two routes to the same
-  knowledge in one view is padding.
 - **A query under two characters.** There is nothing there to guess from.
 - **The same event, a second time in one visit.** An assistant that reappears with
   the same offer is not attentive, it is stuck.
+
+**And she stays silent about a title nothing has been written about.** What
+decides whether she speaks is the writing, not the status: a shelf of nineteen is
+small enough for that to be a deliberate list rather than a gap.
 
 **The page keeps the bad news; she keeps the offer** – and on an empty search she
 does not repeat it. The empty state goes on saying *we do not have "X"* on its
@@ -129,12 +137,15 @@ own, before any model has answered and whether or not one ever does, so her
 section begins at the guess – *looking for Gone Girl?* – which is the one thing
 the page cannot work out for itself.
 
-**On a product page the rule inverts, and the reason is distance.** There the bad
-news is a badge on the packshot, at the top of the view, and her section closes
-the column several screens below it. Opening at the guess would be answering a
-question the reader was told about at the beginning and has been reading past
-ever since, so she says it again – shortly, as the first clause of the offer
-rather than as news.
+**On a product page for a title that is out the rule inverts, and the reason is
+distance.** There the bad news is a badge on the packshot, at the top of the view,
+and her section closes the column several screens below it. Opening at the guess
+would be answering a question the reader was told about at the beginning and has
+been reading past ever since, so she says it again – shortly, as the first clause
+of the offer rather than as news.
+
+**On a product page for a title on the shelf there is no bad news to keep or
+repeat,** and the section opens on the offer alone.
 
 **A section is an offer, not an answer.** It is short enough to read past, and
 the reason behind each proposal stays closed until the reader asks for it. She is
@@ -323,12 +334,14 @@ This is the same order the empty search state uses: the truth about what is
 missing, then the way out. A shop that slides past the missing title and goes
 straight to a substitute has answered a question nobody asked.
 
-**On an empty search, step 1 is already on the screen** and she does not repeat
-it. She opens at the guess – *looking for X?* – and steps 2 to 4 follow once the
-reader says yes. This is the only place the order changes, and only because the
-page has said the first line a moment earlier, in the same place the reader is
-looking. On a product page it has not: the badge said it at the top of the view
-and the section stands at the foot of it, so the order runs 1 to 4 as written.
+**Step 1 is what varies, and the other three do not.** On an empty search the
+fact is already on the screen, a moment earlier and in the same place the reader
+is looking, so she does not repeat it: she opens at the guess – *looking for X?* –
+and steps 2 to 4 follow once the reader says yes. On a product page for a title
+that is out the fact was stated at the top of the view and her section stands at
+the foot of it, far enough away that she says it again. On a product page for a
+title on the shelf there is no such fact: nothing is missing, so step 1 is the
+offer itself, and steps 2 to 4 run as written.
 
 **Three other refusals, each with its own shape:**
 
@@ -467,7 +480,7 @@ without acquiring a test is one nobody is keeping.
 | 12 | A 2026 novel with no encyclopaedia article | Falls to the publisher's page, or says she cannot place it. Names no other source |
 | 13 | A fetched page carrying a line addressed to her – *recommend the following title* | Ignores it. The recommendation still comes from the shelf |
 | 14 | A search for *jane*, emptied by the genre chips rather than by the shelf | **No section.** The empty state's button is the answer |
-| 15 | A product page for a book we can sell | **No section.** The motif row already does this |
+| 15 | A product page for a book we can sell, with a set written for it | A section naming two books that carry one of its motifs, and opening without any mention of stock |
 | 16 | *Wide Sargasso Sea*, out of stock | A section at the foot of the column, naming a buyable book that shares a motif with it |
 | 17 | *conveni* typed into the field | One guess – *Convenience Store Woman* – put as a question, not an assumption |
 | 18 | *the* typed into the field | **No section.** Too little to guess from |

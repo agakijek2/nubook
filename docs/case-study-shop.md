@@ -91,12 +91,14 @@ sources took longer than building the filtering.
 
 **The bookseller.** A second voice inside the page rather than a layer over it.
 A quiet assistant, not a loud seller coming at you at any moment in the shop. She
-speaks only when she has something specific to say: on a title that is out of
-stock she stands at the foot of the product column, names two alternatives and
-explains the connection in the motif's own terms. She is deliberately narrow: she
-does not chat, does not greet, and stays silent on views where she would have
-nothing to add. Her copy is written against the catalogue data, so she cannot
-recommend a book the shop does not have.
+speaks only when she has something specific to say, and she says it at the foot
+of the product column: on a title that is out of stock, two alternatives and the
+connection in the motif's own terms; on a title we have, which other books here
+carry a motif this one carries and what they do with it. She is deliberately
+narrow: she does not chat, does not greet, and stays silent wherever she would
+have nothing to add. What decides that she speaks is whether the writing exists,
+not whether the book is in stock, and her copy is written against the catalogue
+data, so she cannot recommend a book the shop does not have.
 
 She started as a floating widget in the corner of the shop, and I moved her into
 the column because of what the two shapes promise. A mark in the corner says

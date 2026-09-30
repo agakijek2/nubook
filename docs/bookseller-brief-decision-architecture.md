@@ -217,6 +217,9 @@ that is identical, which is why one document still covers both.
 
 ## 11 · When does she stay silent?
 
+> Section 15 reopened one of the four silences below and closed it the other way.
+> This section stands as it was decided; what changed is recorded there.
+
 **Missing from the proposal, and the most important rule in the step.** Three
 triggers across three views means being approached four times in one visit. The
 brief had a section on how she refuses and not a line on restraint.
@@ -398,6 +401,40 @@ whenever an answer opened.
 **What is now a component:** the section, a two-level mark, and a reason that
 opens under a proposal. The timing question never arrived - nothing appears late,
 so nothing has a moment to be judged by.
+
+---
+
+## 15 · Speaking about a book we can sell
+
+Section 11 closed this the other way, and the shape it was closed for was a
+floating widget. What reopened it is section 14: a block in the product column
+costs a reader nothing until she reaches it, and the argument against speaking
+here was an argument against interrupting.
+
+**On the table:** leave it. The motif row names what this book is about and its
+drawer explains each motif, twenty pixels away, so a second voice on the same
+page is a second route to knowledge the reader already has.
+
+**Chosen: she speaks about a title on the shelf as well, and what she adds is
+about the shelf rather than about the book.**
+The motif row says which motifs this book carries. The drawer says what each of
+them is. Neither says **which other books here carry the same one, or what those
+books do with it** - and that is the one claim on the page a reader cannot work
+out for herself, because it needs the whole shelf to answer.
+
+**What decides she speaks is the writing, not the status.** A title with a set
+written for it gets a section; a title without one gets nothing, whether it is in
+stock or not. Nineteen titles is small enough for that to be a list somebody
+chose rather than a gap somebody left.
+
+**What it cost:** the four silences of section 11 became three. The one that went
+was the strongest of them, and it went because it answered a question about
+interruption that a section in the flow does not raise.
+
+**Why not the fluent version:** letting her speak on every product page with
+something generated from the motifs would put a paragraph under every book, and a
+paragraph under every book is wallpaper. The writing is the limit, deliberately:
+it is what makes her silence mean something.
 
 ---
 
