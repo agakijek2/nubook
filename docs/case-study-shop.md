@@ -89,13 +89,39 @@ The constraint that shaped it: **a motif is not a tag.** A tag labels; a motif
 makes a claim about a book and therefore has to cite someone. Writing the
 sources took longer than building the filtering.
 
-**The bookseller.** A small assistant in the corner of the shop who speaks only
-when she has something specific to say – most visibly when a title is
-unavailable, where she names two alternatives and explains the connection in the
-motif's own terms. She is deliberately narrow: she does not chat, does not greet,
-and stays silent on views where she would have nothing to add. Her copy is
-written against the catalogue data, so she cannot recommend a book the shop does
-not have.
+**The bookseller.** A second voice inside the page rather than a layer over it.
+A quiet assistant, not a loud seller coming at you at any moment in the shop. She
+speaks only when she has something specific to say: on a title that is out of
+stock she stands at the foot of the product column, names two alternatives and
+explains the connection in the motif's own terms. She is deliberately narrow: she
+does not chat, does not greet, and stays silent on views where she would have
+nothing to add. Her copy is written against the catalogue data, so she cannot
+recommend a book the shop does not have.
+
+She started as a floating widget in the corner of the shop, and I moved her into
+the column because of what the two shapes promise. A mark in the corner says
+somebody is accompanying you through the shop, and it says it on every view,
+including the ones where she has nothing to add. What she is good at is narrower
+than that and more useful for it: she reads a book by its motifs, so she is worth
+hearing exactly where the motifs are. In the column she arrives after the
+description and the list of motifs, so the reason comes before the recommendation
+drawn from it. That is the direction wherever she goes next: built from the same
+parts as everything around her and read in the same order, completing the
+experience rather than adding a layer to it.
+
+**Where she is going.** The nineteen texts she works from are written by hand
+against the catalogue, which is honest and does not scale: a twentieth title is a
+twentieth piece of writing. The open step puts a model behind her, with the rules
+written before it and the reach deliberately short. For a title the shop does not
+stock, a lookup on our own server fetches from three named domains, keeps what
+the book is about and how it was received, and drops the plot summary before any
+model sees the text, because a plot summary is the one thing that would let her
+sound like a reader who finished the book. She is handed that text, the shelf and
+the motif vocabulary, and nothing else: no tools, no URLs, one turn, nothing
+carried forward. On the way out every title she names has to resolve to a book
+this shop actually holds. What scales is her reach, not her licence: she will be
+able to talk about a book nobody here has written about, and still recommend only
+from this shelf.
 
 **Designing the exceptions, not the happy path.** Most of the interesting work
 was in states that a demo usually skips: an empty result that says *which*
@@ -106,7 +132,7 @@ a mobile filter sheet that keeps the control that opened it visible.
 **How it was built.** I worked with an AI assistant as the implementer. Every
 design decision, every rejection, every piece of copy is mine; the assistant
 wrote the code under those decisions and was held to them by a regression suite
-(twelve test files) and by documentation audits that check the written
+(thirteen test files) and by documentation audits that check the written
 documentation against the actual stylesheet. That division let me move at a pace
 where a design decision could be seen running within minutes – and it made
 discipline mandatory, because a fast implementer with no constraints produces
@@ -125,7 +151,7 @@ apologetic, because the bookseller has a real basis for the alternative she
 offers.
 
 **A documented design system,** built alongside the shop and shipped with it –
-22 documentation tabs, 137 tokens, generated from the same stylesheet the shop
+23 documentation tabs, 136 tokens, generated from the same stylesheet the shop
 runs on. That is a case study of its own:
 [read it here](./case-study-design-system.md).
 
@@ -147,11 +173,10 @@ from the footer – and mirrored in the repository as `docs/roadmap.md`, with a
 test comparing the two so they cannot quietly part. Eight steps are closed, each
 with its own decision record. One remains:
 
-- **08 · The model behind the bookseller.** Right now her recommendations are
-  written against the catalogue by hand, which is honest but does not scale
-  past 19 titles. The next step is the model that produces them – and a written
-  account of how it does, because a shop that makes interpretive claims owes its
-  reader an explanation of where they come from.
+- **08 · The model behind the bookseller.** The lookup and the model set out
+  earlier under the bookseller, and a written account of how they work, because a
+  shop that makes interpretive claims owes its reader an explanation of where
+  they come from.
 
 Beyond the ladder, the open items are named rather than forgotten: the two
 contrast pairs, and the question of what the motif layer does when the catalogue

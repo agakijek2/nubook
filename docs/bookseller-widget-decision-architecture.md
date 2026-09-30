@@ -1,5 +1,20 @@
 # Step 06 – The bookseller in the shop
 
+> **The shape decided here has been replaced.** What this document argues for is
+> a floating widget: a mark in the corner of every view, an offer raised beside
+> it, an opened state, a way to dismiss it and a way to call it back. The
+> bookseller is now a section in the product column, at the foot of it, with no
+> corner, no delay and nothing to open. The reasoning is in
+> [`bookseller-brief-decision-architecture.md`](bookseller-brief-decision-architecture.md),
+> section 14, and the brief describes the shape that exists.
+>
+> This file stands as it was written. A decision record says what was decided at
+> the time it was decided; editing it until it agrees with today would leave a
+> document that has never been wrong and therefore says nothing about how the
+> work went. Several of the decisions below outlived the box they were made for -
+> two proposals and never three, the reason kept behind a control of its own, the
+> answer arriving a line at a time - and those are still in the shop.
+
 Decision architecture, written after the fact. Box text for FigJam is in **bold**;
 the paragraph under it is the note.
 

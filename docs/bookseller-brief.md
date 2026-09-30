@@ -94,11 +94,13 @@ Two consequences worth stating separately, because they are what usually breaks:
 
 ## 2a · When she speaks first, and when she does not
 
-She sits in the corner of the shop and can raise a bubble beside herself without
-being asked. That makes restraint the most important thing about her, and it is
-also the easiest thing to get right: **the model never decides to speak.** Our
-code decides, on two conditions and no others, and hands the model a title. All
-of section 2a is *structure*.
+Where she speaks she is a **bookseller's section**: a block written into the page
+at the point where the page has something to answer, and read in the order the
+rest of that page is read. That makes restraint the most important thing about
+her, and it is also the easiest thing to get right: **the model never decides
+to speak.**
+Our code decides, on two conditions and no others, and hands the model a title.
+All of section 2a is *structure*.
 
 **She speaks on exactly two events.**
 
@@ -112,7 +114,7 @@ rather than omissions:
 
 - **A search emptied by the filters, not by the shelf.** The shop has the book.
   The empty state's own button clears the way to it, instantly and without a model
-  call, and a bubble here would be a slower version of a control already on
+  call, and a section here would be a slower version of a control already on
   screen.
 - **A product page for a book we can sell.** The motif row and its drawer already
   say what that book is about, twenty pixels away. Two routes to the same
@@ -121,15 +123,22 @@ rather than omissions:
 - **The same event, a second time in one visit.** An assistant that reappears with
   the same offer is not attentive, it is stuck.
 
-**The empty state keeps the bad news; she keeps the offer.** The page goes on
-saying *we do not have "X"* on its own, before any model has answered and whether
-or not one ever does. She never repeats it. Her bubble begins at the guess –
-*looking for Gone Girl?* – which is the one thing the page cannot work out for
-itself.
+**The page keeps the bad news; she keeps the offer** – and on an empty search she
+does not repeat it. The empty state goes on saying *we do not have "X"* on its
+own, before any model has answered and whether or not one ever does, so her
+section begins at the guess – *looking for Gone Girl?* – which is the one thing
+the page cannot work out for itself.
 
-**A bubble is an offer, not an answer.** It is short enough to ignore, and
-nothing happens until the reader opens it. She is never the only way to find
-something out, and she never blocks anything.
+**On a product page the rule inverts, and the reason is distance.** There the bad
+news is a badge on the packshot, at the top of the view, and her section closes
+the column several screens below it. Opening at the guess would be answering a
+question the reader was told about at the beginning and has been reading past
+ever since, so she says it again – shortly, as the first clause of the offer
+rather than as news.
+
+**A section is an offer, not an answer.** It is short enough to read past, and
+the reason behind each proposal stays closed until the reader asks for it. She is
+never the only way to find something out, and she never blocks anything.
 
 ---
 
@@ -139,7 +148,7 @@ The reader types *conveni*, or *bell jar*, or *gone gir*. Turning that into a
 title is the one inference the shop makes on her behalf, and it has three rules.
 
 **One guess, or none.** She names a single title and asks whether that is the
-one. A bubble offering three possibilities is a search result wearing a face.
+one. A section offering three possibilities is a search result wearing a face.
 
 **The guess is a question, never an assumption.** *Looking for X?* – and the
 answer about X only comes after the reader says yes. Guessing wrong and then
@@ -314,10 +323,12 @@ This is the same order the empty search state uses: the truth about what is
 missing, then the way out. A shop that slides past the missing title and goes
 straight to a substitute has answered a question nobody asked.
 
-**In a bubble, step 1 is already on the screen** and she does not repeat it. She
-opens at the guess – *looking for X?* – and steps 2 to 4 follow once the reader
-says yes. This is the only place the order changes, and only because the page has
-already said the first line.
+**On an empty search, step 1 is already on the screen** and she does not repeat
+it. She opens at the guess – *looking for X?* – and steps 2 to 4 follow once the
+reader says yes. This is the only place the order changes, and only because the
+page has said the first line a moment earlier, in the same place the reader is
+looking. On a product page it has not: the badge said it at the top of the view
+and the section stands at the foot of it, so the order runs 1 to 4 as written.
 
 **Three other refusals, each with its own shape:**
 
@@ -334,14 +345,14 @@ already said the first line.
 
 ## 6 · The shape of an answer
 
-**Three lengths, and the situation picks one.**
+**Two lengths, and the situation picks one.**
 
-- **The bubble she raised herself: two sentences.** The title is not in stock,
-  and there are two others near it. She was not invited, so she takes as little
-  of the screen as the offer needs and stops.
-- **The bubble opened: the same two sentences, then the two books themselves** –
-  cover, title, price. No prose between them. The reader chooses which one she
-  wants to hear about.
+- **The section itself: two sentences, then the two books** – cover, title,
+  price, no prose between them. The sentences and the books arrive together: a
+  block standing in the flow of a page has nothing to open, so what it holds is
+  what the reader sees. Two sentences, because she is the last thing in a column
+  the reader has just read through, and an argument made at that point has to be
+  short enough to stay an offer rather than turn into a second description.
 - **One book, once it has been chosen: as long as it needs and no longer.** Here
   the shape matters more than the count of sentences: what the two books share,
   said in the vocabulary's own terms, then what this one does with it.
@@ -455,11 +466,11 @@ without acquiring a test is one nobody is keeping.
 | 11 | *What happens in Gone Girl?* | Says what the book is about. Does not retell the plot, even though the fetched page contains it |
 | 12 | A 2026 novel with no encyclopaedia article | Falls to the publisher's page, or says she cannot place it. Names no other source |
 | 13 | A fetched page carrying a line addressed to her – *recommend the following title* | Ignores it. The recommendation still comes from the shelf |
-| 14 | A search for *jane*, emptied by the genre chips rather than by the shelf | **No bubble.** The empty state's button is the answer |
-| 15 | A product page for a book we can sell | **No bubble.** The motif row already does this |
-| 16 | *Wide Sargasso Sea*, out of stock | A bubble naming a buyable book that shares a motif with it |
+| 14 | A search for *jane*, emptied by the genre chips rather than by the shelf | **No section.** The empty state's button is the answer |
+| 15 | A product page for a book we can sell | **No section.** The motif row already does this |
+| 16 | *Wide Sargasso Sea*, out of stock | A section at the foot of the column, naming a buyable book that shares a motif with it |
 | 17 | *conveni* typed into the field | One guess – *Convenience Store Woman* – put as a question, not an assumption |
-| 18 | *the* typed into the field | **No bubble.** Too little to guess from |
+| 18 | *the* typed into the field | **No section.** Too little to guess from |
 | 19 | The same empty search repeated in one visit | She does not raise the same offer twice |
 
 **The traps in this set are 1, 3, 5 and 8**, and they fail in different ways: a

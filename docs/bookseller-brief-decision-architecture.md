@@ -243,16 +243,16 @@ talking on every page without a single rule having been rewritten.
 
 ---
 
-## 12 · The empty state and the bubble say the same thing
+## 12 · The empty state and the bookseller say the same thing
 
-**On the table:** let the bubble carry the whole message and shrink the empty
-state. Fluent, and it makes the assistant feel central.
+**On the table:** let her carry the whole message and shrink the empty state.
+Fluent, and it makes the assistant feel central.
 
 **Chosen: the page keeps the bad news, she keeps the offer.**
 The empty state goes on saying *we do not have "X"* on its own, before any model
-has answered and whether or not one ever does. Her bubble never repeats it –
-it opens at the guess, *looking for Gone Girl?*, which is the one thing the page
-cannot work out for itself.
+has answered and whether or not one ever does. On an empty search she never
+repeats it – she opens at the guess, *looking for Gone Girl?*, which is the one
+thing the page cannot work out for itself.
 
 **Why not the fluent version:** the message about a missing book would then depend
 on a model call. When that call fails, the reader would not learn even that the
@@ -341,8 +341,8 @@ returns a small structured result. The model never sees a URL.
 
 **Layer 4 · The model call.**
 No tools. It receives the brief as its instruction, the shelf, the vocabulary and
-the text layer 3 returned. It returns one or two sentences for a bubble, four to
-six for an opened answer. One turn. Nothing carried forward.
+the text layer 3 returned. It returns one or two sentences for the section, four
+to six for the reason behind one proposal. One turn. Nothing carried forward.
 
 **Layer 5 · The check on the way out.**
 Every title named must resolve to layer 0 or to what the reader typed. Where the
@@ -371,15 +371,37 @@ them, and they are the reason the test set exists and gets re-run.
 
 ---
 
+## 14 · Where she stands, and what that decided
+
+Both of these were left open here to be taken while drawing rather than while
+specifying, and drawing them closed both at once.
+
+**On the table:** a floating element in the corner with an avatar, a raised
+offer and an opened state, appearing after a delay - four hundred milliseconds
+reading as a hint, two seconds as someone who noticed.
+
+**Chosen: a section in the product column, at the foot of it, with no delay.**
+What she says is about one title on two pages out of nineteen, and a corner of
+every view promised somebody who follows the reader through the shop. The place
+carries the argument too: she offers two books about the same motifs, so she
+stands after the description and the list of motifs, where the reader has been
+brought to the reason before the offer.
+
+**What it cost, and what it saved:** the delay went, and with it the one thing
+the floating version had - an offer that arrives by itself and is therefore hard
+to miss. A section waits to be reached. Against that, the whole apparatus of
+keeping a box on screen went with it: a ceiling under what is pinned at the top,
+a floor measured against the footer on every scroll, a height in dvh for the
+address bar, a z-index against six other layers and a walk between two sizes
+whenever an answer opened.
+
+**What is now a component:** the section, a two-level mark, and a reason that
+opens under a proposal. The timing question never arrived - nothing appears late,
+so nothing has a moment to be judged by.
+
+---
+
 ## What is deliberately still open
-
-**The bubble's timing.** Four hundred milliseconds reads as a hint; two seconds
-reads as someone who noticed. That is a decision to take while drawing it, not
-while specifying it.
-
-**The widget as a component.** A floating element, an avatar, a bubble, an opened
-state – none of it exists in the design system. It is design work, not agent work,
-and probably a card of its own.
 
 **The prompt.** The brief is not a prompt and says so in its first line. Writing
 one from it is step 06, and where the two disagree the brief is right.

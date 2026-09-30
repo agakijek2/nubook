@@ -25,7 +25,7 @@ function page({dark=false, reduce=false}={}){
   const st=w.document.documentElement.style;
   [['--nu-motion-quick','4ms'],['--nu-motion-base','4ms'],['--nu-motion-slower','4ms']]
     .forEach(([k,v])=>st.setProperty(k,v));
-  w.eval(js+'\n;window.__S=DS_SECTIONS;window.__SC=dsScheme;window.__TYPE=bsType;');
+  w.eval(js+'\n;window.__S=DS_SECTIONS;window.__SC=dsScheme;window.__TYPE=bsType;window.__HEX=dsHex;window.__HEXOF=dsHexOf;');
   return w;
 }
 
@@ -33,11 +33,15 @@ function page({dark=false, reduce=false}={}){
       schemes, and the number matches one computed separately. */
 const EXPECTED={
   light:{'fg-primary / bg-primary':'18.26','fg-secondary / bg-primary':'4.81',
-    'fg-secondary / bg-secondary':'4.26','fg-tertiary / bg-primary':'2.43',
+    'fg-secondary / bg-secondary':'4.26',
+    'fg-primary / bg-tertiary':'17.19','fg-secondary / bg-tertiary':'4.53',
+    'fg-tertiary / bg-primary':'2.43',
     'fg-inverse / bg-inverse':'18.26','fg-warning / bg-primary':'8.08',
     'fg-alert / bg-primary':'6.54','fg-highlight / bg-highlight':'5.70'},
   dark:{'fg-primary / bg-primary':'16.17','fg-secondary / bg-primary':'7.50',
-    'fg-secondary / bg-secondary':'6.46','fg-tertiary / bg-primary':'3.80',
+    'fg-secondary / bg-secondary':'6.46',
+    'fg-primary / bg-tertiary':'15.09','fg-secondary / bg-tertiary':'7.00',
+    'fg-tertiary / bg-primary':'3.80',
     'fg-inverse / bg-inverse':'16.17','fg-warning / bg-primary':'6.09',
     'fg-alert / bg-primary':'5.89','fg-highlight / bg-highlight':'5.70'}};
 const BELOW_AA={light:2, dark:1};
@@ -48,7 +52,26 @@ for (const scheme of ['light','dark']){
   el.innerHTML=w.__S.find(s=>s.id==='a11y').body();
   const table=[...el.querySelectorAll('table')].find(t=>t.className.includes('tok-table'));
   const rows=[...table.querySelectorAll('tbody tr')];
-  if (rows.length!==8) fail('contrast rows:', rows.length, '(8 expected)');
+  if (rows.length!==10) fail('contrast rows:', rows.length, '(10 expected)');
+  /* A ground built by mixing two others has to resolve, or its row says nothing
+     and the table quietly stops covering it. Checked on a mix that is not half
+     and half: --nu-bg-tertiary is 50/50, so it comes out the same whichever way
+     round the two are taken, and a reversed ratio would pass unseen. The
+     secondary action's ground is 6%, where the two differ by a mile. */
+  const mixed = {light:'fafafa', dark:'383838'}[scheme];
+  const got = w.__HEX('--nu-bg-action-secondary');
+  if (got !== mixed) fail(scheme, 'a colour mixed 6/94 resolves to', got, 'instead of', mixed);
+  /* And a mix with transparent stays unresolved, because what it comes to
+     depends on whatever is behind it. */
+  if (w.__HEX('--nu-bg-scrim') !== null) fail(scheme, 'an alpha resolved to a flat colour, which it cannot be');
+  /* And none of it may depend on how the stylesheet happens to be wrapped. The
+     same value is put in twice, once on one line and once across three: a
+     splitter that cuts at the first comma it meets gets the second right by
+     accident, because a newline stops it, and the first one wrong. */
+  const jedna = 'light-dark(color-mix(in srgb, #ffffff 50%, #000000), color-mix(in srgb, #000000 50%, #ffffff))';
+  const trzy  = 'light-dark(\n  color-mix(in srgb, #ffffff 50%, #000000),\n  color-mix(in srgb, #000000 50%, #ffffff))';
+  if (w.__HEXOF(jedna) !== w.__HEXOF(trzy) || w.__HEXOF(jedna) !== '808080')
+    fail(scheme, 'wrapping changes the answer:', w.__HEXOF(jedna), 'on one line,', w.__HEXOF(trzy), 'across three');
   let below=0;
   for (const tr of rows){
     const pair=tr.children[0].textContent.trim(), cell=tr.children[1].textContent.trim();

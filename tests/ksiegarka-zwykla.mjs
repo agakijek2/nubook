@@ -21,7 +21,8 @@ const r=d.documentElement.style;
  ['--nu-motion-slower','4ms'],['--nu-motion-hold','60ms']].forEach(([k,v])=>r.setProperty(k,v));
 w.eval(fs.readFileSync(D+'js/app.js','utf8')
   +'\n;window.__B=BOOKS;window.__pick=bsPick;window.__render=renderProduct;'
-  +'window.__off=bsOffer;window.__slow=BS_SLOW;window.__lines=bsLines;');
+  +'window.__off=bsOffer;window.__slow=BS_SLOW;window.__lines=bsLines;'
+  +'window.__M=MOTIFS;window.__esc=escTitles;');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let bad=0;
 const chk=(ok,what)=>{ console.log((ok?'  OK  ':'  FAIL'),what); if(!ok) bad++; };
@@ -98,6 +99,36 @@ chk(again.textContent.trim().length>0, 'and the text is still standing there');
   chk(ls.length===2, `two lines measured (found ${ls.length})`);
   chk(ls[0].length===3, `the first line has three words (has ${ls[0].length})`);
   chk(ls[1].length===2, `the second has two (has ${ls[1].length})`);
+}
+
+/* The notes about where a motif comes from are the one place in the shop where
+   a title is set in italic, and the italic is written into the data the way it
+   is written in a plain text file - between asterisks. Nothing turned those into
+   type for a long time, so fifteen notes showed the asterisks themselves. What
+   is checked here is that they reach the page as type and that nothing else in
+   the note does: a note is prose from a data file, and prose from a data file
+   that can carry markup is prose that can carry anything. */
+{
+  const keys=Object.keys(w.__M).filter(k=>w.__M[k].origin);
+  chk(keys.length>10, `motifs with a note about their origin: ${keys.length}`);
+  let asterisks=0, italics=0, plItalics=0;
+  for (const k of keys){
+    const en=w.__esc(w.__M[k].origin.en), pl=w.__esc(w.__M[k].origin.pl);
+    if (/\*/.test(en) || /\*/.test(pl)) asterisks++;
+    italics += (en.match(/<em>/g)||[]).length;
+    plItalics += (pl.match(/<em>/g)||[]).length;
+  }
+  chk(asterisks===0, `no note reaches the page with an asterisk still in it (${asterisks})`);
+  chk(italics>=15, `titles set in italic in the English notes: ${italics}`);
+  /* Polish sets a title in quotation marks whatever kind of work it is, so a
+     Polish note turning up in italic would mean the convention had been copied
+     across from the English rather than written for Polish. */
+  chk(plItalics===0, `and none in the Polish ones, which use quotation marks (${plItalics})`);
+  /* A note is escaped before the asterisks are read, so a note cannot bring
+     markup of its own. */
+  const probe=w.__esc('<script>x</script> *A* & <b>');
+  chk(!/<script|<b>/.test(probe) && /<em>A<\/em>/.test(probe),
+      `a note cannot bring markup of its own (${probe})`);
 }
 
 console.log(bad ? '\nFAILURES: '+bad : '\nRESULT: the answer is visible without slow mode too');

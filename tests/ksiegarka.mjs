@@ -18,7 +18,7 @@ const r=d.documentElement.style;
  ['--nu-motion-slow','4ms'],['--nu-motion-slower','4ms'],['--nu-motion-hold','60ms'],
  ['--nu-motion-stagger','20ms']].forEach(([k,v])=>r.setProperty(k,v));
 w.eval(fs.readFileSync(D+'js/app.js','utf8')
-  +'\n;window.__B=BOOKS;window.__pick=bsPick;window.__render=renderProduct;window.__said=bsSaid;window.__i18n=I18N;');
+  +'\n;window.__B=BOOKS;window.__pick=bsPick;window.__render=renderProduct;window.__said=bsSaid;window.__i18n=I18N;window.__OFF=bsOffer;window.__L=l=>{LANG=l};');
 const dot=()=>d.querySelector('.bs-dot');
 const R=()=>[...d.querySelectorAll('.bs-why')];
 const B=n=>d.getElementById('bsText'+n);
@@ -30,7 +30,10 @@ let bad=0; const chk=(c,m)=>{ console.log((c?'  OK   ':'  FAIL ')+m); if(!c) bad
    about to be replaced. */
 await sleep(300);
 const book=w.__B.find(b=>b.s==='out');
-const inStock=w.__B.find(b=>b.s!=='out');
+/* A title she has nothing written about. The trigger is the writing, not the
+   status, so this has to be chosen by what BOOKSELLER holds rather than by
+   whether the book is in stock. */
+const mute=w.__B.find(b=>!w.__OFF(b));
 console.log('unavailable title:', book.t);
 
 /* 1. Where she stands. The section closes the product column. What she offers
@@ -65,9 +68,53 @@ chk(sec && !!sec.querySelector('.bs-dot'), 'and the mark stands beside the name'
    place kept for the one thing this view offers, holding something that does
    nothing. */
 chk(!d.querySelector('.p-cta'), 'an unavailable title has no button at all');
-w.__render(inStock);
+w.__render(mute);
 chk(!!d.querySelector('.p-cta'), 'a title in stock still has one');
-chk(!d.querySelector('.p-info .bs'), 'and the bookseller says nothing there');
+chk(!d.querySelector('.p-info .bs'), 'and she says nothing about a title nothing was written about');
+
+/* She also speaks about a title that is on the shelf, where what she adds is
+   not a substitute but two more books on a motif this one carries. The opening
+   sentence is the one thing that differs: telling a reader a book is missing
+   when it is not would be worse than saying nothing. */
+{
+  const spoken=w.__B.filter(b=>w.__OFF(b));
+  chk(spoken.length>2, `titles she has something to say about: ${spoken.length}`);
+  const inStock=spoken.find(b=>b.s!=='out');
+  chk(!!inStock, 'at least one of them is on the shelf');
+  /* Both languages. A sentence is written twice, so it can be wrong once - and
+     the wrong one is the one nobody is reading at the time. */
+  for (const lang of ['en','pl']){
+    w.__L(lang);
+    w.__render(inStock);
+    const say=(d.querySelector('.bs-say')||{}).textContent||'';
+    chk(!!d.querySelector('.p-info .bs'), `${lang}: she speaks on ${inStock.t}, which is in stock`);
+    chk(!!d.querySelector('.p-cta'), `${lang}: and the button to buy it is still there`);
+    /* The whole sentence, not a fragment of it: a check on a fragment passes
+       while something else is bolted on in front of it. */
+    /* The dictionary marks a title for italic with asterisks; what reaches the
+       page is the italic, so the expected text is the sentence without them. */
+    const want=w.__i18n[lang].bsHere.replace('%s', lang==='pl' ? inStock.tp : inStock.t).replace(/\*/g,'');
+    chk(say.trim()===want,
+        `${lang}: the opening is the sentence written for a title on the shelf (${say.slice(0,50)})`);
+    chk(!/do not have|nie mamy/.test(say), `${lang}: and never says it is missing`);
+    /* Measured on this render and not the next one. Written after the page had
+       been rebuilt for the unavailable title, the count came from that sentence
+       instead, and it has a title of its own - so the check passed whatever was
+       done to the one being tested. */
+    const emHere=[...d.querySelectorAll('.bs-say em')].length;
+    chk(lang==='en' ? emHere===1 : emHere===0,
+        `${lang}: the title is ${lang==='en' ? 'set in italic' : 'in quotation marks, so no italic'} (${emHere})`);
+    chk(!say.includes('*'), `${lang}: and no asterisk reaches the page`);
+    w.__render(book);
+    const outSay=(d.querySelector('.bs-say')||{}).textContent||'';
+    chk(/do not have|nie mamy/.test(outSay), `${lang}: on a title that is out she still says so`);
+    chk(!outSay.includes('*'), `${lang}: nor in the sentence about a title that is out`);
+    const emOut=[...d.querySelectorAll('.bs-say em')].length;
+    chk(lang==='en' ? emOut===1 : emOut===0,
+        `${lang}: and that title is set the same way (${emOut})`);
+  }
+  w.__L('en');
+}
 
 /* 3. An answer arrives. */
 w.__render(book);

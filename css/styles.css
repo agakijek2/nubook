@@ -337,12 +337,12 @@
        shares its row with a title and a price, and a row where only the text grows
        stops belonging to the cover at all. */
     --nu-thumb-size-sm:2.75rem;  --nu-thumb-size-md:4rem;
-    /* A round mark standing for a person: the author in her drawer, the
-       bookseller in her corner. Two sizes, because the drawer has a column to
-       fill and the corner has to stay out of the way. In rem like the thumbnail
-       and for the same reason - the mark shares its box with type, and a box
-       where only the text grows stops belonging to the mark inside it. */
-    --nu-avatar-size-sm:3rem;    --nu-avatar-size-md:6rem;
+    /* A round mark standing for a person: the author, in her drawer. One size
+       and therefore no step in the name - a second name would promise a scale
+       that one mark cannot have. In rem like the thumbnail and for the same
+       reason: the mark shares its box with type, and a box where only the text
+       grows stops belonging to the mark inside it. */
+    --nu-avatar-size:6rem;
     /* The stepper's button, sized by the icon it holds rather than by a finger:
        the icon is in rem, so the button has to be too, or the two drift apart the
        moment a reader enlarges text. WCAG asks for 24x24 CSS px, which this clears
@@ -1123,9 +1123,14 @@
      be illegible for a moment; a filled shape cannot afford to be a smudge, and
      at the step words use its ground and its shadow spread into one another
      instead of softening. Same reason as the grid: what is a picture rather than
-     a sentence stays recognisable on the way in. */
-  .p-cta.p-enter-cta{opacity:0;filter:blur(var(--nu-blur-sm));transform:translateY(var(--nu-space-nano))}
-  .p-cta.p-enter-cta-in{
+     a sentence stays recognisable on the way in.
+     The bookseller's section arrives on the same step and for the same reason:
+     it has a ground of its own, and a tinted block softened at the step words
+     take loses its edge before it has one. */
+  .p-cta.p-enter-cta,
+  .bs.p-enter-cta{opacity:0;filter:blur(var(--nu-blur-sm));transform:translateY(var(--nu-space-nano))}
+  .p-cta.p-enter-cta-in,
+  .bs.p-enter-cta-in{
     opacity:1;filter:blur(0);transform:none;
     transition:opacity var(--nu-motion-slow) ease var(--nu-motion-slow),
                filter var(--nu-motion-slow) ease var(--nu-motion-slow),
@@ -1192,7 +1197,7 @@
   }
   .drawer-close{position:absolute;top:var(--nu-space-medium);right:var(--nu-space-medium)}
   .d-ava{
-    width:var(--nu-avatar-size-md);height:var(--nu-avatar-size-md);border-radius:50%;
+    width:var(--nu-avatar-size);height:var(--nu-avatar-size);border-radius:50%;
     background:var(--nu-bg-secondary);border:1px solid var(--nu-border-neutral);
     display:inline-flex;align-items:center;justify-content:center;
     font:var(--nu-type-body-l);letter-spacing:var(--nu-tracking-compact);color:var(--nu-fg-primary);
@@ -1651,7 +1656,11 @@
   .bs{
     background:var(--nu-bg-tertiary);
     padding:var(--nu-space-small);
-    margin-top:var(--nu-space-medium);
+    /* The same distance the button keeps from the list of details above it, so
+       the last two blocks of the column are spaced alike rather than each by its
+       own decision. It comes from the list's own bottom margin, which is what
+       sets that first gap. */
+    margin-top:var(--nu-space-large);
   }
   /* Who is speaking, said in words. The panel could leave that to a face in the
      corner; a section in the flow of a page has no corner to point at. */
@@ -1788,8 +1797,10 @@
   /* The core, lit. */
   .bs-dot::before{background:var(--nu-bg-ava-dot-bloom)}
   /* The halo, at the strength a breath reaches. Five rings from the core
-     outwards, the last one reaching the rim of the avatar, so the light stops
-     where the ground does.
+     outwards, each one wider than the last, the outermost at 26px. The rings
+     are sized against the dot alone: the mark stands on the section's own
+     ground, with no edge for the light to stop at, so the falloff is what ends
+     it.
 
      A box-shadow and not a filter, on the logotype's reasoning: a filter
      rasterises the element it runs on, and at eight pixels across that shows as

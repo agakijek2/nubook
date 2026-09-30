@@ -3,6 +3,7 @@
    played backwards. This suite watches the things nobody sees until somebody
    breaks them: that no blur strength is typed by hand, that both modal
    backdrops do the same thing, and that the return has all three safeguards. */
+import { JSDOM } from 'jsdom';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 const D = fileURLToPath(new URL('../', import.meta.url));
@@ -16,10 +17,18 @@ const chk=(c,m)=>{ console.log((c?'  OK   ':'  FAIL ')+m); if(!c) bad++; };
 
 /* the helper looks for a selector and its brace regardless of line breaks,
    because selectors in this sheet are sometimes written across several lines */
+/* One selector may share its rule with others, and a lookup anchored on the
+   brace finds only the last of a group. So the sheet is read rule by rule and
+   every selector in the group is matched separately: a pattern that misses a
+   grouped rule reports a declaration as absent when it is right there, which is
+   the kind of failure that sends somebody looking in the wrong file. */
 const rule = sel => {
-  const re=new RegExp('(^|[},])\\s*'+sel.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\s*\\{([^}]*)\\}','m');
-  const m=nocom.match(re);
-  return m ? m[2].replace(/\s+/g,' ').trim() : null;
+  const norm = t => t.replace(/\s+/g,' ').trim();
+  for (const m of nocom.matchAll(/([^{}]+)\{([^{}]*)\}/g)){
+    if (m[1].split(',').some(one => norm(one) === norm(sel)))
+      return norm(m[2]);
+  }
+  return null;
 };
 
 /* 1. the scale exists and has its steps */
@@ -90,11 +99,20 @@ for (const [sel, name] of [['.p-info.p-enter-in','the information'],
 /* One distance for the whole entrance: a bookseller's line, a card in the grid,
    the title and the button all rise by the same step, so one distance means one
    thing. */
-for (const sel of ['.p-info.p-enter','.p-cta.p-enter-cta']){
+/* The bookseller's section closes the column and arrives on the same step as the
+   button, because from the reader's side they are one thing: the last block of
+   the page. It takes the weaker blur for its own reason - it has a ground, and a
+   tinted block softened as hard as a sentence loses its edge before it has one. */
+chk(/filter:blur\(var\(--nu-blur-sm\)\)/.test(rule('.bs.p-enter-cta')||''),
+    'the section: entrance at the step for a shape, as the button takes');
+chk(/filter:blur\(0\)/.test(rule('.bs.p-enter-cta-in')||''),
+    'and it sharpens by transition too');
+
+for (const sel of ['.p-info.p-enter','.p-cta.p-enter-cta','.bs.p-enter-cta']){
   const r=rule(sel)||'';
   chk(/transform:translateY\(var\(--nu-space-nano\)\)/.test(r), `${sel}: rises by a step from the scale`);
 }
-for (const sel of ['.p-info.p-enter-in','.p-cta.p-enter-cta-in']){
+for (const sel of ['.p-info.p-enter-in','.p-cta.p-enter-cta-in','.bs.p-enter-cta-in']){
   const r=rule(sel)||'';
   chk(/transform:none/.test(r) && /transition:[\s\S]*transform/.test(r),
       `${sel}: arrives in place by transition`);
@@ -143,6 +161,40 @@ chk(!/border/.test(rule('.bs')||''),
     'and by that alone: a fill and an outline together would make a box of it');
 chk(!/overflow-y:\s*auto/.test(rule('.bs-list')||''),
     'the list has no scroll of its own: the page is what scrolls now');
+
+/* And the Motion tab says what moves, which after that is one thing: the breath
+   while an answer arrives. A row about a panel coming up from under a mark, or
+   about one walking between two sizes, would be describing an animation the
+   stylesheet no longer holds - and a table of transitions is exactly where such
+   a row survives longest, because nothing renders it wrong. */
+{
+  /* The stylesheet goes in with the markup. The scale table is built by reading
+     each token's value off the page and dropping any row whose value comes back
+     empty, so without the sheet that table renders as nothing at all - and a
+     check reading the tab's text would then pass over whatever the table says,
+     however wrong. Found by putting a wrong sentence back and watching this go
+     green. */
+  const dom2=new JSDOM(
+    fs.readFileSync(D+'index.html','utf8').replace('</head>','<style>'+css+'</style></head>'),
+    {runScripts:'outside-only',url:'http://localhost/',pretendToBeVisual:true});
+  const w2=dom2.window, d2=w2.document;
+  w2.matchMedia=q=>({matches:false,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}});
+  w2.scrollTo=()=>{}; w2.Element.prototype.scrollTo=()=>{};
+  w2.HTMLElement.prototype.animate=function(){return{finished:Promise.resolve(),cancel(){},addEventListener(){}};};
+  w2.eval(fs.readFileSync(D+'js/app.js','utf8')+'\n;window.__S=DS_SECTIONS;window.__L=l=>{LANG=l};');
+  for (const lang of ['en','pl']){
+    w2.__L(lang);
+    const e=d2.createElement('div');
+    e.innerHTML=w2.__S.find(s=>s.id==='motion').body();
+    const t=e.textContent;
+    chk(!/\bpanel\b|dymek|dymka|dymku/i.test(t),
+        `${lang}: the Motion tab names no panel of hers`);
+    chk(!/pause before|zwłoka przed/i.test(t),
+        `${lang}: nor a pause before she speaks, there being none`);
+    chk(/breath|oddech/i.test(t),
+        `${lang}: and the breath is still described, because the Bookseller tab sends the reader here for it`);
+  }
+}
 
 /* 7. the strapline inverting under the block, and the search field that does
    not. It works only while scrolled and only on an idle field: a typed query

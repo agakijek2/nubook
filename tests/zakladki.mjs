@@ -183,13 +183,8 @@ for (const lang of ['pl','en']){
      here rather than passed over, so that the next one has to be argued for:
      .ico-back and .ico-minus are how the script spells two of the icon
      constants, and .bar-top is the filter icon's upper stroke, named only so
-     that the one below it - which does move - is not a lone labelled path.
-     .bs-ava is different: it is debt. The bookseller's avatar was taken out of
-     the shop when she became a section in the product column, and the Avatar tab
-     still documents it in a specimen and in six rows of its specification. The
-     tab has not been rewritten yet, and this line is what stops that being
-     forgotten. */
-  ['ico-back','ico-minus','bar-top','bs-ava'].forEach(c=>known.add(c));
+     that the one below it - which does move - is not a lone labelled path. */
+  ['ico-back','ico-minus','bar-top'].forEach(c=>known.add(c));
   const seen=new Map();
   w.__L('en');
   for (const s of S){

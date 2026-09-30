@@ -42,7 +42,7 @@ Underneath that, three positions I took and had to defend repeatedly:
 
 ## Process
 
-**Three-tier tokens, 137 of them.** Primitive (holds a value), semantic (names a
+**Three-tier tokens, 136 of them.** Primitive (holds a value), semantic (names a
 role, points down), component (belongs to one component). Steps are named after
 the job they do rather than after a number, so a value can move between steps
 without renaming a single rule. Colour primitives and text sizes are the
@@ -57,8 +57,8 @@ change updates the verdict rather than leaving a stale number. A token added to
 `:root` appears in the inventory on its own; one whose prefix matches no category
 lands in a visible "not sorted yet" group rather than disappearing.
 
-**Twenty-two tabs** across four groups: five that describe the project itself
-(overview, roadmap, documents, accessibility, tokens), four Foundations, ten
+**Twenty-three tabs** across four groups: five that describe the project itself
+(overview, roadmap, documents, accessibility, tokens), four Foundations, eleven
 Components, three Patterns. Each component tab follows the same structure – specimen,
 variants table, specification, states, live preview – so comparing two
 components is a matter of looking, not reading.
@@ -162,13 +162,13 @@ tests that hold it.
 ## Outcomes
 
 **A system the shop actually runs on.** Not a library beside the product: the
-same stylesheet, the same tokens, one source. 137 tokens, 22 documented tabs,
+same stylesheet, the same tokens, one source. 136 tokens, 23 documented tabs,
 four button variants, a documented motion scale with reasoned curves.
 
 **Documentation that is provably current.** The generated parts cannot drift by
-construction. The written parts are covered by twelve test suites and a repeatable
-audit that has now been run on four tabs, with every finding either fixed in the
-text or fixed in the code.
+construction. The written parts are covered by thirteen test suites and a
+repeatable audit, run tab by tab, with every finding either fixed in the text or
+fixed in the code.
 
 **Four written procedures, in two languages,** for auditing the documentation
 against the shop, adding a tab, building a new view, and writing the Polish.

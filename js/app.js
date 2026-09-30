@@ -332,6 +332,20 @@ const motifIds = b => b.m || [];
    those from data, because one changes with the currency and the other with the
    stockroom. */
 const BOOKSELLER = {
+  "The Handmaid's Tale": [
+    { title:"Kim Jiyoung, Born 1982", text:{
+      pl:`<p>Obie książki wzięły ten sam motyw i rozeszły się z nim tak daleko, jak to możliwe.</p>
+        <p><strong>ciało do rodzenia</strong> &ndash; u Atwood układ, który decyduje, do czego służy ciało zdolne rodzić, jest widoczny: ma nazwę, ceremonię i strój. U Cho Nam-Joo nie ma ani nazwy, ani ceremonii. Jest rozmowa z teściową, zdanie lekarza, wyliczenie, czyja pensja mniej się opłaca. Rodzenie przestaje być własną sprawą Kim Dzijong dokładnie tak samo, tylko nikt tego nigdzie nie ogłosił.</p>
+        <p>Atwood pisze, co by było, gdyby ten porządek postawić na widoku. Cho Nam-Joo pisze, że stoi niewidoczny i działa. Jeśli po Gileadzie zostaje pytanie, na ile to przesada, to jest książka, która na nie odpowiada.</p>`,
+      en:`<p>The two books take the same idea and carry it as far apart as it will go.</p>
+        <p><strong>the childbearing body</strong> &ndash; in Atwood the arrangement that decides what a body capable of bearing is for is out in the open: it has a name, a ceremony and a uniform. In Cho Nam-Joo it has none of those. It is a mother-in-law's question, a doctor's sentence, an arithmetic about whose salary is worth less. Childbearing stops being Kim Jiyoung's own business in exactly the same way, and nobody announced it.</p>
+        <p>Atwood writes what it would look like if that order were made visible. Cho Nam-Joo writes that it is invisible and working. If Gilead leaves you wondering how much of it is exaggeration, this is the book that answers.</p>`}},
+    { title:"The Power", text:{
+      pl:`<p><strong>kto patrzy</strong> &ndash; u Atwood pozycja patrzącego jest przypisana na stałe. Oczy są instytucją, a Offred dowiaduje się o sobie z cudzej miny i z tego, ile wolno jej zobaczyć spod skrzydeł czepka. Alderman tę pozycję zabiera i oddaje drugiej stronie.</p>
+        <p>To nie jest zamiana ról dla efektu. Powieść pyta, co zostaje z przemocy, kiedy zmienia właściciela, i odpowiada, że zostaje przemoc. Czytana zaraz po Opowieści podręcznej zmienia ją w coś innego: dystopia Atwood mówi, co robi się kobietom, a Siła pyta, czy to jest opowieść o kobietach, czy o władzy.</p>`,
+      en:`<p><strong>who is looking</strong> &ndash; in Atwood the position of the one who looks is assigned and fixed. The Eyes are an institution, and Offred learns about herself from other people's faces and from however much the wings of her bonnet let her see. Alderman takes that position away and hands it to the other side.</p>
+        <p>This is not a swap of roles for effect. The novel asks what is left of violence when it changes hands, and answers that what is left is violence. Read straight after The Handmaid's Tale it turns that book into a different one: Atwood's dystopia says what is done to women, and this one asks whether the story was about women or about power.</p>`}},
+  ],
   "Wide Sargasso Sea": [
     { title:"Jane Eyre", text:{
       pl:`<p>Powieść Jean Rhys jest prequelem i odpowiedzią właśnie na tę książkę, więc obie niosą te same dwa motywy.</p>
@@ -385,7 +399,8 @@ const I18N = {
     coverAlt:"Cover of", qtyLess:"Decrease quantity", qtyMore:"Increase quantity",
     strap:"novels on women & gender", logoHome:"nubook \u2014 home",
     motifs:"Motifs", motif:"Motif", motifOrigin:"Where the term comes from", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
-    bsGone:"We do not have “%s” in stock at the moment.", bsOffer:"But if that is the book you came for, there are two here I would put beside it.",
+    bsGone:"We do not have *%s* in stock at the moment.", bsOffer:"But if that is the book you came for, there are two here I would put beside it.",
+    bsHere:"If the motif *%s* takes up is what interests you, two more titles here take it up as well, each in a way of its own.",
     bsAva:"The bookseller", bsWhy:"Why this one",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
     searchPh:"Search by title or author", searchClear:"Clear",
@@ -451,6 +466,7 @@ const I18N = {
        leaves the quoted title standing beside it, so no book needs a second
        form of its own name. */
     bsGone:"Niestety, tytułu „%s” nie mamy dziś na stanie.", bsOffer:"Ale skoro interesuje Cię ten tytuł, gorąco polecam dwa inne, o podobnych motywach.",
+    bsHere:"Jeśli zainteresował Cię motyw, który książka „%s” podejmuje, polecam dwa inne tytuły, które również to robią, na swój unikatowy sposób.",
     bsAva:"Księgarka", bsWhy:"Dlaczego akurat ta",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
     searchPh:"Szukaj tytułu lub autorki", searchClear:"Wyczyść",
@@ -583,6 +599,16 @@ function savePrefs(){
 /* The query is written into the page, so it stops being text the moment it
    contains a bracket. One escape for the whole file. */
 const escHTML = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+/* The notes about where a motif comes from are written the way a source is
+   written in prose: the title of a book or a journal in italic, the title of an
+   article in quotation marks. The italic is marked the way it is marked in a
+   plain text file, between asterisks, and this is what turns it into type. It
+   escapes first, so a note stays text and cannot bring markup of its own; only
+   the pairs of asterisks become elements afterwards.
+   The Polish notes carry no asterisks and need none: Polish sets a title in
+   quotation marks whatever kind of work it is, so the convention is already on
+   the page there. This is the English one arriving. */
+const escTitles = t => escHTML(t).replace(/\*([^*]+)\*/g, "<em>$1</em>");
 const fold = s => (s || "")
   .toLowerCase()
   .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -1107,21 +1133,26 @@ gridEl.addEventListener("keydown", e=>{ if (e.key === "Enter" || e.key === " ") 
 function playOpenTransition(){
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const info  = productEl.querySelector(".p-info");
-  const cta   = productEl.querySelector(".p-cta");
+  /* What closes the column arrives after the rest of it: the button, and the
+     bookseller's section where there is one. Both on the same step, because
+     from the reader's side they are one thing - the last block of the page,
+     arriving once the page it belongs to is there. On a title that is out the
+     section holds that place alone, the button having nothing to offer. */
+  const last  = [...productEl.querySelectorAll(".p-cta, .bs")];
   const ptile = productEl.querySelector(".p-tile");
   const from = openFrom; openFrom = null;
 
   const revealInfo = ()=>{
     if (!info || reduce) return;
     info.classList.add("p-enter");
-    if (cta) cta.classList.add("p-enter-cta");
+    last.forEach(el => el.classList.add("p-enter-cta"));
     void info.offsetWidth;
     requestAnimationFrame(()=>{
       info.classList.add("p-enter-in");
-      if (cta) cta.classList.add("p-enter-cta-in");
+      last.forEach(el => el.classList.add("p-enter-cta-in"));
       setTimeout(()=>{
         info.classList.remove("p-enter","p-enter-in");
-        if (cta) cta.classList.remove("p-enter-cta","p-enter-cta-in");
+        last.forEach(el => el.classList.remove("p-enter-cta","p-enter-cta-in"));
       }, 1000);
     });
   };
@@ -1247,7 +1278,7 @@ function fillDrawer(){
       <p class="d-bio">${m.text[LANG]}</p>
       <div class="d-origin">
         <div class="d-label">${t.motifOrigin}</div>
-        <p class="d-note">${m.origin[LANG]}</p>
+        <p class="d-note">${escTitles(m.origin[LANG])}</p>
       </div>`;
     return;
   }
@@ -2019,6 +2050,18 @@ function bsSection(b){
   const t = T(), offer = bsOffer(b);
   if (!offer) return "";
   bsBook = b;
+  /* Two openings, because there are two reasons for her to speak. On a title
+     that is out she is a substitute and has to say so first; on one that is on
+     the shelf she is an addition, and opening with bad news that is not true
+     would be worse than saying nothing. The rest of the block is the same, and
+     deliberately: what follows is two books on a shared motif either way. */
+  /* The title goes in marked for italic, the way a title is marked everywhere
+     else the shop writes one: asterisks in the string, turned into type on the
+     way to the page. English only - the Polish sentences put a title in
+     quotation marks, which needs nothing doing to it. */
+  const say = b.s === "out"
+    ? t.bsGone.replace("%s", titleOf(b)) + " " + t.bsOffer
+    : t.bsHere.replace("%s", titleOf(b));
   const items = offer.map((o, i) => {
     const st = o.book.s ? STATUS[o.book.s] : null;
     /* Price and availability arrive together, as two short clauses rather than
@@ -2044,7 +2087,7 @@ function bsSection(b){
      other time, which is the whole of what the breath means. */
   return `<section class="bs" aria-labelledby="bsWho">
       <p class="bs-head"><span class="bs-dot" aria-hidden="true"></span><span class="bs-who" id="bsWho">${t.bsAva}</span></p>
-      <p class="bs-say">${escHTML(t.bsGone.replace("%s", titleOf(b)))} ${escHTML(t.bsOffer)}</p>
+      <p class="bs-say">${escTitles(say)}</p>
       <div class="bs-list">${items}</div>
     </section>`;
 }
@@ -2117,7 +2160,7 @@ function bsType(box, html, done){
     lines[i++].forEach(w => w.classList.add("is-in"));
     bsTypeTimer = setTimeout(step, per);
   }
-  /* The first line waits one interval too, so the panel has a head start on the
+  /* The first line waits one interval too, so the block has a head start on the
      room it is opening and the words come into ground that is already theirs
      rather than racing it. */
   bsTypeTimer = setTimeout(step, per);
@@ -2480,13 +2523,59 @@ function dsScheme(){
    between them, and the choice is made here for the same reason: the engine
    would hand back a colour, and a colour no longer knows which primitive it
    came from. Returns null for anything that does not end at a plain hex. */
+/* The arguments of one CSS function, split at the commas that belong to it and
+   not at the ones inside whatever it holds. Returns null when the text is not a
+   call to that function at all. */
+function dsArgs(v, name){
+  const head = name + "(";
+  if (v.slice(0, head.length).toLowerCase() !== head) return null;
+  if (!v.endsWith(")")) return null;
+  const inner = v.slice(head.length, -1);
+  const out = []; let depth = 0, start = 0;
+  for (let i = 0; i < inner.length; i++){
+    const c = inner[i];
+    if (c === "(") depth++;
+    else if (c === ")") depth--;
+    else if (c === "," && depth === 0){ out.push(inner.slice(start, i).trim()); start = i + 1; }
+  }
+  out.push(inner.slice(start).trim());
+  return out;
+}
 function dsHexOf(raw, depth){
   const v = (raw || "").trim();
   if ((depth || 0) > 6) return null;
-  const pair = v.match(/^light-dark\(\s*(.+?)\s*,\s*(.+?)\s*\)$/);
-  if (pair) return dsHexOf(dsScheme() === "dark" ? pair[2] : pair[1], (depth || 0) + 1);
+  /* Split at the comma that belongs to light-dark itself, counting brackets on
+     the way. A pattern splitting at the first comma it meets cuts a nested
+     color-mix in half - and it did, silently: where the two values sat on
+     separate lines the pattern could not cross the newline and backtracked onto
+     the right comma by accident, so the same token resolved or did not
+     depending on how the stylesheet happened to be wrapped. */
+  const pair = dsArgs(v, "light-dark");
+  if (pair && pair.length === 2)
+    return dsHexOf(dsScheme() === "dark" ? pair[1] : pair[0], (depth || 0) + 1);
   const ref = v.match(/^var\(\s*(--[\w-]+)\s*\)$/);
   if (ref) return dsHex(ref[1], (depth || 0) + 1);
+  /* A token can also be built by mixing two others, and one of those carries
+     text: the ground the bookseller's section stands on is the panel and the
+     page, half and half. Resolved here rather than left to the engine, on the
+     same reasoning as the pair above - a computed colour no longer knows what
+     it was made from, and the figures on the contrast table are supposed to be
+     read off the tokens.
+     Only a mix of two colours that both resolve. A mix with `transparent` is an
+     alpha, and what an alpha comes to depends on whatever is behind it, which a
+     token does not know; those keep returning null and their cell says so. */
+  const mix = dsArgs(v, "color-mix");
+  if (mix && mix.length === 3 && /^in srgb$/i.test(mix[0])){
+    const first = mix[1].match(/^(.+?)\s+([\d.]+)%$/);
+    if (!first) return null;
+    const a = dsHexOf(first[1], (depth || 0) + 1), b = dsHexOf(mix[2], (depth || 0) + 1);
+    if (!a || !b) return null;
+    const p = parseFloat(first[2]) / 100;
+    return [0,2,4].map(i => {
+      const ca = parseInt(a.substr(i,2),16), cb = parseInt(b.substr(i,2),16);
+      return Math.round(ca*p + cb*(1-p)).toString(16).padStart(2,"0");
+    }).join("");
+  }
   const m = v.match(/^#([0-9a-f]{6})$/i);
   return m ? m[1] : null;
 }
@@ -2756,8 +2845,8 @@ function dsMotionSteps(){
                   "Najdłuższy ruch. Bierze go to, co obejmuje dużą część ekranu, i to, co ma zostać zauważone samo w sobie.")],
     ["loop",    L("The step for movement that comes back on its own, with nobody having asked for it. Long, because a repeat returning every few seconds stops being an accent and starts asking for attention.",
                   "Stopień dla ruchu, który wraca sam z siebie, bez niczyjego udziału. Długi, bo powtórzenie wracające co kilka sekund przestaje być akcentem, a zaczyna domagać się uwagi.")],
-    ["hold",    L("Nor is this one a duration of movement. It measures waiting: how long a confirmation stands so that it can be read, how long a pause lasts before something that should not arrive too soon, and how long one breath of a mark waiting for an answer takes.",
-                  "Ten też nie jest czasem ruchu. Mierzy czekanie: jak długo stoi potwierdzenie, które trzeba zdążyć przeczytać, jak długa jest zwłoka przed czymś, co ma nie pojawić się za szybko, i ile trwa jeden oddech znaku czekającego na odpowiedź.")],
+    ["hold",    L("Nor is this one a duration of movement. It measures waiting: how long a confirmation stands so that it can be read, and how long one breath of a mark waiting for an answer takes.",
+                  "Ten też nie jest czasem ruchu. Mierzy czekanie: jak długo stoi potwierdzenie, które trzeba zdążyć przeczytać, i ile trwa jeden oddech znaku czekającego na odpowiedź.")],
     ["stagger", L("Not how long an animation lasts, but the window its starts are spread over when many elements set off at once.",
                   "Nie czas trwania animacji, tylko okno, w którym rozkładają się jej starty, gdy wiele elementów rusza naraz.")],
   ]);
@@ -3036,8 +3125,8 @@ const DS_ROADMAP = [
        pl:"Co wolno jej powiedzieć, czego nie wolno nigdy i skąd biorą się jej zdania. Napisane, zanim powstała choć linijka."} },
   { n:"06", state:"done", doc:"bookseller-widget-decision-architecture.md",
     t:{en:"The bookseller in the shop", pl:"Księgarka w sklepie"},
-    d:{en:"Her corner of the window: when she speaks, how the answer arrives a line at a time, and every view on which she stays quiet.",
-       pl:"Jej róg okna: kiedy się odzywa, jak odpowiedź przychodzi linia po linii i każdy widok, w którym milczy."} },
+    d:{en:"When she speaks, how the answer arrives a line at a time, and every view on which she stays quiet.",
+       pl:"Kiedy się odzywa, jak odpowiedź przychodzi linia po linii i w jakich widokach milczy."} },
   { n:"07", state:"done", doc:"publish-decision-architecture.md",
     t:{en:"Publish what exists", pl:"Opublikować to, co jest"},
     d:{en:"A public address for the shop, for this documentation and for the source, each one readable by a stranger who arrives from a link.",
@@ -3261,6 +3350,10 @@ const DS_SECTIONS = [
           <td>${L("Authors, labels, quotes","Autorzy, etykiety, cytaty")}</td></tr>
       <tr><td class="spec"><code>fg-secondary</code> / <code>bg-secondary</code></td><td>${dsContrastCell("--nu-fg-secondary","--nu-bg-secondary")}</td>
           <td>${L("Order summary headings, empty cart. In the light scheme this supporting text on a panel falls short of the threshold for text of its size; in the dark one it clears it","Nagłówki podsumowania zamówienia, pusty koszyk. W schemacie jasnym ten tekst wspierający na panelu nie osiąga progu wymaganego dla tekstu tej wielkości; w ciemnym osiąga")}</td></tr>
+      <tr><td class="spec"><code>fg-primary</code> / <code>bg-tertiary</code></td><td>${dsContrastCell("--nu-fg-primary","--nu-bg-tertiary")}</td>
+          <td>${L("What the bookseller says, on the ground her section stands on","To, co mówi księgarka, na tle, na którym stoi jej sekcja")}</td></tr>
+      <tr><td class="spec"><code>fg-secondary</code> / <code>bg-tertiary</code></td><td>${dsContrastCell("--nu-fg-secondary","--nu-bg-tertiary")}</td>
+          <td>${L("Her name over it, and the price and availability under each proposal. The same supporting text on the quieter of the two grounds clears the threshold that it misses on a panel","Jej nazwa nad tym oraz cena i dostępność pod każdą propozycją. Ten sam tekst wspierający na cichszym z dwóch teł osiąga próg, którego nie osiąga na panelu")}</td></tr>
       <tr><td class="spec"><code>fg-tertiary</code> / <code>bg-primary</code></td><td>${dsContrastCell("--nu-fg-tertiary","--nu-bg-primary")}</td>
           <td>${L("Filter counts, disabled chips, placeholders in fields. The requirement does not cover a disabled control; it does cover the count and the placeholder","Liczniki przy filtrach, wyłączone chipy, podpowiedzi w polach. Wymóg nie obejmuje kontrolki wyłączonej; licznik i podpowiedź obejmuje")}</td></tr>
       <tr><td class="spec"><code>fg-inverse</code> / <code>bg-inverse</code></td><td>${dsContrastCell("--nu-fg-inverse","--nu-bg-inverse")}</td>
@@ -3391,8 +3484,8 @@ const DS_SECTIONS = [
   { group:{en:"Foundations",pl:"Fundamenty"}, id:"colour", label:{en:"Colour",pl:"Kolor"}, body: ()=>`
     <h1>${L("Colour","Kolor")}</h1>
     <p class="ds-lede">${L(
-      "Every token reads as <code>--nu-&lt;position&gt;-&lt;meaning&gt;</code>. Position states where the colour sits &ndash; background, foreground or border. Meaning states the role it plays there. Selecting a colour is therefore answering those two, not choosing a shade.",
-      "Każdy token czyta się jako <code>--nu-&lt;pozycja&gt;-&lt;znaczenie&gt;</code>. Pozycja określa, gdzie kolor siedzi &ndash; tło, treść albo obrys. Znaczenie określa rolę, jaką tam pełni. Kolor dobiera się więc, odpowiadając na te dwa pytania, a nie wybierając odcień.")}</p>
+      "A semantic token reads as <code>--nu-&lt;position&gt;-&lt;meaning&gt;</code>. Position states where the colour sits &ndash; background, foreground or border. Meaning states the role it plays there. Selecting a colour is therefore answering those two, not choosing a shade.",
+      "Token semantyczny czyta się jako <code>--nu-&lt;pozycja&gt;-&lt;znaczenie&gt;</code>. Pozycja określa, gdzie kolor siedzi &ndash; tło, treść albo obrys. Znaczenie określa rolę, jaką tam pełni. Kolor dobiera się więc, odpowiadając na te dwa pytania, a nie wybierając odcień.")}</p>
     <h3>${L("Two layers","Dwie warstwy")}</h3>
     <p>${L(
       `<strong>Primitives</strong> are the raw palette, named after the colour itself, and the only place a hex value appears. <strong>Semantic</strong> tokens state what a colour is for and are built exclusively from primitives. Components reference the semantic layer only, so re-toning the brand is an edit to ${dsPrimitiveCount()} declarations rather than a search through the stylesheet.`,
@@ -3471,8 +3564,8 @@ const DS_SECTIONS = [
           <td>${L("<code>--nu-bg-inverse</code> has the same value as <code>--nu-fg-primary</code>. They stay apart because &ldquo;the darkest ink&rdquo; and &ldquo;a filled surface&rdquo; are different ideas and may one day diverge. Warning and alert are separate for the same reason: the burgundy of a dwindling print run keeps that state in the family of the primary button's colour, and the red of an alert is kept for a failure.",
                   "<code>--nu-bg-inverse</code> ma tę samą wartość co <code>--nu-fg-primary</code>. Zostają osobne, bo „najciemniejszy atrament” i „wypełniona powierzchnia” to różne pojęcia i mogą się kiedyś rozejść. Tak samo osobne są ostrzeżenie i błąd: burgund kończącego się nakładu trzyma ten stan w rodzinie barwy przycisku głównego, a czerwień alertu zostaje dla awarii.")}</td></tr>
       <tr><td>${L("The mark's light","Światło znaku")}</td>
-          <td>${L("The bloom has two parts, and each has tokens of its own. The fill changes with the scheme, so it has to be a token: <code>--nu-bg-dot</code> beside the wordmark, <code>--nu-bg-ava-dot</code> in the corner of the shop. Two names, one pair of values, so an edit to one mark leaves the other alone. The halo is drawn by five rings, from <code>--nu-bg-glow-warm</code> at the core to <code>--nu-bg-glow-dusk</code> at the rim, and those are shared. All of them carry a plain colour rather than <code>light-dark()</code>. A <code>light-dark()</code> value read inside <code>@keyframes</code> comes out on the wrong side: on a light page the dot took the colour meant for a dark one. A plain colour has no such problem, because the scheme swaps the token's whole value, and a change of value does reach an animation.",
-                  "Rozbłysk ma dwie części, każda z własnymi tokenami. Wypełnienie zmienia się razem ze schematem, więc musi być tokenem: <code>--nu-bg-dot</code> przy znaku marki, <code>--nu-bg-ava-dot</code> w rogu sklepu. Dwie nazwy, te same dwie wartości, dzięki czemu poprawka na jednym znaku nie dotyka drugiego. Poświatę rysuje pięć pierścieni, od <code>--nu-bg-glow-warm</code> w środku po <code>--nu-bg-glow-dusk</code> na zewnątrz, i te są wspólne. Wszystkie te tokeny mają wpisany zwykły kolor, a nie <code>light-dark()</code>. Wartość z <code>light-dark()</code> odczytana wewnątrz <code>@keyframes</code> wychodzi po niewłaściwej stronie: kropka na jasnej stronie dostawała kolor przeznaczony na ciemną. Zwykły kolor tego problemu nie ma, bo schemat podmienia całą wartość tokenu, a zmiana wartości dochodzi do animacji.")}</td></tr>
+          <td>${L("The bloom has two parts, and each has tokens of its own. The fill changes with the scheme, so it has to be a token: <code>--nu-bg-dot</code> beside the wordmark, <code>--nu-bg-ava-dot</code> beside the bookseller's name. Two names, one pair of values, so an edit to one mark leaves the other alone. The halo is drawn by five rings, from <code>--nu-bg-glow-warm</code> at the core to <code>--nu-bg-glow-dusk</code> at the rim, and those are shared. All of them carry a plain colour rather than <code>light-dark()</code>. A <code>light-dark()</code> value read inside <code>@keyframes</code> comes out on the wrong side: on a light page the dot took the colour meant for a dark one. A plain colour has no such problem, because the scheme swaps the token's whole value, and a change of value does reach an animation.",
+                  "Rozbłysk ma dwie części, każda z własnymi tokenami. Wypełnienie zmienia się razem ze schematem, więc musi być tokenem: <code>--nu-bg-dot</code> przy znaku marki, <code>--nu-bg-ava-dot</code> przy nazwie księgarki. Dwie nazwy, te same dwie wartości, dzięki czemu poprawka na jednym znaku nie dotyka drugiego. Poświatę rysuje pięć pierścieni, od <code>--nu-bg-glow-warm</code> w środku po <code>--nu-bg-glow-dusk</code> na zewnątrz, i te są wspólne. Wszystkie te tokeny mają wpisany zwykły kolor, a nie <code>light-dark()</code>. Wartość z <code>light-dark()</code> odczytana wewnątrz <code>@keyframes</code> wychodzi po niewłaściwej stronie: kropka na jasnej stronie dostawała kolor przeznaczony na ciemną. Zwykły kolor tego problemu nie ma, bo schemat podmienia całą wartość tokenu, a zmiana wartości dochodzi do animacji.")}</td></tr>
       <tr><td>${L("Optical correction","Korekta optyczna")}</td>
           <td>${L("<code>--nu-border-muted</code> is one step weaker than the text it encloses: on a light page <code>--nu-grey-400</code> against the badge's <code>--nu-grey-600</code>, on a dark page the other way round. A solid 1px rule reads heavier than antialiased 11px type, so matching the value exactly looks mismatched.",
                   "<code>--nu-border-muted</code> jest o stopień słabszy niż tekst, który otacza: na jasnej stronie <code>--nu-grey-400</code> wobec <code>--nu-grey-600</code> odznaki, na ciemnej odwrotnie. Lita linia 1px czyta się ciężej niż wygładzany tekst 11px, więc zrównanie wartości wygląda na niedopasowane.")}</td></tr>
@@ -3606,8 +3699,8 @@ const DS_SECTIONS = [
           <td>${L("A rule reads a style rather than a step of a scale, so that the four properties travel together. The exception is an element that needs a font property the <code>font:</code> shorthand resets: italic, tabular figures, small capitals. There the rule sets only what it changes and leaves the rest to inheritance &ndash; a price is set at <code>lg</code> with tabular figures beside it, both declared on their own, because the <code>font:</code> shorthand would clear the figures away. The same holds at a breakpoint, where only the size moves.",
                   "Reguła sięga po styl, a nie po stopień skali, żeby cztery właściwości trzymały się razem. Wyjątkiem jest element, który potrzebuje właściwości niezachowywanej przez skrót <code>font:</code> &ndash; kursywy, cyfr tabelarycznych, kapitalików. Wtedy reguła ustawia tylko to, co zmienia, a resztę zostawia dziedziczeniu &ndash; cena dostaje stopień <code>lg</code> i cyfry tabelaryczne, ustawione osobno, bo skrót <code>font:</code> by je skasował. Tak samo na progu, gdzie zmienia się sam stopień.")}</td></tr>
       <tr><td>${L("Italic","Kursywa")}</td>
-          <td>${L("A cut of <code>--nu-type-body-m</code>, declared beside the style because the shorthand does not carry it. Reserved for book quotes; the attribution beneath returns to roman. Nothing else in the shop is set in italic.",
-                  "Odmiana <code>--nu-type-body-m</code>, deklarowana obok stylu, bo skrót jej nie niesie. Zarezerwowana dla cytatów z książek; podpis pod cytatem wraca do odmiany prostej. Nic innego w sklepie nie jest składane kursywą.")}</td></tr>
+          <td>${L("Two uses, and they are set two different ways. A book quote takes a cut of <code>--nu-type-body-m</code> declared beside the style, because the <code>font:</code> shorthand does not carry italic; the attribution beneath returns to roman. A title of a work is an <code>em</code> and takes the italic an <code>em</code> already has, the shorthand on the paragraph around it reaching no further than the paragraph. That is how a title is set wherever the shop writes one in English: in a note about where a motif comes from, and in what the bookseller says. Polish sets a title in quotation marks whatever kind of work it is, so nothing there needs italic at all.",
+                  "Dwa zastosowania, składane na dwa sposoby. Cytat z książki bierze odmianę <code>--nu-type-body-m</code> deklarowaną obok stylu, bo skrót <code>font:</code> kursywy nie niesie; podpis pod cytatem wraca do odmiany prostej. Tytuł dzieła jest elementem <code>em</code> i bierze kursywę, którą <code>em</code> ma sam z siebie &ndash; skrót na otaczającym akapicie nie sięga dalej niż ten akapit. Tak składa się tytuł wszędzie tam, gdzie sklep pisze go po angielsku: w nocie o pochodzeniu motywu i w tym, co mówi księgarka. Polszczyzna składa tytuł w cudzysłowie niezależnie od rodzaju dzieła, więc kursywa nie jest tam do niczego potrzebna.")}</td></tr>
       <tr><td>${L("Numerals","Cyfry")}</td>
           <td>${L("Prices, quantities and totals set in tabular figures, so a column of numbers holds its alignment when a value changes.",
                   "Ceny, ilości i sumy składane są cyframi tabelarycznymi, więc kolumna liczb utrzymuje wyrównanie przy zmianie wartości.")}</td></tr>
@@ -4130,54 +4223,105 @@ const DS_SECTIONS = [
   { group:{en:"Components",pl:"Komponenty"}, id:"avatar", label:{en:"Avatar",pl:"Awatar"}, body: ()=>`
     <h1>${L("Avatar","Awatar")}</h1>
     <p class="ds-lede">${L(
-      "A round mark standing for whoever is speaking. Two of them: the author, beside what she wrote, and the bookseller, in the corner of the shop.",
-      "Okrągły znak osoby, która mówi. Są dwa: autorka, przy tym, co napisała, i księgarka, w rogu sklepu.")}</p>
+      "A round mark standing for the author, beside what she wrote. It carries her photograph where the catalogue holds one and her initials where it does not, and it never stands empty.",
+      "Okrągły znak autorki, przy tym, co napisała. Niesie jej zdjęcie tam, gdzie katalog je ma, a inicjały tam, gdzie nie ma &ndash; i nigdy nie stoi pusty.")}</p>
     <div class="demo on-page ds-avatars">
       <img class="d-ava" src="${BOOKS[0].aphoto}" alt="${BOOKS[0].a}">
       <span class="d-ava" aria-hidden="true">${BOOKS[2].a.split(" ").map(w=>w[0]).slice(0,2).join("")}</span>
-      <span class="bs-ava"><span class="bs-dot"></span></span>
     </div>
-    <table id="avaVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
-      <tr><td>${L("Author","Autorka")}<br><code>.d-ava</code></td>
-        <td>${L("A person the shop can name. It carries her photograph where the catalogue holds one, and her initials where it does not &ndash; the mark is never empty, because a blank disc beside a biography reads as a picture that failed to load.","Osoba, którą sklep umie nazwać. Niesie jej zdjęcie tam, gdzie katalog je ma, a inicjały tam, gdzie nie ma &ndash; znak nigdy nie jest pusty, bo pusty krążek przy biografii czyta się jak obrazek, który się nie wczytał.")}</td>
-        <td>${dsTok("--nu-avatar-size-md")}, <code>--nu-bg-secondary</code>, <code>--nu-border-neutral</code></td></tr>
-      <tr><td>${L("Bookseller","Księgarka")}<br><code>.bs-ava</code></td>
-        <td>${L("A voice the shop cannot name, and deliberately: she has no biography, so she has no face and no initials either. A dot stands in for both, and the mark is a control &ndash; pressing it brings back an offer that was dismissed.","Głos, którego sklep nazwać nie umie, i to celowo: nie ma biografii, więc nie ma też twarzy ani inicjałów. Zamiast nich jest kropka, a sam znak jest kontrolką &ndash; naciśnięcie przywraca zamkniętą ofertę.")}</td>
-        <td>${dsTok("--nu-avatar-size-sm")}, <code>--nu-bg-ava-dot</code> ${L("dot","kropka")}, <code>--nu-bg-glow-warm</code> ${L("and the four rings after it","i cztery kolejne pierścienie")}</td></tr>
+    <table id="avaVariants"><thead><tr><th>${L("Content","Treść")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
+      <tr><td>${L("Photograph","Zdjęcie")}<br><code>img.d-ava</code></td>
+        <td>${L("The author as the catalogue holds her. The picture covers the ground, so nothing of the mark shows but its edge.","Autorka taka, jak ma ją katalog. Zdjęcie zakrywa tło, więc ze znaku widać tylko krawędź.")}</td>
+        <td>${dsTok("--nu-avatar-size")}, <code>--nu-border-neutral</code></td></tr>
+      <tr><td>${L("Initials","Inicjały")}<br><code>span.d-ava</code></td>
+        <td>${L("The same mark where the catalogue holds no picture. Two capitals rather than a blank disc, because an empty circle beside a biography reads as a photograph that failed to load.","Ten sam znak tam, gdzie katalog nie ma zdjęcia. Dwa wersaliki zamiast pustego krążka, bo puste koło przy biografii czyta się jak zdjęcie, które się nie wczytało.")}</td>
+        <td>${dsTok("--nu-avatar-size")}, <code>--nu-bg-secondary</code>, <code>--nu-border-neutral</code></td></tr>
     </tbody></table>
     <h3>${L("Specification","Specyfikacja")}</h3>
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Shape","Kształt")}</td><td>${L(
-        "A circle, in both variants. It is the one round object in a shop whose every other box has square corners, and that is what makes it read as a person rather than as a picture.",
-        "Koło, w obu wariantach. To jedyny okrągły przedmiot w sklepie, w którym każde inne pole ma ostre narożniki, i właśnie dlatego czyta się jako osoba, a nie jako obrazek.")}</td></tr>
+        "A circle. It is the one round object in a shop whose every other box has square corners, and that is what makes it read as a person rather than as a picture.",
+        "Koło. To jedyny okrągły przedmiot w sklepie, w którym każde inne pole ma ostre narożniki, i właśnie dlatego czyta się jako osoba, a nie jako obrazek.")}</td></tr>
       <tr><td>${L("Size","Rozmiar")}</td><td>${L(
-        `Two steps of its own, off the spacing scale: ${dsTok("--nu-avatar-size-md")} in the author's drawer, which has a column to fill, and ${dsTok("--nu-avatar-size-sm")} in the corner, which has to stay out of the way. Both in rem, because the mark shares its box with type.`,
-        `Dwa własne stopnie, poza skalą odstępów: ${dsTok("--nu-avatar-size-md")} w szufladzie autorki, która ma kolumnę do wypełnienia, i ${dsTok("--nu-avatar-size-sm")} w rogu, który ma nie przeszkadzać. Oba w rem, bo znak dzieli pole z tekstem.`)}</td></tr>
+        `One step of its own, off the spacing scale: ${dsTok("--nu-avatar-size")}, the width the author's drawer has to fill. In rem, because the mark shares its box with type and a box where only the text grows stops belonging to the mark inside it.`,
+        `Jeden własny stopień, poza skalą odstępów: ${dsTok("--nu-avatar-size")}, czyli tyle, ile ma do wypełnienia szuflada autorki. W rem, bo znak dzieli pole z tekstem, a pole, w którym rośnie sam tekst, przestaje należeć do znaku w środku.`)}</td></tr>
       <tr><td>${L("Ground","Tło")}</td><td>${L(
-        "<code>--nu-bg-secondary</code> with a 1px <code>--nu-border-neutral</code> hairline, in both. The photograph covers the ground; the initials and the dot stand on it.",
-        "<code>--nu-bg-secondary</code> z kreską włosową 1px <code>--nu-border-neutral</code>, w obu. Zdjęcie zakrywa tło; inicjały i kropka na nim stoją.")}</td></tr>
+        "<code>--nu-bg-secondary</code> with a 1px <code>--nu-border-neutral</code> hairline. The photograph covers the ground; the initials stand on it.",
+        "<code>--nu-bg-secondary</code> z kreską włosową 1px <code>--nu-border-neutral</code>. Zdjęcie zakrywa tło; inicjały na nim stoją.")}</td></tr>
       <tr><td>${L("Type","Typografia")}</td><td>${L(
         `Initials only, in ${dsTok("--nu-type-body-l")} with ${dsTok("--nu-tracking-compact")} declared beside it: two capitals closed inside a container, which is what that tracking is for. Two at most, from the first two words of the name.`,
         `Tylko inicjały, stylem ${dsTok("--nu-type-body-l")} ze światłem ${dsTok("--nu-tracking-compact")} zadeklarowanym obok: dwa wersaliki zamknięte w kontenerze, a to światło jest właśnie do takich przypadków. Najwyżej dwa, wzięte z dwóch pierwszych słów imienia i nazwiska.`)}</td></tr>
-      <tr><td>${L("The dot","Kropka")}</td><td>${L(
-        `${dsTok("--nu-space-micro")} across, in <code>--nu-bg-ava-dot</code>. The value is the one the accent beside the wordmark carries, the name is not, so the logotype and the corner can change apart. Lit, the dot goes to <code>--nu-bg-ava-dot-bloom</code> and five rings of glow open out around it, the same five the wordmark draws.`,
-        `${dsTok("--nu-space-micro")} średnicy, w kolorze <code>--nu-bg-ava-dot</code>. Wartość jest ta sama co przy znaku marki, nazwa inna, więc logotyp i róg ekranu mogą zmieniać się osobno. Zapalona kropka przechodzi w <code>--nu-bg-ava-dot-bloom</code>, a wokół niej otwiera się pięć pierścieni poświaty, tych samych, które rysuje znak marki.`)}</td></tr>
       <tr><td>${L("Element","Element")}</td><td>${L(
-        "Whichever one the content already is: an <code>img</code> for a photograph, a <code>span</code> for initials, a <code>button</code> where the mark opens something. The bookseller's is a control and the author's is not, which is the whole difference between them.",
-        "Ten, którym treść już jest: <code>img</code> przy zdjęciu, <code>span</code> przy inicjałach, <code>button</code> tam, gdzie znak coś otwiera. Znak księgarki jest kontrolką, znak autorki nie, i na tym polega cała różnica między nimi.")}</td></tr>
+        "Whichever one the content already is: an <code>img</code> for a photograph, a <code>span</code> for initials. Neither is a control, because the mark opens nothing.",
+        "Ten, którym treść już jest: <code>img</code> przy zdjęciu, <code>span</code> przy inicjałach. Żaden nie jest kontrolką, bo znak niczego nie otwiera.")}</td></tr>
       <tr><td>${L("Name","Nazwa")}</td><td>${L(
-        "A photograph carries the author's name in <code>alt</code>. Initials carry <code>aria-hidden</code>, because the name they abbreviate stands beside them as a heading and would otherwise be read twice. The bookseller's carries an <code>aria-label</code>, having nothing beside it to borrow a name from.",
-        "Zdjęcie niesie nazwisko autorki w <code>alt</code>. Inicjały noszą <code>aria-hidden</code>, bo skracane przez nie nazwisko stoi obok jako nagłówek i zostałoby odczytane dwa razy. Znak księgarki ma <code>aria-label</code>, bo nie stoi obok niczego, od czego mógłby nazwę pożyczyć.")}</td></tr>
-      <tr><td>${L("Focus","Fokus")}</td><td>${L(
-        `The bookseller's only: ${dsTok("--nu-focus-ring")} in <code>--nu-border-primary</code> at ${dsTok("--nu-focus-offset")}, as on every other control. The author's takes no focus, because it is a picture rather than a thing to press.`,
-        `Wyłącznie znak księgarki: ${dsTok("--nu-focus-ring")} w kolorze <code>--nu-border-primary</code> z odsunięciem ${dsTok("--nu-focus-offset")}, tak jak na każdej innej kontrolce. Znak autorki fokusu nie przyjmuje, bo jest obrazkiem, a nie rzeczą do naciśnięcia.`)}</td></tr>
+        "A photograph carries the author's name in <code>alt</code>. Initials carry <code>aria-hidden</code>, because the name they abbreviate stands beside them as a heading and would otherwise be read twice.",
+        "Zdjęcie niesie nazwisko autorki w <code>alt</code>. Inicjały noszą <code>aria-hidden</code>, bo skracane przez nie nazwisko stoi obok jako nagłówek i zostałoby odczytane dwa razy.")}</td></tr>
       <tr><td>${L("Movement","Ruch")}</td><td>${L(
-        "The bookseller's dot answers with light rather than with movement: it brightens under the pointer, takes one breath when the offer opens by itself, and goes on breathing while an answer is being put together. Motion sets the timing. The author's mark never moves.",
-        "Kropka księgarki odpowiada światłem, nie ruchem: zapala się pod kursorem, bierze jeden oddech, gdy oferta otwiera się sama, i oddycha dalej, dopóki układa się odpowiedź. Czasy podaje zakładka Ruch. Znak autorki nie porusza się nigdy.")}</td></tr>
+        "None. The mark is a picture rather than a thing to press, so it takes no focus and answers nothing.",
+        "Żaden. Znak jest obrazkiem, a nie rzeczą do naciśnięcia, więc nie przyjmuje fokusu i na nic nie odpowiada.")}</td></tr>
     </tbody></table>
     <p class="note">${L(
-      "This tab has no live preview. The two variants are different elements carrying different content &ndash; a photograph, two letters, a dot &ndash; and a preview that builds one element from a class name would show a mark with nothing in it, which is the one state the component never has.",
-      "Ta zakładka nie ma podglądu na żywo. Oba warianty to różne elementy niosące różną treść &ndash; zdjęcie, dwie litery, kropkę &ndash; a podgląd budujący pojedynczy element z nazwy klasy pokazywałby znak pusty w środku, czyli jedyny stan, którego ten komponent nie ma.")}</p>` },
+      "This tab has no live preview. The two rows are different elements carrying different content &ndash; a photograph, two letters &ndash; and a preview that builds one element from a class name would show a mark with nothing in it, which is the one state the component never has.",
+      "Ta zakładka nie ma podglądu na żywo. Oba wiersze to różne elementy niosące różną treść &ndash; zdjęcie, dwie litery &ndash; a podgląd budujący pojedynczy element z nazwy klasy pokazywałby znak pusty w środku, czyli jedyny stan, którego ten komponent nie ma.")}</p>` },
+
+  { group:{en:"Components",pl:"Komponenty"}, id:"bookseller", label:{en:"Bookseller",pl:"Księgarka"}, body: ()=>`
+    <h1>${L("Bookseller","Księgarka")}</h1>
+    <p class="ds-lede">${L(
+      "A second voice inside a page: the shop saying something the page cannot say for itself. It stands as a block in the flow, at the point where the view has a question it cannot answer.",
+      "Drugi głos wewnątrz strony: sklep mówiący to, czego strona nie powie sama. Stoi jako blok w przepływie treści, tam, gdzie widok ma pytanie, na które sam nie odpowiada.")}</p>
+
+    <h3>${L("Where it stands","Gdzie stoi")}</h3>
+    <p>${L(
+      "At the foot of the product column, on a title that is out of stock, and nowhere else. The position is the argument: what it offers is two books about the same motifs, so it comes after the description and the list of motifs, where the reader has been brought to the reason before the offer. Higher up the offer arrives before anything that would make it mean something.",
+      "Na końcu kolumny z opisem, na karcie tytułu, którego nie ma na stanie &ndash; i nigdzie indziej. Położenie jest argumentem: proponuje dwie książki o tych samych motywach, więc stoi za opisem i listą motywów, gdzie czytelniczka została doprowadzona do powodu przed ofertą. Wyżej oferta przychodzi przed tym, co czyni ją zrozumiałą.")}</p>
+    <p>${L(
+      "It takes the place the primary button holds on every other product page, and that is the whole of what it is for: the one thing a view with nothing to sell can still offer.",
+      "Zajmuje miejsce, które na każdej innej karcie książki trzyma przycisk główny, i na tym polega cała jego rola: jedyne, co może zaproponować widok, który nie ma czego sprzedać.")}</p>
+
+    <h3>${L("The parts","Części")}</h3>
+    <table><thead><tr><th ${DS_COL_NAME}>${L("Part","Część")}</th><th>${L("What it does","Co robi")}</th></tr></thead><tbody>
+      <tr><td class="spec"><code>.bs</code></td><td>${L(
+        `The block. A ground of its own in ${dsTok("--nu-bg-tertiary")} and no outline: a fill and an outline together would make a box of it, and a box inside a column of text reads as an advertisement dropped into an article.`,
+        `Blok. Własne tło w kolorze ${dsTok("--nu-bg-tertiary")} i żadnego obrysu: wypełnienie razem z obrysem robi z tego pudełko, a pudełko wewnątrz kolumny tekstu czyta się jak reklama wstawiona w artykuł.`)}</td></tr>
+      <tr><td class="spec"><code>.bs-head</code></td><td>${L(
+        "The mark and the name of whoever is speaking. The name is on the page rather than in an attribute: a block standing in the flow of a page has no corner to point at, so it says who it is.",
+        "Znak i nazwa tego, kto mówi. Nazwa stoi na stronie, a nie w atrybucie: blok w przepływie treści nie ma rogu, na który mógłby wskazać, więc mówi, kim jest.")}</td></tr>
+      <tr><td class="spec"><code>.bs-say</code></td><td>${L(
+        "Two sentences: what is missing, and that there are two others near it. Two and not four, because this is the last thing in a column the reader has just read through.",
+        "Dwa zdania: czego brakuje i że są przy tym dwie inne. Dwa, a nie cztery, bo to ostatnia rzecz w kolumnie, którą czytelniczka właśnie przeczytała.")}</td></tr>
+      <tr><td class="spec"><code>.bs-item</code></td><td>${L(
+        "One proposal: the cover and the title as one link, the price and availability beside them, and the reason behind a control of its own. Going somewhere and reading more are two different acts.",
+        "Jedna propozycja: okładka i tytuł jako jeden link, obok cena i dostępność, a uzasadnienie za osobną kontrolką. Przejście gdzieś i doczytanie to dwie różne czynności.")}</td></tr>
+      <tr><td class="spec"><code>.bs-text</code></td><td>${L(
+        "The reason, once a proposal has been chosen. One at a time: two open reasons in one block is a page rather than an offer.",
+        "Uzasadnienie, gdy propozycja zostanie wybrana. Jedno naraz: dwa otwarte uzasadnienia w jednym bloku to strona, a nie oferta.")}</td></tr>
+    </tbody></table>
+
+    <h3>${L("The mark","Znak")}</h3>
+    <div class="demo on-page"><span class="bs-head"><span class="bs-dot"></span><span class="bs-who">${L("The bookseller","Księgarka")}</span></span></div>
+    <table><tbody>
+      <tr><td ${DS_COL_NAME}>${L("The dot","Kropka")}</td><td>${L(
+        `${dsTok("--nu-space-micro")} across, in <code>--nu-bg-ava-dot</code>. The value is the one the accent beside the wordmark carries, the name is not, so the logotype and this mark can change apart.`,
+        `${dsTok("--nu-space-micro")} średnicy, w kolorze <code>--nu-bg-ava-dot</code>. Wartość jest ta sama co przy znaku marki, nazwa inna, więc logotyp i ten znak mogą zmieniać się osobno.`)}</td></tr>
+      <tr><td>${L("Two levels","Dwa poziomy")}</td><td>${L(
+        "At rest it is a dot; while an answer is arriving it breathes. Nothing else, and that is what keeps the breath worth reading: a mark that breathed all the time would have nothing left to say that something is happening now.",
+        "W spoczynku jest kropką; kiedy nadchodzi odpowiedź, oddycha. Nic poza tym, i to jest źródło wartości tego oddechu: znak oddychający bez przerwy nie miałby już czym powiedzieć, że coś się właśnie dzieje.")}</td></tr>
+      <tr><td>${L("The light","Światło")}</td><td>${L(
+        "Lit, the dot goes to <code>--nu-bg-ava-dot-bloom</code> and five rings of glow open out around it, the same five the wordmark draws. Motion sets the timing.",
+        "Zapalona kropka przechodzi w <code>--nu-bg-ava-dot-bloom</code>, a wokół niej otwiera się pięć pierścieni poświaty, tych samych, które rysuje znak marki. Czasy podaje zakładka Ruch.")}</td></tr>
+      <tr><td>${L("Name","Nazwa")}</td><td>${L(
+        "<code>aria-hidden</code>. The word beside it carries the name, and a mark that repeated it would be read twice.",
+        "<code>aria-hidden</code>. Nazwę niesie stojące obok słowo, a znak, który by ją powtarzał, zostałby odczytany dwa razy.")}</td></tr>
+    </tbody></table>
+
+    <h3>${L("How an answer arrives","Jak przychodzi odpowiedź")}</h3>
+    <p>${L(
+      "A line at a time, at a fixed interval per line rather than a fixed total, so a long passage does not arrive faster than a short one. Asked for less motion, the passage is simply there. An answer already given in this visit comes back whole: watching the same sentences be written a second time is watching a wait that is not happening.",
+      "Linia po linii, w stałym odstępie na wiersz, a nie w stałym czasie na całość, żeby długi fragment nie przychodził szybciej niż krótki. Przy prośbie o mniej ruchu tekst po prostu jest. Odpowiedź już raz udzielona w tej wizycie wraca w całości: oglądanie, jak te same zdania powstają drugi raz, to oglądanie czekania, którego nie ma.")}</p>
+    <p class="note">${L(
+      "The texts about these nineteen books are written in advance, so there is nothing to wait for and no waiting state is shown. The state itself is built and tested, and appears the moment there is something to wait for &ndash; a model asked about a title the shop does not stock, which is step 08. Until then it can be seen by opening the shop with <code>?bs=slow</code>, which is a tool rather than a behaviour.",
+      "Teksty o tych dziewiętnastu książkach są napisane z góry, więc nie ma na co czekać i stan oczekiwania się nie pokazuje. Sam stan jest zbudowany i przetestowany, a pojawi się w chwili, gdy będzie na co czekać &ndash; przy modelu pytanym o tytuł, którego sklep nie ma, czyli w kroku 08. Do tego czasu można go zobaczyć, otwierając sklep z <code>?bs=slow</code>, co jest narzędziem, a nie zachowaniem.")}</p>` },
 
   { group:{en:"Components",pl:"Komponenty"}, id:"stepper", label:{en:"Quantity stepper",pl:"Stepper ilości"}, body: ()=>`
     <h1>${L("Quantity stepper","Stepper ilości")}</h1>
@@ -4618,17 +4762,10 @@ const DS_SECTIONS = [
         <td>${L("The field opens for as long as it holds the focus, because a query is longer than the field's resting width. The lower edge goes to full strength at the same time, in the same step of the scale that every hover answers over","Pole otwiera się na czas trzymania fokusu, bo zapytanie bywa dłuższe niż szerokość spoczynkowa pola. Dolna krawędź nabiera przy tym pełnej siły, w tym samym stopniu skali, którym odpowiada każde najechanie")}</td></tr>
       <tr><td>${L("Logo accent","Akcent w logo")}</td><td>${dsTok("--nu-motion-loop")}</td><td>ease-in-out</td>
         <td>${L("Once per cycle the dot goes to its bloom colour and the five rings of the glow open out around it &ndash; a rare accent, not a loop that demands attention","Raz na cykl kropka przechodzi w kolor rozbłysku i otwiera wokół siebie pięć pierścieni poświaty &ndash; rzadki akcent, nie pętla domagająca się uwagi")}</td></tr>
-      <tr><td>${L("The bookseller speaks","Odezwanie się księgarki")}</td>
-        <td>${L("the panel","dymek")} ${dsTok("--nu-motion-slow")}, ${L("the breath and the pause","oddech i zwłoka")} ${dsTok("--nu-motion-hold")}</td>
-        <td>${dsTok("--nu-ease-slide")}, ${L("the breath rises on","oddech wznosi się na")} ${dsTok("--nu-ease-zoom")}</td>
-        <td>${L("The panel comes up from under the mark by one step of spacing and the dot takes one breath: it goes to its bloom colour and a halo opens out until it fills the ground. The pause before she first speaks leaves time to read the page","Dymek wchodzi spod znaku o jeden stopień odstępu, a kropka bierze jeden oddech: przechodzi w kolor rozbłysku i otwiera wokół siebie poświatę, aż wypełni tło. Zwłoka przed pierwszym odezwaniem zostawia czas na przeczytanie strony")}</td></tr>
-      <tr><td>${L("The panel takes in an answer","Dymek przyjmuje odpowiedź")}</td>
-        <td>${dsTok("--nu-motion-base")}</td><td>${dsTok("--nu-ease-slide")}</td>
-        <td>${L("An answer needs a different amount of room, and the panel walks to it in both directions at once rather than landing there in a single frame, which would read as a second panel in place of the first. The same move takes it back when the answer is put away","Odpowiedź potrzebuje innej ilości miejsca, więc dymek dochodzi do niej w obu wymiarach naraz, zamiast w niej lądować w jednej klatce &ndash; a to czytałoby się jak drugi dymek w miejsce pierwszego. Tym samym ruchem wraca, gdy odpowiedź zostaje schowana")}</td></tr>
       <tr><td>${L("An answer unfolds","Rozwinięcie odpowiedzi")}</td>
-        <td>${L("a line every","linia co")} ${dsTok("--nu-motion-quick")}, ${L("each over","każda na")} ${dsTok("--nu-motion-slower")}</td>
+        <td>${L("a line every","linia co")} ${dsTok("--nu-motion-quick")}, ${L("each over","każda na")} ${dsTok("--nu-motion-slower")}, ${L("the breath","oddech")} ${dsTok("--nu-motion-hold")}</td>
         <td>${dsTok("--nu-ease-zoom")}</td>
-        <td>${L("The text arrives a line at a time rather than standing on the page all at once: a line is what the eye takes in at once, so it is what arrives at once. A line comes out of blur as it fades in and settles the last of the way up, and the next one sets off before it has finished, so the passage resolves as one thing coming in. The first line waits one interval as well, so the panel has a head start on the room it is opening","Tekst pojawia się linia po linii, zamiast stanąć na stronie w całości: linia jest tym, co oko bierze naraz, więc jest też tym, co naraz przychodzi. Linia wychodzi z rozmycia, podnosząc się przy tym ostatni kawałek, a następna rusza, zanim poprzednia dojdzie, więc całość układa się jako jedno wejście. Pierwsza linia też czeka jeden odstęp, żeby dymek miał fory na miejsce, które otwiera")}</td></tr>
+        <td>${L("The text arrives a line at a time rather than standing on the page all at once: a line is what the eye takes in at once, so it is what arrives at once. A line comes out of blur as it fades in and settles the last of the way up, and the next one sets off before it has finished, so the passage resolves as one thing coming in. The dot beside her name breathes while that runs: it rises on the zoom curve, falls symmetrically, and repeats until the last word has arrived","Tekst pojawia się linia po linii, zamiast stanąć na stronie w całości: linia jest tym, co oko bierze naraz, więc jest też tym, co naraz przychodzi. Linia wychodzi z rozmycia, podnosząc się przy tym ostatni kawałek, a następna rusza, zanim poprzednia dojdzie, więc całość układa się jako jedno wejście. Przez ten czas kropka przy nazwie oddycha: wznosi się na krzywej powiększenia, opada symetrycznie i powtarza to, aż przyjdzie ostatnie słowo")}</td></tr>
     </tbody></table>
     <p class="note">${L(
       "All of the movement above yields to <code>prefers-reduced-motion: reduce</code>, and so does everything this table does not name: anything that travels, scales, changes size or repeats. It is withdrawn in two places, never in a list of its own &ndash; a rule in the stylesheet standing beside the rule that sets the movement, and a check in the script before an animation is started. A new view therefore inherits the setting from whichever of the two it uses, and nothing has to be added anywhere for it to.",
