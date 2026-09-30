@@ -4298,8 +4298,8 @@ const DS_SECTIONS = [
     <h3>${L("The parts","Części")}</h3>
     <table><thead><tr><th ${DS_COL_NAME}>${L("Part","Część")}</th><th>${L("What it does","Co robi")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>.bs</code></td><td>${L(
-        `The block. A ground of its own and no outline: a fill and an outline together would make a container of it, and a container inside a column of text reads as an advertisement dropped into an article. The ground is ${dsTokMix("--nu-bg-tertiary")}.`,
-        `Blok. Własne tło, bez obrysu: wypełnienie razem z obrysem robi z tego kontener, a kontener wewnątrz kolumny tekstu czyta się jak reklama wstawiona w artykuł. Tło to ${dsTokMix("--nu-bg-tertiary")}.`)}</td></tr>
+        `The block. A ground of its own and no outline. The ground is ${dsTokMix("--nu-bg-tertiary")}.`,
+        `Blok. Własne tło, bez obrysu. Tło to ${dsTokMix("--nu-bg-tertiary")}.`)}</td></tr>
       <tr><td class="spec"><code>.bs-head</code></td><td>${L(
         "The mark and the name of whoever is speaking. The name is on the page rather than in an attribute: a block standing in a column of text has no corner to point at, so it says who it is.",
         "Znak i nazwa tego, kto mówi. Nazwa stoi na stronie, a nie w atrybucie: blok w kolumnie tekstu nie ma rogu, na który mógłby wskazać, więc mówi, kim jest.")}</td></tr>
