@@ -2653,6 +2653,19 @@ function dsTok(token){
   const v = dsVal(token);
   return `<code>${token}</code>${v ? ` &middot; ${v}` : ""}`;
 }
+/* The same, for a token whose declared value is a mix rather than a single
+   reference. Printed whole it fills a table cell with two nested functions;
+   printed as colour literals it puts a number in the documentation that the
+   sheet can change underneath. The primitives are read out of the declaration,
+   so the row cannot drift from it. */
+function dsTokMix(token){
+  const v = dsVal(token) || "";
+  const prims = [...new Set((v.match(/var\(\s*--[\w-]+/g) || [])
+    .map(m => m.replace(/var\(\s*/, "")))];
+  return `<code>${token}</code>${prims.length
+    ? ` &middot; ${L("mixed from","mieszanka")} ${prims.map(n => `<code>${n}</code>`).join(", ")}`
+    : ""}`;
+}
 function dsPrimitiveCount(){
   const found = Object.keys(dsRootDecls()).filter(n => DS_PRIMITIVE.test(n)).length;
   return found || DS_FALLBACK_PRIMITIVES.filter(dsVal).length;
@@ -2868,7 +2881,7 @@ function dsSpaceSteps(){
      One sentence covering both is what made the old column read as a grab bag. */
   const notes = new Map([
     ["nano",   [L("The smallest controls: badge, counter, chip, toggle","Najdrobniejsze kontrolki: odznaka, licznik, chip, przełącznik"),
-                L("Parts meant to read as one object: tiles in the grid, a chip and its count","Części czytające się jako jeden przedmiot: kafle w siatce, chip i jego licznik")]],
+                L("Parts meant to read as one object: tiles in the grid, a chip and its count","Części, które mają się czytać jako jedna rzecz: kafle w siatce, chip i jego licznik")]],
     ["micro",  [L("Menus and table cells","Menu i komórki tabeli"),
                 L("A thing and its own label: icon and word, quote and attribution","Rzecz i jej własny podpis: ikona i słowo, cytat i autor")]],
     ["milli",  [L("Fields, buttons, bars","Pola, przyciski, belki"),
@@ -3118,7 +3131,7 @@ const DS_ROADMAP = [
   { n:"04", state:"done", doc:"motifs-in-shop-decision-architecture.md",
     t:{en:"Motifs on the shelf", pl:"Motywy na półce"},
     d:{en:"The motif as a filter, as a chip on a product page and as an essay in a drawer - one object at three magnifications.",
-       pl:"Motyw jako filtr, jako chip na karcie produktu i jako esej w szufladzie - jeden obiekt w trzech powiększeniach."} },
+       pl:"Motyw jako filtr, jako chip na karcie produktu i jako esej w szufladzie - jedna rzecz w trzech powiększeniach."} },
   { n:"05", state:"done", doc:"bookseller-brief-decision-architecture.md",
     t:{en:"The bookseller's brief", pl:"Brief księgarki"},
     d:{en:"What she may say, what she may never say, and where her sentences come from. Written before a line of her was built.",
@@ -4000,7 +4013,7 @@ const DS_SECTIONS = [
         "Cztery układy, wszystkie dopuszczalne: ikona z przodu i napis, napis i ikona z tyłu, sam napis, sama ikona. Ikonę i napis dzieli zawsze ten sam odstęp, niezależnie od kolejności. Przycisk bierze mniejszy z dwóch rozmiarów ikony; większy biorą trzy przyciski ikonowe w nagłówku, które stoją w rzędzie znaku marki. Tam, gdzie przycisk pokazuje ikonę bez słów, jego nazwa stoi w <code>aria-label</code>.")}</td></tr>
       <tr><td>${L("Border","Obramowanie")}</td><td>${L(
         "Primary and secondary: 1px, transparent, square corners. It is never visible; it stands in the box so the button can match the height of a field, which draws one. Tertiary and ghost carry no border.",
-        "Główny i drugorzędny: 1px, przezroczysta, narożniki ostre. Nie widać jej w żadnym stanie &ndash; stoi w pudełku po to, żeby przycisk zrównał się wysokością z polem, które swoją rysuje. Trzeciorzędny i ghost obramowania nie mają.")}</td></tr>
+        "Główny i drugorzędny: 1px, przezroczysta, narożniki ostre. Nie widać jej w żadnym stanie &ndash; wlicza się do wysokości po to, żeby przycisk zrównał się z polem, które swoją obwódkę rysuje. Trzeciorzędny i ghost obramowania nie mają.")}</td></tr>
       <tr><td>${L("Body","Korpus")}</td><td>${L(
         "Both solid variants are one flat colour, with no gradient and no layer inside them at any state, and one shallow contact shadow underneath &ndash; enough for the button to lie on the page rather than be printed on it. What separates the two is distance: the primary stands as far from the page as the burgundy reaches, the secondary one step off the panel behind it. The pointer moves each one further in its own direction and deepens the shadow, which is the whole of what hover does.",
         "Oba pełne warianty to jeden płaski kolor, bez gradientu i bez warstwy wewnętrznej w którymkolwiek stanie, a pod nim jeden płytki cień styku &ndash; tyle, żeby przycisk leżał na stronie, a nie był na niej wydrukowany. Różni je odległość: główny stoi tak daleko od strony, jak sięga burgund, drugorzędny o stopień od panelu za sobą. Kursor odsuwa każdy z nich dalej w jego własną stronę i pogłębia cień, i na tym polega całe najechanie.")}</td></tr>
@@ -4069,7 +4082,7 @@ const DS_SECTIONS = [
     <h1>Chip</h1>
     <p class="ds-lede">${L(
       "A chip toggles one facet of a set: a genre, a tag or an edition language in the filter column, and the language and currency pairs in the header. One class, <code>.chip</code>, covers all of them. Its selected state is a 1px underline rather than a fill, so a row of chips reads as a line of text instead of a row of controls.",
-      "Chip przełącza jedno kryterium zbioru: gatunek, tag albo język wydania w kolumnie filtrów oraz parę języka i parę waluty w nagłówku. Wszystkie te miejsca obsługuje jedna klasa, <code>.chip</code>. Zaznaczenie to podkreślenie 1px, nie wypełnienie, więc rząd chipów czyta się jak wiersz tekstu, a nie jak rząd kontrolek.")}</p>
+      "Chip przełącza jedno kryterium zbioru: gatunek, tag albo język wydania w kolumnie filtrów oraz parę języka i parę waluty w nagłówku. Na wszystkie te miejsca wystarcza jedna klasa, <code>.chip</code>. Zaznaczenie to podkreślenie 1px, nie wypełnienie, więc rząd chipów czyta się jak wiersz tekstu, a nie jak rząd kontrolek.")}</p>
     <div class="demo on-page ds-chips">
       <button class="chip" type="button" aria-pressed="true"><span class="chip-t">${L("Classic","Klasyka")}</span><sup>6</sup></button>
       <button class="chip" type="button" aria-pressed="false"><span class="chip-t">Queer</span><sup>4</sup></button>
@@ -4198,7 +4211,7 @@ const DS_SECTIONS = [
         `W kaflu: ${dsTok("--nu-cover-width")} jego szerokości, jedna wartość na próg. Stojąc sama, okładka wypełnia miniaturę, a szerokość ma miniatura: ${dsTok("--nu-thumb-size-sm")} w szufladzie koszyka, ${dsTok("--nu-thumb-size-md")} na stronie koszyka.`)}</td></tr>
       <tr><td>${L("Shadow","Cień")}</td><td>${L(
         "The cover casts a shadow, the tile does not &ndash; that is what separates the two. A thumbnail casts a shallower one, because it stands in a list rather than on a surface.",
-        "Cień rzuca okładka, nie kafel &ndash; dzięki temu odcina się od pola. Miniatura rzuca płytszy, bo stoi na liście, a nie na powierzchni.")}</td></tr>
+        "Cień rzuca okładka, nie kafel &ndash; dzięki temu odcina się od pola. Miniatura ma płytszy cień, bo leży na liście, a nie na powierzchni.")}</td></tr>
       <tr><td>${L("Hover","Najechanie")}</td><td>${L(
         "In the grid the cover rises 4px under the pointer while the tile stays put, so the card responds without the layout moving. On the product page and in the cart nothing rises, because there is nothing left to choose between.",
         "W siatce okładka unosi się o 4px pod kursorem, a kafel zostaje na miejscu, więc karta odpowiada bez przesuwania układu. Na karcie produktu i w koszyku nic się nie unosi, bo nie ma już między czym wybierać.")}</td></tr>
@@ -4241,7 +4254,7 @@ const DS_SECTIONS = [
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Shape","Kształt")}</td><td>${L(
         "A circle. It is the one round object in a shop whose every other box has square corners, and that is what makes it read as a person rather than as a picture.",
-        "Koło. To jedyny okrągły przedmiot w sklepie, w którym każde inne pole ma ostre narożniki, i właśnie dlatego czyta się jako osoba, a nie jako obrazek.")}</td></tr>
+        "Koło. To jedyny okrągły kształt w sklepie, w którym każde inne pole ma ostre narożniki, i właśnie dlatego czyta się jako osoba, a nie jako obrazek.")}</td></tr>
       <tr><td>${L("Size","Rozmiar")}</td><td>${L(
         `One step of its own, off the spacing scale: ${dsTok("--nu-avatar-size")}, the width the author's drawer has to fill. In rem, because the mark shares its box with type and a box where only the text grows stops belonging to the mark inside it.`,
         `Jeden własny stopień, poza skalą odstępów: ${dsTok("--nu-avatar-size")}, czyli tyle, ile ma do wypełnienia szuflada autorki. W rem, bo znak dzieli pole z tekstem, a pole, w którym rośnie sam tekst, przestaje należeć do znaku w środku.`)}</td></tr>
@@ -4268,16 +4281,16 @@ const DS_SECTIONS = [
   { group:{en:"Components",pl:"Komponenty"}, id:"bookseller", label:{en:"Bookseller",pl:"Księgarka"}, body: ()=>`
     <h1>${L("Bookseller","Księgarka")}</h1>
     <p class="ds-lede">${L(
-      "A second voice inside a page: the shop saying something the page cannot say for itself. It is a block in the column of text rather than a layer over it, and it comes where the page has said what it can and the shelf has something to add.",
-      "Drugi głos wewnątrz strony: sklep mówi coś, czego strona sama nie powie. Jest blokiem w kolumnie tekstu, a nie warstwą nad nią, i staje tam, gdzie strona powiedziała już swoje, a półka ma jeszcze coś do dodania.")}</p>
+      "A bookseller from a real shop, brought onto the page: she comes up once the reader has taken the book in, adds something to what has just been read, and points to where the same motif carries on. On the page she is a block in the column of text rather than a layer over it.",
+      "Księgarka z prawdziwego sklepu, przeniesiona na stronę: podchodzi, kiedy czytelniczka zapoznała się już z książką, dopowiada coś do tego, co przeczytała, i proponuje, gdzie szukać dalej tego samego motywu. Na stronie jest blokiem w kolumnie tekstu, a nie warstwą nad nią.")}</p>
 
     <h3>${L("Where it stands","Miejsce na stronie")}</h3>
     <p>${L(
       "At the foot of the product column, and the place follows from what it offers: two books, each carrying one of the motifs this one carries. The reader has to read the description and see those motifs named before the proposals can mean anything, so the section comes after both. Put higher, it would arrive before its own reason.",
       "Na końcu kolumny z opisem, a to miejsce wynika z tego, co sekcja proponuje: dwie książki, z których każda niesie któryś z motywów tej oglądanej. Czytelniczka musi najpierw przeczytać opis i zobaczyć wypisane motywy, żeby propozycje cokolwiek znaczyły, więc sekcja idzie za jednym i drugim. Postawiona wyżej, przyszłaby przed własnym uzasadnieniem.")}</p>
     <p>${L(
-      "A section appears where something has been written about the title; the status of the title has nothing to do with it. A proposal whose own book has gone out of stock drops out of the list, and where both drop out there is no section, however much was written. A title that is out has no button, so the section closes the column by itself; a title on the shelf keeps its button, and the section stands under it at the same distance the button stands from the list of details.",
-      "Sekcja pojawia się tam, gdzie o tytule coś napisano &ndash; status tytułu nie ma z tym nic wspólnego. Propozycja, której książki nie ma na stanie, wypada z listy, a kiedy wypadną obie, sekcji nie ma, choćby tekst był napisany. Przy tytule niedostępnym nie ma przycisku, więc to sekcja zamyka kolumnę; przy tytule na półce przycisk zostaje, a sekcja stoi pod nim w takim samym odstępie, w jakim przycisk stoi od listy szczegółów.")}</p>
+      "A section appears where something has been written about the title. A proposal whose own book has gone out of stock drops out of the list, and where both drop out there is no section, however much was written. A title that is out has no button, so the section closes the column by itself; a title on the shelf keeps its button, and the section stands under it at the same distance the button stands from the list of details.",
+      "Sekcja pojawia się tam, gdzie o tytule coś napisano. Propozycja, której książki nie ma na stanie, wypada z listy, a kiedy wypadną obie, sekcji nie ma, choćby tekst był napisany. Przy tytule niedostępnym nie ma przycisku, więc to sekcja zamyka kolumnę; przy tytule na półce przycisk zostaje, a sekcja stoi pod nim w takim samym odstępie, w jakim przycisk stoi od listy szczegółów.")}</p>
     <p>${L(
       "It arrives with the button rather than after it, and takes the weaker of the two entrance blurs for the reason the button takes it: a block with a ground of its own, softened as hard as a sentence, loses its edge before it has one.",
       "Na kartę wchodzi razem z przyciskiem, a nie po nim, i bierze słabszy z dwóch stopni rozmycia &ndash; z tego samego powodu co przycisk: blok z własnym tłem, rozmyty tak mocno jak zdanie, gubi krawędź, zanim ją zyska.")}</p>
@@ -4285,8 +4298,8 @@ const DS_SECTIONS = [
     <h3>${L("The parts","Części")}</h3>
     <table><thead><tr><th ${DS_COL_NAME}>${L("Part","Część")}</th><th>${L("What it does","Co robi")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>.bs</code></td><td>${L(
-        `The block. A ground of its own in ${dsTok("--nu-bg-tertiary")} and no outline: a fill and an outline together would make a box of it, and a box inside a column of text reads as an advertisement dropped into an article.`,
-        `Blok. Własne tło w kolorze ${dsTok("--nu-bg-tertiary")} i żadnego obrysu: wypełnienie razem z obrysem robi z tego pudełko, a pudełko wewnątrz kolumny tekstu czyta się jak reklama wstawiona w artykuł.`)}</td></tr>
+        `The block. A ground of its own and no outline: a fill and an outline together would make a container of it, and a container inside a column of text reads as an advertisement dropped into an article. The ground is ${dsTokMix("--nu-bg-tertiary")}.`,
+        `Blok. Własne tło, bez obrysu: wypełnienie razem z obrysem robi z tego kontener, a kontener wewnątrz kolumny tekstu czyta się jak reklama wstawiona w artykuł. Tło to ${dsTokMix("--nu-bg-tertiary")}.`)}</td></tr>
       <tr><td class="spec"><code>.bs-head</code></td><td>${L(
         "The mark and the name of whoever is speaking. The name is on the page rather than in an attribute: a block standing in a column of text has no corner to point at, so it says who it is.",
         "Znak i nazwa tego, kto mówi. Nazwa stoi na stronie, a nie w atrybucie: blok w kolumnie tekstu nie ma rogu, na który mógłby wskazać, więc mówi, kim jest.")}</td></tr>
