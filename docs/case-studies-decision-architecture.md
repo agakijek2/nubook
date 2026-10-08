@@ -1,13 +1,12 @@
-# Step 09 – The case studies
+# The case studies
 
 Decision architecture, written after the fact. Box text for FigJam is in **bold**;
 the paragraph under it is the note.
 
-This step was the last rung of the ladder and it ran out of order: both
-documents were written during step 07, before the addresses they describe
-existed. That was not impatience. The shop needed something to link out to, and
-writing the case studies turned out to be the fastest way to find out which
-figures in this project were wrong.
+The case studies are portfolio material rather than a rung of the roadmap, and
+both documents were written during step 07, before the addresses they describe
+existed. The shop needed something to link out to, and writing them turned out
+to be the fastest way to find out which figures in this project were wrong.
 
 **Nine of them were.** Token counts, tab counts, the number of decision records,
 the number of test suites. Every one had been true when it was written and had
@@ -143,7 +142,7 @@ This is the rule the whole project runs on, applied to the documents about it.
 It caught, in order: 135 tokens where there are 137; nine decision documents
 where there were six; nineteen documentation tabs where there were twenty, then
 twenty-one, then twenty-two; nine test suites where there are twelve; six
-decision records where there are now eight.
+decision records where there are now seven.
 
 **The figures drift because the project moves, not because anybody was careless.**
 That is exactly why they cannot be quoted from memory. Two of the counts above
@@ -228,8 +227,8 @@ written from the thing, not translated.
 
 ## Where it goes next
 
-With this step closed, eight of nine rungs are behind and the ladder has one
-subject left: **the model behind the bookseller**. Her recommendations are
+With these written, seven rungs of the roadmap are behind and the ladder has
+one subject left: **the model behind the bookseller**. Her recommendations are
 written by hand against a catalogue of nineteen titles, which is honest and does
 not scale. The case studies say so in as many words, which means the next step
 is now promised in public.

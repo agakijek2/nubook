@@ -18,14 +18,11 @@ describes. Each finished step leaves a decision document beside this file.
 | 06 | The bookseller in the shop | done · `bookseller-widget-decision-architecture.md` |
 | 07 | Publish what exists | done · `publish-decision-architecture.md` |
 | **08** | **The model behind the bookseller** | **in progress** |
-| 09 | The case studies | done · `case-studies-decision-architecture.md` |
 
 **What changed:** step 07 was *deploy*, a technical errand at the end. It is now
 *publish*, and it comes with a reason – the work needs a public address before it
 is finished, because it is being linked from a portfolio while the job search is
-on. Step 09 was going to be one case study. It is two: one about the shop, one
-about its design system, each linking to its own entry point and to the
-repository.
+on.
 
 **What that changes about 07.** A deploy only has to work. A publish has to be
 readable by a stranger who arrives from a portfolio link, opens the repository,
@@ -52,11 +49,11 @@ Both hash routes already work as deep links, including one tab at a time
 three are decided and recorded, not forgotten – the contrast gap ships as an open
 item that the Accessibility tab describes in its own words.
 
-**On step 09.** Both case studies are written and live in `docs/`, ahead of
-their place in the ladder: the shop needed something to link from, and writing
-them turned out to be the fastest way to find out which numbers in this project
-were wrong. The step stays open because what closes it is not the text but its
-decision record and the final addresses inside it.
+**The case studies** are written and live in `docs/`, with their own decision
+record beside them. They are portfolio material rather than a rung of this
+ladder, so they are not a step: the shop needed something to link from, and
+writing them turned out to be the fastest way to find out which numbers in this
+project were wrong.
 
 ---
 

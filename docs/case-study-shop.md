@@ -44,7 +44,7 @@ itself. It runs as a single page with hash routing, a light and a dark scheme,
 and no back end.
 
 **It is in progress, and deliberately so.** The work runs on a written roadmap
-of numbered steps – nine of them, eight closed and one in progress, named
+of numbered steps – eight of them, seven closed and one in progress, named
 rather than vague. The roadmap is not a private planning document: it is
 [a tab in the shop's own documentation](https://nubook.eu/#design/roadmap),
 reachable from the footer, with each closed step linking to the record of what
@@ -172,7 +172,7 @@ excluded from the table – the shop documents its own gaps.
 
 The roadmap is published with the shop – a tab in the documentation, linked
 from the footer – and mirrored in the repository as `docs/roadmap.md`, with a
-test comparing the two so they cannot quietly part. Eight steps are closed, each
+test comparing the two so they cannot quietly part. Seven steps are closed, each
 with its own decision record. One remains:
 
 - **08 · The model behind the bookseller.** The lookup and the model set out

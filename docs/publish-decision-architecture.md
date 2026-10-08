@@ -384,10 +384,11 @@ rather than quietly dropped from the table.
 commit. Removing them from the current state is one command; removing them from
 the history is a rewrite, and the risk did not justify it.
 
-**The case studies were written ahead of their place in the ladder**, because
-the shop needed something to link to and because writing them turned out to be
-the fastest way to find which figures in this project were wrong. Step 09 stays
-open: what closes it is not the text but its own decision record.
+**The case studies were written during this step**, because the shop needed
+something to link to and because writing them turned out to be the fastest way
+to find which figures in this project were wrong. They are portfolio material
+rather than a rung of the ladder, so they are not a step of their own; their
+decisions are recorded in `case-studies-decision-architecture.md`.
 
 ## Where it goes next
 
