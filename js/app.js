@@ -2871,6 +2871,35 @@ function dsMotionSteps(){
     .map(name => [name, dsVal(name), notes.get(name.slice(P.length)) || undocumented])
     .filter(([,val]) => val);
 }
+/* The blur scale, read from the stylesheet the way the other scales are. Each
+   step carries two facts beyond its value: whether it goes on the element or on
+   what shows through behind it, and what it is for. The property matters here
+   more than on any other scale, because the two are not interchangeable - a
+   blur on the element softens the element, a blur on the backdrop softens
+   everything the element happens to stand over. */
+function dsBlurSteps(){
+  const notes = new Map([
+    ["sm", [L("the element","element"),
+            L("A picture arriving. A cover has to stay recognisable on the way in, so it gets the step that softens least - the same step a block with a ground of its own takes, which loses its edge if softened any harder.",
+              "Wchodzący obraz. Okładka ma pozostać rozpoznawalna w drodze, więc dostaje stopień, który najmniej odbiera. Ten sam stopień bierze blok z własnym tłem: rozmyty mocniej, gubi krawędź.")]],
+    ["md", [L("the backdrop","tło"),
+            L("A whole view put behind a layer. The only step that goes on the backdrop of something, and it is held low on purpose: a reader who can no longer make out what is underneath loses track of where she will come back to.",
+              "Cały widok odłożony za warstwę. Jedyny stopień kładziony na tle i celowo trzymany nisko: czytelniczka, która przestaje rozpoznawać, co jest pod spodem, traci orientację, dokąd wróci.")]],
+    ["lg", [L("the element","element"),
+            L("Text arriving. A word may be illegible for a fraction of a second and nothing is lost by it, so text takes a harder step than a picture.",
+              "Wchodzący tekst. Słowo może być przez ułamek sekundy nieczytelne i nic na tym nie traci, więc tekst bierze mocniejszy stopień niż obraz.")]],
+    ["xl", [L("the backdrop","tło"),
+            L("The top of the ramp under the block that stays at the top of the window. It can go this far because it covers a strip and not a view: everything below it stays sharp, so nothing is asked of what passes behind except that it stop competing for the eye.",
+              "Szczyt rampy pod blokiem, który zostaje u góry okna. Może sięgać tak daleko, bo obejmuje pas, a nie widok: wszystko poniżej zostaje ostre, więc od tego, co przechodzi za nim, nie wymaga się niczego poza tym, żeby przestało zabiegać o wzrok.")]],
+  ]);
+  const P = "--nu-blur-";
+  const fromSheet = Object.keys(dsRootDecls()).filter(n => n.startsWith(P));
+  const names = fromSheet.length ? fromSheet : [...notes.keys()].map(k => P + k);
+  const undocumented = [L("not documented yet","jeszcze nieopisane"), ""];
+  return names
+    .map(name => [name, dsVal(name), ...(notes.get(name.slice(P.length)) || undocumented)])
+    .filter(([,val]) => val);
+}
 function dsSpaceSteps(){
   /* A Map, not an object: some step names are still bare numbers, and object
      keys that look like integers are iterated before the rest whatever order
@@ -3179,8 +3208,8 @@ const DS_DOCS = [
        pl:"Trzy przebiegi i pułapki, przez które audyt zaczyna kłamać &ndash; łącznie z tym, co robić, gdy skrypt zgłasza dwadzieścia naruszeń w kodzie, który wygląda dobrze."} },
   { cat:"procedures", file:"skills/en/design-system-tab.md", filePl:"skills/zakladka-dokumentacji-ds.md", words:1397, wordsPl:1135,
     t:{en:"Writing a documentation tab", pl:"Pisanie zakładki dokumentacji"},
-    d:{en:"The structure every tab shares, so a new one is comparable to the twenty already here rather than a dialect of its own.",
-       pl:"Struktura wspólna wszystkim zakładkom, żeby nowa dała się porównać z dwudziestoma istniejącymi, a nie była osobnym dialektem."} },
+    d:{en:"The structure every tab shares, so a new one is comparable to the others already here rather than a dialect of its own.",
+       pl:"Struktura wspólna wszystkim zakładkom, żeby nowa dała się porównać z pozostałymi, a nie była osobnym dialektem."} },
   { cat:"procedures", file:"skills/en/new-view-in-the-shop.md", filePl:"skills/nowy-widok-w-sklepie.md", words:1012, wordsPl:850,
     t:{en:"Building a new view", pl:"Budowa nowego widoku"},
     d:{en:"Read the documentation and the tokens before the first line, use what exists instead of inventing near-duplicates, then audit - because a new component makes some existing sentence false.",
@@ -4288,8 +4317,8 @@ const DS_SECTIONS = [
       "A section appears where something has been written about the title. A proposal whose own book has gone out of stock drops out of the list, and where both drop out there is no section, however much was written. A title that is out has no button, so the section closes the column by itself; a title on the shelf keeps its button, and the section stands under it at the same distance the button stands from the list of details.",
       "Sekcja pojawia się tam, gdzie o tytule coś napisano. Propozycja, której książki nie ma na stanie, wypada z listy, a kiedy wypadną obie, sekcji nie ma, choćby tekst był napisany. Przy tytule niedostępnym nie ma przycisku, więc to sekcja zamyka kolumnę; przy tytule na półce przycisk zostaje, a sekcja stoi pod nim w takim samym odstępie, w jakim przycisk stoi od listy szczegółów.")}</p>
     <p>${L(
-      "It arrives with the button rather than after it, and takes the weaker of the two entrance blurs for the reason the button takes it: a block with a ground of its own, softened as hard as a sentence, loses its edge before it has one.",
-      "Na kartę wchodzi razem z przyciskiem, a nie po nim, i bierze słabszy z dwóch stopni rozmycia &ndash; z tego samego powodu co przycisk: blok z własnym tłem, rozmyty tak mocno jak zdanie, gubi krawędź, zanim ją zyska.")}</p>
+      "It arrives with the button rather than after it, and takes the weaker of the two entrance steps of <a class=\"link in-text\" href=\"#design/blur\">Blur</a> for the reason the button takes it: a block with a ground of its own, softened as hard as a sentence, loses its edge before it has one.",
+      "Na kartę wchodzi razem z przyciskiem, a nie po nim, i bierze słabszy z dwóch stopni <a class=\"link in-text\" href=\"#design/blur\">Rozmycia</a> wejściowego &ndash; z tego samego powodu co przycisk: blok z własnym tłem, rozmyty tak mocno jak zdanie, gubi krawędź, zanim ją zyska.")}</p>
 
     <h3>${L("The parts","Części")}</h3>
     <table><thead><tr><th ${DS_COL_NAME}>${L("Part","Część")}</th><th>${L("What it does","Co robi")}</th></tr></thead><tbody>
@@ -4749,12 +4778,10 @@ const DS_SECTIONS = [
       "None of the three that answer an action starts slowly. A slow opening makes a click look ignored for the first tenth of a second, which reads as the interface stalling rather than as a style. The last two answer nothing and are free of the rule: <code>ease-in-out</code> carries movement that repeats, and <code>linear</code> a move measured from one place to another.",
       "Żadna z trzech odpowiadających na działanie nie zaczyna się powoli. Wolny start sprawia, że kliknięcie wygląda na zignorowane przez pierwszą dziesiątą sekundy, a to czyta się jako zacinanie interfejsu, nie jako styl. Dwie ostatnie na nic nie odpowiadają i ta zasada ich nie dotyczy: <code>ease-in-out</code> prowadzi ruch, który się powtarza, a <code>linear</code> ruch mierzony z jednego położenia do drugiego.")}</p>
 
-    <h3>${L("Blur","Rozmycie")}</h3>
-    <p>${L(
-      `Blur says one of two things: this is not in focus yet, or this is no longer what you are reading. The step follows from how much the thing under it can afford to lose, and a picture can afford least. ${dsTok("--nu-blur-sm")} is a cover arriving in the grid, which has to stay recognisable on the way in. ${dsTok("--nu-blur-md")} is a whole view put behind a layer &ndash; the only step applied to the backdrop rather than to the element, and held down because a reader who cannot make out what is underneath loses track of where she will come back to. ${dsTok("--nu-blur-lg")} is text arriving, where a word may be illegible for a moment and nothing is lost by it. ${dsTok("--nu-blur-xl")} is the top of the ramp under the block that stays at the top of the window, and it can go that far precisely because it is a strip and not a view: everything below it stays sharp, so nothing is asked of what passes behind except that it stop competing for the eye. That ramp is four layers, and it is deliberately uneven: through the lower half the blur barely moves, a cover on its way up still being a cover, and past the middle it quadruples in one step and doubles again, so the last stretch before the block is where everything goes. One layer cannot do any of it: a single blur is either on or off at a given point, and switching it on reads as a change of opacity rather than of focus.`,
-      `Rozmycie mówi jedną z dwóch rzeczy: to jeszcze nie jest ostre albo to już nie jest to, co czytasz. Stopień wynika z tego, ile rzecz pod nim może stracić, a obraz może najmniej. ${dsTok("--nu-blur-sm")} to wchodząca do siatki okładka, która ma pozostać rozpoznawalna w drodze. ${dsTok("--nu-blur-md")} to cały widok odłożony za warstwę &ndash; jedyny stopień kładziony na tle, a nie na samym elemencie, i trzymany nisko, bo czytelniczka, która nie rozpoznaje, co jest pod spodem, traci orientację, dokąd wróci. ${dsTok("--nu-blur-lg")} to wchodzący tekst, gdzie słowo może być przez chwilę nieczytelne i nic na tym nie traci. ${dsTok("--nu-blur-xl")} to szczyt pasa pod blokiem stojącym u góry okna i może sięgać tak daleko właśnie dlatego, że jest pasem, a nie widokiem: wszystko poniżej zostaje ostre, więc od tego, co przechodzi za nim, nie wymaga się niczego poza tym, żeby przestało zabiegać o wzrok. Pas składa się z czterech warstw i jest celowo nierówny: przez dolną połowę rozmycie prawie nie rośnie, bo okładka w drodze do góry nadal jest okładką, a za połową czterokrotnieje w jednym kroku i podwaja się jeszcze raz &ndash; cała robota dzieje się więc na ostatnim odcinku przed blokiem. Jedna warstwa nie zrobi z tego nic: pojedyncze rozmycie w danym punkcie albo jest, albo go nie ma, a włączanie go czyta się jako zmianę przezroczystości, nie ostrości.`)}</p>
-
     <h3>${L("Transitions","Przejścia")}</h3>
+    <p>${L(
+      `Each row names how long the change takes and on which curve. Where a transition also softens what is moving, the step of blur it uses is in <a class="link in-text" href="#design/blur">Blur</a>.`,
+      `Każdy wiersz podaje, ile zmiana trwa i na jakiej krzywej. Tam, gdzie przejście dodatkowo rozmywa to, co się rusza, użyty stopień rozmycia opisuje <a class="link in-text" href="#design/blur">Rozmycie</a>.`)}</p>
     <table><thead><tr><th>${L("Transition","Przejście")}</th><th>${L("Duration","Czas")}</th><th>${L("Curve","Krzywa")}</th><th>${L("Why","Po co")}</th></tr></thead><tbody>
       <tr><td>${L("Open a product","Otwarcie produktu")}</td><td>${dsTok("--nu-motion-slower")}</td><td>${dsTok("--nu-ease-zoom")}</td>
         <td>${L("The tile grows into the packshot, and once it settles what the book has to say comes out of blur to meet it: the details first, rising the last of the way, then the button. The packshot is sharp by then, having just finished its own journey, so the words arrive rather than having been there all along","Kafel powiększa się do packshotu, a kiedy dojdzie na miejsce, to, co książka ma do powiedzenia, wychodzi z rozmycia mu naprzeciw: najpierw informacje, podnosząc się ostatni kawałek, potem przycisk. Packshot jest już wtedy ostry, bo właśnie skończył własną drogę, więc słowa przychodzą, zamiast stać tam od początku")}</td></tr>
@@ -4782,6 +4809,74 @@ const DS_SECTIONS = [
     <p class="note">${L(
       "All of the movement above yields to <code>prefers-reduced-motion: reduce</code>, and so does everything this table does not name: anything that travels, scales, changes size or repeats. It is withdrawn in two places, never in a list of its own &ndash; a rule in the stylesheet standing beside the rule that sets the movement, and a check in the script before an animation is started. A new view therefore inherits the setting from whichever of the two it uses, and nothing has to be added anywhere for it to.",
       "Cały powyższy ruch ustępuje przy <code>prefers-reduced-motion: reduce</code>, a razem z nim wszystko, czego ta tabela nie wymienia: każde przesunięcie, skalowanie, zmiana rozmiaru i powtórzenie. Wycofuje się w dwóch miejscach i nigdy na osobnej liście &ndash; regułą w arkuszu, stojącą obok reguły, która ruch ustawia, oraz sprawdzeniem w skrypcie, zanim animacja ruszy. Nowy widok dziedziczy więc to ustawienie z tego miejsca, którego użyje, i nie trzeba go nigdzie dopisywać.")}</p>` },
+
+  { group:{en:"Patterns",pl:"Wzorce"}, id:"blur", label:{en:"Blur",pl:"Rozmycie"}, body: ()=>`
+    <h1>${L("Blur","Rozmycie")}</h1>
+    <p class="ds-lede">${L(
+      "Blur says one of two things: this is not in focus yet, or this is no longer what you are reading. It is a visual property with a scale of its own, and most of the shop meets it inside a transition &ndash; which is why the steps are described here and the durations in <a class=\"link in-text\" href=\"#design/motion\">Motion</a>.",
+      "Rozmycie mówi jedną z dwóch rzeczy: to jeszcze nie jest ostre albo to już nie jest to, co czytasz. Jest właściwością wizualną z własną skalą, a w sklepie najczęściej pojawia się w trakcie przejścia &ndash; dlatego stopnie są opisane tutaj, a czasy w <a class=\"link in-text\" href=\"#design/motion\">Ruchu</a>.")}</p>
+
+    <h3>${L("The scale","Skala")}</h3>
+    <p>${L(
+      "The step follows from how much the thing under it can afford to lose, and a picture can afford least. The sample in the second column is the same word at every step, so what each one does to something meant to be read is visible rather than asserted.",
+      "Stopień wynika z tego, ile rzecz pod nim może stracić, a obraz może najmniej. Próbka w drugiej kolumnie to na każdym stopniu to samo słowo, więc widać, co każdy z nich robi z czymś, co ma być przeczytane.")}</p>
+    <table><colgroup><col ${DS_COL_NAME}><col style="width:150px"><col style="width:110px"><col></colgroup>
+      <thead><tr><th>Token</th><th>${L("Value","Wartość")}</th><th>${L("Goes on","Kładzione na")}</th><th>${L("What it carries","Co się w nim mieści")}</th></tr></thead><tbody>
+      ${dsBlurSteps().map(([name, val, where, note]) => `
+      <tr><td class="spec"><code>${name}</code></td>
+        <td><span class="blur-eg" style="filter:blur(var(${name}))">${L("Reader","Czytam")}</span> <b>${val}</b></td>
+        <td>${where}</td><td>${note}</td></tr>`).join("")}
+    </tbody></table>
+
+    <h3>${L("Rules","Zasady")}</h3>
+    <table><colgroup><col ${DS_COL_NAME}><col></colgroup><tbody>
+      <tr><td>${L("Blur ends at nothing","Rozmycie kończy się na zerze")}</td>
+        <td>${L(
+          "A step is where a blur starts, never where it rests. Everything softened on the element arrives at <code>blur(0)</code> and stays there, so no text in the shop is permanently out of focus. The exception is a backdrop, which holds its step for as long as the layer over it is open.",
+          "Stopień jest tym, od czego rozmycie się zaczyna, a nie tym, na czym zostaje. Wszystko rozmywane na samym elemencie dochodzi do <code>blur(0)</code> i tam zostaje, więc żaden tekst w sklepie nie jest rozmyty na stałe. Wyjątkiem jest tło, które trzyma swój stopień tak długo, jak otwarta jest warstwa nad nim.")}</td></tr>
+      <tr><td>${L("The pair with a wash","Para z przesłoną")}</td>
+        <td>${L(
+          "A backdrop takes a blur and a wash of page colour together, over one step of the motion scale. The wash says the view is out of reach, the blur says it is not what the reader is looking at &ndash; two statements, and either one alone is read as the other having failed.",
+          "Tło bierze rozmycie i przesłonę w kolorze strony razem, w jednym stopniu skali ruchu. Przesłona mówi, że widok jest nieosiągalny, rozmycie &ndash; że nie jest tym, na co czytelniczka patrzy. To dwa komunikaty, a każdy z osobna czyta się jako nieudany drugi.")}</td></tr>
+      <tr><td>${L("Not under something to be read","Nie pod czymś do czytania")}</td>
+        <td>${L(
+          "A blurred ground costs legibility, so it goes under a strip that holds nothing and not under a control. The bar at the foot of a phone screen is opaque for that reason: the search field sits directly on it, and the ramp would be working against the one thing on the bar that has to be read.",
+          "Rozmyte tło kosztuje czytelność, więc idzie pod pas, na którym nic nie stoi, a nie pod kontrolkę. Belka u dołu ekranu telefonu jest z tego powodu nieprzezroczysta: pole wyszukiwania stoi wprost na niej, a rampa pracowałaby przeciwko jedynej rzeczy na belce, którą trzeba przeczytać.")}</td></tr>
+      <tr><td>${L("One token, four values","Jeden token, cztery wartości")}</td>
+        <td>${L(
+          `The ramp's four layers are not four tokens. Only ${dsTok("--nu-blur-xl")} is declared; the other three are it, divided down in the rule, so the whole ramp changes depth from one place.`,
+          `Cztery warstwy rampy to nie cztery tokeny. Zadeklarowany jest tylko ${dsTok("--nu-blur-xl")}, a pozostałe trzy to on, podzielony w regule, więc cała rampa zmienia głębokość z jednego miejsca.`)}</td></tr>
+    </tbody></table>
+
+    <h3>${L("The ramp","Rampa")}</h3>
+    <p>${L(
+      "Under the block that stays at the top of the window the blur is graded rather than uniform, and the gradation is deliberately uneven: through the lower half it barely moves, a cover on its way up still being a cover, and past the middle it quadruples in one step and doubles again. The whole stretch before the block is where the softening happens. The wash follows the same shape, staying out of the way until the middle and arriving with the blur.",
+      "Pod blokiem, który zostaje u góry okna, rozmycie jest stopniowane, a nie jednolite, i stopniowanie jest celowo nierówne: przez dolną połowę prawie nie rośnie, bo okładka w drodze do góry nadal jest okładką, a za połową czterokrotnieje w jednym kroku i podwaja się jeszcze raz. Cała robota dzieje się więc na ostatnim odcinku przed blokiem. Przesłona ma ten sam przebieg: trzyma się z boku do połowy i dochodzi razem z rozmyciem.")}</p>
+    <div class="demo on-page" style="display:block">
+      <div class="blur-ramp">
+        <div class="blur-ramp-under"></div>
+        <div class="blur-ramp-veil"><span></span><span></span><span></span><span></span></div>
+      </div>
+    </div>
+    <p class="note">${L(
+      "One layer cannot do any of it: a single blur is either on or off at a given point, and switching it on reads as a change of opacity rather than of focus. Four layers with masks over them give the gradation a point to move through.",
+      "Jedna warstwa nie zrobi z tego nic: pojedyncze rozmycie w danym punkcie albo jest, albo go nie ma, a włączanie go czyta się jako zmianę krycia, nie ostrości. Cztery warstwy z maskami dają stopniowaniu drogę, po której może rosnąć.")}</p>
+
+    <h3>${L("Outside the scale","Poza skalą")}</h3>
+    <table><colgroup><col ${DS_COL_NAME}><col></colgroup><tbody>
+      <tr><td>${L("A shadow's spread","Rozmycie cienia")}</td>
+        <td>${L(
+          `The third length in <code>box-shadow</code> is also called blur and is not this scale. It says how far a shadow spreads under an element and never touches what the reader is looking at, so it is written in the rule that casts the shadow; the only token a shadow takes is its colour, <code>--nu-bg-shadow</code>.`,
+          `Trzecia długość w <code>box-shadow</code> też nazywa się rozmyciem i nie należy do tej skali. Mówi, jak daleko cień rozchodzi się pod elementem, i nie dotyka tego, na co czytelniczka patrzy, więc stoi wprost w regule rzucającej cień. Jedyny token, jaki cień bierze, to jego kolor, <code>--nu-bg-shadow</code>.`)}</td></tr>
+      <tr><td>${L("A narrow screen","Wąski ekran")}</td>
+        <td>${L(
+          "The ramp exists where the block it belongs to stays at the top of the window. On a phone the block lets go and stands in the flow, so there is nothing passing behind it and the ramp is not rendered at all. The steps that go on the element are unaffected: a cover and a line of text arrive the same way at every width.",
+          "Rampa istnieje tam, gdzie blok, do którego należy, zostaje u góry okna. Na telefonie blok puszcza i stoi w przepływie, więc nic za nim nie przechodzi i rampa w ogóle się nie renderuje. Stopni kładzionych na elemencie to nie dotyczy: okładka i wiersz tekstu wchodzą tak samo przy każdej szerokości.")}</td></tr>
+      <tr><td>${L("Reduced motion","Ograniczony ruch")}</td>
+        <td>${L(
+          "A reader who has asked for less movement gets the end state without the arrival, so the steps that belong to an entrance are never applied. A backdrop still takes its blur: it is a state the layer holds, not a movement towards one.",
+          "Czytelniczka, która poprosiła o mniej ruchu, dostaje stan końcowy bez dojścia do niego, więc stopnie należące do wejścia nie są w ogóle kładzione. Tło bierze swoje rozmycie dalej: to stan, w którym warstwa stoi, a nie ruch w jego stronę.")}</td></tr>
+    </tbody></table>` },
 
   { group:{en:"Patterns",pl:"Wzorce"}, id:"content", label:{en:"Content",pl:"Treść"}, body: ()=>`
     <h1>${L("Content","Treść")}</h1>

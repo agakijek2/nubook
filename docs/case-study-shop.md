@@ -153,7 +153,7 @@ apologetic, because the bookseller has a real basis for the alternative she
 offers.
 
 **A documented design system,** built alongside the shop and shipped with it –
-23 documentation tabs, 136 tokens, generated from the same stylesheet the shop
+24 documentation tabs, 136 tokens, generated from the same stylesheet the shop
 runs on. That is a case study of its own:
 [read it here](./case-study-design-system.md).
 

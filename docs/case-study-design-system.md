@@ -57,15 +57,15 @@ change updates the verdict rather than leaving a stale number. A token added to
 `:root` appears in the inventory on its own; one whose prefix matches no category
 lands in a visible "not sorted yet" group rather than disappearing.
 
-**Twenty-three tabs** across four groups: five that describe the project itself
+**Twenty-four tabs** across four groups: five that describe the project itself
 (overview, roadmap, documents, accessibility, tokens), four Foundations, eleven
-Components, three Patterns. Each component tab follows the same structure – specimen,
+Components, four Patterns. Each component tab follows the same structure – specimen,
 variants table, specification, states, live preview – so comparing two
 components is a matter of looking, not reading.
 
 The [roadmap](https://nubook.eu/#design/roadmap) and
-[documents](https://nubook.eu/#design/documents) tabs are the newest, and they are
-here rather than in the shop for a reason about voice: a shop's footer is where a reader looks for
+[documents](https://nubook.eu/#design/documents) tabs are here rather than in the
+shop for a reason about voice: a shop's footer is where a reader looks for
 delivery and returns, not for a project plan. The documentation is already
 backstage, so the plan belongs in it. The ladder has one source in the code; the
 copy in `docs/roadmap.md` is compared to it by a test rather than kept in step by
@@ -128,7 +128,7 @@ lengths, in the [Documents tab](https://nubook.eu/#design/documents):
   when the script reports twenty violations in code that looks fine: suspect the
   script first.
 - **Writing a documentation tab** – the structure every tab shares, so a new one
-  is comparable to the twenty-one already there rather than a new dialect.
+  is comparable to the others already there rather than a new dialect.
 - **Building a new view in the shop** – read the documentation and the tokens
   before the first line of code, use the components that exist instead of
   inventing near-duplicates, and audit the documentation afterwards, because a
@@ -162,7 +162,7 @@ tests that hold it.
 ## Outcomes
 
 **A system the shop actually runs on.** Not a library beside the product: the
-same stylesheet, the same tokens, one source. 136 tokens, 23 documented tabs,
+same stylesheet, the same tokens, one source. 136 tokens, 24 documented tabs,
 four button variants, a documented motion scale with reasoned curves.
 
 **Documentation that is provably current.** The generated parts cannot drift by

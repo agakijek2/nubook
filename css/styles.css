@@ -2229,6 +2229,52 @@
   .ds .space-table .sc b{font-weight:var(--nu-weight-normal);font-variant-numeric:tabular-nums;white-space:nowrap}
   .ds .space-table .none{color:var(--nu-fg-tertiary)}
 
+  /* Blur scale table. The sample is the same word at every step, set from the
+     live token, so the column cannot disagree with the scale. A blur reaches
+     past the glyphs it is applied to, so the sample needs room around it or the
+     hardest step is clipped by the cell rather than fading out in it. */
+  .ds .blur-eg{
+    display:inline-block;vertical-align:middle;
+    font:var(--nu-type-body-l);color:var(--nu-fg-primary);
+    padding:0 var(--nu-space-micro);margin-right:var(--nu-space-micro);
+  }
+  /* The ramp, shown rather than described: four layers over a strip of covers,
+     each masked to its own stretch, exactly as the masthead builds it. The
+     divisors are the ones in the shop's own rule - a figure that invented its
+     own would illustrate something the shop does not do. */
+  .ds .blur-ramp{position:relative;height:140px;overflow:hidden;background:var(--nu-bg-secondary)}
+  .ds .blur-ramp-under{
+    position:absolute;inset:0;
+    background:repeating-linear-gradient(115deg,
+      var(--nu-bg-primary) 0 18px, var(--nu-bg-tertiary) 18px 30px,
+      var(--nu-border-neutral) 30px 34px, var(--nu-bg-secondary) 34px 56px);
+  }
+  .ds .blur-ramp-veil{
+    position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;
+    background:linear-gradient(to top, transparent 0%, transparent 45%, var(--nu-bg-masthead) 88%);
+  }
+  .ds .blur-ramp-veil span{position:absolute;inset:0}
+  .ds .blur-ramp-veil span:nth-child(1){
+    -webkit-backdrop-filter:blur(calc(var(--nu-blur-xl) / 16));backdrop-filter:blur(calc(var(--nu-blur-xl) / 16));
+    -webkit-mask-image:linear-gradient(to top, transparent 0%, #000 25%);
+    mask-image:linear-gradient(to top, transparent 0%, #000 25%);
+  }
+  .ds .blur-ramp-veil span:nth-child(2){
+    -webkit-backdrop-filter:blur(calc(var(--nu-blur-xl) / 8));backdrop-filter:blur(calc(var(--nu-blur-xl) / 8));
+    -webkit-mask-image:linear-gradient(to top, transparent 25%, #000 50%);
+    mask-image:linear-gradient(to top, transparent 25%, #000 50%);
+  }
+  .ds .blur-ramp-veil span:nth-child(3){
+    -webkit-backdrop-filter:blur(calc(var(--nu-blur-xl) / 2));backdrop-filter:blur(calc(var(--nu-blur-xl) / 2));
+    -webkit-mask-image:linear-gradient(to top, transparent 50%, #000 70%);
+    mask-image:linear-gradient(to top, transparent 50%, #000 70%);
+  }
+  .ds .blur-ramp-veil span:nth-child(4){
+    -webkit-backdrop-filter:blur(var(--nu-blur-xl));backdrop-filter:blur(var(--nu-blur-xl));
+    -webkit-mask-image:linear-gradient(to top, transparent 70%, #000 88%);
+    mask-image:linear-gradient(to top, transparent 70%, #000 88%);
+  }
+
   /* Spacing figures. One reading throughout: grey is the empty space being
      measured, an outlined block is a thing sitting next to it. Every distance
      is set from a live token, so a figure cannot disagree with the scale. */

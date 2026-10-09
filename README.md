@@ -38,9 +38,9 @@ and explains the connection in the motifs' own terms.
 ## What the design system is
 
 It does not sit beside the shop – it is part of it: the same stylesheet, the
-same tokens, one address (`#design`). Twenty-two tabs cover colour,
-typography, spacing, iconography, ten components, motion and editorial
-rules.
+same tokens, one address (`#design`). Twenty-four tabs cover colour,
+typography, spacing, iconography, eleven components, motion, blur and
+editorial rules.
 
 The documentation **reads the live stylesheet**. The token inventory, the
 specimens, the scales and the contrast table are generated from what

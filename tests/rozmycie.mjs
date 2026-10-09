@@ -193,6 +193,38 @@ chk(!/overflow-y:\s*auto/.test(rule('.bs-list')||''),
         `${lang}: nor a pause before she speaks, there being none`);
     chk(/breath|oddech/i.test(t),
         `${lang}: and the breath is still described, because the Bookseller tab sends the reader here for it`);
+    /* The blur scale moved out of Motion into a tab of its own, blur being a
+       visual property rather than a kind of movement - and one of its four
+       steps never moves at all. Motion keeps the durations and points at it. */
+    chk(!/blur\(|rozmyci|blur scale/i.test(t) || /#design\/blur/.test(e.innerHTML),
+        `${lang}: Motion does not describe the scale itself`);
+    chk(/#design\/blur/.test(e.innerHTML),
+        `${lang}: and sends the reader to the Blur tab for the steps`);
+
+    /* The scale table is generated from the sheet, so no step can be named in
+       the documentation and absent from the table, or the other way round. The
+       stylesheet is in the markup above for exactly this: without it every row
+       renders empty and a check on the tab's text passes over an empty table. */
+    const eb=d2.createElement('div');
+    eb.innerHTML=w2.__S.find(s=>s.id==='blur').body();
+    const tb=eb.textContent;
+    const declared=[...css.replace(/\/\*[\s\S]*?\*\//g,'')
+      .matchAll(/^\s*(--nu-blur-[\w-]+)\s*:/gm)].map(m=>m[1]);
+    chk(declared.length>0, `${lang}: steps declared in the sheet (${declared.length})`);
+    for (const name of declared)
+      chk(tb.includes(name), `${lang}: ${name} has a row in the scale`);
+    /* A row appears by itself for any step added to the sheet, so "has a row"
+       cannot go red on its own - what it would say is "not documented yet",
+       which is the thing worth failing on. Verified by adding a fifth step to
+       the sheet and watching this turn red while the row check stayed green. */
+    chk(!/not documented yet|jeszcze nieopisane/.test(tb),
+        `${lang}: and a description of its own, not a placeholder`);
+    chk((eb.querySelectorAll('.blur-eg').length)===declared.length,
+        `${lang}: every row carries a sample set from its own token`);
+    chk(eb.querySelectorAll('.blur-ramp-veil span').length===4,
+        `${lang}: the ramp is shown as four layers, as the masthead builds it`);
+    chk(/#design\/motion/.test(eb.innerHTML),
+        `${lang}: and Blur sends the reader back to Motion for the durations`);
   }
 }
 
@@ -292,8 +324,11 @@ if (route){
 
 /* 9. the documentation keeps up: every step described, both new transitions in
    the table */
-chk(/--nu-blur-sm/.test(js) && /--nu-blur-md/.test(js) && /--nu-blur-lg/.test(js),
-    'all three steps are named in the documentation');
+/* The steps themselves are checked on the rendered Blur tab above, against the
+   sheet rather than against this list: a literal written here would have to be
+   kept in step by hand, which is the thing the tab stopped doing. */
+chk(/function dsBlurSteps\(\)/.test(js), 'the scale table is generated rather than typed');
+chk(/\{ group:\{en:"Patterns",pl:"Wzorce"\}, id:"blur"/.test(js), 'Blur stands as a tab of its own');
 chk(/Powrót do siatki/.test(js),    'the Motion tab has a row about the return');
 chk(/Zasłonięcie widoku/.test(js),  'the Motion tab has a row about covering the view');
 chk(/\["blur",\s*\["--nu-blur"\]\]/.test(js), 'the token inventory has its own category for blur');
