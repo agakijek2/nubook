@@ -331,6 +331,61 @@ const motifIds = b => b.m || [];
    nowhere else. Neither price nor availability is written in - the shop adds
    those from data, because one changes with the currency and the other with the
    stockroom. */
+/* Titles the shop does not stock and has something to say about anyway.
+   A reader who types one of these has asked a question the shelf cannot answer,
+   and "we do not have it" is the whole of what the empty state knows. What she
+   adds is why the book belongs to this shelf's subject at all, and which two
+   titles here take up the same motifs.
+   One entry, deliberately. A second catalogue without covers, prices or pages
+   is not what this is: one is enough to carry the pattern, and step 08 replaces
+   the written entry with a model that can answer for any title.
+   The fields are the shelf's own - title, Polish title, author - so a query
+   reaches this through matchesQuery, the same function the grid uses. Every way
+   of typing the title that would find a book finds this: diacritics folded,
+   both languages, the author as well.
+   `m` lists the motifs the book carries, by the ids the motif layer uses, so
+   the sentence names them in whichever language is on and cannot drift from the
+   essays. Both are motifs the shop browses by and both are assigned from what
+   is written about the novel rather than from its author having coined the
+   phrase: a room of one's own is Woolf's term and is not on this list, because
+   the case for it in this novel is not made. */
+const OFFSHELF = [
+  { t:"Mrs Dalloway", tp:"Pani Dalloway", a:"Virginia Woolf",
+    /* The author's name in the genitive, because Polish declines a name and
+       English does not: "Powieść Virginii Woolf" against "Virginia Woolf's".
+       A nominative left standing in the Polish sentence is a grammatical error,
+       not a stylistic one. */
+    ag:"Virginii Woolf",
+    m:["angel-in-house","social-clock"],
+    offer:[
+      { title:"Convenience Store Woman", text:{
+        pl:`<p>Clarissa Dalloway wydaje przyjęcie, Keiko staje za kasą w konbini. Obie wykonują rolę, która ma je zastąpić.</p>
+          <ul><li><strong>anioł w domu</strong> &ndash; Woolf opisuje kobietę, która jest doskonałą żoną polityka i nie ma poza tym nikogo, kim mogłaby być; sama zresztą ten termin wymyśliła, sześć lat po tej powieści, pisząc, że musiała Anioła zabić. Murata bierze to samo i przestawia o jedno piętro: Keiko nie udaje niczego z miłości ani z przymusu, tylko dlatego, że wersja jej samej złożona z cudzych oczekiwań jest jedyną, którą otoczenie potrafi odczytać.</li>
+          <li><strong>zegar społeczny</strong> &ndash; Clarissa w pięćdziesiątym drugim roku życia wraca do decyzji, której nie podjęła. Keiko ma trzydzieści kilka lat, osiemnaście lat w tej samej pracy i jest zupełnie szczęśliwa &ndash; problem mają ci, którzy liczą jej lata za nią.</li></ul>
+          <p>Różnica jest w tonie. Woolf pisze o tym z czułością i lękiem, Murata z zimnym komizmem. Czytane razem pokazują, że ta sama konstrukcja działa w Londynie 1923 roku i w tokijskim sklepie całodobowym, i że w obu miejscach kosztuje dokładnie tyle samo.</p>`,
+        en:`<p>Clarissa Dalloway gives a party; Keiko takes her place at the till of a konbini. Both are performing a part that is meant to stand in for them.</p>
+          <ul><li><strong>the angel in the house</strong> &ndash; Woolf writes a woman who is a politician's perfect wife and has nobody else available to be; she coined the critical use of the phrase herself, six years after this novel, writing that she had had to kill the Angel. Murata takes the same thing up one floor: Keiko performs out of neither love nor compulsion, but because a version of her assembled from other people's expectations is the only one anyone around her can read.</li>
+          <li><strong>the social clock</strong> &ndash; Clarissa, in her fifty-second year, keeps returning to a decision she did not make. Keiko is in her thirties, eighteen years in the same job, and perfectly happy &ndash; it is the people counting her years for her who have the problem.</li></ul>
+          <p>The difference is tone. Woolf writes it with tenderness and dread, Murata with cold comedy. Read together they show the same construction working in London in 1923 and in a Tokyo convenience store, and costing the same in both.</p>`}},
+      { title:"Kim Jiyoung, Born 1982", text:{
+        pl:`<p>Jedna powieść opowiada jeden dzień, druga jedno życie, a obie dochodzą do tego samego: że rola przyszła z zewnątrz i nikt jej nigdy nie ogłosił.</p>
+          <ul><li><strong>anioł w domu</strong> &ndash; u Woolf to pozycja żony polityka, pilnowana przez towarzystwo i przez samą Clarissę. U Cho Nam-Joo to pensja, która mniej się opłaca, zdanie teściowej i awans, który poszedł do kogoś innego. Ten sam układ, raz opisany od środka jednej świadomości, raz wyliczony na dokumentach.</li>
+          <li><strong>zegar społeczny</strong> &ndash; Big Ben wybija godziny nad Londynem i przypomina Clarissie, ile już minęło. Kim Dzijong dostaje swoje godziny w formie terminów: kiedy ślub, kiedy dziecko, kiedy rezygnacja z pracy.</li></ul>
+          <p>Woolf pisała to jako pierwsza i na własny rachunek, bez słownika, który dziś mamy. Cho Nam-Joo napisała to osiemdziesiąt lat później tak rzeczowo, że wywołała w Korei narodową debatę. Jeśli po „Pani Dalloway” zostaje pytanie, ile z tego jest kwestią epoki, to jest książka, która odpowiada.</p>`,
+        en:`<p>One novel covers a day, the other a life, and both arrive at the same place: the part came from outside, and nobody ever announced it.</p>
+          <ul><li><strong>the angel in the house</strong> &ndash; in Woolf it is the position of a politician's wife, policed by the company and by Clarissa herself. In Cho Nam-Joo it is the salary worth less, the mother-in-law's question, the promotion that went to somebody else. The same arrangement, once from inside a single consciousness and once itemised on paperwork.</li>
+          <li><strong>the social clock</strong> &ndash; Big Ben strikes the half-hours over London and reminds Clarissa how much has gone. Kim Jiyoung gets her hours as deadlines: when to marry, when to have a child, when to leave the job.</li></ul>
+          <p>Woolf wrote it first and on her own account, without the vocabulary we now have. Cho Nam-Joo wrote it eighty years later so plainly that it started a national argument in Korea. If *Mrs Dalloway* leaves you wondering how much of this belongs to its period, this is the book that answers.</p>`}},
+    ] },
+];
+
+/* The entry a query lands on, or nothing. Asked only where the shelf has
+   already come back empty, so there is no competition between a book and a
+   title we do not stock: a query that finds a book never reaches this. */
+function offshelfFor(q){
+  return fold(q).trim().length < 2 ? null : OFFSHELF.find(e => matchesQuery(e, q)) || null;
+}
+
 const BOOKSELLER = {
   "The Handmaid's Tale": [
     { title:"Kim Jiyoung, Born 1982", text:{
@@ -400,6 +455,15 @@ const I18N = {
     strap:"novels on women & gender", logoHome:"nubook \u2014 home",
     motifs:"Motifs", motif:"Motif", motifOrigin:"Where the term comes from", skip:"Skip to content", schemeLight:"Light", schemeDark:"Dark",
     bsGone:"We do not have *%s* in stock at the moment.", bsOffer:"But if that is the book you came for, there are two here I would put beside it.",
+    /* A title the shop does not stock at all. The empty state above has already
+       answered the query, so she does not repeat that it is missing: she names
+       the book and the motifs it carries, which is what the shelf can be asked
+       about next. %m is filled with the motif names, set the way her answers set
+       a motif name. The apostrophe is the character and not an entity: this
+       sentence is escaped on its way to the page, so an entity would arrive as
+       its own letters. */
+    bsOff:"%a’s *%s* takes up two of the motifs on our list: %m. If those are what interest you, I would put two other titles beside it, each taking them up in a way of its own.",
+    bsAnd:", and ",
     bsHere:"If the motif *%s* takes up is what interests you, two more titles here take it up as well, each in a way of its own.",
     bsAva:"The bookseller", bsWhy:"Why this one",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
@@ -466,6 +530,8 @@ const I18N = {
        leaves the quoted title standing beside it, so no book needs a second
        form of its own name. */
     bsGone:"Niestety, tytułu „%s” nie mamy dziś na stanie.", bsOffer:"Ale skoro interesuje Cię ten tytuł, gorąco polecam dwa inne, o podobnych motywach.",
+    bsOff:"Powieść %a „%s” podejmuje dwa motywy z naszej listy: %m. Jeśli interesują Cię te motywy, polecam dwa inne tytuły, które również to robią, na swój unikatowy sposób.",
+    bsAnd:" i ",
     bsHere:"Jeśli zainteresował Cię motyw, który książka „%s” podejmuje, polecam dwa inne tytuły, które również to robią, na swój unikatowy sposób.",
     bsAva:"Księgarka", bsWhy:"Dlaczego akurat ta",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
@@ -1066,7 +1132,16 @@ function render(rebuildChips = true){
     /* Out of a dead end the reader keeps what they asked for and loses what was
        in its way: the query stands, the chips go. */
     const label = behindFilters ? put(t.clearKeep) : t.clear;
-    grid.innerHTML = `<div class="empty">${msg}
+    /* She speaks here only where the shop has nothing: a query held back by the
+       filters still has books behind it, and the way out of that is the button,
+       not a recommendation. Where the shelf genuinely does not hold the title
+       and something is written about it, her section stands between the shop's
+       sentence and the way out - the fact first, then what can be done with it,
+       then the door. Put above her, the button would interrupt the two halves
+       of one answer. */
+    const off = (short || behindFilters) ? null : offshelfFor(q);
+    const says = off ? bsOffshelfSection(off) : "";
+    grid.innerHTML = `<div class="empty">${msg}${says}
       <button type="button" class="btn-ghost" id="resetBtn"><span class="lbl">${label}</span></button></div>`;
     /* Chips with a zero count disable themselves, so filters alone can never
        empty the grid - a query can. The control therefore has to clear the
@@ -2015,7 +2090,12 @@ const BS_ALL = /[?&]bs=all\b/.test(location.search);
 const bookByTitle = t => BOOKS.find(b => b.t === t);
 /* The title the section on screen is about. Read by the row that opens an
    answer, which has to know whose offer it belongs to. */
-let bsBook = null;
+/* What she is speaking about on screen: the resolved offer, and the key the
+   answers already given are filed under. A book on the shelf and a title the
+   shop does not stock both arrive here, so opening a row works the same in
+   either place - reading the offer back off a book was what tied it to the
+   shelf. */
+let bsCurrent = null;
 /* The mark, looked up when it is needed rather than held: the section is written
    fresh with each product view, so a reference taken once would point at markup
    that has been replaced. */
@@ -2024,13 +2104,18 @@ const bsDot = () => document.querySelector(".bs-dot");
 /* The offer for a title, resolved against the shelf as it stands: a book she
    cannot sell is never proposed instead of another book she cannot sell. A
    preorder qualifies, and says so. */
-function bsOffer(b){
-  const set = BOOKSELLER[b.t];
+/* A written set turned into an offer: every proposal resolved against the
+   shelf, and any whose book cannot be bought dropped. A recommendation leading
+   to a page with no button is worse than one proposal fewer. Both the books she
+   speaks about and the titles the shop does not stock reach this, so the rule
+   about what may be offered is written once. */
+function bsResolve(set){
   if (!set) return null;
   const out = set.map(o => ({...o, book: bookByTitle(o.title)}))
                  .filter(o => o.book && o.book.s !== "out");
   return out.length ? out : null;
 }
+function bsOffer(b){ return bsResolve(BOOKSELLER[b.t]); }
 
 /* The section, written into the product column by renderProduct. It closes the
    column, in the place the button used to hold, and that position is an argument
@@ -2049,7 +2134,7 @@ function bsOffer(b){
 function bsSection(b){
   const t = T(), offer = bsOffer(b);
   if (!offer) return "";
-  bsBook = b;
+  bsCurrent = { key:b.t, offer };
   /* Two openings, because there are two reasons for her to speak. On a title
      that is out she is a substitute and has to say so first; on one that is on
      the shelf she is an addition, and opening with bad news that is not true
@@ -2062,6 +2147,36 @@ function bsSection(b){
   const say = b.s === "out"
     ? t.bsGone.replace("%s", titleOf(b)) + " " + t.bsOffer
     : t.bsHere.replace("%s", titleOf(b));
+  return bsBlock(escTitles(say), offer);
+}
+
+/* The same section, for a title the shop does not stock. The opening sentence
+   is the only thing that differs from a book on the shelf, and it differs in
+   kind: there is no page to send the reader to and no price to name, so what she
+   offers instead is the vocabulary - the motifs the novel carries, named as her
+   answers name a motif, and the two titles here that take them up.
+   The motif names are built as markup and put in after the sentence has been
+   escaped, so a name cannot arrive carrying tags of its own and the escaping
+   still happens before anything is marked up. */
+function bsOffshelfSection(e){
+  const t = T(), offer = bsResolve(e.offer);
+  if (!offer) return "";
+  bsCurrent = { key:e.t, offer };
+  const names = e.m
+    .map(id => `<strong>${escHTML(MOTIFS[id].chip[LANG])}</strong>`)
+    .join(t.bsAnd);
+  const say = escTitles(t.bsOff
+      .replace("%a", LANG === "pl" ? e.ag : e.a)
+      .replace("%s", LANG === "pl" ? e.tp : e.t))
+    .replace("%m", () => names);
+  return bsBlock(say, offer);
+}
+
+/* The block itself, for whatever she is speaking about. `say` arrives ready for
+   the page, because the two callers mark up their sentences differently: one
+   marks a title for italic, the other also sets the motif names it carries. */
+function bsBlock(say, offer){
+  const t = T();
   const items = offer.map((o, i) => {
     const st = o.book.s ? STATUS[o.book.s] : null;
     /* Price and availability arrive together, as two short clauses rather than
@@ -2087,7 +2202,7 @@ function bsSection(b){
      other time, which is the whole of what the breath means. */
   return `<section class="bs" aria-labelledby="bsWho">
       <p class="bs-head"><span class="bs-dot" aria-hidden="true"></span><span class="bs-who" id="bsWho">${t.bsAva}</span></p>
-      <p class="bs-say">${escTitles(say)}</p>
+      <p class="bs-say">${say}</p>
       <div class="bs-list">${items}</div>
     </section>`;
 }
@@ -2243,7 +2358,7 @@ function bsDeliver(box, html, key){
    its neighbours meant the neighbour's closing put out the breath the chosen row
    had just started. */
 function bsPick(i){
-  const offer = bsOffer(bsBook); if (!offer) return;
+  const offer = bsCurrent && bsCurrent.offer; if (!offer) return;
   const list = document.querySelector(".bs-list"); if (!list) return;
   const rows = [...list.querySelectorAll(".bs-why")];
   const open = rows[i].getAttribute("aria-expanded") === "true";
@@ -2262,7 +2377,7 @@ function bsPick(i){
   rows[i].setAttribute("aria-expanded", "true");
   const box = document.getElementById("bsText" + i);
   box.hidden = false;
-  bsDeliver(box, offer[i].text[LANG], bsBook.t + "|" + offer[i].title + "|" + LANG);
+  bsDeliver(box, offer[i].text[LANG], bsCurrent.key + "|" + offer[i].title + "|" + LANG);
 }
 
 /* The shop places the reader itself: the grid comes back to where she left it,

@@ -1052,6 +1052,17 @@
     grid-column:1/-1;padding:var(--nu-space-max) 0;text-align:center;color:var(--nu-fg-secondary);
   }
   .empty .btn-ghost{margin-left:var(--nu-space-micro)}
+  /* Her section inside the empty grid. The sentence above it is centred, a
+     single line in a wide space; a block of prose with two rows under it is
+     not, so the section takes the alignment back and holds a reading measure.
+     The measure is in ch, as every measure in this shop is - the same one the
+     order confirmation uses, which is the other place a single block stands in
+     a view much wider than itself. A pixel width would have been a length
+     outside the scale with no reason to be one.
+     Once she stands between the sentence and the button, the button is no
+     longer the end of a line: it starts its own, a step below the block. */
+  .empty .bs{max-width:46ch;margin:var(--nu-space-medium) auto 0;text-align:left;color:var(--nu-fg-primary)}
+  .empty .bs ~ .btn-ghost{margin:var(--nu-space-medium) 0 0}
 
   /* ---------- covers (pure CSS book jackets) ---------- */
   .cover{
