@@ -358,7 +358,13 @@ const OFFSHELF = [
     ag:"Virginii Woolf",
     m:["angel-in-house","social-clock"],
     offer:[
-      { title:"Convenience Store Woman", text:{
+      { title:"Convenience Store Woman",
+        /* A name from a book the reader has not got is a name she does not
+           know: she is looking this one up in order to buy it. Whoever is
+           named is named with the book they come from. */
+        lead:{ pl:"Keiko gra wersję siebie, którą inni potrafią odczytać &ndash; tak jak Clarissa z „Pani Dalloway” gra doskonałą żonę polityka.",
+               en:"Keiko performs a version of herself other people can read, the way Clarissa in <em>Mrs Dalloway</em> performs the perfect wife." },
+        text:{
         pl:`<p>Clarissa Dalloway wydaje przyjęcie, Keiko staje za kasą w konbini. Obie wykonują rolę, która ma je zastąpić.</p>
           <ul><li><strong>anioł w domu</strong> &ndash; Woolf opisuje kobietę, która jest doskonałą żoną polityka i nie ma poza tym nikogo, kim mogłaby być; sama zresztą ten termin wymyśliła, sześć lat po tej powieści, pisząc, że musiała Anioła zabić. Murata bierze to samo i przestawia o jedno piętro: Keiko nie udaje niczego z miłości ani z przymusu, tylko dlatego, że wersja jej samej złożona z cudzych oczekiwań jest jedyną, którą otoczenie potrafi odczytać.</li>
           <li><strong>zegar społeczny</strong> &ndash; Clarissa w pięćdziesiątym drugim roku życia wraca do decyzji, której nie podjęła. Keiko ma trzydzieści kilka lat, osiemnaście lat w tej samej pracy i jest zupełnie szczęśliwa &ndash; problem mają ci, którzy liczą jej lata za nią.</li></ul>
@@ -367,15 +373,28 @@ const OFFSHELF = [
           <ul><li><strong>the angel in the house</strong> &ndash; Woolf writes a woman who is a politician's perfect wife and has nobody else available to be; she coined the critical use of the phrase herself, six years after this novel, writing that she had had to kill the Angel. Murata takes the same thing up one floor: Keiko performs out of neither love nor compulsion, but because a version of her assembled from other people's expectations is the only one anyone around her can read.</li>
           <li><strong>the social clock</strong> &ndash; Clarissa, in her fifty-second year, keeps returning to a decision she did not make. Keiko is in her thirties, eighteen years in the same job, and perfectly happy &ndash; it is the people counting her years for her who have the problem.</li></ul>
           <p>The difference is tone. Woolf writes it with tenderness and dread, Murata with cold comedy. Read together they show the same construction working in London in 1923 and in a Tokyo convenience store, and costing the same in both.</p>`}},
-      { title:"Kim Jiyoung, Born 1982", text:{
-        pl:`<p>Jedna powieść opowiada jeden dzień, druga jedno życie, a obie dochodzą do tego samego: że rola przyszła z zewnątrz i nikt jej nigdy nie ogłosił.</p>
-          <ul><li><strong>anioł w domu</strong> &ndash; u Woolf to pozycja żony polityka, pilnowana przez towarzystwo i przez samą Clarissę. U Cho Nam-Joo to pensja, która mniej się opłaca, zdanie teściowej i awans, który poszedł do kogoś innego. Ten sam układ, raz opisany od środka jednej świadomości, raz wyliczony na dokumentach.</li>
-          <li><strong>zegar społeczny</strong> &ndash; Big Ben wybija godziny nad Londynem i przypomina Clarissie, ile już minęło. Kim Dzijong dostaje swoje godziny w formie terminów: kiedy ślub, kiedy dziecko, kiedy rezygnacja z pracy.</li></ul>
-          <p>Woolf pisała to jako pierwsza i na własny rachunek, bez słownika, który dziś mamy. Cho Nam-Joo napisała to osiemdziesiąt lat później tak rzeczowo, że wywołała w Korei narodową debatę. Jeśli po „Pani Dalloway” zostaje pytanie, ile z tego jest kwestią epoki, to jest książka, która odpowiada.</p>`,
-        en:`<p>One novel covers a day, the other a life, and both arrive at the same place: the part came from outside, and nobody ever announced it.</p>
-          <ul><li><strong>the angel in the house</strong> &ndash; in Woolf it is the position of a politician's wife, policed by the company and by Clarissa herself. In Cho Nam-Joo it is the salary worth less, the mother-in-law's question, the promotion that went to somebody else. The same arrangement, once from inside a single consciousness and once itemised on paperwork.</li>
-          <li><strong>the social clock</strong> &ndash; Big Ben strikes the half-hours over London and reminds Clarissa how much has gone. Kim Jiyoung gets her hours as deadlines: when to marry, when to have a child, when to leave the job.</li></ul>
-          <p>Woolf wrote it first and on her own account, without the vocabulary we now have. Cho Nam-Joo wrote it eighty years later so plainly that it started a national argument in Korea. If *Mrs Dalloway* leaves you wondering how much of this belongs to its period, this is the book that answers.</p>`}},
+      { title:"My Brilliant Friend",
+        lead:{ pl:"Lenù i Lili z góry rozpisano, kiedy co wypada &ndash; ślub, dziecko, koniec nauki &ndash; tak samo jak Clarissie z „Pani Dalloway”.",
+               en:"Lenù and Lila have a schedule set for them &ndash; marriage, a child, the end of school &ndash; as Clarissa in <em>Mrs Dalloway</em> does." },
+        text:{
+        pl:`<p>U Woolf wszystko dzieje się w jeden dzień, a Big Ben wybija godziny nad Londynem i przypomina Clarissie, ile już minęło. U Ferrante ten sam zegar odmierza całe życie i robi to cudzymi ustami.</p>
+          <ul><li><strong>zegar społeczny</strong> &ndash; Lenù i Lila mają rozpisane, kiedy co wypada: kiedy koniec szkoły, kiedy ślub, kiedy dziecko. Kto się spóźni albo wyłamie, płaci. Clarissa jest po drugiej stronie tego rozkładu: w pięćdziesiątym drugim roku życia wraca do wyboru, którego nie zrobiła, i nie ma już czego przestawić.</li></ul>
+          <p>Jest jeszcze coś, czego nie ma w żadnym z motywów. „Pani Dalloway” w połowie opowiada o Sally Seton i o pocałunku, który Clarissa po trzydziestu czterech latach nazywa najpiękniejszą chwilą swojego życia. Ferrante napisała o przyjaźni dwóch kobiet cztery tomy i nie potraktowała jej ani razu jako tła.</p>`,
+        en:`<p>In Woolf everything happens in a single day, and Big Ben strikes the half-hours over London to remind Clarissa how much has gone. In Ferrante the same clock measures out a whole life, and does it in other people's voices.</p>
+          <ul><li><strong>the social clock</strong> &ndash; Lenù and Lila have it set out for them: when school ends, when to marry, when to have a child. Whoever is late, or steps out of it, pays. Clarissa is on the far side of that schedule, in her fifty-second year, returning to a decision she did not make and with nothing left to rearrange.</li></ul>
+          <p>There is something else, which no motif covers. Half of <em>Mrs Dalloway</em> is about Sally Seton and a kiss Clarissa still calls, thirty-four years later, the most exquisite moment of her life. Ferrante wrote four volumes about a friendship between two women and never once treated it as background.</p>`}},
+      { title:"The Bell Jar",
+        lead:{ pl:"Esther trafia pod klosz, a lekarze orzekają, że nic jej nie jest &ndash; dokładnie tak, jak orzekają o Septimusie w „Pani Dalloway”.",
+               en:"Esther ends up under the bell jar while her doctors decide there is nothing the matter, exactly as Septimus&rsquo;s do in <em>Mrs Dalloway</em>." },
+        text:{
+        pl:`<p>U Woolf połowa powieści należy do Septimusa, weterana, którego lekarze orzekają zdrowym, rozmawiając o nim ponad jego głową. Plath pisze to samo od środka, trzydzieści lat później i o kobiecie.</p>
+          <ul><li><strong>anioł w domu</strong> &ndash; Clarissa jest doskonałą żoną polityka i poza tą rolą nie ma nikogo, kim mogłaby być; Esther dostaje do wyboru to samo, tyle że w Ameryce lat pięćdziesiątych i wtedy, gdy właśnie obiecano jej wszystko naraz. Obie mają za zadanie być kimś, kogo inni potrafią odczytać.</li></ul>
+          <p>Łączy je też to, czego żadna z nich nie nazywa chorobą: w obu książkach załamanie jest odpowiedzią na warunki, a nie usterką w człowieku. Woolf napisała to jako krytykę medycyny swoich czasów, Plath &ndash; w połowie jako własny życiorys, i stąd bierze się dokładność, z jaką opisuje sam mechanizm.</p>
+          <p>Jeśli po „Pani Dalloway” zostaje pytanie, jak to jest być po drugiej stronie takiej diagnozy, to jest książka, która odpowiada.</p>`,
+        en:`<p>Half of Woolf's novel belongs to Septimus, a veteran whose doctors pronounce him well while talking about him over his head. Plath writes the same thing from the inside, thirty years later, and about a woman.</p>
+          <ul><li><strong>the angel in the house</strong> &ndash; Clarissa is a politician's perfect wife with nobody else available to be; Esther is offered the same part, in 1950s America and at the moment she has just been promised everything at once. Both are set the task of being someone other people can read.</li></ul>
+          <p>What else they share is the thing neither calls an illness: in both books the breakdown is a response to conditions rather than a fault in the person. Woolf wrote it as a criticism of the medicine of her day; Plath wrote it half as her own life, which is what explains the precision of the mechanism she describes.</p>
+          <p>If <em>Mrs Dalloway</em> leaves you wondering what it is like on the other side of that diagnosis, this is the book that answers.</p>`}},
     ] },
 ];
 
@@ -383,7 +402,7 @@ const OFFSHELF = [
    already come back empty, so there is no competition between a book and a
    title we do not stock: a query that finds a book never reaches this. */
 function offshelfFor(q){
-  return fold(q).trim().length < 2 ? null : OFFSHELF.find(e => matchesQuery(e, q)) || null;
+  return fold(q).trim().length < QUERY_MIN ? null : OFFSHELF.find(e => matchesQuery(e, q)) || null;
 }
 
 const BOOKSELLER = {
@@ -462,8 +481,18 @@ const I18N = {
        a motif name. The apostrophe is the character and not an entity: this
        sentence is escaped on its way to the page, so an entity would arrive as
        its own letters. */
-    bsOff:"%a’s *%s* takes up two of the motifs on our list: %m. If those are what interest you, I would put two other titles beside it, each taking them up in a way of its own.",
-    bsAnd:", and ",
+    /* On a proposal's own page, once the reader has followed one. Two of them,
+       because the number of shared motifs decides the noun and Polish will not
+       let that be fudged. */
+    bsFromOne:"I put this one in front of you because you were looking for *%s*. The motif they share: %m.",
+    bsFromMany:"I put this one in front of you because you were looking for *%s*. The motifs they share: %m.",
+    bsOff:"If you were looking for %a’s *%s*, that one is not on the shelf. What I can offer instead is %n, each taking up one of its motifs:",
+    bsOffOne:"If you were looking for %a’s *%s*, that one is not on the shelf. There is one title here that takes up a motif of its own:",
+    /* Reached by the number of proposals that survived the shelf, so a title
+       gone out of stock changes the sentence with it. Looked up by that number
+       rather than named in the code, which is why these read as unused. */
+    bsCount:{ 1:"one title", 2:"two titles", 3:"three titles", 4:"four titles" },
+    bsAnd:" and ",
     bsHere:"If the motif *%s* takes up is what interests you, two more titles here take it up as well, each in a way of its own.",
     bsAva:"The bookseller", bsWhy:"Why this one",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
@@ -530,7 +559,11 @@ const I18N = {
        leaves the quoted title standing beside it, so no book needs a second
        form of its own name. */
     bsGone:"Niestety, tytułu „%s” nie mamy dziś na stanie.", bsOffer:"Ale skoro interesuje Cię ten tytuł, gorąco polecam dwa inne, o podobnych motywach.",
-    bsOff:"Powieść %a „%s” podejmuje dwa motywy z naszej listy: %m. Jeśli interesują Cię te motywy, polecam dwa inne tytuły, które również to robią, na swój unikatowy sposób.",
+    bsFromOne:"Polecam Ci ten tytuł, bo szukałaś powieści „%s”. Wspólny motyw: %m.",
+    bsFromMany:"Polecam Ci ten tytuł, bo szukałaś powieści „%s”. Wspólne motywy: %m.",
+    bsOff:"Jeżeli szukasz powieści %a „%s”, to niestety nie mamy jej na półce. Mogę za to polecić %n, z których każdy podejmuje któryś z jej motywów:",
+    bsOffOne:"Jeżeli szukasz powieści %a „%s”, to niestety nie mamy jej na półce. Mogę za to polecić jeden tytuł, który podejmuje któryś z jej motywów:",
+    bsCount:{ 1:"jeden tytuł", 2:"dwa tytuły", 3:"trzy tytuły", 4:"cztery tytuły" },
     bsAnd:" i ",
     bsHere:"Jeśli zainteresował Cię motyw, który książka „%s” podejmuje, polecam dwa inne tytuły, które również to robią, na swój unikatowy sposób.",
     bsAva:"Księgarka", bsWhy:"Dlaczego akurat ta",
@@ -675,6 +708,15 @@ const escHTML = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").repl
    quotation marks whatever kind of work it is, so the convention is already on
    the page there. This is the English one arriving. */
 const escTitles = t => escHTML(t).replace(/\*([^*]+)\*/g, "<em>$1</em>");
+/* How many characters a query has to have before the shop narrows anything.
+   Below it the shelf stands whole: one or two letters match most of a
+   nineteen-title catalogue and then most of what matched falls away on the next
+   keystroke, so the covers jump twice before the reader has finished the word.
+   Three is where a query starts to mean something.
+   One number, read by the shelf, by the message for a query too short, and by
+   the register of titles the shop does not stock - three copies of a threshold
+   part company the first time one of them is tuned. */
+const QUERY_MIN = 3;
 const fold = s => (s || "")
   .toLowerCase()
   .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -685,7 +727,7 @@ const fold = s => (s || "")
    later. */
 const matchesQuery = (b, q) => {
   const n = fold(q).trim();
-  if (n.length < 2) return true;
+  if (n.length < QUERY_MIN) return true;
   return [b.t, b.tp, b.a].some(v => fold(v).includes(n));
 };
 
@@ -856,6 +898,18 @@ const motionMs = name => {
   const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   return v.endsWith("ms") ? parseFloat(v) : parseFloat(v) * 1000;
 };
+/* How far apart the starts sit when several things set off together. The token
+   is the window they are spread over, so with few of them the gaps would open
+   until the group stopped reading as a group and started reading as one thing
+   after another: three cards a fifth of a second apart arrive separately. The
+   two bounds are where a stagger stops being perceptible and where it starts
+   being a queue, and they are the same two the shelf has always used - written
+   here once so the shelf and the bookseller cannot drift apart. */
+const STAGGER_MIN = 28, STAGGER_MAX = 80;
+const staggerStep = count =>
+  Math.max(STAGGER_MIN, Math.min(STAGGER_MAX,
+    motionMs("--nu-motion-stagger") / Math.max(count, 1)));
+
 const motionCurve = name =>
   getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
@@ -1068,6 +1122,30 @@ if (document.fonts && document.fonts.ready){
 /* ----------------------------------------------------------- covers */
 /* Packshot container: grey tile + badge + cover. Used on the grid AND on the product page,
    so the open transition can zoom one and the same box. `ctx` = "grid" | "product". */
+/* One card, wherever a book stands in the grid: the shelf itself, and the two
+   the bookseller offers when a query has found nothing. Written once because
+   the whole claim of that offer is that these are books on this shelf - a
+   near-copy of the card would say the opposite in the first week somebody
+   changed one of them.
+   `extra` is whatever belongs to the card in that context and nowhere else; the
+   shelf passes nothing. */
+function cardHTML(b, extra, attrs){
+  return `
+    <article class="card ${b.s==="out"?"is-out":""}" data-id="${b.id}"${attrs || ""}>
+      ${EMBEDDED
+        ? `<div class="cardlink" role="link" tabindex="0" aria-label="${titleOf(b)}, ${b.a}"
+             onclick="location.hash='p${b.id}'"
+             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.hash='p${b.id}'}">`
+        : `<a href="#p${b.id}" aria-label="${titleOf(b)}, ${b.a}">`}
+        ${tileHTML(b, "grid")}
+        <div class="meta">
+          <span class="title">${titleOf(b)} <span class="author">- ${b.a}</span></span>
+          <div class="price">${fmtMoney(priceOf(b))}</div>
+        </div>
+      ${EMBEDDED ? `</div>` : `</a>`}
+      ${extra || ""}
+    </article>`;
+}
 function tileHTML(b, ctx){
   const st = b.s ? STATUS[b.s] : null;
   const cls = ctx === "product" ? "tile p-tile" : "tile";
@@ -1110,6 +1188,17 @@ function render(rebuildChips = true){
   if (rebuildChips) chipData();
   const grid = document.getElementById("grid");
   const list = visibleBooks();
+  /* The thread holds while the query that started it does, and it is checked
+     here rather than where she speaks: a query that finds books never reaches
+     that branch, so the annotation would have outlived the conversation by a
+     whole visit. Typing something else is leaving it. */
+  if (bsFrom){
+    const still = offshelfFor(state.q.trim());
+    if (!still || still.t !== bsFrom.key) bsFrom = null;
+  }
+  /* A grid with books in it is a grid she is not speaking into, so the next
+     time she does it is a first time again. */
+  if (list.length) bsShown = null;
 
   if (!list.length){
     const t = T(), q = state.q.trim();
@@ -1122,7 +1211,7 @@ function render(rebuildChips = true){
        The third message needs no query and is unreachable today. It is kept
        because the day a filter can empty the grid is the day nobody will
        remember this sentence existed. */
-    const short = fold(q).length < 2;
+    const short = fold(q).length < QUERY_MIN;
     const behindFilters = !short && BOOKS.some(b => matchesQuery(b, q) && b.ed === state.lang);
     /* A query is short by nature; one that is not would set the width of the
        message and of the button with it. */
@@ -1140,9 +1229,23 @@ function render(rebuildChips = true){
        then the door. Put above her, the button would interrupt the two halves
        of one answer. */
     const off = (short || behindFilters) ? null : offshelfFor(q);
-    const says = off ? bsOffshelfSection(off) : "";
-    grid.innerHTML = `<div class="empty">${msg}${says}
-      <button type="button" class="btn-ghost" id="resetBtn"><span class="lbl">${label}</span></button></div>`;
+    if (!off) bsShown = null;
+    const says = off ? bsOffshelfGrid(off) : "";
+    /* The shop's own sentence stands in an element of its own so that the grey
+       it is set in belongs to it. Left on the block, the colour was inherited by
+       everything inside - including two cards that are supposed to be the same
+       cards as the ones on the shelf, and were arriving in secondary grey with
+       their badges taking the same colour from currentColor. */
+    /* The shop's own sentence stands in an element of its own so that the grey
+       it is set in belongs to it. Left on the block, the colour was inherited by
+       everything inside - including two cards that are supposed to be the same
+       cards as the ones on the shelf, and were arriving in secondary grey with
+       their badges taking the same colour from currentColor.
+       The way out stays inside that sentence, where it is when she has nothing
+       to say: a reader who meets this view twice should not have to look for
+       the same control in two places. What she adds comes after both. */
+    grid.innerHTML = `<div class="empty"><p class="empty-say">${msg}
+      <button type="button" class="btn-ghost" id="resetBtn"><span class="lbl">${label}</span></button></p>${says}</div>`;
     /* Chips with a zero count disable themselves, so filters alone can never
        empty the grid - a query can. The control therefore has to clear the
        query too, or it is a button that visibly does nothing. */
@@ -1157,29 +1260,13 @@ function render(rebuildChips = true){
   const firstVisit = !render._done;      // only the very first paint of the grid
   render._done = true;
 
-  grid.innerHTML = list.map(b=>{
-    const st = b.s ? STATUS[b.s] : null;
-    return `
-    <article class="card ${b.s==="out"?"is-out":""}" data-id="${b.id}">
-      ${EMBEDDED
-        ? `<div class="cardlink" role="link" tabindex="0" aria-label="${titleOf(b)}, ${b.a}"
-             onclick="location.hash='p${b.id}'"
-             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();location.hash='p${b.id}'}">`
-        : `<a href="#p${b.id}" aria-label="${titleOf(b)}, ${b.a}">`}
-        ${tileHTML(b, "grid")}
-        <div class="meta">
-          <span class="title">${titleOf(b)} <span class="author">- ${b.a}</span></span>
-          <div class="price">${fmtMoney(priceOf(b))}</div>
-        </div>
-      ${EMBEDDED ? `</div>` : `</a>`}
-    </article>`;
-  }).join("");
+  grid.innerHTML = list.map(b => cardHTML(b)).join("");
 
   if (firstVisit){
     // give each card a random slot in a staggered sequence -> mosaic-like reveal
     const cards = [...grid.querySelectorAll(".card")];
     const order = cards.map((_,i)=>i).sort(()=>Math.random()-.5);
-    const step = Math.max(28, Math.min(80, motionMs("--nu-motion-stagger") / Math.max(cards.length,1)));
+    const step = staggerStep(cards.length);
     order.forEach((cardIdx, slot)=>{
       cards[cardIdx].style.setProperty("--d", (slot*step) + "ms");
     });
@@ -1204,6 +1291,23 @@ function captureTile(e){
 }
 gridEl.addEventListener("pointerdown", captureTile);
 gridEl.addEventListener("keydown", e=>{ if (e.key === "Enter" || e.key === " ") captureTile(e); });
+/* Opening a book she proposed is the one way into this. Caught here rather than
+   on the card itself, because the card is the shelf's own component and the
+   shelf has no business knowing about her. Both ways of opening one are
+   covered: the link, and the keyboard on the embedded build, where a card is a
+   div that sets the hash itself and never raises a click. */
+function bsLeaving(e){
+  const card = e.target.closest && e.target.closest(".bs-grid .card");
+  if (!card || !bsCurrent || !bsCurrent.entry) return;
+  /* The entry and the book, and nothing else. Copying the offer as it stood
+     took whatever she was holding at that moment, and on the page of one
+     proposal that is already the other one alone - so walking from there
+     straight to the second proposal left it with nothing to hold out. The
+     offer is resolved against the shelf where it is needed. */
+  bsFrom = { key:bsCurrent.entry.t, id:+card.dataset.id };
+}
+gridEl.addEventListener("click", bsLeaving);
+gridEl.addEventListener("keydown", e=>{ if (e.key === "Enter" || e.key === " ") bsLeaving(e); });
 
 function playOpenTransition(){
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1339,6 +1443,8 @@ function playBackTransition(){
 /* ---------------- author drawer ---------------- */
 const drawerEl = document.getElementById("drawer"),
       drawerBg = document.getElementById("drawerBg");
+/* Two things open in this drawer, each a long read the page it came from has
+   no room for: an author, and a motif. */
 let drawerBook = null, drawerMotif = null;
 
 function fillDrawer(){
@@ -1400,6 +1506,9 @@ function openDrawer(){
 function openAuthor(id){ drawerBook = BOOKS[id]; drawerMotif = null; openDrawer(); }
 function openMotif(id){ drawerMotif = id; drawerBook = null; openDrawer(); }
 function closeDrawer(){
+  /* A drawer shut on a half-written answer leaves a timer running against
+     markup nobody is looking at, and a mark breathing for it. */
+  bsIdle();
   drawerBook = null; drawerMotif = null;
   drawerEl.classList.remove("open");
   drawerBg.classList.remove("open");
@@ -2067,7 +2176,7 @@ function renderProduct(b){
         <div><dt>${t.dLang}</dt><dd>${t.editions[b.ed]}</dd></div>
       </dl>
       ${cta}
-      ${bsSection(b)}
+      ${bsFromSection(b) || bsSection(b)}
     </div>`;
   const btn = document.getElementById("ctaBtn");
   if (btn) btn.onclick = ()=>addToCart(b.id, btn);
@@ -2096,10 +2205,44 @@ const bookByTitle = t => BOOKS.find(b => b.t === t);
    either place - reading the offer back off a book was what tied it to the
    shelf. */
 let bsCurrent = null;
+/* The name of whatever she is speaking about, in the language on the page now.
+   Held as the thing itself and not as its title: a title resolved once is the
+   title in the language the section was built in, and the drawer is refilled
+   when the language changes while everything it reads stays as it was. That is
+   how an English drawer came to be headed "beside Pani Dalloway". */
+function bsName(){
+  if (!bsCurrent) return "";
+  if (bsCurrent.entry) return LANG === "pl" ? bsCurrent.entry.tp : bsCurrent.entry.t;
+  return bsCurrent.book ? titleOf(bsCurrent.book) : "";
+}
+/* Where the reader came from, when she came from one of the bookseller's
+   proposals. Held for the session and never written into the address: a link
+   carrying "arrived here from a search for Mrs Dalloway" would tell whoever it
+   was pasted to about a search they never made. Reloading the page therefore
+   loses it, which is the right loss - what it adds is an annotation, not the
+   page itself.
+   It holds the entry she was speaking about and the two books she offered, so
+   moving between those two keeps it and anything else simply does not match. */
+let bsFrom = null;
+/* Which entry the grid is currently showing her answer for. The empty state is
+   rebuilt on every keystroke past the threshold, so "dal", "dall" and "dallo"
+   all land on the same entry and would each have played the arrival again -
+   three books flickering while a word is being typed. They arrive once, when
+   they first appear, and stay where they are for as long as the query still
+   means the same thing. */
+let bsShown = null;
 /* The mark, looked up when it is needed rather than held: the section is written
    fresh with each product view, so a reference taken once would point at markup
-   that has been replaced. */
-const bsDot = () => document.querySelector(".bs-dot");
+   that has been replaced.
+   It is looked up next to the text it belongs to, because there can be two of
+   her on screen at once - the cell in the grid and the drawer opened from it.
+   Taking the first mark in the document would have left the drawer's own still
+   while the one behind it breathed for an answer nobody was reading there. */
+function bsDot(box){
+  const scope = box && box.closest(".bs, .bs-cell, .drawer");
+  const near = scope && scope.querySelector(".bs-dot");
+  return near || document.querySelector(".bs-dot");
+}
 
 /* The offer for a title, resolved against the shelf as it stands: a book she
    cannot sell is never proposed instead of another book she cannot sell. A
@@ -2134,7 +2277,7 @@ function bsOffer(b){ return bsResolve(BOOKSELLER[b.t]); }
 function bsSection(b){
   const t = T(), offer = bsOffer(b);
   if (!offer) return "";
-  bsCurrent = { key:b.t, offer };
+  bsCurrent = { key:b.t, book:b, offer };
   /* Two openings, because there are two reasons for her to speak. On a title
      that is out she is a substitute and has to say so first; on one that is on
      the shelf she is an addition, and opening with bad news that is not true
@@ -2150,6 +2293,47 @@ function bsSection(b){
   return bsBlock(escTitles(say), offer);
 }
 
+/* What she says on the page of a book she proposed, and only when the reader
+   arrived there from the proposal. It takes the place of her ordinary section
+   rather than standing beside it: the ordinary one opens by offering books on a
+   motif this one carries, which is the offer the reader has just accepted.
+   What it adds is the thread - why this book was put in front of her - and the
+   other title, still one press away. */
+function bsFromSection(b){
+  if (!bsFrom || b.id !== bsFrom.id) return "";
+  const t = T(), e = OFFSHELF.find(x => x.t === bsFrom.key);
+  if (!e) return "";
+  const shared = e.m.filter(id => (b.m || []).includes(id));
+  if (!shared.length) return "";
+  const names = shared
+    .map(id => `<button type="button" class="btn-ghost" aria-haspopup="dialog" onclick="openMotif('${id}')"`
+              + `><span class="lbl">${escHTML(MOTIFS[id].chip[LANG])}</span></button>`)
+    .join(t.bsAnd);
+  const own = e.offer.find(o => bookByTitle(o.title) && bookByTitle(o.title).id === b.id);
+  const name = LANG === "pl" ? e.tp : e.t;
+  let say = escTitles((shared.length > 1 ? t.bsFromMany : t.bsFromOne)
+      .replace("%s", name))
+    .replace("%m", () => names);
+  /* Nothing else is offered here. The other title belonged in the grid, where
+     the reader was choosing between the two; on this page she has chosen, and a
+     second book under the first would be the shop arguing with the choice it
+     has just been given. What is left is the reason for this one, behind a
+     control, because a reader who has arrived is reading the book and not yet
+     the argument for it. */
+  /* Resolved against the shelf like any other offer, so the entry carries its
+     book. Held raw it served bsPick, which only reads the text, and broke the
+     drawer, which names the book it answers for. */
+  const mine = bsResolve(own ? [own] : null);
+  if (!mine) return "";
+  bsCurrent = { key:bsFrom.key, entry:e, offer:mine };
+  return `<section class="bs" aria-labelledby="bsWho">
+      <p class="bs-head"><span class="bs-dot" aria-hidden="true"></span><span class="bs-who" id="bsWho">${t.bsAva}</span></p>
+      <p class="bs-say">${say}</p>
+      <button type="button" class="bs-why btn-ghost" aria-expanded="false" aria-controls="bsText0" onclick="bsPick(0)"><span class="lbl">${t.bsWhy}</span></button>
+      <div class="bs-text" id="bsText0" hidden></div>
+    </section>`;
+}
+
 /* The same section, for a title the shop does not stock. The opening sentence
    is the only thing that differs from a book on the shelf, and it differs in
    kind: there is no page to send the reader to and no price to name, so what she
@@ -2158,18 +2342,68 @@ function bsSection(b){
    The motif names are built as markup and put in after the sentence has been
    escaped, so a name cannot arrive carrying tags of its own and the escaping
    still happens before anything is marked up. */
-function bsOffshelfSection(e){
+function bsOffshelfGrid(e){
   const t = T(), offer = bsResolve(e.offer);
   if (!offer) return "";
-  bsCurrent = { key:e.t, offer };
+  const name = LANG === "pl" ? e.tp : e.t;
+  bsCurrent = { key:e.t, entry:e, offer };
+  /* The motif names are the control a motif is everywhere else in the shop:
+     the same ghost button, opening the same drawer onto the same essay. She
+     names two ideas the reader may not have a word for yet, and leaving them
+     as plain words would be the one place in the shop where a motif is named
+     and cannot be read about. */
   const names = e.m
-    .map(id => `<strong>${escHTML(MOTIFS[id].chip[LANG])}</strong>`)
-    .join(t.bsAnd);
-  const say = escTitles(t.bsOff
+    .map(id => `<li><button type="button" class="btn-ghost" aria-haspopup="dialog" onclick="openMotif('${id}')"`
+              + `><span class="lbl">${escHTML(MOTIFS[id].chip[LANG])}</span></button></li>`)
+    .join("");
+  const say = escTitles((offer.length === 1 ? t.bsOffOne : t.bsOff)
       .replace("%a", LANG === "pl" ? e.ag : e.a)
-      .replace("%s", LANG === "pl" ? e.tp : e.t))
-    .replace("%m", () => names);
-  return bsBlock(say, offer);
+      .replace("%s", name)
+      .replace("%n", t.bsCount[offer.length] || offer.length));
+  /* The proposals are the shelf's own card, with one thing added: a control
+     that opens the reason. Everything else about them - the packshot, the
+     badge, the title, the price, where a click goes - is what it is on the
+     shelf, because that is the claim being made. */
+  /* They arrive the way the shelf arrives on a first visit: out of blur,
+     settling the last of the way up. It is the same event - things appearing on
+     a shelf for the first time - so it is the same movement rather than a
+     second one meaning the same thing.
+     Two differences from the shelf, both from what is being shown. The shelf
+     has no order, so its starts are spread at random, a mosaic coming into
+     focus; these three are in the order she put them in, each carrying a
+     different motif, and random starts would say that order was an accident.
+     And she goes first: the books are an answer to what she says, so her cell
+     is the start of the sequence rather than one more thing in it. */
+  const fresh = bsShown !== e.t;
+  bsShown = e.t;
+  /* The same distance between starts the shelf uses, from the same rule: four
+     things set off here against nineteen there, and without the bounds the
+     window would be split into gaps long enough to read as a queue. A value
+     that cannot be read gives NaN, which is a declaration the browser drops -
+     so it is rounded to a number either way. */
+  const step = fresh ? staggerStep(offer.length + 1) : 0;
+  const slot = i => fresh ? ` style="--d:${Math.round(i * step) || 0}ms"` : "";
+  /* A sentence of her own under each book, and nothing else. This is the view
+     where the three are compared with one another, and one line each is what a
+     comparison can hold; the long answer waits on the page of whichever title
+     the reader opens, where there is one book to think about instead of three.
+     A control on every card would have been three ways out of a view whose
+     whole job is to be read across. */
+  const cells = offer.map((o, i) => cardHTML(o.book,
+    o.lead ? `<p class="bs-b-lead">${o.lead[LANG]}</p>` : "",
+    slot(i + 1)
+  )).join("");
+  /* Her cell is one column, the same as a book, and its ground is the packshot
+     box: what she says ends where the jackets beside it end. The cell stands
+     first because what she says is the reason the two after it are there at
+     all. */
+  return `<div class="bs-grid${fresh ? " is-arriving" : ""}">
+      <section class="bs bs-cell" aria-labelledby="bsWho"${slot(0)}>
+        <p class="bs-head"><span class="bs-dot" aria-hidden="true"></span><span class="bs-who" id="bsWho">${t.bsAva}</span></p>
+        <p class="bs-say">${say}</p>
+        <ul class="bs-motifs">${names}</ul>
+      </section>${cells}
+    </div>`;
 }
 
 /* The block itself, for whatever she is speaking about. `say` arrives ready for
@@ -2191,6 +2425,7 @@ function bsBlock(say, offer){
           <span class="bs-b-cover">${coverHTML(o.book)}</span>
           <span class="bs-b-main"><span class="bs-b-title">${titleOf(o.book)}</span><span class="bs-b-meta">${meta}</span></span>
         </a>
+        ${o.lead ? `<p class="bs-b-lead">${o.lead[LANG]}</p>` : ""}
         <button type="button" class="bs-why btn-ghost" aria-expanded="false" aria-controls="bsText${i}" onclick="bsPick(${i})"><span class="lbl">${t.bsWhy}</span></button>
         <div class="bs-text" id="bsText${i}" hidden></div>
       </div>`;
@@ -2203,7 +2438,7 @@ function bsBlock(say, offer){
   return `<section class="bs" aria-labelledby="bsWho">
       <p class="bs-head"><span class="bs-dot" aria-hidden="true"></span><span class="bs-who" id="bsWho">${t.bsAva}</span></p>
       <p class="bs-say">${say}</p>
-      <div class="bs-list">${items}</div>
+      ${items ? `<div class="bs-list">${items}</div>` : ""}
     </section>`;
 }
 
@@ -2316,8 +2551,7 @@ const bsSaid = new Set();
    nobody is waiting for. */
 function bsIdle(){
   clearTimeout(bsTypeTimer);
-  const dot = bsDot();
-  if (dot) dot.classList.remove("is-working");
+  document.querySelectorAll(".bs-dot").forEach(d => d.classList.remove("is-working"));
 }
 
 function bsDeliver(box, html, key){
@@ -2333,7 +2567,7 @@ function bsDeliver(box, html, key){
   }
   bsSaid.add(key);
   const wait = bsWait();
-  const dot = bsDot();
+  const dot = bsDot(box);
   const say = () => {
     box.removeAttribute("aria-busy");
     bsType(box, html, () => { if (dot) dot.classList.remove("is-working"); });
@@ -2359,8 +2593,13 @@ function bsDeliver(box, html, key){
    had just started. */
 function bsPick(i){
   const offer = bsCurrent && bsCurrent.offer; if (!offer) return;
-  const list = document.querySelector(".bs-list"); if (!list) return;
-  const rows = [...list.querySelectorAll(".bs-why")];
+  /* The controls are looked for in her section rather than in the list of
+     proposals: on the page of a book she proposed there is no list, because the
+     book is the page - what is left is one control, for this title's own
+     reason. */
+  const sec = document.querySelector(".p-info .bs"); if (!sec) return;
+  const rows = [...sec.querySelectorAll(".bs-why")];
+  if (!rows[i]) return;
   const open = rows[i].getAttribute("aria-expanded") === "true";
   bsIdle();
   /* No walk between two sizes any more. A floating panel changing height was a
@@ -3656,8 +3895,8 @@ const DS_SECTIONS = [
     <thead><tr><th>Token</th><th>${L("Built from","Zbudowany z")}</th><th>${L("Meaning","Znaczenie")}</th></tr></thead>
     <tbody>${dsColorRows([
       ["--nu-bg-primary",L("Default surface","Powierzchnia domyślna")],
-      ["--nu-bg-secondary",L("Raised / recessed panel","Panel wyniesiony")],
-      ["--nu-bg-tertiary",L("A block set apart inside a column of text","Blok wydzielony wewnątrz kolumny tekstu")],
+      ["--nu-bg-secondary",L("A panel laid on the page","Panel położony na stronie")],
+      ["--nu-bg-tertiary",L("The field a cover floats on, and the bookseller's block","Pole, na którym stoi okładka, i blok księgarki")],
       ["--nu-bg-inverse",L("Darkest surface","Powierzchnia najciemniejsza")],
       ["--nu-bg-masthead",L("Ground of the block that stays at the top","Tło bloku, który zostaje u góry")],
       ["--nu-bg-action",L("Primary action, body","Akcja główna, korpus")],
@@ -4438,8 +4677,8 @@ const DS_SECTIONS = [
     <h3>${L("The parts","Części")}</h3>
     <table><thead><tr><th ${DS_COL_NAME}>${L("Part","Część")}</th><th>${L("What it does","Co robi")}</th></tr></thead><tbody>
       <tr><td class="spec"><code>.bs</code></td><td>${L(
-        `The block. A ground of its own and no outline. The ground is ${dsTokMix("--nu-bg-tertiary")}.`,
-        `Blok. Własne tło, bez obrysu. Tło to ${dsTokMix("--nu-bg-tertiary")}.`)}</td></tr>
+        `The block. A ground of its own and no outline. The ground is ${dsTokMix("--nu-bg-tertiary")}, which is also what a packshot stands on: in the grid her block sits in a row of them, and in a column of text it is the step that leaves a hairline visible.`,
+        `Blok. Własne tło, bez obrysu. Tło to ${dsTokMix("--nu-bg-tertiary")} &ndash; ten sam stopień, na którym stoi packshot: w siatce jej blok stoi w rzędzie packshotów, a w kolumnie tekstu jest to stopień, na którym widać kreskę.`)}</td></tr>
       <tr><td class="spec"><code>.bs-head</code></td><td>${L(
         "The mark and the name of whoever is speaking. The name is on the page rather than in an attribute: a block standing in a column of text has no corner to point at, so it says who it is.",
         "Znak i nazwa tego, kto mówi. Nazwa stoi na stronie, a nie w atrybucie: blok w kolumnie tekstu nie ma rogu, na który mógłby wskazać, więc mówi, kim jest.")}</td></tr>

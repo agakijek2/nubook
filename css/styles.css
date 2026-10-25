@@ -65,19 +65,28 @@
     /* ---------- semantic ---------- */
     /* background – surfaces an element sits on */
     --nu-bg-primary:light-dark(var(--nu-white), var(--nu-grey-900));            /* the page, drawers, menus */
-    --nu-bg-secondary:light-dark(var(--nu-grey-100), var(--nu-grey-800));       /* raised panels: tiles, thumbnails */
-    /* A third step, quieter than the second, for a block that has to read as
-       set apart without reading as a panel laid on the page. Mixed from the two
-       grounds it sits between rather than drawn from a new grey: the palette
-       keeps its size, and the step lands exactly halfway wherever the two ends
-       are, so a change to either carries. The sheet already builds the masthead
-       veil, the scrim and the secondary action this way.
+    /* A panel laid on the page: the checkout summary, a hover in a menu, the
+       bars that stand in for a sentence still arriving. In the light scheme it
+       is the same value as the hairline the shop draws with, so nothing
+       outlined or underlined can be seen on it - which is why the fields that
+       hold other elements take the third step instead. */
+    --nu-bg-secondary:light-dark(var(--nu-grey-100), var(--nu-grey-800));       /* panels laid on the page */
+    /* A third step, quieter than the second, for a surface that has to read as
+       set apart without reading as a panel laid on the page: the field a cover
+       floats on, and the bookseller's block. Mixed from the two grounds it sits
+       between rather than drawn from a new grey: the palette keeps its size,
+       and the step lands exactly halfway wherever the two ends are, so a change
+       to either carries. The sheet already builds the masthead veil, the scrim
+       and the secondary action this way.
        Halfway in both schemes and by the same reasoning, though it means the
        opposite direction: lighter than the panel in the light scheme, darker in
-       the dark one, because both are steps towards the page. */
+       the dark one, because both are steps towards the page.
+       It is also the only one of the two a hairline shows on in both schemes,
+       which is what decided the packshot: a field with links standing in it
+       cannot be a field nothing can be drawn on. */
     --nu-bg-tertiary:light-dark(
         color-mix(in srgb, var(--nu-grey-100) 50%, var(--nu-white)),
-        color-mix(in srgb, var(--nu-grey-800) 50%, var(--nu-grey-900)));        /* a block set apart inside a column of text */
+        color-mix(in srgb, var(--nu-grey-800) 50%, var(--nu-grey-900)));        /* packshots, and the bookseller's block */
     --nu-bg-inverse:light-dark(var(--nu-grey-900), var(--nu-grey-100));         /* filled actions */
     /* The ground of the block that stays at the top of the window. The page's
        own colour, thinned: enough for the navigation to hold against whatever
@@ -1025,8 +1034,15 @@
      product page she came to look at this one cover, so it stays untouched -
      the badge and the disabled button carry the unavailability there. */
   .card.is-out .tile > .cover{opacity:.38;filter:grayscale(.4)}
+  /* The field a cover floats on, and the third step rather than the second.
+     In the light scheme the second step and the hairline the shop draws with
+     are the same value, so nothing outlined or underlined on it can be seen at
+     all - which is what this field now has standing in it, the bookseller's
+     cell among the covers carrying links of her own. The cover keeps its
+     separation from the field through its shadow rather than through a step of
+     grey. */
   .tile{
-    background:var(--nu-bg-secondary);
+    background:var(--nu-bg-tertiary);
     aspect-ratio:4/5;
     display:flex;align-items:center;justify-content:center;
     position:relative;overflow:hidden;
@@ -1049,20 +1065,85 @@
   .meta .price{margin-top:var(--nu-space-nano);font-variant-numeric:tabular-nums}
   .card.is-out .meta .price{color:var(--nu-fg-secondary);text-decoration:line-through}
   .empty{
-    grid-column:1/-1;padding:var(--nu-space-max) 0;text-align:center;color:var(--nu-fg-secondary);
+    grid-column:1/-1;padding:var(--nu-space-max) 0;text-align:center;
   }
-  .empty .btn-ghost{margin-left:var(--nu-space-micro)}
-  /* Her section inside the empty grid. The sentence above it is centred, a
-     single line in a wide space; a block of prose with two rows under it is
-     not, so the section takes the alignment back and holds a reading measure.
-     The measure is in ch, as every measure in this shop is - the same one the
-     order confirmation uses, which is the other place a single block stands in
-     a view much wider than itself. A pixel width would have been a length
-     outside the scale with no reason to be one.
-     Once she stands between the sentence and the button, the button is no
-     longer the end of a line: it starts its own, a step below the block. */
-  .empty .bs{max-width:46ch;margin:var(--nu-space-medium) auto 0;text-align:left;color:var(--nu-fg-primary)}
-  .empty .bs ~ .btn-ghost{margin:var(--nu-space-medium) 0 0}
+  /* The grey belongs to this sentence and not to the block: anything the
+     bookseller puts underneath is the shop's own component and has to arrive in
+     the shop's own colours. */
+  .empty-say{color:var(--nu-fg-secondary);margin:0}
+  /* The way out stands a step after the sentence it ends. Scoped to that
+     sentence's own child: her text underneath carries ghost buttons too - the
+     motifs she names - and a margin meant for one control was reaching them. */
+  .empty-say > .btn-ghost{margin-left:var(--nu-space-micro)}
+  /* Her answer to a query the shelf cannot meet, laid out on the shelf's own
+     raster. The block is a grid of the same shape as the one above it, so the
+     two proposals stand in real columns and their packshots are the size the
+     reader was scanning a moment ago - the whole claim being that these two are
+     books on this shelf.
+     Her own cell takes two of those columns. One gives a line of about 28
+     characters, which is a caption measure; two put it near 60, where the rest
+     of the shop reads. */
+  .bs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--nu-space-nano);text-align:left}
+  /* They arrive the way the shelf arrives on a first visit, on the same
+     keyframes: out of blur, settling the last of the way up. The same movement
+     because it is the same event, and the same curve for the reason the mosaic
+     takes it - the zoom curve spends the blur before the eye has found the
+     thing, which is right for a tile crossing the screen and wrong here.
+     Started in order rather than at random: the shelf has no order and these
+     three have one, her cell first because the books answer what it says. */
+  .bs-grid.is-arriving > *{opacity:0;animation:cardIn var(--nu-motion-slower) ease-out forwards;animation-delay:var(--d,0ms)}
+  @media (prefers-reduced-motion:reduce){
+    .bs-grid.is-arriving > *{animation:none;opacity:1}
+  }
+  /* One column, and the ground is the packshot: the same 4:5 box the covers
+     beside it stand in, so her cell and their jackets end on the same line and
+     the row reads as one shelf rather than as a panel with books next to it.
+     The ratio is a floor and not a lid - a sentence that runs longer in one
+     language grows the box instead of being cut off, because a clipped word is
+     worse than a cell a few pixels taller than its neighbours. */
+  /* align-self, and it is the whole of why the cell was taller than a packshot:
+     a grid item stretches to its row by default, and the row is as tall as the
+     full card beside it - jacket, title, price and the control under them. The
+     ratio only decides the height once the item stops stretching. */
+  .bs-grid .bs-cell{
+    grid-column:span 1;margin:0;aspect-ratio:4/5;align-self:start;
+  }
+  /* The motifs she names, one to a line. Standing in a row inside the sentence
+     they were two links among forty words; on their own lines they are the two
+     things she is offering, which is what they are.
+     The bullet is the one her answers use, set the same distance out. */
+  .bs-motifs{list-style:none;margin:var(--nu-space-micro) 0 0;padding-left:var(--nu-space-small)}
+  .bs-motifs li{position:relative;margin-bottom:var(--nu-space-nano)}
+  .bs-motifs li::before{
+    content:"\2022";position:absolute;left:calc(-1 * var(--nu-space-small));
+    color:var(--nu-fg-tertiary);
+  }
+  /* The card's own closing gap, moved off the meta block for a card that does
+     not end there. On the shelf a card ends under its price and that padding is
+     what stands between it and the row below; here the price is followed by a
+     sentence and a control, so the gap was closing something still going on -
+     and arriving as 24px plus 8px, which is two steps on top of each other
+     where the scale asks for one. */
+  /* The card's own closing gap moves below the sentence, which is what ends the
+     card here. Left on the meta it would have stood between the price and a
+     line about the same book. */
+  .bs-grid .card .meta{padding-bottom:0}
+  .bs-grid .bs-b-lead{margin-bottom:var(--nu-space-medium)}
+  /* Why this book is standing here, under the card and before the control. The
+     card says what it is; this says what it has to do with the one that was
+     searched for, and the long answer stays behind the control.
+     One step from the price, the same step the meta keeps between the packshot
+     and the title: this belongs to the book above it. */
+  .bs-b-lead{
+    color:var(--nu-fg-secondary);
+    margin:var(--nu-space-micro) var(--nu-space-nano) 0;
+  }
+  /* The control under a proposal belongs to the card, not to the row of cards,
+     so it keeps the card's own left edge and the gap the meta block ends with. */
+  /* In a column of text the row is the component, so the sentence lines up with
+     what it is about rather than with the thumbnail beside it. */
+  .bs-item .bs-b-lead{margin-left:0}
+  .empty .bs-grid{margin-top:var(--nu-space-medium)}
 
   /* ---------- covers (pure CSS book jackets) ---------- */
   .cover{
@@ -1105,7 +1186,7 @@
   .p-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:var(--nu-gutter-column);align-items:start}
   /* the product packshot is the same kind of box as the grid tile, just bigger */
   .p-tile{
-    background:var(--nu-bg-secondary);
+    background:var(--nu-bg-tertiary);
     /* always fills its column: capping the width here (e.g. by viewport height)
        leaves the packshot stranded on the left of a wide screen */
     aspect-ratio:4/5;width:100%;
@@ -1147,7 +1228,9 @@
                filter var(--nu-motion-slow) ease var(--nu-motion-slow),
                transform var(--nu-motion-slow) ease var(--nu-motion-slow);
   }
-  .fly-tile{overflow:hidden;background:var(--nu-bg-secondary)}
+  /* The box that flies between the two: a different ground here would flash a
+     second colour through the middle of the zoom. */
+  .fly-tile{overflow:hidden;background:var(--nu-bg-tertiary)}
   .fly-tile .badge{display:none}
   .p-info{max-width:480px;padding-top:var(--nu-space-micro)}
   .p-title{font:var(--nu-type-h1);margin-bottom:var(--nu-space-nano)}
@@ -2326,9 +2409,20 @@
   @media (min-width:1280px){
     .shop{grid-template-columns:250px 1fr}
     .grid{grid-template-columns:repeat(4,1fr)}
+    /* Four columns is where the arithmetic comes out: two for what she says,
+       two for what she offers, and the row closes. At three the sentence takes
+       the whole width instead, because a lone card on a second row reads as
+       something that did not fit rather than as the second of a pair. */
+    .bs-grid{grid-template-columns:repeat(4,1fr)}
   }
   @media (max-width:1100px){
     .grid{grid-template-columns:repeat(2,1fr)}
+    .bs-grid{grid-template-columns:repeat(2,1fr)}
+    /* Two columns leave no third place for her, and a cell beside one book with
+       the other dropped underneath reads as a layout that ran out of room. She
+       takes the width instead and the pair stands under her, which is the shape
+       this had before it moved onto the raster. */
+    .bs-grid .bs-cell{grid-column:span 2;aspect-ratio:auto}
   }
   @media (max-width:820px){
     /* One value per breakpoint: the cover's relative width is a single decision,
@@ -2605,5 +2699,9 @@
     .ds .ds-badges{grid-template-columns:1fr}
     :root{--nu-cover-width:58%}
     .grid{grid-template-columns:1fr}
+    .bs-grid{grid-template-columns:1fr}
+    /* One column wide, and the ratio would make a square of text with half of
+       it empty. The cell takes the height its sentence needs. */
+    .bs-grid .bs-cell{aspect-ratio:auto}
 
   }

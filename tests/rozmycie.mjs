@@ -78,8 +78,14 @@ chk(/animation\s*:[^;]*ease-out/.test(mosaic||''), 'the mosaic takes the ease-ou
 chk(!/--nu-ease-zoom/.test(mosaic||''),            'the mosaic does not take the zoom curve');
 
 const mos=js.match(/if \(firstVisit\)\{([\s\S]*?)\n  \}/);
-chk(!!mos && /motionMs\("--nu-motion-stagger"\)/.test(mos[1]),
-    'the cards still start spread over --nu-motion-stagger');
+/* The window the starts are spread over is the token; how far apart they end
+   up is one rule, read by the shelf and by the bookseller's proposals, which
+   arrive on these same keyframes. Two copies of that arithmetic would drift the
+   first time either was tuned. */
+chk(!!mos && /staggerStep\(/.test(mos[1]),
+    'the cards still start spread over a step from the shared rule');
+chk(/const staggerStep = count =>[\s\S]*?motionMs\("--nu-motion-stagger"\)/.test(js),
+    'and that rule reads --nu-motion-stagger');
 chk(!!mos && !/\+ \d{2,}/.test(mos[1]), 'closing the mosaic carries no hand-typed number');
 
 /* 5b. the product page: what the book has to say arrives out of a blur the same
