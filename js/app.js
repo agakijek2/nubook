@@ -4572,7 +4572,7 @@ const DS_SECTIONS = [
     <table id="tileVariants"><thead><tr><th>${L("Variant","Wariant")}</th><th>${L("Meaning","Znaczenie")}</th><th ${DS_COL_TOK}>${L("Tokens","Tokeny")}</th></tr></thead><tbody>
       <tr><td>${L("Tile","Kafel")}<br><code>.tile</code></td>
         <td>${L("A field with a cover centred in it, and room for one badge. The grid and the product page carry the same tile at two scales, which is what lets opening a book be one uninterrupted zoom.","Pole z wyśrodkowaną okładką i miejscem na jedną odznakę. Siatka i karta produktu mają ten sam kafel w dwóch skalach i to właśnie pozwala, by otwarcie książki było jednym nieprzerwanym powiększeniem.")}</td>
-        <td><code>--nu-bg-secondary</code>, ${dsTok("--nu-cover-width")}</td></tr>
+        <td><code>--nu-bg-tertiary</code>, ${dsTok("--nu-cover-width")}</td></tr>
       <tr><td>${L("Thumbnail","Miniatura")}<br><code>.ci-cover</code></td>
         <td>${L("The cover alone: no field, no badge, and a width of its own. Used in the cart drawer and on the cart page, where a title only has to be recognisable in a list.","Sama okładka: bez pola, bez odznaki, z własną szerokością. Używana w szufladzie koszyka i na stronie koszyka, gdzie tytuł ma być tylko rozpoznawalny na liście.")}</td>
         <td>${dsTok("--nu-thumb-size-sm")}, ${dsTok("--nu-thumb-size-md")}</td></tr>
@@ -4581,7 +4581,7 @@ const DS_SECTIONS = [
     <table><tbody>
       <tr><td ${DS_COL_NAME}>${L("Tile ratio","Proporcje kafla")}</td><td>${L(
         "4:5, the same in the grid and on the product page.","4:5, takie same w siatce i na karcie produktu.")}</td></tr>
-      <tr><td>${L("Tile surface","Powierzchnia kafla")}</td><td><code>--nu-bg-secondary</code></td></tr>
+      <tr><td>${L("Tile surface","Powierzchnia kafla")}</td><td><code>--nu-bg-tertiary</code></td></tr>
       <tr><td>${L("Cover ratio","Proporcje okładki")}</td><td>${L(
         "7:10, held by the box rather than by the image, so a cover of any proportion is cropped to one shape across the whole shop.",
         "7:10, trzymane przez pole, a nie przez obrazek, więc okładka o dowolnych proporcjach jest kadrowana do jednego kształtu w całym sklepie.")}</td></tr>
