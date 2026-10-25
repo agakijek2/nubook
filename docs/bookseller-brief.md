@@ -99,16 +99,25 @@ at the point where the page has something to answer, and read in the order the
 rest of that page is read. That makes restraint the most important thing about
 her, and it is also the easiest thing to get right: **the model never decides
 to speak.**
-Our code decides, on two conditions and no others, and hands the model a title.
+Our code decides, on the four events below and no others, and hands the model a
+title.
 All of section 2a is *structure*.
 
-**She speaks on exactly three events.**
+**She speaks on exactly four events.**
 
 | Event | What she adds that the page cannot |
 |---|---|
-| A search that returns nothing, where the title is not stocked at all | The guess at which title was meant, and a book that carries the same motifs |
+| A search that returns nothing, where the title is not stocked at all | The guess at which title was meant, and the books here that take up its motifs |
 | A product page for a title that is out of stock | A book on the shelf that is actually buyable and does the same thing |
 | A product page for a title on the shelf | Which other books here carry a motif this one carries, and what they do with it |
+| A product page for a book she proposed, reached from that proposal | Why this one was put in front of the reader, and what it shares with the title she was looking for |
+
+**The fourth is the only thing she says about the reader rather than about a
+book**, and it is kept to what the reader did in the shop one step earlier: she
+searched for a title, and this is one of the answers. Nothing is remembered
+beyond that, nothing is written into the address, and a page reached any other
+way - from the shelf, from a pasted link, after a reload - carries none of it.
+It is an annotation on a page that stands without it.
 
 **What the third event adds that the page does not.** The motif row names the
 motifs this book carries and the drawer explains what each one is. Neither says
@@ -123,7 +132,10 @@ rather than omissions:
   The empty state's own button clears the way to it, instantly and without a model
   call, and a section here would be a slower version of a control already on
   screen.
-- **A query under two characters.** There is nothing there to guess from.
+- **A query shorter than the shop narrows on** - three characters, the same
+  threshold the shelf filters at. Below it the shelf still holds everything, so
+  there is no empty result for her to answer: she is reached through the shop
+  having nothing, never alongside it.
 - **The same event, a second time in one visit.** An assistant that reappears with
   the same offer is not attentive, it is stuck.
 
@@ -131,11 +143,12 @@ rather than omissions:
 decides whether she speaks is the writing, not the status: a shelf of nineteen is
 small enough for that to be a deliberate list rather than a gap.
 
-**The page keeps the bad news; she keeps the offer** – and on an empty search she
-does not repeat it. The empty state goes on saying *we do not have "X"* on its
-own, before any model has answered and whether or not one ever does, so her
-section begins at the guess – *looking for Gone Girl?* – which is the one thing
-the page cannot work out for itself.
+**The page keeps the bad news; she keeps the offer** – and on an empty search
+the two are not the same sentence. The empty state answers the *query*, and
+echoes it: *we do not have "dal"*. She answers the *title she thinks was meant*,
+and has to say the bad news about that one, because nobody has yet: *Looking for
+Virginia Woolf's Mrs Dalloway? We do not have it on the shelf.* The word repeats
+and the fact does not - one is about what was typed, the other about a book.
 
 **On a product page for a title that is out the rule inverts, and the reason is
 distance.** There the bad news is a badge on the packshot, at the top of the view,
@@ -151,6 +164,13 @@ repeat,** and the section opens on the offer alone.
 the reason behind each proposal stays closed until the reader asks for it. She is
 never the only way to find something out, and she never blocks anything.
 
+**Where the reason opens depends on what the reader is doing.** In a column of
+text she has one book in front of her, so it unfolds under the proposal that
+raised it. On an empty search she has several side by side and is reading across
+them; a control on each would be three ways out of the one view built for
+comparing, so there the long reason waits on the page of whichever title she
+opens. The short line under each book is what the comparison runs on.
+
 ---
 
 ## 2b · Guessing the title from a fragment
@@ -161,9 +181,18 @@ title is the one inference the shop makes on her behalf, and it has three rules.
 **One guess, or none.** She names a single title and asks whether that is the
 one. A section offering three possibilities is a search result wearing a face.
 
-**The guess is a question, never an assumption.** *Looking for X?* – and the
-answer about X only comes after the reader says yes. Guessing wrong and then
-recommending against the wrong guess produces two mistakes for the price of one.
+**The guess is a question, never an assumption.** *Looking for X?* – the
+question mark is what keeps it a guess, and it is the whole of the hedging: a
+conditional clause wrapped around the offer makes the reader hold a sentence
+open while she reads the rest of it.
+
+**The offer follows the question without waiting for an answer.** Confirming
+would cost a press to approve help that has already been written, and the shop
+is anticipating rather than committing: a wrong guess costs one line the reader
+skips, with the whole shelf one control away underneath it. The rule this
+replaces – *the answer about X only comes after the reader says yes* – was
+written for an assistant that would have had to go and think; this one has
+already thought.
 
 **When the fragment could be several books, or none, she does not speak.** A
 weak guess offered anyway is worse than silence: it teaches the reader that the
@@ -358,21 +387,45 @@ offer itself, and steps 2 to 4 run as written.
 
 ## 6 · The shape of an answer
 
-**Two lengths, and the situation picks one.**
+**Three lengths, and the situation picks one.**
 
-- **The section itself: two sentences, then the two books** – cover, title,
-  price, no prose between them. The sentences and the books arrive together: a
-  block standing in the flow of a page has nothing to open, so what it holds is
-  what the reader sees. Two sentences, because she is the last thing in a column
-  the reader has just read through, and an argument made at that point has to be
+- **In a column of text: two sentences, then the books** – cover, title, price,
+  no prose between them. The sentences and the books arrive together: a block
+  standing in the flow of a page has nothing to open, so what it holds is what
+  the reader sees. Two sentences, because she is the last thing in a column the
+  reader has just read through, and an argument made at that point has to be
   short enough to stay an offer rather than turn into a second description.
+- **On an empty search: one sentence, then the books, and one line under each.**
+  Here the books stand side by side and are read across rather than down, so
+  each needs the one thing its own card cannot say - what it has to do with the
+  title that was searched for. One line, the same length for all of them, or the
+  controls stop lining up and the comparison turns into a column of paragraphs.
 - **One book, once it has been chosen: as long as it needs and no longer.** Here
   the shape matters more than the count of sentences: what the two books share,
   said in the vocabulary's own terms, then what this one does with it.
 
-**Two books, always two, never three.** A shelf of nineteen offering five options
-is not a recommendation, it is a search result with commentary. Two is enough for
-the reader to have a choice and few enough that she reads both.
+**How many books depends on what the page already has, not on a number.**
+
+- **On a product page: two.** The page has its own subject and she is adding to
+  it, so the offer is a nudge rather than a second shelf. Two is enough for a
+  choice and few enough that both get read.
+- **On an empty search: everything that matches.** There is no result for her to
+  compete with - her books *are* the result. What she is doing there is pointing
+  at a shelf: *there are books here that take up that motif*, with one line each
+  saying how. Narrowing that to two would be hiding part of the shelf in the one
+  view whose whole job is to show it.
+
+The shelf being pointed at is the reason the two differ. A reader at a card has
+picked something up and wants a word about it; a reader whose search found
+nothing wants to know what is there. The second is a walk down an aisle, the
+first a remark beside one book.
+
+**Today the set is written by hand and this is not yet true of it.** Three
+titles are listed for the one entry the shop holds, chosen when the entry was
+written. Showing *everything that matches* means the set is derived from the
+motifs rather than listed, and the line under each is derived with it - which is
+step 08, not this one. Until then the hand-written three stand in for the rule,
+and the rule is what gets tested with readers.
 
 **Only what can be bought.** A preorder qualifies and its status is stated; a
 title out of stock is never the thing she offers instead of another title out of
@@ -483,8 +536,11 @@ without acquiring a test is one nobody is keeping.
 | 15 | A product page for a book we can sell, with a set written for it | A section naming two books that carry one of its motifs, and opening without any mention of stock |
 | 16 | *Wide Sargasso Sea*, out of stock | A section at the foot of the column, naming a buyable book that shares a motif with it |
 | 17 | *conveni* typed into the field | One guess – *Convenience Store Woman* – put as a question, not an assumption |
-| 18 | *the* typed into the field | **No section.** Too little to guess from |
+| 18 | *da* typed into the field | **No section.** Below the threshold the shelf has not narrowed, so there is no empty result to answer |
 | 19 | The same empty search repeated in one visit | She does not raise the same offer twice |
+| 20 | A book she proposed, opened from that proposal | Says why it was put in front of the reader and names the title that was searched for. Opened from the shelf, from a link or after a reload, says none of it |
+| 21 | The same book again, after the query has changed | Says none of it: the conversation it belonged to is over |
+| 22 | *dal*, then *dall*, then *dallo* | One arrival, not three. The same answer does not come in again while the query still means the same thing |
 
 **The traps in this set are 1, 3, 5 and 8**, and they fail in different ways: a
 right recommendation with the availability dropped, a book we own treated as one

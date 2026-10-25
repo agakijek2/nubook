@@ -232,7 +232,9 @@ not omissions:
   model call.
 - **A product page for a book we can sell.** The motif row and its drawer say
   what that book is about, twenty pixels away.
-- **A query under two characters.** Nothing there to guess from.
+- **A query shorter than the shop narrows on.** Three characters, the same
+  threshold the shelf filters at - below it the shelf still holds everything, so
+  there is no empty result for her to answer.
 - **The same event twice in one visit.** An assistant that repeats an offer is not
   attentive, it is stuck.
 
@@ -386,9 +388,9 @@ reading as a hint, two seconds as someone who noticed.
 **Chosen: a section in the product column, at the foot of it, with no delay.**
 What she says is about one title on two pages out of nineteen, and a corner of
 every view promised somebody who follows the reader through the shop. The place
-carries the argument too: she offers two books about the same motifs, so she
-stands after the description and the list of motifs, where the reader has been
-brought to the reason before the offer.
+carries the argument too: she offers books that each carry one of the motifs
+this one carries, so she stands after the description and the list of motifs,
+where the reader has been brought to the reason before the offer.
 
 **What it cost, and what it saved:** the delay went, and with it the one thing
 the floating version had - an offer that arrives by itself and is therefore hard
@@ -435,6 +437,53 @@ interruption that a section in the flow does not raise.
 something generated from the motifs would put a paragraph under every book, and a
 paragraph under every book is wallpaper. The writing is the limit, deliberately:
 it is what makes her silence mean something.
+
+---
+
+## 16 · How many books, and the view decided it
+
+**The brief said two, always two, never three**, and gave the reason: a shelf of
+nineteen offering five options is a search result with commentary rather than a
+recommendation.
+
+**Then she was given a second place to speak**, the empty search, and the rule
+stopped fitting. On a product page she adds to something: the page has a book on
+it, the reader is holding that book, and two more is a nudge. On an empty search
+there is nothing to add to - her books *are* the result, and the one view whose
+job is to show what is there was hiding part of it.
+
+**Chosen: the number follows the role, not a figure.** Two in a column of text.
+On an empty search, everything that matches - what she is doing there is
+pointing down an aisle, *there are books here that take up that motif*, with one
+line each saying how. The long reason moves with it: in a column it unfolds
+under the proposal, on a search it waits on the page of whichever title gets
+opened, because three controls in a view built for comparing are three ways out
+of it.
+
+**What this costs.** The set has to be derived rather than written, and so does
+the line under each book - a hand-written list cannot promise *everything that
+matches*. Today three titles stand in for the rule under one written entry,
+which is honest only as long as the brief says so. The rule itself is a
+hypothesis to be tested with readers before the machinery is built for it.
+
+---
+
+## 17 · The one thing she says about the reader
+
+**Every other sentence in this brief is about a book.** Following a proposal to
+its page produces the exception: *I put this one in front of you because you
+were looking for Mrs Dalloway*. That is a sentence about what the reader did.
+
+**Chosen: allow it, and bound it tightly.** It reaches exactly one step back -
+the title searched for, which the reader typed herself a moment ago - and
+nothing else is kept. It is held for the session and never written into the
+address, because a link carrying *arrived here from a search for Mrs Dalloway*
+would tell whoever it was pasted to about a search they never made. A page
+reached from the shelf, from a link or after a reload carries none of it.
+
+**The test of whether this stayed honest** is that the page stands without it.
+The annotation is an addition to a product page, never the reason one makes
+sense.
 
 ---
 

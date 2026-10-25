@@ -486,8 +486,8 @@ const I18N = {
        let that be fudged. */
     bsFromOne:"I put this one in front of you because you were looking for *%s*. The motif they share: %m.",
     bsFromMany:"I put this one in front of you because you were looking for *%s*. The motifs they share: %m.",
-    bsOff:"If you were looking for %a’s *%s*, that one is not on the shelf. What I can offer instead is %n, each taking up one of its motifs:",
-    bsOffOne:"If you were looking for %a’s *%s*, that one is not on the shelf. There is one title here that takes up a motif of its own:",
+    bsOff:"Looking for %a’s *%s*? We do not have it on the shelf. What I can offer instead is %n, each taking up one of its motifs:",
+    bsOffOne:"Looking for %a’s *%s*? We do not have it on the shelf. There is one title here that takes up a motif of its own:",
     /* Reached by the number of proposals that survived the shelf, so a title
        gone out of stock changes the sentence with it. Looked up by that number
        rather than named in the code, which is why these read as unused. */
@@ -561,8 +561,8 @@ const I18N = {
     bsGone:"Niestety, tytułu „%s” nie mamy dziś na stanie.", bsOffer:"Ale skoro interesuje Cię ten tytuł, gorąco polecam dwa inne, o podobnych motywach.",
     bsFromOne:"Polecam Ci ten tytuł, bo szukałaś powieści „%s”. Wspólny motyw: %m.",
     bsFromMany:"Polecam Ci ten tytuł, bo szukałaś powieści „%s”. Wspólne motywy: %m.",
-    bsOff:"Jeżeli szukasz powieści %a „%s”, to niestety nie mamy jej na półce. Mogę za to polecić %n, z których każdy podejmuje któryś z jej motywów:",
-    bsOffOne:"Jeżeli szukasz powieści %a „%s”, to niestety nie mamy jej na półce. Mogę za to polecić jeden tytuł, który podejmuje któryś z jej motywów:",
+    bsOff:"Szukasz powieści %a „%s”? Niestety nie mamy jej na półce. Mogę za to polecić %n, z których każdy podejmuje któryś z jej motywów:",
+    bsOffOne:"Szukasz powieści %a „%s”? Niestety nie mamy jej na półce. Mogę za to polecić jeden tytuł, który podejmuje któryś z jej motywów:",
     bsCount:{ 1:"jeden tytuł", 2:"dwa tytuły", 3:"trzy tytuły", 4:"cztery tytuły" },
     bsAnd:" i ",
     bsHere:"Jeśli zainteresował Cię motyw, który książka „%s” podejmuje, polecam dwa inne tytuły, które również to robią, na swój unikatowy sposób.",
@@ -3552,7 +3552,7 @@ const DS_DOCS = [
     t:{en:"The catalogue", pl:"Katalog"},
     d:{en:"Nineteen titles and where every description, quotation and motif assignment comes from.",
        pl:"Dziewiętnaście tytułów i to, skąd wzięty jest każdy opis, cytat i przypisany motyw."} },
-  { cat:"bookseller", file:"bookseller-brief.md", words:5232,
+  { cat:"bookseller", file:"bookseller-brief.md", words:6008,
     t:{en:"The bookseller's brief", pl:"Brief księgarki"},
     d:{en:"What she may say, what she may never say, how she is allowed to be wrong, and where every sentence of hers comes from. Written before she existed.",
        pl:"Co wolno jej powiedzieć, czego nie wolno nigdy, jak wolno jej się mylić i skąd bierze się każde jej zdanie. Napisane, zanim powstała."} },

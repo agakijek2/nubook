@@ -140,6 +140,13 @@ for (const lang of ['pl','en']){
   chk([...list.children].every(li=>li.tagName==='LI' && li.children.length===1),
       `${lang}: and each line holds its control and nothing else`);
   chk(say.textContent.trim().endsWith(':'), `${lang}: the sentence hands over at the colon`);
+  /* The guess is put as a question, which is what keeps it a guess: the reader
+     typed a fragment and the shop is answering what it thinks she meant. The
+     offer follows it without waiting for a yes - a confirmation would cost a
+     press to approve help that has already been written. */
+  chk(/\?/.test(say.textContent), `${lang}: the guess is asked, not assumed`);
+  chk(say.textContent.indexOf('?') < say.textContent.indexOf(':'),
+      `${lang}: and the question comes before the offer`);
   const mBtns=[...list.querySelectorAll('button.btn-ghost')];
   chk(mBtns.length===2, `${lang}: both motif names are controls (${mBtns.length})`);
   const labels=mBtns.map(b=>(b.querySelector('.lbl')||b).textContent);
