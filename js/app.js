@@ -650,6 +650,12 @@ const priceOf = b => CUR === "pln" ? b.pp : b.p;
 /* ------------------------------------------------------------ state */
 const state = {
   genre:  new Set(),       // empty = all
+  /* Empty = all, and a book matches when it carries any one of the chosen
+     motifs rather than all of them. A book carries two to four out of fifteen,
+     so asking for every selected motif at once would empty the shelf on the
+     second chip - and what the reader is saying by pressing two is "either of
+     these", the same thing she says by pressing two genres. */
+  motif:  new Set(),
   status: new Set(),       // empty = all
   lang:   "en",            // edition language shown; single-select, default English
   sort: "featured",
@@ -673,7 +679,7 @@ function savePrefs(){
   try {
     localStorage.setItem(PREFS_KEY, JSON.stringify({
       lang: LANG, cur: CUR, scheme: SCHEME, edition: state.lang, sort: state.sort,
-      genre: [...state.genre], status: [...state.status],
+      genre: [...state.genre], motif: [...state.motif], status: [...state.status],
     }));
   } catch {}
 }
@@ -687,6 +693,10 @@ function savePrefs(){
   if (p.edition === "en" || p.edition === "pl") state.lang = p.edition;
   if (SORTS.includes(p.sort)) state.sort = p.sort;
   if (Array.isArray(p.genre))  p.genre .filter(k => known("g", k)).forEach(k => state.genre.add(k));
+  /* Checked against the vocabulary rather than against the books: a motif with
+     nothing on the shelf is still a motif, and dropping it here would quietly
+     forget a choice the reader made. */
+  if (Array.isArray(p.motif))  p.motif.filter(k => !!MOTIFS[k]).forEach(k => state.motif.add(k));
   if (Array.isArray(p.status)) p.status.filter(k => known("s", k)).forEach(k => state.status.add(k));
 })();
 
@@ -763,11 +773,13 @@ function buildChips(rowId, items, set){
    with the counted option substituted in its own dimension. */
 function countFor(dim, key){
   const genreOK  = b => dim === "genre"  ? b.g === key : (state.genre.size===0  || state.genre.has(b.g));
+  const motifOK  = b => dim === "motif"  ? motifIds(b).includes(key)
+                                         : (state.motif.size===0 || motifIds(b).some(id => state.motif.has(id)));
   const statusOK = b => dim === "status" ? b.s === key : (state.status.size===0 || state.status.has(b.s));
   const langOK   = b => dim === "lang"   ? b.ed === key : b.ed === state.lang;
   /* The query narrows the count as much as any chip does: a count that ignored
      it would promise results the reader cannot reach. */
-  return BOOKS.filter(b => matchesQuery(b, state.q) && genreOK(b) && statusOK(b) && langOK(b)).length;
+  return BOOKS.filter(b => matchesQuery(b, state.q) && genreOK(b) && motifOK(b) && statusOK(b) && langOK(b)).length;
 }
 
 function chipData(){
@@ -778,7 +790,14 @@ function chipData(){
     .map(g=>[g, genreLabel(g), countFor("genre", g)]);
   const statuses = Object.keys(STATUS)
     .map(k=>[k, T().status[k], countFor("status", k)]);
+  /* All fifteen, in the order the vocabulary is written in, which is the order
+     they are listed in everywhere else. Nothing is hidden behind a control: the
+     list of motifs is what this shop is for, and an option whose count is zero
+     already says so by going inactive. */
+  const motifs = Object.keys(MOTIFS)
+    .map(id => [id, MOTIFS[id].chip[LANG], countFor("motif", id)]);
   buildChips("genreRow", genres, state.genre);
+  buildChips("motifRow", motifs, state.motif);
   buildChips("statusRow", statuses, state.status);
 
   /* edition language: single-select, no "All"; zero-count options greyed out */
@@ -1166,6 +1185,7 @@ function visibleBooks(){
   let list = BOOKS.filter(b =>
     matchesQuery(b, state.q) &&
     (state.genre.size===0  || state.genre.has(b.g)) &&
+    (state.motif.size===0  || motifIds(b).some(id => state.motif.has(id))) &&
     (state.status.size===0 || state.status.has(b.s)) &&
     b.ed === state.lang
   );
@@ -2710,6 +2730,7 @@ function applyLang(){
   pc.setAttribute("aria-label", `${t.promoAria} ${PROMO_CODE}`);
   document.getElementById("promoDone").textContent = "";
   document.getElementById("lblGenre").textContent = t.genre;
+  document.getElementById("lblMotif").textContent = t.motif;
   document.getElementById("lblTag").textContent = t.tag;
   document.getElementById("lblLang").textContent = t.lang;
   document.getElementById("lblFilter").textContent = t.filter;
