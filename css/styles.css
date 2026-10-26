@@ -922,6 +922,17 @@
   .filter-row{display:flex;flex-direction:column;gap:var(--nu-space-micro)}
   .filter-label{color:var(--nu-fg-secondary);font:var(--nu-type-body-s);letter-spacing:var(--nu-tracking-caps);text-transform:uppercase}
   .chip-row{display:flex;flex-wrap:wrap;gap:var(--nu-space-nano) var(--nu-space-small);align-items:baseline}
+  /* How many rows of chips stand before the rest is folded away. Here rather
+     than in the script because it belongs with the widths that decide how many
+     chips fit on a row: beside the shelf there is room for three, and as a
+     sheet over a phone the whole panel has about half a screen, so two.
+     Only the motif row is cut - it is the one group with fifteen options
+     against five, five and two. */
+  #motifRow{--chip-rows:3}
+  #motifRow.is-clipped{overflow:hidden;max-height:var(--rows-max)}
+  /* The control that opens it sits under the row it opens, one step of the
+     scale below, where the next group begins after it. */
+  .chip-more{margin-top:var(--nu-space-micro);align-self:start}
   .chip{position:relative;color:var(--nu-fg-primary)}
   /* The underline belongs to the label, not to the whole button: the count is a
      separate piece of information, and running under it would read as part of the
@@ -2440,6 +2451,9 @@
        column to stop under, and it stands in the flow above the grid. */
     .filters{position:static}
     .grid{grid-template-columns:repeat(2,1fr);gap:var(--nu-space-nano)}
+    /* The filters are a sheet over the phone here, with about half a screen to
+       stand in and three other groups to leave room for. */
+    #motifRow{--chip-rows:2}
     .product{padding:0 var(--nu-space-milli) var(--nu-space-max)}
     .p-grid{grid-template-columns:1fr;gap:var(--nu-space-medium)}
     .p-tile{max-width:none}

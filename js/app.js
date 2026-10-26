@@ -496,6 +496,7 @@ const I18N = {
     bsHere:"If the motif *%s* takes up is what interests you, two more titles here take it up as well, each in a way of its own.",
     bsAva:"The bookseller", bsWhy:"Why this one",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
+    fMore:"All motifs", fLess:"Fewer motifs",
     searchPh:"Search by title or author", searchClear:"Clear",
     all:"All",
     sorts:{featured:"Our recommendations",newest:"Newest first","price-asc":"Price, low to high","pub-asc":"First published: oldest"},
@@ -568,6 +569,7 @@ const I18N = {
     bsHere:"Jeśli zainteresował Cię motyw, który książka „%s” podejmuje, polecam dwa inne tytuły, które również to robią, na swój unikatowy sposób.",
     bsAva:"Księgarka", bsWhy:"Dlaczego akurat ta",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
+    fMore:"Wszystkie motywy", fLess:"Mniej motywów",
     searchPh:"Szukaj tytułu lub autorki", searchClear:"Wyczyść",
     all:"Wszystkie",
     sorts:{featured:"Nasze rekomendacje",newest:"Od najnowszych","price-asc":"Cena: od najniższej","pub-asc":"Pierwsze wydanie: rosnąco"},
@@ -769,6 +771,46 @@ function buildChips(rowId, items, set){
   });
 }
 
+/* Fifteen options against five, five and two: the motif row is three times the
+   longest of the others, and a filter column where one group needs scrolling
+   past is a column that hides the three below it. So it is cut to a few rows
+   and opens on a control.
+   The number of rows lives in the stylesheet, next to the widths that decide
+   how many chips fit on one - three where the column stands beside the shelf,
+   two where the whole thing is a sheet over a phone. The height one row takes
+   is measured rather than calculated: a chip is a line of text with a count
+   raised above it, so its box is the font's business and not arithmetic the
+   script can do. The shop already measures this way for the bars it has to
+   clear.
+   With nothing measurable - no layout, which is where the tests run - the row
+   is left open. A clamp computed from zero would hide everything. */
+let motifsOpen = false;
+function clampMotifs(){
+  const row = document.getElementById("motifRow");
+  const more = document.getElementById("motifMore");
+  if (!row || !more) return;
+  const chip = row.querySelector(".chip");
+  const styles = getComputedStyle(row);
+  const rows = parseFloat(styles.getPropertyValue("--chip-rows")) || 0;
+  const gap  = parseFloat(styles.rowGap) || 0;
+  const line = chip ? chip.getBoundingClientRect().height : 0;
+  row.classList.remove("is-clipped");
+  row.style.removeProperty("--rows-max");
+  if (!rows || !line){ more.hidden = true; return; }
+  const max = rows * line + (rows - 1) * gap;
+  /* The control appears only where there is something to open: a button that
+     unfolds nothing is a promise of more that is not there. */
+  const taller = row.scrollHeight > max + 1;
+  more.hidden = !taller;
+  if (!taller) return;
+  if (!motifsOpen){
+    row.style.setProperty("--rows-max", max + "px");
+    row.classList.add("is-clipped");
+  }
+  more.setAttribute("aria-expanded", String(motifsOpen));
+  more.querySelector(".lbl").textContent = motifsOpen ? T().fLess : T().fMore;
+}
+
 /* Count for a chip: matches every OTHER active filter (genre / status / language),
    with the counted option substituted in its own dimension. */
 function countFor(dim, key){
@@ -790,14 +832,18 @@ function chipData(){
     .map(g=>[g, genreLabel(g), countFor("genre", g)]);
   const statuses = Object.keys(STATUS)
     .map(k=>[k, T().status[k], countFor("status", k)]);
-  /* All fifteen, in the order the vocabulary is written in, which is the order
-     they are listed in everywhere else. Nothing is hidden behind a control: the
-     list of motifs is what this shop is for, and an option whose count is zero
-     already says so by going inactive. */
+  /* All fifteen, in alphabetical order of the name the reader is reading. The
+     vocabulary's own order is the order the motif layer was written in, which
+     means something to whoever wrote it and nothing to anybody scanning a
+     column for a word. Sorted per language, so the two do not come out the
+     same - and they should not: the reader is looking for a Polish word in
+     Polish and an English one in English. */
   const motifs = Object.keys(MOTIFS)
-    .map(id => [id, MOTIFS[id].chip[LANG], countFor("motif", id)]);
+    .map(id => [id, MOTIFS[id].chip[LANG], countFor("motif", id)])
+    .sort((a, b) => a[1].localeCompare(b[1], LANG));
   buildChips("genreRow", genres, state.genre);
   buildChips("motifRow", motifs, state.motif);
+  clampMotifs();
   buildChips("statusRow", statuses, state.status);
 
   /* edition language: single-select, no "All"; zero-count options greyed out */
@@ -1535,6 +1581,13 @@ function closeDrawer(){
   drawerEl.setAttribute("aria-hidden", "true");
   setPageInert(null);
 }
+/* Opening and closing the motif row. It redraws rather than toggling a class,
+   because what the control changes is the same thing render() recomputes: the
+   row is rebuilt on every keystroke and every chip pressed, and a class set
+   outside that would be wiped by the next one. The choice is not saved - it is
+   about this reading of this column, not about how the reader wants the shop. */
+document.getElementById("motifMore").onclick = () => { motifsOpen = !motifsOpen; render(); };
+
 document.getElementById("drawerClose").onclick = closeDrawer;
 drawerBg.onclick = closeDrawer;
 
