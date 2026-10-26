@@ -18,7 +18,7 @@ w.matchMedia=q=>({matches:false,addEventListener(){},removeEventListener(){},add
 w.scrollTo=()=>{}; w.Element.prototype.scrollTo=()=>{};
 w.HTMLElement.prototype.animate=function(){return{finished:Promise.resolve(),cancel(){},addEventListener(){}};};
 w.eval(js+'\n;window.__S=state;window.__B=BOOKS;window.__M=MOTIFS;window.__I=I18N;'
-  +'window.__R=()=>render();window.__L=l=>{LANG=l;applyLang();};window.__IDS=motifIds;window.__CLAMP=clampMotifs;');
+  +'window.__R=()=>render();window.__L=l=>{LANG=l;applyLang();};window.__IDS=motifIds;window.__CLAMP=clampMotifs;window.__ABOUT=openAboutMotifs;window.__CLOSE=closeDrawer;window.__OPENM=openMotif;');
 const sleep=ms=>new Promise(res=>setTimeout(res,ms));
 let bad=0; const chk=(c,m)=>{ console.log((c?'  OK   ':'  FAIL ')+m); if(!c) bad++; };
 await sleep(300);
@@ -212,6 +212,63 @@ chk(!rules.some(sel => /\.motif-/.test(sel)),
     'and no component of its own was invented for it');
 chk(/id="motifRow"/.test(html) && /class="chip-row"/.test(html.slice(html.indexOf('motifRow')-80, html.indexOf('motifRow'))),
     'it is a chip row like the others');
+
+/* 7a. What a motif is, for somebody who has never been told. This is the one
+   group in the column whose names mean nothing on sight - a genre explains
+   itself and "the angel in the house" does not - so it is the only one with a
+   line of prose under its label, and the only one with a way into a longer
+   answer. In the column rather than in a tooltip, because somebody who does
+   not know what a motif is will not go looking for an explanation. */
+for (const lang of ['pl','en']){
+  w.__L(lang); w.__R(); await sleep(40);
+  const note = d.getElementById('motifWhat');
+  chk(!!note && note.textContent.trim().length > 40,
+      `${lang}: a line under the label says what a motif is`);
+  chk(note.textContent.startsWith(w.__I[lang].motifWhat),
+      `${lang}: and it comes from the dictionary`);
+  /* The question is the end of that sentence rather than a control under it: a
+     reader who does not know what a motif is does not know to look for an
+     explanation, so the line has to work unpressed and the way to more has to
+     be where she stops reading. */
+  const about = d.getElementById('motifAbout');
+  chk(!!about && about.closest('#motifWhat') === note,
+      `${lang}: and ends in the way to a longer one`);
+  chk(about.tagName === 'BUTTON' && about.getAttribute('aria-haspopup') === 'dialog',
+      `${lang}: which is a button and says it opens a dialog`);
+  chk(about.querySelector('.lbl').textContent === w.__I[lang].motifAboutLink,
+      `${lang}: labelled from the dictionary (${about.querySelector('.lbl').textContent})`);
+  /* One control, not two: the sentence and its question are one thing. */
+  chk(note.querySelectorAll('button').length === 1, `${lang}: and it is the only one in the line`);
+  /* Pressed, not called: calling openAboutMotifs leaves the wiring between the
+     control and what it opens untested, and a question that answers nothing
+     passes every check written that way. The handler is attached in the script
+     rather than in an attribute, so it can be pressed here. */
+  chk(typeof about.onclick === 'function', `${lang}: the question is wired to something`);
+  about.onclick();
+  const drawer = d.getElementById('drawer');
+  chk(drawer.classList.contains('open'), `${lang}: it opens the drawer`);
+  chk(drawer.getAttribute('aria-label') === w.__I[lang].motifAbout,
+      `${lang}: which says what it holds`);
+  chk((d.querySelector('.d-name')||{}).textContent === w.__I[lang].motifAbout,
+      `${lang}: and is headed with the question, asked in full`);
+  const body = d.querySelector('#drawerBody .d-bio');
+  chk(!!body && body.querySelectorAll('p').length >= 3,
+      `${lang}: the answer is prose, not a definition (${body && body.querySelectorAll('p').length} paragraphs)`);
+  /* It has to say the thing that separates a motif from a tag, because that is
+     the whole reason the shop has motifs at all. */
+  chk(/cite|powoła/.test(body.textContent),
+      `${lang}: and says that a motif cites somebody`);
+  chk(!/%[a-z]/.test(body.textContent), `${lang}: with nothing left unsubstituted`);
+  w.__CLOSE();
+  chk(!drawer.classList.contains('open'), `${lang}: and closes`);
+}
+w.__L('pl'); w.__R(); await sleep(40);
+/* Three things open in this drawer now, and opening one has to put the last
+   one away rather than leave two headings fighting. */
+w.__ABOUT(); w.__OPENM('madwoman');
+chk((d.querySelector('.d-name')||{}).textContent === w.__M['madwoman'].chip.pl,
+    'opening one motif replaces the general answer');
+w.__CLOSE();
 
 /* 8. And the claim this was built to make true. The case study and the roadmap
    both say a motif is a filter, a name on a product page and an essay in a

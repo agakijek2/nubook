@@ -928,6 +928,11 @@
      sheet over a phone the whole panel has about half a screen, so two.
      Only the motif row is cut - it is the one group with fifteen options
      against five, five and two. */
+  /* One line under the label, for the one group whose names mean nothing on
+     sight: a genre explains itself and "the angel in the house" does not. It
+     is the only prose in this column, and it is here rather than in a tooltip
+     because somebody who does not know what a motif is will not go looking. */
+  .filter-note{color:var(--nu-fg-secondary);margin:0 0 var(--nu-space-micro)}
   #motifRow{--chip-rows:3}
   #motifRow.is-clipped{overflow:hidden;max-height:var(--rows-max)}
   /* The control that opens it sits under the row it opens, one step of the

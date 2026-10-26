@@ -497,6 +497,14 @@ const I18N = {
     bsAva:"The bookseller", bsWhy:"Why this one",
     genre:"Genre", tag:"Tag", lang:"Language", filter:"Filter", sort:"Sort by:",
     fMore:"All motifs", fLess:"Fewer motifs",
+    /* The one group in this column whose names mean nothing on sight. Genre
+       needs no gloss; "the angel in the house" does. */
+    motifWhat:"A recurring idea several books on this shelf take up.",
+    motifAbout:"What is a motif?", motifAboutLink:"What is that?",
+    motifAboutLead:"the unit this shop is built to browse by",
+    motifAboutText:`<p>A genre says what a book is. A motif says what a book takes up: a question, a figure or an arrangement that comes back across many books and looks different in each. <strong>The madwoman</strong> is not a shelf of horror \u2013 it is a woman whose anger was called an illness, and she is called that in Brontë, in Rhys and in Plath alike.</p>
+      <p>A label only sticks a name on. A motif makes a claim about a book, so it has to cite somebody: each of the fifteen carries a name and a year, and the work the term comes from stands at the foot of its essay.</p>
+      <p>Press any motif to read where it came from. Selected, it narrows the shelf to the books that take it up.</p>`,
     searchPh:"Search by title or author", searchClear:"Clear",
     all:"All",
     sorts:{featured:"Our recommendations",newest:"Newest first","price-asc":"Price, low to high","pub-asc":"First published: oldest"},
@@ -570,6 +578,12 @@ const I18N = {
     bsAva:"Księgarka", bsWhy:"Dlaczego akurat ta",
     genre:"Gatunek", tag:"Tag", lang:"Język", filter:"Filtry", sort:"Sortuj:",
     fMore:"Wszystkie motywy", fLess:"Mniej motywów",
+    motifWhat:"Powracająca idea, którą podejmuje kilka książek z tej półki.",
+    motifAbout:"Czym jest motyw?", motifAboutLink:"Czym to jest?",
+    motifAboutLead:"jednostka, po której ten sklep pozwala przeglądać",
+    motifAboutText:`<p>Gatunek mówi, czym książka jest. Motyw mówi, co książka podejmuje: pytanie, figurę albo układ, który wraca w wielu książkach i w każdej wygląda inaczej. <strong>Wariatka</strong> to nie półka z horrorami &ndash; to kobieta, której gniew nazwano chorobą, i tak samo nazywa się ją u Brontë, u Rhys i u Plath.</p>
+      <p>Etykieta tylko przykleja nazwę. Motyw stawia tezę o książce, więc musi się na kogoś powołać: każdy z piętnastu niesie nazwisko i rok, a na dole jego eseju stoi praca, z której termin pochodzi.</p>
+      <p>Naciśnij dowolny motyw, żeby przeczytać, skąd się wziął. Zaznaczony zawęża półkę do książek, które go podejmują.</p>`,
     searchPh:"Szukaj tytułu lub autorki", searchClear:"Wyczyść",
     all:"Wszystkie",
     sorts:{featured:"Nasze rekomendacje",newest:"Od najnowszych","price-asc":"Cena: od najniższej","pub-asc":"Pierwsze wydanie: rosnąco"},
@@ -1509,12 +1523,23 @@ function playBackTransition(){
 /* ---------------- author drawer ---------------- */
 const drawerEl = document.getElementById("drawer"),
       drawerBg = document.getElementById("drawerBg");
-/* Two things open in this drawer, each a long read the page it came from has
-   no room for: an author, and a motif. */
-let drawerBook = null, drawerMotif = null;
+/* Three things open in this drawer, each a long read the page it came from has
+   no room for: an author, a motif, and what a motif is at all - which the
+   filter column cannot hold, having one line under a label and three other
+   groups to leave room for. */
+let drawerBook = null, drawerMotif = null, drawerAbout = false;
 
 function fillDrawer(){
   const t = T();
+  if (drawerAbout){
+    drawerEl.setAttribute("aria-label", t.motifAbout);
+    document.getElementById("drawerBody").innerHTML = `
+      <div class="d-label">${t.motif}</div>
+      <h2 class="d-name">${t.motifAbout}</h2>
+      <p class="d-lead">${t.motifAboutLead}</p>
+      <div class="d-bio">${t.motifAboutText}</div>`;
+    return;
+  }
   if (drawerMotif){
     const m = MOTIFS[drawerMotif];
     drawerEl.setAttribute("aria-label", m.chip[LANG]);
@@ -1569,13 +1594,16 @@ function openDrawer(){
   setPageInert(drawerEl);
   document.getElementById("drawerClose").focus();
 }
-function openAuthor(id){ drawerBook = BOOKS[id]; drawerMotif = null; openDrawer(); }
-function openMotif(id){ drawerMotif = id; drawerBook = null; openDrawer(); }
+function openAuthor(id){ drawerBook = BOOKS[id]; drawerMotif = null; drawerAbout = false; openDrawer(); }
+function openMotif(id){ drawerMotif = id; drawerBook = null; drawerAbout = false; openDrawer(); }
+/* What a motif is, rather than which one. Opened from the filter column,
+   where the names are met before anything has explained them. */
+function openAboutMotifs(){ drawerAbout = true; drawerBook = null; drawerMotif = null; openDrawer(); }
 function closeDrawer(){
   /* A drawer shut on a half-written answer leaves a timer running against
      markup nobody is looking at, and a mark breathing for it. */
   bsIdle();
-  drawerBook = null; drawerMotif = null;
+  drawerBook = null; drawerMotif = null; drawerAbout = false;
   drawerEl.classList.remove("open");
   drawerBg.classList.remove("open");
   drawerEl.setAttribute("aria-hidden", "true");
@@ -2762,7 +2790,7 @@ document.addEventListener("keydown", e=>{
   if (sortOpen()) { setSortOpen(false); return; }
   if (sheetOpen()) { closeFilterSheet(); return; }
   if (cartOpen) { closeCart(); return; }
-  if (drawerBook || drawerMotif) { closeDrawer(); return; }
+  if (drawerBook || drawerMotif || drawerAbout) { closeDrawer(); return; }
   if (currentProduct()) location.hash = "";
 });
 
@@ -2784,6 +2812,18 @@ function applyLang(){
   document.getElementById("promoDone").textContent = "";
   document.getElementById("lblGenre").textContent = t.genre;
   document.getElementById("lblMotif").textContent = t.motif;
+  /* The question is the end of the sentence rather than a control under it: a
+     reader who does not know what a motif is does not know to look for an
+     explanation either, so the line has to work without being pressed and the
+     way to more has to be where she stops reading. A ghost standing inside a
+     sentence is what the bookseller's motifs are too, so the shop has the
+     shape already.
+     Written here rather than in the markup because the handler has to be put
+     back on the control each time the language rebuilds it. */
+  const what = document.getElementById("motifWhat");
+  what.innerHTML = `${t.motifWhat} <button type="button" class="btn-ghost" id="motifAbout"`
+    + ` aria-haspopup="dialog"><span class="lbl">${escHTML(t.motifAboutLink)}</span></button>`;
+  document.getElementById("motifAbout").onclick = openAboutMotifs;
   document.getElementById("lblTag").textContent = t.tag;
   document.getElementById("lblLang").textContent = t.lang;
   document.getElementById("lblFilter").textContent = t.filter;
